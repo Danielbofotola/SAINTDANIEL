@@ -1,0 +1,25 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\aba9102c187c\20261011-163324-apply_patch-call_01a12b98df7376de9638e22e.txt (1,026 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Structured view (text):
+Applied patch: 1 file changed (1 updated)
+Updated resources/views/comptable/paiements.blade.php (4 hunks applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 22-22 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+  ⚠ hunk 2: context matched at lines 76-76 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+  ⚠ hunk 4: context matched at lines 107-107 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 22-22:
+22     @php($money = fn ($v, $d = 'USD') => \App\Support\Monnaie::format($v, $d))
+Auto-corrected hunk landed at lines 76-76:
+76                                         @foreach ($tarifs as $tarif)<option value="{{ $tarif->id }}" @selected(old('frais_scolaire_id') == $tarif->id)>{{ $tarif->typeFrais?->nom }} — {{ $tarif->classe?->nom }} ({{ $money($tarif->montant_exige, $tarif->devise) }})</option>@endforeach
+Auto-corrected hunk landed at lines 110-110:
+110                                        <td class="text-end fw-bold">{{ $money($paiement->montant_paye, $paiement->fraisScolaire?->devise) }}@php($devFrais = \App\Support\Monnaie::normaliser($paiement->fraisScolaire?->devise))@if ($paiement->deviseRecue() !== $devFrais)<br><small class="text-muted">reçu {{ $money($paiement->montantRecu(), $paiemen
+… 0 chars elided …
+t->deviseRecue()) }} @ {{ \App\Support\Monnaie::format($paiement->taux, $devFrais === 'CDF' ? 'USD' : 'CDF') }}</small>@endif</td>
+Landed at lines 84-92 (the file's new text; no re-read needed):
+84                             <div class="row g-2">
+85                                 <div class="col-md-2"><label class="form-label mb-1 fw-bold">Montant reçu *</label><input class="form-control form-control-sm" type="number" step="0.01" min="0.01" id="montantRecu" name="montant_paye" value="{{ old('montant_paye') }}" required></div>
+86                                 <div class="col-md-2"><label class="form-label mb-1 fw-bold">Devise *</label><select class="form-select form-select-sm" id="deviseSelect" name="devise">@foreach ($devises as $code => $libelle)<option value="{{ $code }}" @selected(o
+… 714 chars elided …
+@endforeach</select></div>
+89                                 <div class="col-md-2"><label class="form-label mb-1 fw-bold">Date</label><input class="form-control form-control-sm" type="date" name="date_paiement" value="{{ old('date_paiement', now()->toDateString()) }}"></div>
+90                                 <div class="col-md-2"><label class="form-label mb-1 fw-bold">Référence</label><input class="form-control form-control-sm" name="reference_transaction" value="{{ old('reference_transaction') }}" maxlength="100" placeholder="N° transaction"></div>
+91                             </div>
+92                             <div class="alert alert-secondary py-2 mt-2 mb-0" id="equivalence"></div>

@@ -1,0 +1,5 @@
+resources/views/admin/dashboard.blade.php
+resources/views/comptable/dashboard.blade.php
+resources/views/prefecture/dashboard.blade.php
+resources/views/professeur/dashboard.blade.php
+resources/views/titulaire/dashboard.blade.php

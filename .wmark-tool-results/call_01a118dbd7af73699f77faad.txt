@@ -1,0 +1,16 @@
+Applied patch: 1 file changed (1 updated)
+Updated app/Http/Controllers/UserProfileController.php (3 hunks applied)
+Landed at lines 112-117 (the file's new text; no re-read needed):
+112                // Rattachement « compte parent ↔ enfants ».
+113                'eleves' => Eleve::query()
+114                    ->orderBy('nom')
+115                    ->orderBy('prenom')
+116                    ->get(['id', 'nom', 'postnom', 'prenom', 'matricule']),
+117                'enfantsSelectionnes' => $user->eleves()->pluck('eleves.id')->all(),
+Landed at lines 145-146 (the file's new text; no re-read needed):
+145                'enfants' => ['nullable', 'array'],
+146                'enfants.*' => ['integer', 'exists:eleves,id'],
+Landed at lines 159-161 (the file's new text; no re-read needed):
+159            // Seul un compte parent porte des enfants ; les autres en sont détachés.
+160            $user->eleves()->sync($data['role'] === 'parent' ? ($data['enfants'] ?? []) : []);
+161

@@ -1,0 +1,78 @@
+1      <?php
+2      
+3      namespace App\Models;
+4      
+5      use Illuminate\Database\Eloquent\Builder;
+6      use Illuminate\Database\Eloquent\Factories\HasFactory;
+7      use Illuminate\Database\Eloquent\Model;
+8      
+9      class Eleve extends Model
+10     {
+11         use HasFactory;
+12     
+13         protected $fillable = [
+14             'nom',
+15             'matricule',
+16             'postnom',
+17             'prenom',
+18             'sexe',
+19             'date_naissance',
+20             'lieu_naissance',
+21             'tuteur_id',
+22             'photo',
+23             'statut',
+24         ];
+25     
+26         protected function casts(): array
+27         {
+28             return ['date_naissance' => 'date'];
+29         }
+30     
+31         public function tuteur()
+32         {
+33             return $this->belongsTo(Tuteur::class);
+34         }
+35     
+36         /**
+37          * Comptes parents rattachés à cet élève.
+38          */
+39         public function parents()
+40         {
+41             return $this->belongsToMany(User::class, 'eleve_user')->withTimestamps();
+42         }
+43     
+44         /**
+45          * Élèves visibles dans l'application : tout sauf les élèves désactivés.
+46          * Un élève « inactif » disparaît des listes, des effectifs et des écrans de suivi.
+47          */
+48         public function scopeVisibles(Builder $query): Builder
+49         {
+50             return $query->where('statut', '!=', 'inactif');
+51         }
+52     
+53         /**
+54          * Limite la requête aux élèves inscrits (inscription active) pour l'année en cours.
+55          * Les élèves désactivés sont exclus : l'application ne les affiche plus.
+56          */
+57         public function scopeInscritAnneeEnCours(Builder $query): Builder
+58         {
+59             return $query->visibles()->whereHas('inscriptions', fn (Builder $inscription) => $inscription
+60                 ->anneeEnCours()
+61                 ->where('statut', 'actif'));
+62         }
+63     
+64         public function inscriptions()
+65         {
+66             return $this->hasMany(Inscription::class);
+67         }
+68     
+69         public function sante()
+70         {
+71             return $this->hasOne(EleveSante::class);
+72         }
+73     
+74         public function documents()
+75         {
+76             return $this->hasMany(DocumentEleve::class);
+77         }
+78     }

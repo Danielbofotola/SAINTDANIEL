@@ -1,0 +1,49 @@
+1      <?php
+2      
+3      namespace App\Http\Controllers;
+4      
+5      use Illuminate\Http\RedirectResponse;
+6      use Illuminate\Http\Request;
+7      use Illuminate\View\View;
+8      
+9      /**
+10      * Boîte de réception des notifications, commune à tous les rôles.
+11      */
+12     class NotificationController extends Controller
+13     {
+14         public function index(Request $request): View
+15         {
+16             $user = $request->user();
+17     
+18             return view('notifications.index', [
+19                 'user' => $user,
+20                 'notifications' => $user->notifications()->paginate(20),
+21                 'nonLues' => $user->unreadNotifications()->count(),
+22             ]);
+23         }
+24     
+25         public function read(Request $request, string $notification): RedirectResponse
+26         {
+27             $modele = $request->user()->notifications()->whereKey($notification)->first();
+28     
+29             if (! $modele) {
+30                 return back()->with('error', 'Cette notification n’existe pas.');
+31             }
+32     
+33             $modele->markAsRead();
+34     
+35             $lien = $modele->data['lien'] ?? null;
+36     
+37             return $lien ? redirect($lien) : back()->with('success', 'Notification marquée comme lue.');
+38         }
+39     
+40         public function readAll(Request $request): RedirectResponse
+41         {
+42             $lues = $request->user()->unreadNotifications()->count();
+43             $request->user()->unreadNotifications->markAsRead();
+44     
+45             return back()->with('success', $lues === 0
+46                 ? 'Aucune notification non lue.'
+47                 : $lues.' notification(s) marquée(s) comme lue(s).');
+48         }
+49     }

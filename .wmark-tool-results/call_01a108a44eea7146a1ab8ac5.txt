@@ -1,0 +1,26 @@
+122                }
+123    
+124                Note::updateOrCreate(
+125                    ['evaluation_id' => $evaluation->id, 'eleve_id' => $eleveId],
+126                    [
+127                        'note_obtenue' => $value,
+128                        'observation' => $data['observations'][$eleveId] ?? null,
+129                        'statut' => 'actif',
+130                    ]
+131                );
+132            }
+133    
+134            return redirect()->route('admin.evaluations.notes', $evaluation)->with('success', 'Les notes ont été enregistrées.');
+135        }
+136    
+137        public function destroy(Evaluation $evaluation): RedirectResponse
+138        {
+139            if ($evaluation->notes()->exists()) {
+140                return back()->with('error', 'Cette évaluation contient déjà des notes : supprimez-les d’abord.');
+141            }
+142    
+143            $evaluation->delete();
+144    
+145            return redirect()->route('admin.evaluations.index')->with('success', 'L’évaluation a été supprimée.');
+146        }
+147    }

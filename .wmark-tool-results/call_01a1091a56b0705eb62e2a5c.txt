@@ -1,0 +1,32 @@
+[powershell — Windows side]
+INFO  Blade templates cached successfully.  
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\EspaceProfesseurTest > a teacher records the roll call without duplicating and updates an e…   
+  Failed asserting that two strings are identical.
+--- Expected
++++ Actual
+@@ @@
+-'present'
++'absent'
+
+  at tests\Feature\EspaceProfesseurTest.php:301
+    297▕             'statuts' => [1 => 'present', 2 => 'present'],
+    298▕         ]);
+    299▕ 
+    300▕     expect(DB::table('presences')->count())->toBe(2)
+  ➜ 301▕         ->and(DB::table('presences')->where('eleve_id', 1)->value('statut_presence'))->toBe('present');
+    302▕ 
+    303▕     // Un autre professeur ne peut pas appeler sur une affectation qui n’est pas la sienne.
+    304▕     $autre = professeur(2);
+    305▕     $this->actingAs($autre)
+
+  1   tests\Feature\EspaceProfesseurTest.php:301
+
+
+  Tests:    2 failed, 2 passed (38 assertions)
+  Duration: 2.24s
+
+==exit 1==
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

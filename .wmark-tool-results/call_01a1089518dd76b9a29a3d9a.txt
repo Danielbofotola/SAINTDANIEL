@@ -1,0 +1,24 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\e1ce9c26600a\20261004-212218-apply_patch-call_01a1089518dd76b9a29a3d9a.txt (711 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+Applied patch: 1 file changed (1 updated)
+Updated routes/web.php (2 hunks applied)
+Landed at lines 19-22 (the file's new text; no re-read needed):
+19     use App\Http\Controllers\FraisController;
+20     use App\Http\Controllers\PaiementController;
+21     use App\Http\Controllers\DepenseController;
+22     use App\Http\Controllers\ArchiveAnneeController;
+Landed at lines 77-93 (the file's new text; no re-read needed):
+77         Route::get('/admin/frais', [FraisController::class, 'index'])->middlew
+
+... 868 chars truncated ...
+
+in/paiements', [PaiementController::class, 'index'])->middleware('role:admin')->name('admin.paiements.index');
+84         Route::post('/admin/paiements', [PaiementController::class, 'store'])->middleware('role:admin')->name('admin.paiements.store');
+      … 1 lines omitted …
+86         Route::get('/admin/depenses', [DepenseController::class, 'index'])->middleware('role:admin')->name('admin.depenses.index');
+87         Route::post('/admin/depenses', [DepenseController::class, 'store'])->middleware('role:admin')->name('admin.depenses.store');
+88         Route::post('/admin/depenses/categories', [DepenseController::class, 'storeCategorie'])->middleware('role:admin')->name('admin.depenses.categories.store');
+89         Route::delete('/admin/depenses/categories/{categorieDepense}', [DepenseController::class, 'destroyCategorie'])->middleware('role:admin')->name('admin.depenses.categories.destroy');
+90         Route::delete('/admin/depenses/{depense}', [DepenseController::class, 'destroy'])->middleware('role:admin')->name('admin.depenses.destroy');
+91         Route::get('/admin/archives', [ArchiveAnneeController::class, 'index'])->middleware('role:admin')->name('admin.archives.index');
+92         Route::post('/admin/archives', [ArchiveAnneeController::class, 'store'])->middleware('role:admin')->name('admin.archives.store');
+93         Route::delete('/admin/archives/{archiveAnnee}', [ArchiveAnneeController::class, 'destroy'])->middleware('role:admin')->name('admin.archives.destroy');

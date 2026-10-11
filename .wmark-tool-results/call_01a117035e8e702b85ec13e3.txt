@@ -1,0 +1,1 @@
+Updated routes/web.php: replaced 1 lines with 4 lines

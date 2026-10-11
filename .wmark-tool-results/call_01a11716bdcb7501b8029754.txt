@@ -1,0 +1,14 @@
+82         Schema::create('notifications', function (Blueprint $table) {
+83             $table->uuid('id')->primary();
+84             $table->string('type');
+85             $table->morphs('notifiable');
+86             $table->text('data');
+87             $table->timestamp('read_at')->nullable();
+88             $table->timestamps();
+89         });
+90     
+91         Schema::create('annonces', function (Blueprint $table) {
+92             $table->id();
+93             $table->string('titre', 150);
+
+[showing lines 82-93 of 236; read again with offset=94 for more]

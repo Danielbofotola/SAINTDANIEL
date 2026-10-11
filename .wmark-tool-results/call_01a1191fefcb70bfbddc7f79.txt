@@ -1,0 +1,57 @@
+113    
+114        /** Enregistre en masse les décisions d'un effectif (proposées ou forcées). */
+115        public function enregistrer(Request $request): RedirectResponse
+116        {
+117            $data = $request->validate([
+118                'annee_scolaire_id' => ['required', 'exists:annees_scolaires,id'],
+119                'decisions' => ['required', 'array'],
+120                'decisions.*' => ['required', 'in:admis,ajourne,redouble'],
+121            ], [
+122                'decisions.required' => 'Aucune décision à enregistrer.',
+123            ]);
+124    
+125            $jury = Jury::regles();
+126            $critere = $jury->critere();
+127            $total = 0;
+128    
+129            DB::transaction(function () use ($data, $request, $jury, $critere, &$total): void {
+130                $inscriptions = Inscription::query()
+131                    ->with('classe')
+132                    ->whereIn('id', array_keys($data['decisions']))
+133                    ->where('annee_scolaire_id', $data['annee_scolaire_id'])
+134                    ->get();
+135    
+136                foreach ($inscriptions as $inscription) {
+137                    $analyse = $jury->analyser($inscription);
+138                    $choix = $data['decisions'][$inscription->id];
+139    
+140                    Deliberation::updateOrCreate(
+141                        ['inscription_id' => $inscription->id, 'annee_scolaire_id' => $data['annee_scolaire_id']],
+142                        [
+143                            'pourcentage_general' => $analyse['pourcentage'],
+144                            'cours_echoues' => $analyse['cours_echoues'],
+145                            'decision' => $choix,
+146                            'critere' => json_encode($critere),
+147                            'manuelle' => $choix !== $analyse['decision_proposee'],
+148                            'classe_suivante_id' => $choix === 'admis' ? $inscription->classe?->suivante()?->id : null,
+149                            'decide_par' => $request->user()->id,
+150                            'decide_le' => now(),
+151                        ]
+152                    );
+153                    $total++;
+154                }
+155            });
+156    
+157            return back()->with('success', $total.' décision(s) enregistrée(s).');
+158        }
+159    
+160        /**
+161         * Applique en masse le passage : les admis montent dans la classe d'ordre
+162         * supérieur, les ajournés et redoublants restent dans la même classe, en
+163         * créant les inscriptions de l'année cible.
+164         */
+165        public function appliquer(Request $request): RedirectResponse
+166        {
+167            $data = $request->validate([
+
+[showing lines 113-167 of 226; read again with offset=168 for more]

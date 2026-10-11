@@ -1,0 +1,10 @@
+155        Route::patch('/notifications/{notification}/lue', [NotificationController::class, 'read'])->middleware('auth')->name('notifications.read');
+156        // Messagerie interne : discussion directe ou diffusion à tous les utilisateurs.
+157        Route::get('/messagerie', [MessagerieController::class, 'index'])->middleware('auth')->name('messagerie.index');
+158        Route::post('/messagerie', [MessagerieController::class, 'store'])->middleware('auth')->name('messagerie.store');
+159        Route::post('/messagerie/{conversation}/messages', [MessagerieController::class, 'repondre'])->middleware('auth')->name('messagerie.repondre');
+160        Route::get('/messagerie/{conversation}/messages', [MessagerieController::class, 'messages'])->middleware('auth')->name('messagerie.messages');
+161        // Annonces : diffusion d'une notification par l'administrateur.
+162        Route::get('/admin/annonces', [AnnonceController::class, 'index'])->middleware('role:admin')->name('admin.annonces.index');
+
+[showing lines 155-162 of 245; read again with offset=163 for more]

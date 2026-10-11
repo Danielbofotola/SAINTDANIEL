@@ -1,0 +1,36 @@
+[powershell — Windows side]
+*/
+    public static function dashboardRouteNameFor(?string $role): string
+    {
+        return match ($role) {
+            'admin' => 'admin.dashboard',
+            'prefetture' => 'prefecture.dashboard',
+            'titulaire' => 'titulaire.dashboard',
+            'professeur' => 'professeur.dashboard',
+            'comptable' => 'comptable.dashboard',
+            'parent' => 'parent.dashboard',
+            default => 'profile.show',
+        };
+    }
+
+    public function dashboardRouteName(): string
+    {
+        return static::dashboardRouteNameFor($this->role);
+    }
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var list<string>
+     */
+    protected $fillable = [
+        'professeur_id',
+        'nom',
+        'postnom',
+        'prenom',
+        'date_naissance',
+        'username',
+        'email',
+        'telephone',
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

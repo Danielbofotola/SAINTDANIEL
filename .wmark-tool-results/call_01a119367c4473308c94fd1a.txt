@@ -1,0 +1,20 @@
+Applied patch: 1 file changed (1 updated)
+Updated resources/views/admin/eleves/show.blade.php (1 hunk applied)
+Landed at lines 205-312 (the file's new text; no re-read needed):
+205            {{-- ==================== PARCOURS & HISTORIQUE ==================== --}}
+206            <div class="row">
+207                <div class="col-md-12">
+208                    <div class="dossier-carte">
+209                        <h4 class="dossier-carte__titre">
+210                            <i class="fa fa-history" style="color:var(--dossier)"></i> Parcours &amp; historique — toutes les années
+211                            <small class="text-muted ml-2">{{ $parcours->count() }} inscription(s)</small>
+212                        </h4>
+      … 92 lines omitted …
+305                                </tbody>
+306                            </table>
+307                        </div>
+308                    </div>
+309                </div>
+310            </div>
+311    
+312            {{-- ==================== DOCUMENTS ==================== --}}

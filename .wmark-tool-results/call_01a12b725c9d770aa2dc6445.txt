@@ -1,0 +1,79 @@
+1      <?php
+2      
+3      namespace App\Models;
+4      
+5      use Illuminate\Database\Eloquent\Model;
+6      
+7      class ParametreSysteme extends Model
+8      {
+9          protected $table = 'parametres_systeme';
+10     
+11         /** Seuil de réussite appliqué au bulletin lorsque rien n'est configuré. */
+12         public const SEUIL_REUSSITE_DEFAUT = 50.0;
+13     
+14         protected $fillable = [
+15             'nom_etablissement', 'nom_court', 'telephone', 'email', 'adresse', 'saisie_notes_active', 'portail_parents_actif',
+16             'deliberation_active', 'deliberation_seuil_admission', 'deliberation_seuil_repechage',
+17             'deliberation_max_cours_echoues', 'deliberation_note_min_cours',
+18             'bulletin_pays', 'bulletin_ministere', 'bulletin_titre', 'bulletin_reference',
+19             'bulletin_province', 'bulletin_ville', 'bulletin_commune', 'bulletin_code_ecole',
+20             'bulletin_lieu_signature', 'bulletin_signataire', 'bulletin_seuil_reussite',
+21             'bulletin_afficher_place', 'bulletin_afficher_conduite',
+22         ];
+23     
+24         protected function casts(): array
+25         {
+26             return [
+27                 'saisie_notes_active' => 'boolean',
+28                 'portail_parents_actif' => 'boolean',
+29                 'deliberation_active' => 'boolean',
+30                 'deliberation_seuil_admission' => 'decimal:2',
+31                 'deliberation_seuil_repechage' => 'decimal:2',
+32                 'deliberation_max_cours_echoues' => 'integer',
+33                 'deliberation_note_min_cours' => 'decimal:2',
+34                 'bulletin_seuil_reussite' => 'decimal:2',
+35                 'bulletin_afficher_place' => 'boolean',
+36                 'bulletin_afficher_conduite' => 'boolean',
+37             ];
+38         }
+39     
+40         /**
+41          * Réglages en vigueur (ligne unique), ou valeurs par défaut si aucune n'existe.
+42          */
+43         public static function current(): self
+44         {
+45             try {
+46                 return static::query()->first() ?? static::defaults();
+47             } catch (\Throwable) {
+48                 // Table absente ou base indisponible (installation en cours, test isolé) :
+49                 // les valeurs par défaut sont utilisées plutôt que de faire échouer la page.
+50                 return static::defaults();
+51             }
+52         }
+53     
+54         /** Seuil de réussite du bulletin, configuré par l'administration (50 % par défaut). */
+55         public static function seuilReussiteBulletin(): float
+56         {
+57             $seuil = static::current()->bulletin_seuil_reussite;
+58     
+59             return $seuil === null || (float) $seuil <= 0 ? self::SEUIL_REUSSITE_DEFAUT : (float) $seuil;
+60         }
+61     
+62         public static function defaults(): self
+63         {
+64             return new self([
+65                 'nom_etablissement' => 'COMPLEXE SCOLAIRE BABAZIN',
+66                 'nom_court' => 'C.S. Moty',
+67                 'saisie_notes_active' => true,
+68                 'portail_parents_actif' => false,
+69                 'bulletin_pays' => 'République Démocratique du Congo',
+70                 'bulletin_ministere' => "Ministère de l'Enseignement Primaire, Secondaire et Professionnel",
+71                 'bulletin_titre' => 'Bulletin annuel — Cycle terminal de l’éducation de base (CTEB)',
+72                 'bulletin_reference' => 'EBE/P.S./010',
+73                 'bulletin_signataire' => 'Le Chef d’Établissement',
+74                 'bulletin_seuil_reussite' => self::SEUIL_REUSSITE_DEFAUT,
+75                 'bulletin_afficher_place' => true,
+76                 'bulletin_afficher_conduite' => true,
+77             ]);
+78         }
+79     }

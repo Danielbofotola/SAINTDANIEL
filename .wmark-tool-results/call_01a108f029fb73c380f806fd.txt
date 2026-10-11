@@ -1,0 +1,13 @@
+[powershell — Windows side]
+PASS  Tests\Feature\ActiveAccountTest
+  ✓ an authenticated but inactive account is redirected to the login page                                        0.18s  
+  ✓ a user deactivated while connected loses the session immediately                                             0.01s  
+  ✓ an inactive account cannot log in with its password                                                          0.22s  
+  ✓ deactivating an account purges its stored sessions                                                           0.03s  
+
+  Tests:    4 passed (12 assertions)
+  Duration: 0.61s
+
+==exit 0==
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

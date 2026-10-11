@@ -1,0 +1,26 @@
+192    
+193            {{-- Aperçu de l'établissement + dernières notifications --}}
+194            <div class="col-md-6">
+195                <div class="card card-info bg-info-gradient">
+196                    <div class="card-body">
+197                        <h4 class="mb-3 fw-bold">L'établissement en un coup d'œil</h4>
+198                        <div class="row text-center">
+199                            <div class="col-3"><h3 class="mb-0 fw-bold">{{ $effectifTotal }}</h3><small>Élèves</small></div>
+200                            <div class="col-3"><h3 class="mb-0 fw-bold">{{ $classesActives }}</h3><small>Classes</small></div>
+201                            <div class="col-3"><h3 class="mb-0 fw-bold">{{ $professeursActifs }}</h3><small>Professeurs</small></div>
+202                            <div class="col-3"><h3 class="mb-0 fw-bold">{{ $comptesTotal }}</h3><small>Comptes</small></div>
+203                        </div>
+204                    </div>
+205                </div>
+206                <div class="card">
+207                    <div class="card-header">
+208                        <div class="card-head-row">
+209                            <div class="card-title"><i class="far fa-bell text-info"></i> Dernières notifications</div>
+210                            <a href="{{ route('notifications.index') }}" class="btn btn-link btn-sm">Tout voir</a>
+211                        </div>
+212                    </div>
+213                    <div class="card-body">
+214                        @forelse ($dernieresNotifications as $notification)
+215                            @php($donnees = $notification->data)
+
+[showing lines 192-215 of 230; read again with offset=216 for more]

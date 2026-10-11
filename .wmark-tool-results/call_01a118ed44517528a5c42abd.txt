@@ -1,0 +1,6 @@
+159            ->assertForbidden();
+160    });
+161    
+162    test('the shared placeholder page has been retired', function () {
+163        expect(view()->exists('dashboard'))->toBeFalse();
+164    });

@@ -1,0 +1,72 @@
+1      <?php
+2      
+3      use App\Models\User;
+4      use Illuminate\Database\Schema\Blueprint;
+5      use Illuminate\Support\Facades\DB;
+6      use Illuminate\Support\Facades\Schema;
+7      
+8      beforeEach(function () {
+9          Schema::disableForeignKeyConstraints();
+10         foreach (['depenses', 'categories_depenses', 'annees_scolaires', 'users'] as $table) {
+11             Schema::dropIfExists($table);
+12         }
+13         Schema::enableForeignKeyConstraints();
+14     
+15         Schema::create('users', function (Blueprint $table) {
+16             $table->id();
+17             $table->unsignedBigInteger('professeur_id')->nullable()->unique();
+18             $table->string('nom', 50)->nullable();
+19             $table->string('postnom', 50)->nullable();
+20             $table->string('prenom', 50)->nullable();
+21             $table->string('username')->unique();
+22             $table->string('email')->unique();
+23             $table->string('telephone', 20)->nullable();
+24             $table->string('password');
+25             $table->string('pin_code')->nullable();
+26             $table->string('role');
+27             $table->string('statut');
+28             $table->rememberToken();
+29             $table->timestamps();
+30         });
+31         Schema::create('annees_scolaires', function (Blueprint $table) {
+32             $table->id();
+33             $table->string('libelle');
+34             $table->date('date_debut');
+35             $table->date('date_fin');
+36             $table->boolean('is_encours')->default(false);
+37             $table->string('statut');
+38             $table->timestamps();
+39         });
+40         Schema::create('categories_depenses', function (Blueprint $table) {
+41             $table->id();
+42             $table->string('nom', 100);
+43             $table->string('statut')->default('actif');
+44             $table->timestamps();
+45         });
+46         Schema::create('depenses', function (Blueprint $table) {
+47             $table->id();
+48             $table->unsignedBigInteger('annee_scolaire_id');
+49             $table->unsignedBigInteger('category_id');
+50             $table->string('motif');
+51             $table->decimal('montant', 10, 2);
+52             $table->date('date_depense');
+53             $table->string('piece_justificative')->nullable();
+54             $table->string('statut')->default('actif');
+55             $table->timestamps();
+56         });
+57     
+58         DB::table('annees_scolaires')->insert([
+59             'id' => 1, 'libelle' => '2026-2027', 'date_debut' => '2026-09-01',
+60             'date_fin' => '2027-07-01', 'is_encours' => true, 'statut' => 'actif',
+61         ]);
+62         DB::table('categories_depenses')->insert([
+63             'id' => 1, 'nom' => 'Fournitures', 'statut' => 'actif', 'created_at' => now(), 'updated_at' => now(),
+64         ]);
+65     });
+66     
+67     test('the cashier records an expense together with its nature', function () {
+68         $comptable = User::factory()->create(['role' => 'comptable']);
+69     
+70         $this->actingAs($comptable)
+
+[showing lines 1-70 of 140; read again with offset=71 for more]

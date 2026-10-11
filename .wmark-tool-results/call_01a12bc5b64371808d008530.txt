@@ -1,0 +1,9 @@
+Applied patch: 2 files changed (1 created, 1 updated)
+Created app/Support/StructureClasse.php (54 lines)
+Updated resources/views/admin/bulletins/document.blade.php (1 hunk applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 40-45 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 40-42:
+40         // Titre réel : cycle, section et option de la classe de l'élève
+41         // (redites écartées), sauf titre imposé dans les Paramètres.
+42         $structure = \App\Support\StructureClasse::libelle($classe);

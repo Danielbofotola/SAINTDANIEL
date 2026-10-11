@@ -1,0 +1,174 @@
+1      <?php
+2      
+3      namespace App\Http\Controllers;
+4      
+5      use App\Models\AffectationCours;
+6      use App\Models\AnneeScolaire;
+7      use App\Models\Classe;
+8      use App\Models\Evaluation;
+9      use App\Models\Note;
+10     use App\Models\ParametreSysteme;
+11     use App\Models\Periode;
+12     use Illuminate\Http\RedirectResponse;
+13     use Illuminate\Http\Request;
+14     use Illuminate\Validation\Rule;
+15     use Illuminate\View\View;
+16     
+17     class EvaluationController extends Controller
+18     {
+19         public function index(Request $request): View
+20         {
+21             $periodeId = $request->query('periode_id');
+22             $classeId = $request->query('classe_id');
+23     
+24             $evaluations = Evaluation::query()
+25                 ->with(['periode', 'affectation.professeur', 'affectation.cours', 'affectation.classe'])
+26                 ->whereHas('affectation', fn ($query) => $query->anneeEnCours())
+27                 ->when($periodeId, fn ($query) => $query->where('periode_id', $periodeId))
+28                 ->when($classeId, fn ($query) => $query->whereHas('affectation', fn ($affectation) => $affectation->where('classe_id', $classeId)))
+29                 ->withCount('notes')
+30                 ->orderByDesc('date_evaluation')
+31                 ->orderByDesc('id')
+32                 ->paginate(25)
+33                 ->withQueryString();
+34     
+35             return view('admin.evaluations.index', [
+36                 'evaluations' => $evaluations,
+37                 'annee' => AnneeScolaire::enCours(),
+38                 'periodeId' => $periodeId,
+39                 'classeId' => $classeId,
+40                 'periodes' => Periode::anneeEnCours()->where('statut', 'actif')->orderBy('id')->get(),
+41                 'classes' => Classe::where('statut', 'actif')->orderBy('nom')->get(),
+42                 'affectations' => AffectationCours::anneeEnCours()->where('statut', 'actif')->with(['professeur', 'cours', 'classe'])->get(),
+43                 'types' => ['interro' => 'Interrogation', 'devoir' => 'Devoir', 'examen' => 'Examen', 'autre' => 'Autre'],
+44                 'saisieNotesActive' => $this->saisieNotesActive(),
+45             ]);
+46         }
+47     
+48         public function store(Request $request): RedirectResponse
+49         {
+50             $annee = AnneeScolaire::enCours();
+51     
+52             if (! $annee) {
+53                 return back()->withInput()->with('error', 'Aucune année scolaire en cours : impossible de créer une évaluation.');
+54             }
+55     
+56             $data = $request->validate([
+57                 'affectation_id' => ['required', Rule::exists('affectations_cours', 'id')->where('annee_scolaire_id', $annee->id)->where('statut', 'actif')],
+58                 'periode_id' => ['required', Rule::exists('periodes', 'id')->where('annee_scolaire_id', $annee->id)->where('statut', 'actif')],
+59                 'titre' => ['required', 'string', 'max:100'],
+60                 'type_evaluation' => ['required', Rule::in(['interro', 'devoir', 'examen', 'autre'])],
+61                 'max_note' => ['required', 'numeric', 'min:1', 'max:100'],
+62                 'date_evaluation' => ['required', 'date'],
+63             ], [
+64                 'affectation_id.required' => 'Sélectionnez une affectation (classe — cours — professeur).',
+65                 'periode_id.required' => 'Sélectionnez une période.',
+66                 'titre.required' => 'Le titre de l’évaluation est obligatoire.',
+67                 'type_evaluation.required' => 'Choisissez le type d’évaluation.',
+68                 'max_note.required' => 'La note maximale est obligatoire.',
+69                 'date_evaluation.required' => 'La date de l’évaluation est obligatoire.',
+70             ]);
+71     
+72             Evaluation::create($data + ['statut' => 'actif']);
+73     
+74             return redirect()->route('admin.evaluations.index')->with('success', 'L’évaluation a été créée.');
+75         }
+76     
+77         public function notes(Evaluation $evaluation): View|RedirectResponse
+78         {
+79             if (! $this->saisieNotesActive()) {
+80                 return redirect()->route('admin.evaluations.index')->with('error', 'La saisie des notes est désactivée (« Commuter les modules »).');
+81             }
+82     
+83             $evaluation->load(['periode', 'affectation.cours', 'affectation.classe', 'affectation.professeur']);
+84     
+85             $classe = $evaluation->affectation?->classe;
+86     
+87             $inscriptions = $classe
+88                 ? $classe->inscriptions()->anneeEnCours()->where('statut', 'actif')->with('eleve')->get()
+89                 : collect();
+90     
+91             $notes = $evaluation->notes()->pluck('note_obtenue', 'eleve_id');
+92             $observations = $evaluation->notes()->pluck('observation', 'eleve_id');
+93     
+94             return view('admin.evaluations.notes', compact('evaluation', 'inscriptions', 'notes', 'observations'));
+95         }
+96     
+97         public function storeNotes(Request $request, Evaluation $evaluation): RedirectResponse
+98         {
+99             if (! $this->saisieNotesActive()) {
+100                return back()->with('error', 'La saisie des notes est désactivée (« Commuter les modules »).');
+101            }
+102    
+103            // Verrouillage de fin de période décidé par le préfet : une période
+104            // clôturée n'accepte plus aucune modification de notes.
+105            if ($evaluation->periode && $evaluation->periode->statut !== 'actif') {
+106                return back()->with('error', 'La période « '.$evaluation->periode->nom.' » est clôturée : la saisie des notes est verrouillée.');
+107            }
+108    
+109            $data = $request->validate([
+110                'notes' => ['array'],
+111                'notes.*' => ['nullable', 'numeric', 'min:0', 'max:'.$evaluation->max_note],
+112                'observations' => ['array'],
+113                'observations.*' => ['nullable', 'string', 'max:255'],
+114            ], [
+115                'notes.*.numeric' => 'Chaque note doit être un nombre.',
+116                'notes.*.min' => 'La note ne peut pas être négative.',
+117                'notes.*.max' => 'La note ne peut pas dépasser la note maximale ('.$evaluation->max_note.').',
+118            ]);
+119    
+120            $classe = $evaluation->affectation?->classe;
+121            $allowed = $classe
+122                ? array_map('intval', $classe->inscriptions()->anneeEnCours()->where('statut', 'actif')->pluck('eleve_id')->all())
+123                : [];
+124    
+125            foreach ($data['notes'] ?? [] as $eleveId => $value) {
+126                $eleveId = (int) $eleveId;
+127    
+128                if (! in_array($eleveId, $allowed, true)) {
+129                    continue;
+130                }
+131    
+132                if ($value === null || $value === '') {
+133                    Note::where('evaluation_id', $evaluation->id)->where('eleve_id', $eleveId)->delete();
+134    
+135                    continue;
+136                }
+137    
+138                Note::updateOrCreate(
+139                    ['evaluation_id' => $evaluation->id, 'eleve_id' => $eleveId],
+140                    [
+141                        'note_obtenue' => $value,
+142                        'observation' => $data['observations'][$eleveId] ?? null,
+143                        'statut' => 'actif',
+144                    ]
+145                );
+146            }
+147    
+148            return redirect()->route('admin.evaluations.notes', $evaluation)->with('success', 'Les notes ont été enregistrées.');
+149        }
+150    
+151        public function destroy(Evaluation $evaluation): RedirectResponse
+152        {
+153            if ($evaluation->notes()->exists()) {
+154                return back()->with('error', 'Cette évaluation contient déjà des notes : supprimez-les d’abord.');
+155            }
+156    
+157            $evaluation->delete();
+158    
+159            return redirect()->route('admin.evaluations.index')->with('success', 'L’évaluation a été supprimée.');
+160        }
+161    
+162        /**
+163         * L'accès à la saisie des notes dépend du commutateur « Commuter les modules ».
+164         * Si les réglages sont indisponibles (table absente), la saisie reste autorisée.
+165         */
+166        private function saisieNotesActive(): bool
+167        {
+168            try {
+169                return (bool) ParametreSysteme::current()->saisie_notes_active;
+170            } catch (\Throwable) {
+171                return true;
+172            }
+173        }
+174    }

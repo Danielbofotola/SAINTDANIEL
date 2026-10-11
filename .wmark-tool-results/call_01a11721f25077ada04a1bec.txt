@@ -1,0 +1,24 @@
+Applied patch: 1 file changed (1 updated)
+Updated resources/views/messagerie/_espace.blade.php (2 hunks applied)
+Landed at lines 249-251 (the file's new text; no re-read needed):
+249                        <button type="button" class="icon-btn d-inline-flex d-md-none" onclick="retourListe()" title="Retour à la liste">
+250                            <i class="fa-solid fa-arrow-left"></i>
+251                        </button>
+Landed at lines 676-693 (the file's new text; no re-read needed):
+676    
+677        /* Retour (vue mobile) : on revient sur la liste des CORRESPONDANTS, pour
+678           retrouver les autres personnes, sans recharger la page. */
+679        window.retourListe = function () {
+680            const shell = document.getElementById('msgShell');
+681            if (shell) {
+682                shell.classList.remove('show-thread');
+683                shell.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      … 2 lines omitted …
+686            if (onglet) window.msgTab('correspondants', onglet);
+687        };
+688    
+689        /* Vue mobile : on ouvre d'abord sur les correspondants (les autres personnes). */
+690        if (window.matchMedia('(max-width: 820px)').matches) {
+691            const onglet = document.querySelector('.msg-tab[data-cible="correspondants"]');
+692            if (onglet) window.msgTab('correspondants', onglet);
+693        }

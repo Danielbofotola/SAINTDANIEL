@@ -1,0 +1,5 @@
+The user selected, one answer per question:
+- "Comment veux-tu que j'intègre ton template « Portail Parent » ?": Branché sur la vraie messagerie Laravel (recommandé) — Nouvelle page Blade utilisant ton design, mais avec de vraies conversations/messages en base, envoi réel, badges non-lus. Réutilise Conversation/Message/Messagerie déjà présents.
+- 'Pour les messages vocaux (le micro du template) :': Vocaux réels (recommandé) — Enregistrer l'audio (MediaRecorder), l'uploader et le stocker comme pièce jointe ; lecture réelle dans la bulle. Petit ajout backend pour les types audio.
+- 'Où placer cet espace et qui y accède ?': Nouvelle route « Espace Parent » pour le rôle parent (recommandé) — /espace-parent accessible aux parents, les autres rôles gardant la messagerie actuelle.
+Act on these choices directly and continue working autonomously — do NOT restate the selections back to the user.

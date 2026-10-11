@@ -1,0 +1,45 @@
+1      <?php
+2      
+3      namespace App\Notifications;
+4      
+5      use App\Models\Annonce;
+6      use Illuminate\Bus\Queueable;
+7      use Illuminate\Notifications\Notification;
+8      
+9      /**
+10      * Notification d'annonce, déposée dans la base (canal « database ») pour
+11      * chaque destinataire : elle apparaît dans la cloche et sur la page
+12      * « Mes notifications ».
+13      */
+14     class AnnonceNotification extends Notification
+15     {
+16         use Queueable;
+17     
+18         public function __construct(public Annonce $annonce)
+19         {
+20         }
+21     
+22         /**
+23          * @return array<int, string>
+24          */
+25         public function via(object $notifiable): array
+26         {
+27             return ['database'];
+28         }
+29     
+30         /**
+31          * @return array<string, mixed>
+32          */
+33         public function toArray(object $notifiable): array
+34         {
+35             return [
+36                 'annonce_id' => $this->annonce->id,
+37                 'titre' => $this->annonce->titre,
+38                 'message' => $this->annonce->message,
+39                 'niveau' => $this->annonce->niveau,
+40                 'lien' => $this->annonce->lien,
+41                 'cible' => $this->annonce->cible,
+42                 'auteur' => $this->annonce->auteur?->username ?? 'Administration',
+43             ];
+44         }
+45     }

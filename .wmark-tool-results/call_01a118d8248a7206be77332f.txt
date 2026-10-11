@@ -1,0 +1,23 @@
+[powershell — Windows side]
+### tests\Feature\AdminMessagerieTest.php line 145
+        ->and(DB::table('conversation_user')->where('conversation_id', $id)->count())->toBe(0);
+});
+
+test('l’administrateur peut supprimer un seul message', function () {
+    $admin = User::factory()->create(['role' => 'admin']);
+    $bruno = User::factory()->create(['role' => 'professeur']);
+    $chloe = User::factory()->create(['role' => 'comptable']);
+
+    $conversation = Messagerie::creer($bruno, [$chloe->id], 'Modération', 'Message à retirer.');
+### tests\Feature\MessagerieTest.php line 474
+        ->and(DB::table('conversation_user')->where('conversation_id', $premiere)->count())->toBe(2);
+});
+
+test('on ne peut pas démarrer une discussion avec soi-même', function () {
+    $alice = User::factory()->create(['role' => 'admin']);
+
+    $this->actingAs($alice)
+        ->postJson(route('messagerie.demarrer'), ['destinataire' => $alice->id])
+        ->assertNotFound();
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

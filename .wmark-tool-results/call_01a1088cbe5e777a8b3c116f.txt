@@ -1,0 +1,32 @@
+328                </li>
+329                <li class="menu-section">Organisation</li>
+330                <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-graduation-cap"></i><span class="app-menu__label">Classes et salles</span><i class="treeview-indicator fa fa-angle-right"></i></a>
+331                    <ul class="treeview-menu">
+332                        <li><a class="treeview-item" href="#"><i class="icon fa fa-circle-o"></i> Cycles</a></li>
+333                        <li><a class="treeview-item" href="{{ route('admin.classes.index') }}"><i class="icon fa fa-list"></i> Liste des classes</a></li>
+334                        <li><a class="treeview-item" href="{{ route('admin.classes.create') }}"><i class="icon fa fa-plus"></i> Créer une classe</a></li>
+335                        <li><a class="treeview-item" href="{{ route('admin.salles.index') }}"><i class="icon fa fa-list"></i> Liste des salles</a></li>
+336                        <li><a class="treeview-item" href="{{ route('admin.salles.create') }}"><i class="icon fa fa-university"></i> Créer une salle</a></li>
+337                        <li><a class="treeview-item" href="{{ route('admin.annees.index') }}"><i class="icon fa fa-calendar"></i> Années scolaires</a></li>
+338                        <li><a class="treeview-item" href="{{ route('admin.sections.index') }}"><i class="icon fa fa-sitemap"></i> Sections</a></li>
+339                        <li><a class="treeview-item" href="{{ route('admin.options.index') }}"><i class="icon fa fa-list-ul"></i> Options</a></li>
+340                    </ul>
+341                </li>
+342                <li class="menu-section">Finances</li>
+343                <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-money"></i><span class="app-menu__label">Paiements et frais</span><i class="treeview-indicator fa fa-angle-right"></i></a>
+344                    <ul class="treeview-menu">
+345                        <li><a class="treeview-item" href="#"><i class="icon fa fa-circle-o"></i> Types de frais</a></li>
+346                        <li><a class="treeview-item" href="#"><i class="icon fa fa-circle-o"></i> Paiements</a></li>
+347                    </ul>
+348                </li>
+349                <li class="menu-section">Accès</li>
+350                <li><a class="app-menu__item" href="{{ route('admin.registration.accounts') }}"><i class="app-menu__icon fa fa-user-plus"></i><span class="app-menu__label">Demandes de comptes</span></a></li>
+351            </ul>
+352        </aside>
+353    
+354        <!-- CONTENT -->
+355        <main class="app-content">
+356            <div class="app-title border-0 bg-transparent pl-0 pt-0 ">
+357                <div class="mt-5">
+
+[showing lines 328-357 of 713; read again with offset=358 for more]

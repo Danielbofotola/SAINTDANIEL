@@ -1,0 +1,20 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/AnneeEnCoursScopingTest.php (1 hunk applied)
+Landed at lines 183-202 (the file's new text; no re-read needed):
+183    
+184    test('a pupil file shows the current school year enrolment', function () {
+185        $admin = User::factory()->create(['role' => 'admin']);
+186    
+187        $this->actingAs($admin)
+188            ->get(route('admin.eleves.show', 2))
+189            ->assertOk()
+190            ->assertSee('3e primaire')
+      … 4 lines omitted …
+195        $admin = User::factory()->create(['role' => 'admin']);
+196    
+197        $this->actingAs($admin)
+198            ->get(route('admin.eleves.show', 1))
+199            ->assertOk()
+200            ->assertSee("n'est pas inscrit pour l'année en cours")
+201            ->assertDontSee('3e primaire');
+202    });

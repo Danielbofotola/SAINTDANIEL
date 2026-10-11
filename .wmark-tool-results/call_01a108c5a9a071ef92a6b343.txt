@@ -1,0 +1,18 @@
+Applied patch: 1 file changed (1 updated)
+Updated app/Http/Controllers/PaiementController.php (5 hunks applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 3: context matched at lines 29-30 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+  ⚠ hunk 4: context matched at lines 59-63 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+  ⚠ hunk 5: context matched at lines 88-89 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 32-32:
+32                 ->when($periodeId, fn ($query) => $query->where('periode_id', $periodeId))
+Auto-corrected hunk landed at lines 64-64:
+64                 'periodeId' => $periodeId,
+Auto-corrected hunk landed at lines 68-68:
+68                 'periodes' => Periode::anneeEnCours()->orderBy('id')->get(),
+Auto-corrected hunk landed at lines 94-94:
+94                 'periode_id' => ['nullable', Rule::exists('periodes', 'id')->where('annee_scolaire_id', $annee->id)],
+Landed at lines 10-10 (the file's new text; no re-read needed):
+10     use App\Models\Periode;
+Landed at lines 25-25 (the file's new text; no re-read needed):
+25             $periodeId = $request->query('periode_id');

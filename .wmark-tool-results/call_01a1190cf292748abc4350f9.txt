@@ -1,0 +1,191 @@
+1      <?php
+2      
+3      namespace App\Http\Controllers;
+4      
+5      use App\Models\AnneeScolaire;
+6      use App\Models\Bulletin;
+7      use App\Models\Classe;
+8      use App\Models\Evaluation;
+9      use App\Models\Inscription;
+10     use App\Models\Note;
+11     use App\Models\Periode;
+12     use App\Support\BulletinRdc;
+13     use Illuminate\Http\RedirectResponse;
+14     use Illuminate\Http\Request;
+15     use Illuminate\Support\Facades\DB;
+16     use Illuminate\Validation\Rule;
+17     use Illuminate\View\View;
+18     
+19     class BulletinController extends Controller
+20     {
+21         public function index(Request $request): View
+22         {
+23             $periodeId = $request->query('periode_id');
+24             $classeId = $request->query('classe_id');
+25     
+26             $annee = AnneeScolaire::enCours();
+27             $periodes = Periode::anneeEnCours()->orderBy('id')->get();
+28             $classes = Classe::where('statut', 'actif')->orderBy('nom')->get();
+29     
+30             $periode = null;
+31             $classe = null;
+32             $rows = collect();
+33     
+34             if ($annee && $periodeId && $classeId) {
+35                 $periode = $periodes->firstWhere('id', (int) $periodeId);
+36                 $classe = $classes->firstWhere('id', (int) $classeId);
+37     
+38                 if ($periode && $classe) {
+39                     $rows = collect($this->computeForClasse($classe, $periode))->map(function (array $row) use ($periode) {
+40                         $row['bulletin'] = Bulletin::query()
+41                             ->where('periode_id', $periode->id)
+42                             ->where('inscription_id', $row['inscription']->id)
+43                             ->first();
+44     
+45                         return $row;
+46                     });
+47                 }
+48             }
+49     
+50             return view('admin.bulletins.index', compact('annee', 'periodes', 'classes', 'periode', 'classe', 'rows', 'periodeId', 'classeId'));
+51         }
+52     
+53         public function document(Inscription $inscription): View
+54         {
+55             $inscription->load(['eleve', 'classe', 'anneeScolaire']);
+56     
+57             $data = BulletinRdc::for($inscription)->build();
+58     
+59             // Classement de l'élève dans sa classe par pourcentage général.
+60             $classement = Inscription::query()
+61                 ->where('classe_id', $inscription->classe_id)
+62                 ->where('annee_scolaire_id', $inscription->annee_scolaire_id)
+63                 ->where('statut', 'actif')
+64                 ->get()
+65                 ->map(fn (Inscription $item) => [
+66                     'id' => $item->id,
+67                     'pourcentage' => BulletinRdc::for($item)->build()['pourcentage_general'],
+68                 ])
+69                 ->sortByDesc('pourcentage')
+70                 ->values();
+71     
+72             $position = $classement->search(fn (array $row) => $row['id'] === $inscription->id);
+73     
+74             return view('admin.bulletins.document', $data + [
+75                 'place' => $position === false ? null : $position + 1,
+76                 'nombre_eleves' => $classement->count(),
+77             ]);
+78         }
+79     
+80         public function generate(Request $request): RedirectResponse
+81         {
+82             $data = $request->validate([
+83                 'periode_id' => ['required', Rule::exists('periodes', 'id')],
+84                 'classe_id' => ['required', Rule::exists('classes', 'id')],
+85             ], [
+86                 'periode_id.required' => 'Choisissez une période.',
+87                 'classe_id.required' => 'Choisissez une classe.',
+88             ]);
+89     
+90             $periode = Periode::anneeEnCours()->find($data['periode_id']);
+91             $classe = Classe::find($data['classe_id']);
+92     
+93             if (! $periode || ! $classe) {
+94                 return back()->withInput()->with('error', 'Période ou classe introuvable pour l’année en cours.');
+95             }
+96     
+97             $rows = $this->computeForClasse($classe, $periode);
+98     
+99             if ($rows === []) {
+100                return back()->with('error', 'Aucun élève inscrit dans cette classe pour l’année en cours.');
+101            }
+102    
+103            DB::transaction(function () use ($rows, $periode) {
+104                foreach ($rows as $row) {
+105                    Bulletin::updateOrCreate(
+106                        ['inscription_id' => $row['inscription']->id, 'periode_id' => $periode->id],
+107                        [
+108                            'total_points' => $row['total'],
+109                            'max_possible' => $row['max'],
+110                            'pourcentage' => $row['pourcentage'],
+111                            'place_classe' => $row['place'],
+112                            'mention' => $row['mention'],
+113                            'statut' => 'actif',
+114                        ]
+115                    );
+116                }
+117            });
+118    
+119            return redirect()
+120                ->route('admin.bulletins.index', ['periode_id' => $periode->id, 'classe_id' => $classe->id])
+121                ->with('success', 'Les bulletins de la classe ont été générés.');
+122        }
+123    
+124        /**
+125         * Calcule, pour chaque élève inscrit de la classe, le total des points obtenus,
+126         * le maximum possible sur les évaluations notées de la période, le pourcentage,
+127         * la place et la mention.
+128         *
+129         * @return array<int, array{inscription: \App\Models\Inscription, total: float, max: float, pourcentage: float, mention: string, nb_notes: int, place: int}>
+130         */
+131        private function computeForClasse(Classe $classe, Periode $periode): array
+132        {
+133            $evaluations = Evaluation::query()
+134                ->where('periode_id', $periode->id)
+135                ->where('statut', 'actif')
+136                ->whereHas('affectation', fn ($query) => $query->where('classe_id', $classe->id)->anneeEnCours())
+137                ->get(['id', 'max_note']);
+138    
+139            $maxParEvaluation = $evaluations->pluck('max_note', 'id');
+140    
+141            $inscriptions = $classe->inscriptions()
+142                ->anneeEnCours()
+143                ->where('statut', 'actif')
+144                ->with('eleve')
+145                ->get();
+146    
+147            $notes = Note::query()
+148                ->whereIn('evaluation_id', $evaluations->pluck('id'))
+149                ->whereIn('eleve_id', $inscriptions->pluck('eleve_id'))
+150                ->where('statut', 'actif')
+151                ->get(['evaluation_id', 'eleve_id', 'note_obtenue'])
+152                ->groupBy('eleve_id');
+153    
+154            $rows = [];
+155            foreach ($inscriptions as $inscription) {
+156                $eleveNotes = $notes->get($inscription->eleve_id, collect());
+157                $total = round((float) $eleveNotes->sum('note_obtenue'), 2);
+158                $max = round((float) $eleveNotes->sum(fn ($note) => (float) ($maxParEvaluation[$note->evaluation_id] ?? 0)), 2);
+159                $pourcentage = $max > 0 ? round($total / $max * 100, 2) : 0.0;
+160    
+161                $rows[] = [
+162                    'inscription' => $inscription,
+163                    'total' => $total,
+164                    'max' => $max,
+165                    'pourcentage' => $pourcentage,
+166                    'mention' => $this->mention($pourcentage),
+167                    'nb_notes' => $eleveNotes->count(),
+168                ];
+169            }
+170    
+171            usort($rows, fn (array $a, array $b) => $b['pourcentage'] <=> $a['pourcentage']);
+172    
+173            foreach ($rows as $index => &$row) {
+174                $row['place'] = $index + 1;
+175            }
+176            unset($row);
+177    
+178            return $rows;
+179        }
+180    
+181        private function mention(float $pourcentage): string
+182        {
+183            return match (true) {
+184                $pourcentage >= 80 => 'Distinction',
+185                $pourcentage >= 70 => 'Satisfaction',
+186                $pourcentage >= 60 => 'Passable',
+187                $pourcentage >= 50 => 'Faible',
+188                default => 'Insuffisant',
+189            };
+190        }
+191    }

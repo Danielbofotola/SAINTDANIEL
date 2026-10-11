@@ -1,0 +1,5 @@
+Created 4 tasks:
+  [pending] shell: Extraire la feuille de style de l'espace rôle (professeur) dans un partial réutilisable (2 criteria)
+  [pending] comptable: Page comptable : tableau de bord financier de l'année en cours (contrôleur + vue + route) (2 criteria)
+  [pending] titulaire: Page titulaire : classes suivies + effectifs (contrôleur + vue + route) (2 criteria)
+  [pending] tests: Tests : accès par rôle et contenu des deux pages (2 criteria)

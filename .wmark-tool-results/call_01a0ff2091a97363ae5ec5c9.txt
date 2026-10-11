@@ -1,0 +1,21 @@
+[powershell — Windows side]
+AppServiceProvider.php
+===
+
+  app\Providers\AppServiceProvider.php:7:use Illuminate\Support\Facades\Schema;
+> app\Providers\AppServiceProvider.php:8:use Illuminate\Support\Facades\View;
+  app\Providers\AppServiceProvider.php:9:
+  app\Providers\AppServiceProvider.php:10:class AppServiceProvider extends ServiceProvider
+  app\Providers\AppServiceProvider.php:24:    {
+> app\Providers\AppServiceProvider.php:25:        View::composer('*', static function ($view): void {
+  app\Providers\AppServiceProvider.php:26:            $settings = request()->attributes->get('system_settings');
+  app\Providers\AppServiceProvider.php:27:            if (! $settings) {
+  app\Providers\AppServiceProvider.php:34:
+> app\Providers\AppServiceProvider.php:35:            $view->with('systemSettings', $settings);
+  app\Providers\AppServiceProvider.php:36:        });
+  app\Providers\AppServiceProvider.php:37:    }
+
+
+
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

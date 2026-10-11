@@ -1,0 +1,28 @@
+1      @extends('parent.layout')
+2      
+3      @section('titre', 'Notifications')
+4      
+5      @section('contenu')
+6          <div class="portail-card">
+7              <h2><i class="fa-solid fa-bell text-info"></i> Mes notifications</h2>
+8              @forelse ($notifications as $notification)
+9                  @php($donnees = $notification->data)
+10                 <div class="py-2" style="border-bottom:1px solid var(--divider); {{ $notification->read_at ? '' : 'font-weight:600;' }}">
+11                     <span class="badge-niveau badge-{{ $donnees['niveau'] ?? 'info' }}">
+12                         {{ \App\Models\Annonce::NIVEAUX[$donnees['niveau'] ?? 'info'] ?? 'Information' }}
+13                     </span>
+14                     <strong class="ms-1" style="color:#fff">{{ $donnees['titre'] ?? 'Notification' }}</strong>
+15                     <div class="fs-7 text-muted-2 mt-1">{{ $donnees['message'] ?? '' }}</div>
+16                     <div class="fs-7 text-muted-2 mt-1">
+17                         De {{ $donnees['auteur'] ?? 'administration' }} · {{ $notification->created_at?->format('d/m/Y H:i') }}
+18                     </div>
+19                 </div>
+20             @empty
+21                 <p class="text-muted-2 mb-0 fs-7">Aucune notification.</p>
+22             @endforelse
+23         </div>
+24     
+25         <div class="text-center mb-3">
+26             <a class="btn-ghost" href="{{ route('notifications.index') }}">Ouvrir la boîte de réception complète</a>
+27         </div>
+28     @endsection

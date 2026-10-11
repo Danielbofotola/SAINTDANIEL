@@ -1,0 +1,20 @@
+1      <?php
+2      
+3      namespace App\Http\Controllers;
+4      
+5      use Illuminate\Http\RedirectResponse;
+6      use Illuminate\Http\Request;
+7      
+8      class HomeController extends Controller
+9      {
+10         /**
+11          * Point d'entrée « Tableau de bord » générique.
+12          *
+13          * Chaque rôle est renvoyé vers son propre espace : plus aucune page
+14          * d'accueil neutre ne peut être atteinte par erreur.
+15          */
+16         public function index(Request $request): RedirectResponse
+17         {
+18             return redirect()->route($request->user()->dashboardRouteName());
+19         }
+20     }

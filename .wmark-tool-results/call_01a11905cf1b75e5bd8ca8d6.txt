@@ -1,0 +1,50 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\b493c9bc81dc\20261008-015920-apply_patch-call_01a11905cf1b75e5bd8ca8d6.txt (698 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Structured view (text):
+Applied patch: 3 files changed (3 updated)
+Updated resources/views/prefecture/evaluations.blade.php (1 hunk applied)
+Updated resources/views/prefecture/eleve-fiche.blade.php (1 hunk applied)
+Updated resources/views/prefecture/personnel.blade.php (1 hunk applied)
+Landed at lines 122-135 (the file's new text; no re-read needed):
+122                                            <td class="text-right">
+123                                                @if ($evaluation->validee_at)
+124                                                    <span class="badge badge-success">
+125                                                        Validée {{ $evaluation->validee_at->format('d/m/Y') }}
+126                                                    </span>
+127                                                @else
+128                                                    <form method="POST" action="{{ route('prefecture.evaluations.valider', $evaluation) }}">
+129                                                        @csrf
+130                                                        <button type="submit" class="btn btn-sm btn-round btn-outline-primary">
+131                                                            <i class="fas fa-check"></i> Valider
+132                                                        </button>
+133                                                    </form>
+134                                                @endif
+135                                            </td>
+Landed at li
+… 0 chars elided …
+nes 138-138 (the file's new text; no re-read needed):
+138                                        <tr><td colspan="9" class="text-center text-muted">Aucune évaluation programmée pour ce filtre.</td></tr>
+Landed at lines 102-116 (the file's new text; no re-read needed):
+102                        <hr>
+103                        {{-- Décision disciplinaire du préfet --}}
+104                        <form method="POST" action="{{ route('prefecture.eleves.statut', $eleve) }}" class="d-flex align-items-center flex-wrap">
+105                            @csrf
+106                            @method('PATCH')
+107                            <label class="mr-2 mb-0"><strong>Statut disciplinaire</strong></label>
+108                            <select name="statut" class="form-control form-control-sm mr-2
+… 699 chars elided …
+ 
+187        <div class="row">
+188            <div class="col-md-12">
+189                <div class="card">
+190                    <div class="card-header">
+191                        <div class="card-head-row">
+192                            <h4 class="card-title">Documents des enseignants</h4>
+193                            <div class="card-category">{{ $documentsProfesseurs->count() }} fichier(s)</div>
+      … 24 lines omitted …
+218                                    @endforelse
+219                                </tbody>
+220                            </table>
+221                        </div>
+222                    </div>
+223                </div>
+224            </div>
+225        </div>

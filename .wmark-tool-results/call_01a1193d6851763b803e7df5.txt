@@ -1,0 +1,19 @@
+Applied patch: 2 files changed (2 updated)
+Updated resources/views/prefecture/eleve-fiche.blade.php (1 hunk applied)
+Updated resources/views/admin/eleves/show.blade.php (1 hunk applied)
+Landed at lines 408-414 (the file's new text; no re-read needed):
+408                                        <td>
+409                                            <span class="badge {{ $paiement->statut === 'actif' ? 'badge-success' : 'badge-secondary' }}">{{ $paiement->statut }}</span>
+410                                            <a href="{{ route('prefecture.paiements.recu', $paiement) }}" target="_blank" rel="noopener"
+411                                               class="btn btn-info btn-xs btn-round ml-1" title="Imprimer le reçu">
+412                                                <i class="fas fa-print"></i>
+413                                            </a>
+414                                        </td>
+Landed at lines 300-306 (the file's new text; no re-read needed):
+300                                            <td>
+301                                                <span class="badge badge-{{ $paiement->statut === 'actif' ? 'success' : 'secondary' }}">{{ $paiement->statut }}</span>
+302                                                <a href="{{ route('admin.paiements.recu', $paiement) }}" target="_blank" rel="noopener"
+303                                                   class="btn btn-sm btn-info ml-1" title="Imprimer le reçu">
+304                                                    <i class="fa fa-print"></i>
+305                                                </a>
+306                                            </td>

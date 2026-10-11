@@ -1,0 +1,11 @@
+Applied patch: 2 files changed (2 updated)
+Updated resources/views/admin/depenses/index.blade.php (1 hunk applied)
+Updated resources/views/comptable/depenses.blade.php (1 hunk applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 30-30 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 31-31:
+31             @include('partials.alertes', ['alertes' => $alertes])
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 38-38 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 39-39:
+39         @include('partials.alertes', ['alertes' => $alertes])

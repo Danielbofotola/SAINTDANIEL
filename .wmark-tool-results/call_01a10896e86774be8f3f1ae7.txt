@@ -1,0 +1,16 @@
+86         Route::get('/admin/depenses', [DepenseController::class, 'index'])->middleware('role:admin')->name('admin.depenses.index');
+87         Route::post('/admin/depenses', [DepenseController::class, 'store'])->middleware('role:admin')->name('admin.depenses.store');
+88         Route::post('/admin/depenses/categories', [DepenseController::class, 'storeCategorie'])->middleware('role:admin')->name('admin.depenses.categories.store');
+89         Route::delete('/admin/depenses/categories/{categorieDepense}', [DepenseController::class, 'destroyCategorie'])->middleware('role:admin')->name('admin.depenses.categories.destroy');
+90         Route::delete('/admin/depenses/{depense}', [DepenseController::class, 'destroy'])->middleware('role:admin')->name('admin.depenses.destroy');
+91         Route::get('/admin/archives', [ArchiveAnneeController::class, 'index'])->middleware('role:admin')->name('admin.archives.index');
+92         Route::post('/admin/archives', [ArchiveAnneeController::class, 'store'])->middleware('role:admin')->name('admin.archives.store');
+93         Route::delete('/admin/archives/{archiveAnnee}', [ArchiveAnneeController::class, 'destroy'])->middleware('role:admin')->name('admin.archives.destroy');
+94         Route::get('/admin/profil', [UserProfileController::class, 'show'])->middleware('role:admin')->name('admin.profile.show');
+95         Route::get('/admin/profil/parametres', [ParametreSystemeController::class, 'edit'])->middleware('role:admin')->name('admin.profile.settings');
+96         Route::put('/admin/profil/parametres', [ParametreSystemeController::class, 'update'])->middleware('role:admin')->name('admin.profile.settings.update');
+97         Route::get('/admin/demandes/inscriptions', [AdminRegistrationRequestController::class, 'studentRequests'])->middleware('role:admin')->name('admin.registration.students');
+98         Route::get('/admin/demandes/inscriptions/historique', [AdminRegistrationRequestController::class, 'studentHistory'])->middleware('role:admin')->name('admin.registration.students.history');
+99         Route::post('/admin/demandes/inscriptions/{demandeInscription}/accepterta', [AdminRegistrationRequestController::class, 'approveStudent'])->middleware('role:admin')->name('admin.registration.students.approve');
+
+[showing lines 86-99 of 158; read again with offset=100 for more]

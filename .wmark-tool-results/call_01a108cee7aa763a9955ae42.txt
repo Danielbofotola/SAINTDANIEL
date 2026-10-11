@@ -1,0 +1,20 @@
+100                'inscription_id.required' => 'Sélectionnez un élève inscrit.',
+101                'frais_scolaire_id.required' => 'Sélectionnez un tarif.',
+102                'montant_paye.required' => 'Le montant payé est obligatoire.',
+103                'montant_paye.min' => 'Le montant payé doit être supérieur à zéro.',
+104            ]);
+105    
+106            try {
+107                $paiement = Caisse::enregistrer($annee, $data);
+108            } catch (\RuntimeException) {
+109                return back()->withInput()->with('error', 'Ce tarif ne correspond pas à la classe de l’élève.');
+110            }
+111    
+112            return redirect()->route('admin.paiements.index')->with('success', 'Le paiement a été enregistré sous le reçu '.$paiement->num_recu.'.');
+113        }
+114    
+115        public function destroy(Paiement $paiement): RedirectResponse
+116        {
+117            $paiement->delete();
+
+[showing lines 100-117 of 121; read again with offset=118 for more]

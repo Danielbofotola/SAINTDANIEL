@@ -1,0 +1,19 @@
+Applied patch: 3 files changed (3 updated)
+Updated app/Models/ParametreSysteme.php (1 hunk applied)
+Updated resources/views/admin/bulletins/document.blade.php (1 hunk applied)
+Updated tests/Feature/BulletinDocumentTest.php (1 hunk applied)
+Landed at lines 112-114 (the file's new text; no re-read needed):
+112                // Titre déduit du cycle réel de la classe (voir le bulletin) ;
+113                // l'établissement peut le fixer dans les Paramètres du bulletin.
+114                'bulletin_titre' => null,
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 42-45 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 42-45:
+42         $cycleNom = $classe?->cycle?->nom;
+43         $classeNom = $classe?->nom;
+44         $repere = trim(($cycleNom ?? '').' '.($classeNom ?? ''));
+45         $cycleLibelle = preg_match('/cteb|terminal/i', $repere)
+Auto-corrected hunk landed at lines 47-47:
+47             : ($cycleNom ?: $classeNom);
+Landed at lines 461-461 (the file's new text; no re-read needed):
+461            ->assertSee('Bulletin annuel — Cycle terminal de l’éducation de base (CTEB)')

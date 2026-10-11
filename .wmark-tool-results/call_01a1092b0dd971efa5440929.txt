@@ -1,0 +1,14 @@
+243        $this->actingAs($user)->get(route('professeur.dashboard'))->assertOk()->assertSee('Vue générale', false)->assertSee('Accès rapides');
+244        // Profil enseignant (design « panel » : bandeau, barre d’action, tableau d’affectations).
+245        $this->actingAs($user)->get(route('professeur.profil'))
+246            ->assertOk()
+247            ->assertSee('Informations de l’enseignant')
+248            ->assertSee('Mes enseignements')
+249            ->assertSee('Mathématiques')
+250            ->assertSee('3e A');
+251    });
+252    
+253    test('a teacher only reaches his own courses and classes', function () {
+254        $autre = professeur(2);
+
+[showing lines 243-254 of 332; read again with offset=255 for more]

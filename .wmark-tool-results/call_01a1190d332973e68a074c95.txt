@@ -1,0 +1,12 @@
+35         $digits = preg_replace('/\D/', '', $matricule);
+36     @endphp
+37     
+38     <div class="toolbar">
+39         <a href="{{ route('admin.bulletins.index') }}" style="margin-right:8px;">← Retour</a>
+40         <button onclick="window.print()">🖨️ Imprimer</button>
+41     </div>
+42     
+43     <div class="container">
+44         <table class="header-table">
+
+[showing lines 35-44 of 210; read again with offset=45 for more]

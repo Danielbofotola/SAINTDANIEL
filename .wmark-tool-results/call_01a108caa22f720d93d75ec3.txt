@@ -1,0 +1,133 @@
+1      <!DOCTYPE html>
+2      <html lang="fr">
+3      <head>
+4          <meta charset="UTF-8">
+5          <meta name="viewport" content="width=device-width, initial-scale=1">
+6          <title>Recouvrement | {{ $systemSettings->nom_court }}</title>
+7          <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+8          <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+9          <link rel="stylesheet" href="{{ asset('boostrap/css/css/main.css') }}">
+10         <style>
+11             :root { --bg-canvas:#d0dbe5; --card-bg:#f2f5f8; --card-border:#b0c2d0; }
+12             body { background: var(--bg-canvas); font-family:'Segoe UI', system-ui, sans-serif; color:#1e293b; font-size:.82rem; }
+13             .caisse-card { background: var(--card-bg); border:1px solid var(--card-border); border-radius:8px; padding:14px; box-shadow:0 2px 6px rgba(0,0,0,.06); height:100%; }
+14             .card-title-header { font-size:.95rem; font-weight:700; color:#0f172a; margin-bottom:8px; text-transform:uppercase; }
+15             .widget { background:#fff; border:1px solid #cbd5e1; border-radius:8px; padding:12px; text-align:center; }
+16             .widget .valeur { font-size:1.35rem; font-weight:700; }
+17             .barre { height:16px; background:#e2e8f0; border-radius:8px; overflow:hidden; }
+18             .barre > span { display:block; height:100%; background:#107c41; }
+19         </style>
+20     </head>
+21     <body class="p-3">
+22     @php($money = fn ($v) => number_format((float) $v, 2, ',', ' '))
+23     @php($maxPeriode = $parPeriode->max() ?: 0)
+24     @php($maxMois = $parMois->max() ?: 0)
+25     <div class="container-fluid">
+26         <div class="caisse-card mb-3 d-flex flex-wrap align-items-center justify-content-between">
+27             <div>
+28                 <div class="card-title-header mb-0"><i class="bi bi-graph-up-arrow me-2"></i>Recouvrement &amp; évolution des paiements</div>
+29                 <small class="text-muted">{{ $systemSettings->nom_etablissement }}@if($annee) · année <strong>{{ $annee->libelle }}</strong>@endif</small>
+30             </div>
+31             <div>
+32                 <a href="{{ route('comptable.paiements.index') }}" class="btn btn-sm btn-success"><i class="bi bi-cash-coin me-1"></i> Encaisser un paiement</a>
+33                 <a href="{{ route('comptable.dashboard') }}" class="btn btn-sm btn-secondary"><i class="bi bi-speedometer2 me-1"></i> Tableau de bord</a>
+34             </div>
+35         </div>
+36     
+37         <div class="caisse-card mb-3">
+38             <form class="row g-2 align-items-end" method="GET" action="{{ route('comptable.recouvrement.index') }}">
+39                 <div class="col-md-4"><label class="form-label mb-1 fw-bold">Classe</label><select class="form-select form-select-sm" name="classe_id"><option value="">Toutes les classes</option>@foreach ($classes as $classe)<option value="{{ $classe->id }}" @selected((string) $classeId === (string) $classe->id)>{{ $classe->nom }}</option>@endforeach</select></div>
+40                 <div class="col-md-4"><label class="form-label mb-1 fw-bold">Période</label><select class="form-select form-select-sm" name="periode_id"><option value="">Toutes les périodes</option>@foreach ($periodes as $periode)<option value="{{ $periode->id }}" @selected((string) $periodeId === (string) $periode->id)>{{ $periode->nom }}</option>@endforeach</select></div>
+41                 <div class="col-md-2"><button class="btn btn-sm btn-info text-white w-100"><i class="bi bi-funnel me-1"></i> Filtrer</button></div>
+42                 <div class="col-md-2"><a href="{{ route('comptable.recouvrement.index') }}" class="btn btn-sm btn-outline-secondary w-100">Tout</a></div>
+43             </form>
+44         </div>
+45     
+46         <div class="row g-2 mb-3">
+47             <div class="col-md-3"><div class="widget"><div class="text-muted">Frais définis</div><div class="valeur">{{ $money($definis) }}</div></div></div>
+48             <div class="col-md-3"><div class="widget"><div class="text-muted">Encaissé</div><div class="valeur text-success">{{ $money($encaisse) }}</div></div></div>
+49             <div class="col-md-3"><div class="widget"><div class="text-muted">Reste à percevoir</div><div class="valeur text-danger">{{ $money($reste) }}</div></div></div>
+50             <div class="col-md-3"><div class="widget"><div class="text-muted">Taux de recouvrement</div><div class="valeur">{{ $taux }} %</div></div></div>
+51         </div>
+52     
+53         <div class="row g-3 mb-3">
+54             <div class="col-lg-6">
+55                 <div class="caisse-card">
+56                     <div class="card-title-header"><i class="bi bi-calendar3 me-1"></i> Évolution par période</div>
+57                     @forelse ($parPeriode as $periode => $montant)
+58                         <div class="mb-2">
+59                             <div class="d-flex justify-content-between"><span class="fw-bold">{{ $periode }}</span><span>{{ $money($montant) }}</span></div>
+60                             <div class="barre"><span style="width: {{ $maxPeriode > 0 ? round($montant / $maxPeriode * 100) : 0 }}%"></span></div>
+61                         </div>
+62                     @empty
+63                         <p class="text-muted mb-0">Aucun paiement sur cette sélection.</p>
+64                     @endforelse
+65                 </div>
+66             </div>
+67             <div class="col-lg-6">
+68                 <div class="caisse-card">
+69                     <div class="card-title-header"><i class="bi bi-calendar-month me-1"></i> Évolution par mois</div>
+70                     @forelse ($parMois as $mois => $montant)
+71                         <div class="mb-2">
+72                             <div class="d-flex justify-content-between"><span class="fw-bold">{{ $mois }}</span><span>{{ $money($montant) }}</span></div>
+73                             <div class="barre"><span style="width: {{ $maxMois > 0 ? round($montant / $maxMois * 100) : 0 }}%"></span></div>
+74                         </div>
+75                     @empty
+76                         <p class="text-muted mb-0">Aucun paiement sur cette sélection.</p>
+77                     @endforelse
+78                 </div>
+79             </div>
+80         </div>
+81     
+82         <div class="caisse-card mb-3">
+83             <div class="card-title-header"><i class="bi bi-buildings me-1"></i> Recouvrement par classe</div>
+84             @if ($parClasse->isNotEmpty())
+85                 <div class="table-responsive">
+86                     <table class="table table-sm align-middle mb-0">
+87                         <thead><tr><th>Classe</th><th class="text-end">Défini</th><th class="text-end">Encaissé</th><th class="text-end">Reste</th><th style="width:220px">Avancement</th></tr></thead>
+88                         <tbody>
+89                             @foreach ($parClasse as $ligne)
+90                                 @php($pct = $ligne->defini > 0 ? min(100, round($ligne->encaisse / $ligne->defini * 100)) : 0)
+91                                 <tr>
+92                                     <td class="fw-bold">{{ $ligne->nom }}</td>
+93                                     <td class="text-end">{{ $money($ligne->defini) }}</td>
+94                                     <td class="text-end text-success">{{ $money($ligne->encaisse) }}</td>
+95                                     <td class="text-end text-danger">{{ $money(max($ligne->defini - $ligne->encaisse, 0)) }}</td>
+96                                     <td><div class="barre"><span style="width: {{ $pct }}%"></span></div><small class="text-muted">{{ $pct }} %</small></td>
+97                                 </tr>
+98                             @endforeach
+99                         </tbody>
+100                    </table>
+101                </div>
+102            @else
+103                <p class="text-muted mb-0">Aucune donnée de recouvrement sur cette sélection.</p>
+104            @endif
+105        </div>
+106    
+107        <div class="caisse-card">
+108            <div class="card-title-header"><i class="bi bi-receipt-cutoff me-1"></i> Détail des paiements ({{ $paiements->count() }})</div>
+109            <div class="table-responsive">
+110                <table class="table table-sm align-middle mb-0">
+111                    <thead><tr><th>Reçu</th><th>Date</th><th>Élève</th><th>Classe</th><th>Tarif</th><th>Période</th><th class="text-end">Montant</th><th></th></tr></thead>
+112                    <tbody>
+113                        @forelse ($paiements as $paiement)
+114                            <tr>
+115                                <td class="fw-bold">{{ $paiement->num_recu }}</td>
+116                                <td>{{ $paiement->date_paiement?->format('d/m/Y H:i') }}</td>
+117                                <td>{{ $paiement->inscription?->eleve?->nom }} {{ $paiement->inscription?->eleve?->prenom }}</td>
+118                                <td>{{ $paiement->inscription?->classe?->nom }}</td>
+119                                <td>{{ $paiement->fraisScolaire?->typeFrais?->nom }}</td>
+120                                <td>{{ $paiement->periode?->nom ?? '—' }}</td>
+121                                <td class="text-end fw-bold">{{ $money($paiement->montant_paye) }}</td>
+122                                <td class="text-end"><a href="{{ route('comptable.paiements.recu', $paiement) }}" class="btn btn-sm btn-outline-info" title="Voir le reçu"><i class="bi bi-receipt"></i></a></td>
+123                            </tr>
+124                        @empty
+125                            <tr><td colspan="8" class="text-center text-muted">Aucun paiement sur cette sélection.</td></tr>
+126                        @endforelse
+127                    </tbody>
+128                </table>
+129            </div>
+130        </div>
+131    </div>
+132    </body>
+133    </html>

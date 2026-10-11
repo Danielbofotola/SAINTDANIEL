@@ -1,0 +1,46 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\b493c9bc81dc\20261008-030337-apply_patch-call_01a11940ad597187a3dccd9a.txt (826 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Structured view (text):
+Applied patch: 1 file changed (1 updated)
+Updated resources/views/prefecture/layout.blade.php (5 hunks applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 2: context matched at lines 76-77 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+  ⚠ hunk 3: context matched at lines 191-194 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+  ⚠ hunk 4: context matched at lines 233-236 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+  ⚠ hunk 5: context matched at lines 279-279 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 87-90:
+87                     <button class="toggle-sidebar" type="button" title="Afficher / masquer le menu"
+88                             aria-label="Afficher ou masquer le menu">
+89                         <i class="fas fa-bars"></i>
+90                     </button>
+Auto-corrected hunk landed at lines 207-212:
+207                                <p>Présence &amp; ponctualité
+208                                    @if ($aSuivreAujourdhui > 0)
+209                                        <span class="badge badge-danger ml-1"
+210                                              title="{{ $aSuivreAujourdhui }} absence(s) ou retard(s) aujourd'hui">{{ $aS
+… 0 chars elided …
+uivreAujourdhui }}</span>
+211                                    @endif
+212                                </p>
+Auto-corrected hunk landed at lines 254-259:
+254                                <p>Notifications
+255                                    @if ($nonLues > 0)
+256                                        <span class="badge badge-primary ml-1"
+257                                              title="{{ $nonLues }} notification(s) non lue(s)">{{ $nonLues }}</span>
+258                                    @endif
+259                                </p>
+Auto-corrected hunk landed at lines 303-328:
+303    <script>
+304        // Menu latéral : repli sur ordinateur, tiroir sur mobile. L'état choisi est
+305        // mémorisé pour la session, donc la visibilité du menu suit l'utilisateur.
+306     
+… 572 chars elided …
+nes 36-45 (the file's new text; no re-read needed):
+36     
+37             /* Menu latéral repliable : l'état est retenu pendant la session. */
+38             body.menu-reduit .sidebar { margin-left: -265px; }
+39             body.menu-reduit .main-panel { margin-left: 0; width: 100%; }
+40             .toggle-sidebar { background: none; border: 0; padding: 6px 10px; cursor: pointer; color: inherit; }
+41             @media (max-width: 991.98px) {
+42                 .sidebar { margin-left: -265px; transition: margin-left .2s ease; }
+43                 body.menu-ouvert .sidebar { margin-left: 0; z-index: 1035; }
+44                 body.menu-ouvert .main-panel { margin-left: 0; }
+45             }

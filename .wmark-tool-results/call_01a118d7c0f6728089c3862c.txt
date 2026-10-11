@@ -1,0 +1,14 @@
+64         .msg-tab.active { background: var(--chat-blue); border-color: var(--chat-blue); color: #fff; }
+65         .conv-scroll { flex: 1; min-height: 0; overflow-y: auto; }
+66         .conv { display: flex; align-items: center; gap: 12px; padding: 10px 14px; cursor: pointer; color: var(--chat-text); }
+67         .conv:hover { background: var(--chat-hover); }
+68         .conv.active { background: var(--chat-hover); }
+69         .conv__name { color: #fff; font-weight: 700; font-size: .95rem; }
+70         .conv__meta { color: var(--chat-muted); font-size: .78rem; }
+71         .conv__meta--fort { color: #fff; font-weight: 700; }
+72         .conv__badge { background: #e41e3f; color: #fff; border-radius: 999px; font-size: .7rem; font-weight: 700; padding: 1px 7px; }
+73         .conv__vu { color: var(--chat-blue); font-size: .95rem; flex: none; }
+74         .msg-avatar { width: 52px; height: 52px; border-radius: 50%; background: var(--chat-blue); color: #fff;
+75             display: inline-flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1rem;
+
+[showing lines 64-75 of 957; read again with offset=76 for more]

@@ -1,0 +1,13 @@
+Applied patch: 1 file changed (1 updated)
+Updated resources/views/partials/cloche-flottante.blade.php (2 hunks applied)
+Landed at lines 6-10 (the file's new text; no re-read needed):
+6              @php($messagesNonLus = \Illuminate\Support\Facades\Schema::hasTable('conversations') ? \App\Support\Messagerie::nonLus($utilisateur) : 0)
+7              <a class="cloche-flottante__lien" href="{{ route('messagerie.index') }}" aria-label="Messagerie">
+8                  <i class="fa fa-comments"></i>
+9                  @if ($messagesNonLus > 0)<span class="cloche-flottante__badge" data-non-lus>{{ $messagesNonLus > 99 ? '99+' : $messagesNonLus }}</span>@endif
+10             </a>
+Landed at lines 41-44 (the file's new text; no re-read needed):
+41             .cloche-flottante__lien { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 50%;
+42                 background: #107c41; color: #fff; font-size: 17px; text-decoration: none; position: relative; margin-right: 8px;
+43                 box-shadow: 0 6px 18px rgba(15,23,42,.28); }
+44             .cloche-flottante__lien:hover { background: #0d6335; color: #fff; text-decoration: none; }

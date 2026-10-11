@@ -1,0 +1,11 @@
+Applied patch: 1 file changed (1 updated)
+Updated app/Http/Controllers/ComptableDepenseController.php (3 hunks applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 2: context matched at lines 55-55 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 57-57:
+57                 'alertes' => Tresorerie::alertes($annee),
+Landed at lines 8-8 (the file's new text; no re-read needed):
+8      use App\Support\Tresorerie;
+Landed at lines 98-99 (the file's new text; no re-read needed):
+98                 ->with('success', 'Dépense enregistrée — nature : '.$nature->nom.'.')
+99                 ->with(Tresorerie::alertePrincipale($annee) ? 'error' : 'success', Tresorerie::alertePrincipale($annee) ?? 'Dépense enregistrée — nature : '.$nature->nom.'.');

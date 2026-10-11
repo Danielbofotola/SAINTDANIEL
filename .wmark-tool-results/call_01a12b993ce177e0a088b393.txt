@@ -1,0 +1,22 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\aba9102c187c\20261011-163347-apply_patch-call_01a12b993ce177e0a088b393.txt (689 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+Applied patch: 1 file changed (1 updated)
+Updated resources/views/paiements/recu.blade.php (3 hunks applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 19-19 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+  ⚠ hunk 2: context matched at lines 52-53 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+  ⚠ hunk 3: context
+
+... 329 chars truncated ...
+
+iement->fraisScolaire?->devise))
+Auto-corrected hunk landed at lines 53-59:
+53                 <tr><td>{{ $paiement->fraisScolaire?->typeFrais?->nom ?? 'Frais scolaires' }}@if ($paiement->fraisScolaire?->classe) — {{ $paiement->fraisScolaire->classe->nom }}@endif</td><td class="text-end">{{ $money($exige, $deviseFrais) }}</td></tr>
+54                 <tr><td class="fw-bold">Montant versé (ce reçu)</td><td class="text-end fw-bold">{{ $money($paiement->montant_paye, $deviseFrais) }}</td></tr>
+55                 @if (\App\Support\Monnaie::normaliser($paiement->deviseRecue()) !== $deviseFrais)
+56                     <tr class="text-muted"><td>Encaissé en {{ $deviseFrais === 'CDF' ? 'dollars' : 'francs congolais' }}</td>
+57                         <td class="text-end">{{ $money($paiement->montantRecu(), $paiement->deviseRecue()) }}
+58                             <span class="small">· taux {{ number_format((float) $paiement->taux, 2, ',', ' ') }} FC/1$</span></td></tr>
+59                 @endif
+Auto-corrected hunk landed at lines 64-65:
+64             <div class="col-4"><div class="border rounded p-2 text-center"><div class="text-muted small">Total déjà payé</div><div class="fw-bold">{{ $money($paye, $deviseFrais) }}</div></div></div>
+65             <div class="col-4"><div class="border rounded p-2 text-center"><div class="text-muted small">Reste à payer</div><div class="fw-bold {{ $reste <= 0 ? 'text-success' : 'text-danger' }}">{{ $money($reste, $deviseFrais) }}</div></div></div>

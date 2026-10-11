@@ -1,0 +1,2 @@
+Error: EDIT NOT APPLIED — C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Models\ArchiveAnnee.php was not read first (or changed on disk since you read it). Read it again (read_file, cat, head, sed, rg, awk, …) then retry the exact same edit. Do not skip the retry.
+(section '*** Update File: app/Models/ArchiveAnnee.php', patch line 2; no files were changed — the patch applies atomically: fix that section and re-send the whole patch)

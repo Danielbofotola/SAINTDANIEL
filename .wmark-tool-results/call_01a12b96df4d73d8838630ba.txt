@@ -1,0 +1,79 @@
+1      <!DOCTYPE html>
+2      <html lang="fr">
+3      <head>
+4          <meta charset="utf-8">
+5          <meta name="viewport" content="width=device-width, initial-scale=1">
+6          <title>Reçu {{ $paiement->num_recu }}</title>
+7          <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+8          <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+9          <style>
+10             body { background:#eef2f6; font-family:'Segoe UI', system-ui, sans-serif; color:#1e293b; }
+11             .recu { max-width:760px; margin:24px auto; background:#fff; border:1px solid #cbd5e1; border-radius:10px; padding:28px; box-shadow:0 4px 14px rgba(0,0,0,.08); }
+12             .recu-head { border-bottom:2px solid #0f172a; padding-bottom:12px; margin-bottom:16px; }
+13             .num-recu { font-family:'Consolas', monospace; font-size:1.25rem; font-weight:700; letter-spacing:.5px; }
+14             .table-lignes th { background:#f1f5f9; }
+15             @media print { .no-print { display:none !important; } body { background:#fff; } .recu { margin:0; border:none; box-shadow:none; } }
+16         </style>
+17     </head>
+18     <body>
+19     @php($money = fn ($v) => number_format((float) $v, 2, ',', ' '))
+20     <div class="recu">
+21         <div class="recu-head row">
+22             <div class="col-8">
+23                 <div class="fw-bold fs-4">{{ $systemSettings->nom_etablissement }}</div>
+24                 <div class="text-muted small">Reçu officiel de paiement des frais scolaires</div>
+25             </div>
+26             <div class="col-4 text-end">
+27                 <div class="text-muted small text-uppercase">N° de reçu</div>
+28                 <div class="num-recu">{{ $paiement->num_recu }}</div>
+29                 <div class="text-muted small">Généré automatiquement</div>
+30             </div>
+31         </div>
+32     
+33         <div class="row g-3 mb-3">
+34             <div class="col-6">
+35                 <div class="fw-bold">Élève</div>
+36                 <div>{{ $paiement->inscription?->eleve?->nom }} {{ $paiement->inscription?->eleve?->postnom }} {{ $paiement->inscription?->eleve?->prenom }}</div>
+37                 <div class="text-muted small">Matricule : {{ $paiement->inscription?->eleve?->matricule ?? '—' }} · Classe : {{ $paiement->inscription?->classe?->nom ?? '—' }}</div>
+38             </div>
+39             <div class="col-6 text-end">
+40                 <div class="fw-bold">Détails</div>
+41                 <div>Date : {{ $paiement->date_paiement?->format('d/m/Y H:i') }}</div>
+42                 <div>Année scolaire : {{ $paiement->inscription?->anneeScolaire?->libelle ?? '—' }}</div>
+43                 <div>Période : {{ $paiement->periode?->nom ?? 'Non attribuée' }}</div>
+44             </div>
+45         </div>
+46     
+47         <table class="table table-bordered table-lignes align-middle">
+48             <thead>
+49                 <tr><th>Désignation</th><th class="text-end">Montant</th></tr>
+50             </thead>
+51             <tbody>
+52                 <tr><td>{{ $paiement->fraisScolaire?->typeFrais?->nom ?? 'Frais scolaires' }}@if ($paiement->fraisScolaire?->classe) — {{ $paiement->fraisScolaire->classe->nom }}@endif</td><td class="text-end">{{ $money($exige) }}</td></tr>
+53                 <tr><td class="fw-bold">Montant versé (ce reçu)</td><td class="text-end fw-bold">{{ $money($paiement->montant_paye) }}</td></tr>
+54             </tbody>
+55         </table>
+56     
+57         <div class="row g-2 mb-3">
+58             <div class="col-4"><div class="border rounded p-2 text-center"><div class="text-muted small">Total déjà payé</div><div class="fw-bold">{{ $money($paye) }}</div></div></div>
+59             <div class="col-4"><div class="border rounded p-2 text-center"><div class="text-muted small">Reste à payer</div><div class="fw-bold {{ $reste <= 0 ? 'text-success' : 'text-danger' }}">{{ $money($reste) }}</div></div></div>
+60             <div class="col-4"><div class="border rounded p-2 text-center"><div class="text-muted small">Statut</div><div class="fw-bold">{{ $reste <= 0 ? 'Soldé' : 'En cours' }}</div></div></div>
+61         </div>
+62     
+63         <div class="row text-muted small">
+64             <div class="col-6">Mode de paiement : <strong class="text-dark">{{ ['especes' => 'Espèces', 'banque' => 'Banque', 'mobile_money' => 'Mobile Money'][$paiement->mode_paiement] ?? $paiement->mode_paiement }}</strong></div>
+65             <div class="col-6 text-end">Référence : <strong class="text-dark">{{ $paiement->reference_transaction ?: '—' }}</strong></div>
+66         </div>
+67     
+68         <div class="row mt-5">
+69             <div class="col-6"><div class="border-top pt-1 small text-muted">Signature du caissier</div></div>
+70             <div class="col-6 text-end"><div class="border-top pt-1 small text-muted">Signature du parent / tuteur</div></div>
+71         </div>
+72     
+73         <div class="text-center mt-4 no-print">
+74             <button class="btn btn-primary" onclick="window.print()"><i class="bi bi-printer me-1"></i> Imprimer le reçu</button>
+75             <a href="{{ url()->previous() }}" class="btn btn-secondary">Retour</a>
+76         </div>
+77     </div>
+78     </body>
+79     </html>

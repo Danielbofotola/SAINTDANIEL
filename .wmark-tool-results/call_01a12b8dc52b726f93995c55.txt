@@ -1,0 +1,14 @@
+314            ->assertOk()
+315            ->assertSee('Refusee Cas Cas')
+316            ->assertDontSee('Acceptee Cas Cas');
+317    });
+318    
+319    test('the admin dashboard menu links to the student list and the enrollment history', function () {
+320        $admin = User::factory()->create(['role' => 'admin']);
+321    
+322        $this->actingAs($admin)
+323            ->get(route('admin.dashboard'))
+324            ->assertOk()
+325            ->assertSee(route('admin.eleves.index'), false)
+326            ->assertSee(route('admin.registration.students.history'), false);
+327    });

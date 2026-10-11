@@ -1,0 +1,6 @@
+Task 'forms': in_progress → done
+Task 'frais': pending → done
+Task 'recu': pending → done
+Recorded verification for 'tests': php artisan test → 275 passed (1761 assertions) ; migration 2026_10_25 appliquée. Tests: conversion 140 000 FC ÷ 2800 = 50 $, format '50,00 $' / '140 000 FC'.
+Task 'tests': pending → verified
+Progress: 7/7 done (1 verified); all tasks complete

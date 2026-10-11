@@ -1,0 +1,25 @@
+Applied patch: 2 files changed (2 updated)
+Updated app/Http/Controllers/PortailParentController.php (1 hunk applied)
+Updated app/Http/Controllers/UserProfileController.php (2 hunks applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 50-55 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 50-57:
+50                 // Enfants rattachés à ce compte parent (lien posé par l'admin).
+51                 'enfants' => $utilisateur->role === 'parent'
+52                     ? $utilisateur->eleves()
+53                         ->with(['inscriptions' => fn ($query) => $query->anneeEnCours()->with('classe')])
+54                         ->orderBy('nom')
+55                         ->orderBy('prenom')
+56                         ->get()
+57                     : collect(),
+Landed at lines 112-116 (the file's new text; no re-read needed):
+112                // Rattachement « compte parent ↔ enfants » (uniquement pour un parent).
+113                'eleves' => $user->role === 'parent'
+114                    ? Eleve::query()->orderBy('nom')->orderBy('prenom')->get(['id', 'nom', 'postnom', 'prenom', 'matricule'])
+115                    : collect(),
+116                'enfantsSelectionnes' => $user->role === 'parent' ? $user->eleves()->pluck('eleves.id')->all() : [],
+Landed at lines 158-161 (the file's new text; no re-read needed):
+158            // Seul un compte parent porte des enfants ; les autres en sont détachés.
+159            if ($data['role'] === 'parent') {
+160                $user->eleves()->sync($data['enfants'] ?? []);
+161            }

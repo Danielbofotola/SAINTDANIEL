@@ -1,0 +1,20 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/RegistrationRequestWorkflowTest.php (1 hunk applied)
+Landed at lines 334-350 (the file's new text; no re-read needed):
+334    
+335    test('a school year submitted by the client is ignored in favour of the current year', function () {
+336        DB::table('annees_scolaires')->insert([
+337            'id' => 2,
+338            'libelle' => '2025-2026',
+339            'date_debut' => '2025-09-01',
+340            'date_fin' => '2026-07-01',
+341            'is_encours' => false,
+      … 1 lines omitted …
+343        ]);
+344    
+345        $this->post(route('registration.student.store'), array_merge(validStudentRequest(), ['annee_scolaire_id' => 2]))
+346            ->assertRedirect(route('registration.student.create'))
+347            ->assertSessionHas('success');
+348    
+349        expect((int) DB::table('demandes_inscription')->value('annee_scolaire_id'))->toBe(1);
+350    });

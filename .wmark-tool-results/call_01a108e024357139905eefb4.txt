@@ -1,0 +1,22 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/ComptableCaisseTest.php (1 hunk applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 262-266 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 267-284:
+267    
+268    test('the cashier payment page only lists the tariffs of the selected class', function () {
+269        DB::table('classes')->insert(['id' => 2, 'cycle_id' => 1, 'nom' => '4e B', 'statut' => 'actif']);
+270        $typeId = DB::table('types_frais')->insertGetId(['nom' => 'Frais scolaires', 'statut' => 'actif', 'created_at' => now(), 'updated_at' => now()]);
+271        DB::table('frais_scolaires')->insert([
+272            'id' => 2, 'type_frais_id' => $typeId, 'classe_id' => 2, 'annee_scolaire_id' => 1,
+273            'montant_exige' => 90, 'date_echeance' => '2026-10-31', 'statut' => 'actif',
+274            'created_at' => now(), 'updated_at' => now(),
+      … 2 lines omitted …
+277    
+278        $this->actingAs($comptable)
+279            ->get(route('comptable.paiements.index', ['classe_id' => 1]))
+280            ->assertOk()
+281            ->assertSee('tarifsDisponibles', false)
+282            ->assertSee('Frais scolaires — 3e A', false)
+283            ->assertDontSee('— 4e B', false);
+284    });

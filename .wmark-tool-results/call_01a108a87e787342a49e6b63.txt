@@ -1,0 +1,1 @@
+Updated app/Http/Controllers/BulletinController.php: replaced 3 lines with 30 lines

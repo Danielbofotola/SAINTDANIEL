@@ -1,0 +1,1 @@
+Wrote resources/views/admin/paiements/index.blade.php (98 lines)

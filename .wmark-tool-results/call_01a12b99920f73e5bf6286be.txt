@@ -1,0 +1,40 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\aba9102c187c\20261011-163409-apply_patch-call_01a12b99920f73e5bf6286be.txt (967 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Structured view (text):
+Applied patch: 2 files changed (2 updated)
+Updated app/Http/Controllers/FraisController.php (3 hunks applied)
+Updated resources/views/admin/frais/index.blade.php (4 hunks applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 2: context matched at lines 80-82 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+  ⚠ hunk 3: context matched at lines 99-99 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 83-83:
+83                 'devise' => ['nullable', Rule::in(array_keys(Monnaie::DEVISES))],
+Auto-corrected hunk landed at lines 102-109:
+102            // La devise du tarif n'est enregistrée que si la colonne existe
+103            // (base non migrée ou schéma de test partiel).
+104            $data['devise'] = Monnaie::normaliser($data['devise'] ?? null);
+105            if (! Schema::hasColumn('frais_scolaires', 'devise')) {
+106                unset($data['devise']);
+107            }
+108    
+109            FraisScolaire::create($data + ['annee_scolaire_id' => $annee->id, 'statut' => 'actif']);
+Landed at lines 9-9 (the file's new text; no re-read needed):
+9      use App\Support\Monnaie;
+Landed at lines 13-13 (the file's new text; no re-read needed):
+13     use Illuminate\Support\Facades\Schema;
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 56-57 only after 
+… 0 chars elided …
+leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+  ⚠ hunk 2: context matched at lines 104-104 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+  ⚠ hunk 3: context matched at lines 111-111 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+  ⚠ hunk 4: context matched at lines 123-123 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 56-58:
+56                                     <div class="col-md-4 form-group"><label class="form-label">Montant exigé *</label><input class="form-control" type="number" st
+… 657 chars elided …
+ng()) }}" required></div>
+Auto-corrected hunk landed at lines 105-105:
+105                        <thead><tr><th>#</th><th>Type de frais</th><th>Classe</th><th>Montant exigé</th><th>Devise</th><th>Échéance</th><th>Statut</th><th>Actions</th></tr></thead>
+Auto-corrected hunk landed at lines 112-113:
+112                                    <td>{{ \App\Support\Monnaie::format($tarif->montant_exige, $tarif->devise) }}</td>
+113                                    <td>{{ \App\Support\Monnaie::normaliser($tarif->devise) }}</td>
+Auto-corrected hunk landed at lines 125-125:
+125                                <tr><td colspan="8" class="text-center text-muted">Aucun tarif pour l'année en cours.</td></tr>

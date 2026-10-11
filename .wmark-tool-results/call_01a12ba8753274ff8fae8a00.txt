@@ -1,0 +1,42 @@
+1      <?php
+2      
+3      namespace App\Http\Controllers;
+4      
+5      use App\Models\AnneeScolaire;
+6      use App\Models\Classe;
+7      use App\Models\FraisScolaire;
+8      use App\Models\Inscription;
+9      use App\Models\Paiement;
+10     use App\Models\Periode;
+11     use Illuminate\Http\Request;
+12     use Illuminate\View\View;
+13     
+14     /**
+15      * Recouvrement : niveau d'encaissement global, évolution des paiements
+16      * (par période et par mois) et détail filtrable par classe et par période.
+17      */
+18     class ComptableRecouvrementController extends Controller
+19     {
+20         public function index(Request $request): View
+21         {
+22             $annee = AnneeScolaire::enCours();
+23             $classeId = $request->query('classe_id');
+24             $periodeId = $request->query('periode_id');
+25     
+26             $definis = 0.0;
+27             $encaisse = 0.0;
+28             $taux = 0.0;
+29             $parClasse = collect();
+30             $parPeriode = collect();
+31             $parMois = collect();
+32             $paiements = collect();
+33     
+34             if ($annee) {
+35                 $definis = (float) FraisScolaire::query()
+36                     ->anneeEnCours()
+37                     ->when($classeId, fn ($query) => $query->where('classe_id', $classeId))
+38                     ->sum('montant_exige');
+39     
+40                 $requete = fn () => Paiement::query()
+
+[showing lines 1-40 of 119; read again with offset=41 for more]

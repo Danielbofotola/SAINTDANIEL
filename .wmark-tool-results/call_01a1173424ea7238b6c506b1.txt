@@ -1,0 +1,6 @@
+Applied patch: 1 file changed (1 updated)
+Updated resources/views/messagerie/_bulle.blade.php (1 hunk applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 65-65 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 65-65:
+65         .bulle--sticker { background: transparent !important; font-size: 3rem; line-height: 1; padding: 0 4px; margin: 2px 0; }

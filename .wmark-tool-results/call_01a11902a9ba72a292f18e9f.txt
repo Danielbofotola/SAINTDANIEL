@@ -1,0 +1,32 @@
+11      * dossiers élèves, tuteurs & parents.
+12      */
+13     beforeEach(function () {
+14         Schema::disableForeignKeyConstraints();
+15         foreach ([
+16             'presences', 'notes', 'evaluations', 'periodes', 'emplois_du_temps', 'affectations_cours', 'cours',
+17             'eleve_sante', 'eleve_user', 'inscriptions', 'eleves', 'tuteurs', 'classes', 'cycles', 'salles',
+18             'sections', 'options', 'professeurs', 'annees_scolaires', 'users',
+19         ] as $table) {
+20             Schema::dropIfExists($table);
+21         }
+22         Schema::enableForeignKeyConstraints();
+23     
+24         Schema::create('users', function (Blueprint $table) {
+25             $table->id();
+26             $table->unsignedBigInteger('professeur_id')->nullable();
+27             $table->string('nom', 50)->nullable();
+28             $table->string('postnom', 50)->nullable();
+29             $table->string('prenom', 50)->nullable();
+30             $table->string('photo')->nullable();
+31             $table->string('username', 50)->unique();
+32             $table->string('email', 100)->unique();
+33             $table->string('telephone', 20)->nullable();
+34             $table->string('password');
+35             $table->string('pin_code')->nullable();
+36             $table->string('role');
+37             $table->string('statut');
+38             $table->timestamp('last_login')->nullable();
+39             $table->rememberToken();
+40             $table->timestamps();
+
+[showing lines 11-40 of 316; read again with offset=41 for more]

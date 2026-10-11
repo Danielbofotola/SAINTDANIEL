@@ -1,0 +1,20 @@
+42                         </form>
+43                     </div>
+44                 </div>
+45                 <div class="col-md-6">
+46                     <div class="tile mb-4">
+47                         <h4 class="tile-title"><i class="fa fa-book"></i> Nouveau cours</h4>
+48                         <form method="POST" action="{{ route('admin.cours.store') }}">
+49                             @csrf
+50                             <div class="row">
+51                                 <div class="col-md-4 form-group"><label class="form-label">Code *</label><input class="form-control" name="code" value="{{ old('code') }}" maxlength="20" required placeholder="MATH6"></div>
+52                                 <div class="col-md-8 form-group"><label class="form-label">Intitulé *</label><input class="form-control" name="intitule" value="{{ old('intitule') }}" maxlength="100" required placeholder="Mathématiques"></div>
+53                                 <div class="col-md-4 form-group"><label class="form-label">Pondération *</label><input class="form-control" type="number" name="ponderation" value="{{ old('ponderation', 1) }}" min="1" max="20" required></div>
+54                             </div>
+55                             <button class="btn btn-success" type="submit"><i class="fa fa-plus"></i> Ajouter le cours</button>
+56                         </form>
+57                         <hr>
+58                         <h5>Cours enregistrés</h5>
+59                         @forelse ($cours as $coursItem)
+
+[showing lines 42-59 of 114; read again with offset=60 for more]

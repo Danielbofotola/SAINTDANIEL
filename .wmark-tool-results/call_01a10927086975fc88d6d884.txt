@@ -1,0 +1,22 @@
+Applied patch: 1 file changed (1 updated)
+Updated resources/views/admin/profile/show.blade.php (1 hunk applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 250-250 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 251-288:
+251                 <!-- Bandeau de profil -->
+252                 <div class="row">
+253                    <div class="col-12">
+254                       <div class="profile-top p-3 mb-3 d-flex align-items-center justify-content-between flex-wrap">
+255                          <div class="d-flex align-items-center">
+256                             @if ($user->photo)
+257                                <img class="avatar mr-3" src="{{ asset('storage/'.$user->photo) }}" alt="Photo de profil">
+258                             @else
+      … 22 lines omitted …
+281                          <a class="nav-link" href="{{ route('admin.profile.settings') }}"><i class="fa fa-cog"></i> Paramètres de l'établissement</a>
+282                          <a class="nav-link" href="#password"><i class="fa fa-key"></i> Sécurité du compte</a>
+283                          <a class="nav-link" href="{{ route('admin.dashboard') }}"><i class="fa fa-dashboard"></i> Tableau de bord</a>
+284                          <a class="nav-link" href="{{ route('admin.classes.index') }}"><i class="fa fa-users"></i> Classes et élèves</a>
+285                          <a class="nav-link" href="{{ route('admin.salles.index') }}"><i class="fa fa-university"></i> Salles</a>
+286                       </div>
+287                    </div>
+288                 </div>

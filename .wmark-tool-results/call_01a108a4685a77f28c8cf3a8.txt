@@ -1,0 +1,20 @@
+78                                             @csrf
+79                                             @method('DELETE')
+80                                             <button class="btn btn-sm btn-danger" type="submit" title="Supprimer"><i class="fa fa-trash"></i></button>
+81                                         </form>
+82                                     </td>
+83                                 </tr>
+84                             @empty
+85                                 <tr><td colspan="11" class="text-center text-muted">Aucune évaluation pour cette sélection.</td></tr>
+86                             @endforelse
+87                         </tbody>
+88                     </table>
+89                 </div>
+90                 <div class="d-flex justify-content-between align-items-center flex-wrap">
+91                     <small class="text-muted">{{ $evaluations->total() }} évaluation(s) — page {{ $evaluations->currentPage() }} / {{ $evaluations->lastPage() }}</small>
+92                     {{ $evaluations->links('pagination::bootstrap-4') }}
+93                 </div>
+94             </div>
+95         </main>
+
+[showing lines 78-95 of 97; read again with offset=96 for more]

@@ -1,0 +1,9 @@
+35         .msg-shell { display: grid; grid-template-columns: 360px minmax(0, 1fr); gap: 0; height: 76vh; min-height: 480px;
+36             background: var(--chat-bg); border: 1px solid var(--chat-divider); border-radius: 12px; overflow: hidden; }
+37     
+38         /* ===== Colonne liste (façon liste de discussions Facebook Lite) ===== */
+39         .msg-list { display: flex; flex-direction: column; min-width: 0; border-right: 1px solid var(--chat-divider); }
+40         .msg-list__title { display: flex; align-items: center; justify-content: space-between; padding: 12px 14px 4px; }
+41         .msg-list__title h2 { margin: 0; color: #fff; font-size: 1.35rem; font-weight: 800; }
+
+[showing lines 35-41 of 821; read again with offset=42 for more]

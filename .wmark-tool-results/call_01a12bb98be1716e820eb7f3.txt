@@ -1,0 +1,16 @@
+[powershell — Windows side]
+OK    | init ISO visible -> "01/09/2026"
+OK    | init ISO cache -> "2026-09-01"
+OK    | init nom déplacé (visible) -> null
+OK    | init nom déplacé (cache) -> "date_paiement"
+OK    | placeholder posé -> "jj/mm/aaaa"
+OK    | masque 15032026 -> "15/03/2026"
+OK    | cache après frappe -> "2026-03-15"
+OK    | clamp 8 chiffres -> "15/03/2026"
+OK    | clamp vide (visible) -> ""
+OK    | clamp vide (cache) -> ""
+OK    | vide init visible -> ""
+OK    | vide init cache -> ""
+OK    | date incomplète transmise brute -> "99/99"
+RESULTAT: TOUS OK
+exit=0

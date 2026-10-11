@@ -1,0 +1,19 @@
+104                'classe_id' => ['nullable', Rule::exists('classes', 'id')],
+105            ], [
+106                'inscription_id.required' => 'Sélectionnez un élève.',
+107                'frais_scolaire_id.required' => 'Sélectionnez un tarif.',
+108                'montant_paye.required' => 'Le montant encaissé est obligatoire.',
+109                'montant_paye.min' => 'Le montant doit être supérieur à zéro.',
+110            ]);
+111    
+112            try {
+113                $paiement = Caisse::enregistrer($annee, $data);
+114            } catch (RuntimeException) {
+115                return back()->withInput()->with('error', 'Ce tarif ne correspond pas à la classe de l’élève.');
+116            }
+117    
+118            return redirect()
+119                ->route('comptable.paiements.index', array_filter(['classe_id' => $data['classe_id'] ?? null]))
+120                ->with('success', 'Paiement encaissé — reçu '.$paiement->num_recu.'.');
+121        }
+122    }

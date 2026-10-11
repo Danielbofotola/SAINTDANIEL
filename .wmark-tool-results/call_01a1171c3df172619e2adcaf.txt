@@ -1,0 +1,12 @@
+144        .btn-ghost-2 { background: transparent; border: 1px solid var(--chat-divider); color: var(--chat-muted); border-radius: 8px; padding: 8px 16px; cursor: pointer; }
+145    
+146        /* ===== Mobile : liste d'abord, puis chat plein écran (façon Lite) ===== */
+147        @media (max-width: 820px) {
+148            .msg-shell { grid-template-columns: 1fr; height: 78vh; }
+149            .msg-list { border-right: none; }
+150            .msg-shell:not(.show-thread) .msg-thread { display: none; }
+151            .msg-shell.show-thread .msg-list { display: none; }
+152        }
+153    </style>
+
+[showing lines 144-153 of 729; read again with offset=154 for more]

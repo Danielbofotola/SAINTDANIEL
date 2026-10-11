@@ -1,0 +1,5 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/PrefectureVieScolaireTest.php (1 hunk applied)
+Landed at lines 323-324 (the file's new text; no re-read needed):
+323            ->assertSee('Aicha')->assertSee('État civil')->assertSee('Dossier médical')
+324            ->assertSee('Asthme')->assertSee('Parcours scolaire')->assertSee('Assiduité')

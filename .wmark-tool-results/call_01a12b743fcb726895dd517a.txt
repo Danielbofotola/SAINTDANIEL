@@ -1,0 +1,17 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\aba9102c187c\20261011-155322-bash-call_01a12b743fcb726895dd517a.txt (4,710 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Structured view (text):
+[powershell — Windows side]
+Schema::create('cycles', function (Blueprint $t) { $t->id(); $t->string('nom', 50)->unique(); $t->enum('statut', ['actif', 'inactif'])->default('actif'); $t->timestamps(); });
+        Schema::create('salles', function (Blueprint $t) { $t->id(); $t->string('nom', 50)->unique(); $t->unsignedInteger('capacite')->nullable(); $t->enum('statut', ['actif', 'inactif'])->default('actif'); $t->timestamps(); });
+        Schema::create('cours', function (Blueprint $t) { $t->id(); $t->string('code', 20)->unique(); $t->string('intitule', 100); $t->unsignedInteger('ponderation')->default(1); $t->enum('statut', ['actif', 'inactif'])->default('actif'); $t->timestamps(); });
+        Schema::create('tuteurs', function (Blueprint $t) { $t->id(); $t->string('nom_pere', 100)->nullable(); $t->string('profession_pere', 100)->nullable(); $t->string('telephone_pere', 20)->nullable(); $t->string('email_pere', 100)->nullable(); $t->text('adresse_pere')->nullable(); $t->string('nom_mere', 100); $t->string('profession_mere', 100)->nullable(); $t->string('telephone_mere', 20); $t->string('email_mere', 100)->nullable(); $t->text('adresse_mere')->nullable(); $t->enum('statut', ['actif', 'inactif'])->default('actif'); $t->timestamps(); });
+        Schema::create('periodes', function (Blueprint $t) { $t->id(); $t->foreignId('annee_scolaire_id')->constrained('annees_scolaires')->cascadeOnDelete(); $t->string('nom', 50); $t->enum('statut', ['actif', 'inactif'])->default('actif'); $t->
+… 5,675 chars elided …
+); $t->foreignId('frais_scolaire_id')->constrained()->restrictOnDelete(); $t->decimal('montant_paye', 10, 2); $t->dateTime('date_paiement')->useCurrent(); $t->enum('mode_paiement', ['especes', 'banque', 'mobile_money'])->default('especes'); $t->string('reference_transaction', 100)->nullable(); $t->enum('statut', ['actif', 'inactif'])->default('actif'); $t->timestamps(); });
+        Schema::create('classes', function (Blueprint $t) { $t->id(); $t->foreignId('cycle_id')->constrained()->cascadeOnDelete(); $t->foreignId('salle_id')->nullable()->constrained()->nullOnDelete(); $t->string('nom', 50); $t->string('section_id', 50)->nullable(); $t->string('option_id', 50)->nullable(); $t->enum('statut', ['actif', 'inactif'])->default('actif'); $t->timestamps(); });
+        Schema::create('documents_
+… 6,476 chars elided …
+efault(0); $t->decimal('total_recettes', 12, 2)->default(0); $t->decimal('total_depenses', 12, 2)->default(0); $t->decimal('solde_final', 12, 2)->default(0); $t->dateTime('date_cloture')->useCurrent(); $t->text('remarques')->nullable(); $t->timestamp('created_at')->useCurrent(); });
+    }
+
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

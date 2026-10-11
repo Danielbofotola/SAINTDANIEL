@@ -1,0 +1,19 @@
+[powershell — Windows side]
+INFO  Blade templates cached successfully.  
+
+
+  2026_10_13_000000_create_annonces_and_notifications_tables ............................................ 55.96ms DONE
+
+== migrate 0 ==
+
+   PASS  Tests\Feature\AnnoncesTest
+  ✓ the admin launches a notification to every user                                                              0.49s  
+  ✓ a targeted announcement only reaches the chosen role                                                         0.04s  
+  ✓ a user reads his notifications and marks them as read                                                        0.06s  
+  ✓ only the admin can launch an announcement, and deleting it clears the bell                                   0.08s  
+
+  Tests:    4 passed (33 assertions)
+  Duration: 0.91s
+
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

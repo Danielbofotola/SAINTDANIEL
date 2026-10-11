@@ -1,0 +1,20 @@
+Applied patch: 1 file changed (1 updated)
+Updated app/Http/Controllers/ProfesseurEspaceController.php (1 hunk applied)
+Landed at lines 55-85 (the file's new text; no re-read needed):
+55         /**
+56          * Profil de l'enseignant : informations, charges d'enseignement et
+57          * répartition hebdomadaire des heures par cours.
+58          */
+59         public function profil(Request $request): View
+60         {
+61             $contexte = $this->contexte($request);
+62             $emplois = EspaceProfesseur::emplois($contexte['affectations']);
+      … 15 lines omitted …
+78                 'heuresParCours' => $emplois
+79                     ->groupBy('cours_nom')
+80                     ->map(fn ($creneaux) => $this->heuresParSemaine($creneaux))
+81                     ->sortDesc(),
+82                 'notesSaisies' => $notesSaisies,
+83             ]);
+84         }
+85

@@ -1,0 +1,14 @@
+169    
+170    test('a message without recipient or without text is refused', function () {
+171        $alice = User::factory()->create(['role' => 'admin']);
+172    
+173        $this->actingAs($alice)
+174            ->post(route('messagerie.store'), ['sujet' => 'Sans destinataire', 'corps' => 'Texte'])
+175            ->assertSessionHasErrors('destinataires');
+176    
+177        $this->actingAs($alice)
+178            ->post(route('messagerie.store'), ['destinataires' => ['tous'], 'sujet' => 'Sans texte'])
+179            ->assertSessionHasErrors('corps');
+180    
+181        expect(DB::table('conversations')->count())->toBe(0);
+182    });

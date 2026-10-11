@@ -1,0 +1,21 @@
+Applied patch: 2 files changed (2 updated)
+Updated app/Models/Eleve.php (1 hunk applied)
+Updated app/Http/Controllers/EleveController.php (1 hunk applied)
+Landed at lines 45-46 (the file's new text; no re-read needed):
+45          * Élèves visibles dans l'application : tout sauf les élèves désactivés.
+46          * Un élève « inactif » disparaît des listes, des effectifs et des écrans de suivi.
+Landed at lines 48-57 (the file's new text; no re-read needed):
+48         public function scopeVisibles(Builder $query): Builder
+49         {
+50             return $query->where('statut', '!=', 'inactif');
+51         }
+52     
+53         /**
+54          * Limite la requête aux élèves inscrits (inscription active) pour l'année en cours.
+55          * Les élèves désactivés sont exclus : l'application ne les affiche plus.
+56          */
+57         public function scopeInscritAnneeEnCours(Builder $query): Builder
+Landed at lines 59-59 (the file's new text; no re-read needed):
+59             return $query->visibles()->whereHas('inscriptions', fn (Builder $inscription) => $inscription
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 36-40 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.

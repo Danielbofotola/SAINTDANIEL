@@ -1,0 +1,1 @@
+DENIED: accesses sensitive path matching '\.env(\b|\.)'

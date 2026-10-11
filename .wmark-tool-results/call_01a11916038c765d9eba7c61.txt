@@ -1,0 +1,19 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\b493c9bc81dc\20261008-021700-bash-call_01a11916038c765d9eba7c61.txt (861 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+[powershell — Windows side]
+=== TESTS utilisant profile.edit / profile.update ===
+tests\Feature\AdminAccountCredentialsTest.php:169: ->assertRedirect(route('admin.profile.edit'));
+tests\Feature\AdminAccountCredentialsTest.php:173: ])->assertRedirect(route('admin.profile.edit'));
+tests\Feature\AdminUserManagementTest.php:120: $this->get(route('profile.edit'))
+tests\Feature\AdminUserManagementTest.php:125: $this->put(route('profile.update'), [
+tests\Feature\EspaceProfesseurTest.php:244: // Le prof
+
+... 1,053 chars truncated ...
+
+ws\prefecture\layout.blade.php:89: <a class="dropdown-item" href="{{ route('profile.edit') }}">Modifier mon profil</a>
+resources\views\prefecture\layout.blade.php:129: <li><a href="{{ route('profile.edit') }}"><span class="link-collapse">Modifier mon profil</span></a></li>
+resources\views\prefecture\profil.blade.php:7: <a href="{{ route('profile.edit') }}" class="btn btn-light btn-round">
+resources\views\prefecture\profil.blade.php:53: <a href="{{ route('profile.edit') }}" class="btn btn-success btn-sm btn-link"><i class="fas fa-pen"></i> Modifier</a>
+resources\views\profile\edit.blade.php:26: <form method="POST" action="{{ route('profile.update') }}" enctype="multipart/form-data">
+resources\views\profile\show.blade.php:28: <a class="btn btn-primary" href="{{ route('profile.edit') }}"><i class="fa fa-pencil"></i> Modifier mon profil</a>
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

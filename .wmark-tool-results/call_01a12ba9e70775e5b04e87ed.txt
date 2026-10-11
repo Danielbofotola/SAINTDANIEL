@@ -1,0 +1,42 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\aba9102c187c\20261011-165201-apply_patch-call_01a12ba9e70775e5b04e87ed.txt (821 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+Applied patch: 5 files changed (1 created, 4 updated)
+Created database/migrations/2026_10_25_020000_add_optional_modules_flags.php (40 lines)
+Updated app/Models/ParametreSysteme.php (2 hunks applied)
+Updated app/Http/Controllers/ModuleSwitchController.php (3 hunks applied)
+Updated app/Http/Controllers/RecuController.php (2 hunks applied)
+Updated app/Http/Controllers/ComptableRecouvrementController.php (2 hunks applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context match
+
+... 1,173 chars truncated ...
+
+ needed):
+8      use Illuminate\Support\Facades\Schema;
+Landed at lines 26-27 (the file's new text; no re-read needed):
+26                 'module_recus_actif' => ['nullable', 'boolean'],
+27                 'module_recouvrement_actif' => ['nullable', 'boolean'],
+Landed at lines 33-33 (the file's new text; no re-read needed):
+33             $donnees = [
+Landed at lines 37-46 (the file's new text; no re-read needed):
+37             ];
+38     
+39             // Colonnes optionnelles : ignorées si la table n'est pas migrée.
+40             foreach (['module_recus_actif', 'module_recouvrement_actif'] as $colonne) {
+41                 if (Schema::hasColumn('parametres_systeme', $colonne)) {
+42                     $donnees[$colonne] = $request->boolean($colonne);
+43                 }
+44             }
+45     
+46             $settings->update($donnees);
+Landed at lines 6-6 (the file's new text; no re-read needed):
+6      use App\Models\ParametreSysteme;
+Landed at lines 17-19 (the file's new text; no re-read needed):
+17             // Module optionnel : la page « reçu » peut être désactivée.
+18             abort_unless(ParametreSysteme::recusActifs(), 404);
+19     
+Landed at lines 10-10 (the file's new text; no re-read needed):
+10     use App\Models\ParametreSysteme;
+Landed at lines 23-25 (the file's new text; no re-read needed):
+23             // Module optionnel : la page « recouvrement » peut être désactivée.
+24             abort_unless(ParametreSysteme::recouvrementActif(), 404);
+25

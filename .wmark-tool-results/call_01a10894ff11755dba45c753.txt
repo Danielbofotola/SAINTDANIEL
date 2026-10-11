@@ -1,0 +1,7 @@
+Created 6 tasks:
+  [pending] frais: Types de frais + tarifs (frais_scolaires) : CRUD et rattachement à l'année en cours (2 criteria)
+  [pending] paiements: Paiements : enregistrement des règlements avec reçu (2 criteria)
+  [pending] depenses: Dépenses et catégories de dépenses (2 criteria)
+  [pending] archives: Clôture d'année et archives (2 criteria)
+  [pending] menu-f: Brancher le treeview Finances (2 criteria)
+  [pending] verify-f: Vérifier routes, rendu, suite complète (2 criteria)

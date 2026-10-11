@@ -1,0 +1,72 @@
+24     
+25         public function update(Request $request): RedirectResponse
+26         {
+27             $data = $request->validate([
+28                 // Identité de l'établissement.
+29                 'nom_etablissement' => ['required', 'string', 'max:150'],
+30                 'nom_court' => ['required', 'string', 'max:60'],
+31                 'telephone' => ['nullable', 'string', 'max:30'],
+32                 'email' => ['nullable', 'email', 'max:150'],
+33                 'adresse' => ['nullable', 'string', 'max:1000'],
+34     
+35                 // Options de l'application : modules activés ou non.
+36                 'saisie_notes_active' => ['nullable', 'boolean'],
+37                 'portail_parents_actif' => ['nullable', 'boolean'],
+38                 'deliberation_active' => ['nullable', 'boolean'],
+39     
+40                 // Devises et taux de change.
+41                 'devise' => ['nullable', 'in:USD,CDF'],
+42                 'taux_change' => ['nullable', 'numeric', 'min:0'],
+43     
+44                 // Paramètres du bulletin.
+45                 'bulletin_pays' => ['nullable', 'string', 'max:100'],
+46                 'bulletin_ministere' => ['nullable', 'string', 'max:160'],
+47                 'bulletin_titre' => ['nullable', 'string', 'max:160'],
+48                 'bulletin_reference' => ['nullable', 'string', 'max:50'],
+49                 'bulletin_province' => ['nullable', 'string', 'max:100'],
+50                 'bulletin_ville' => ['nullable', 'string', 'max:100'],
+51                 'bulletin_commune' => ['nullable', 'string', 'max:100'],
+52                 'bulletin_code_ecole' => ['nullable', 'string', 'max:50'],
+53                 'bulletin_lieu_signature' => ['nullable', 'string', 'max:100'],
+54                 'bulletin_signataire' => ['nullable', 'string', 'max:120'],
+55                 'bulletin_seuil_reussite' => ['nullable', 'numeric', 'min:0', 'max:100'],
+56                 'bulletin_afficher_place' => ['nullable', 'boolean'],
+57                 'bulletin_afficher_conduite' => ['nullable', 'boolean'],
+58             ], [
+59                 'nom_etablissement.required' => 'Le nom de l’établissement est obligatoire.',
+60                 'nom_court.required' => 'Le nom court de l’établissement est obligatoire.',
+61                 'email.email' => 'L’adresse e-mail de l’établissement n’est pas valide.',
+62                 'bulletin_seuil_reussite.numeric' => 'Le seuil de réussite doit être un nombre (exemple : 50).',
+63                 'bulletin_seuil_reussite.min' => 'Le seuil de réussite ne peut pas être négatif.',
+64                 'bulletin_seuil_reussite.max' => 'Le seuil de réussite ne peut pas dépasser 100 %.',
+65             ]);
+66     
+67             // Les cases à cocher sont accompagnées d'un champ caché « 0 » dans le formulaire :
+68             // les options transmises sont donc toujours explicites. Un réglage absent du
+69             // formulaire est laissé intact au lieu d'être écrasé.
+70             foreach (['saisie_notes_active', 'portail_parents_actif', 'deliberation_active',
+71                 'bulletin_afficher_place', 'bulletin_afficher_conduite'] as $case) {
+72                 if ($request->has($case)) {
+73                     $data[$case] = $request->boolean($case);
+74                 }
+75             }
+76     
+77             // Seuil laissé vide : on conserve la valeur enregistrée (50 % si aucune).
+78             if (($data['bulletin_seuil_reussite'] ?? null) === null || $data['bulletin_seuil_reussite'] === '') {
+79                 unset($data['bulletin_seuil_reussite']);
+80             }
+81     
+82             // Colonnes devise/taux_change : ignorées si la table n'est pas migrée.
+83             foreach (['devise', 'taux_change'] as $colonne) {
+84                 if (! Schema::hasColumn('parametres_systeme', $colonne)) {
+85                     unset($data[$colonne]);
+86                 }
+87             }
+88     
+89             $settings = ParametreSysteme::query()->first() ?? ParametreSysteme::create(ParametreSysteme::defaults()->getAttributes());
+90             $settings->update($data);
+91     
+92             return redirect()->route('admin.profile.settings')
+93                 ->with('success', 'Les paramètres de l’établissement, des modules et du bulletin ont été enregistrés.');
+94         }
+95     }

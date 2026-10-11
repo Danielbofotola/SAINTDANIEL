@@ -1,0 +1,120 @@
+1      <?php
+2      
+3      use App\Models\User;
+4      use Illuminate\Database\Schema\Blueprint;
+5      use Illuminate\Support\Facades\Auth;
+6      use Illuminate\Support\Facades\DB;
+7      use Illuminate\Support\Facades\Schema;
+8      
+9      beforeEach(function () {
+10         Schema::disableForeignKeyConstraints();
+11         foreach (['annonces', 'notifications', 'professeurs', 'parametres_systeme', 'users'] as $table) {
+12             Schema::dropIfExists($table);
+13         }
+14         Schema::enableForeignKeyConstraints();
+15     
+16         Schema::create('users', function (Blueprint $table) {
+17             $table->id();
+18             $table->unsignedBigInteger('professeur_id')->nullable()->unique();
+19             $table->string('nom', 50)->nullable();
+20             $table->string('postnom', 50)->nullable();
+21             $table->string('prenom', 50)->nullable();
+22             $table->string('photo')->nullable();
+23             $table->string('username')->unique();
+24             $table->string('email')->unique();
+25             $table->string('password');
+26             $table->string('pin_code')->nullable();
+27             $table->string('role');
+28             $table->string('statut');
+29             $table->rememberToken();
+30             $table->timestamps();
+31         });
+32         Schema::create('professeurs', function (Blueprint $table) {
+33             $table->id();
+34             $table->string('matricule')->unique();
+35             $table->string('nom');
+36             $table->string('postnom')->nullable();
+37             $table->string('prenom');
+38             $table->string('sexe');
+39             $table->string('statut')->default('actif');
+40             $table->timestamps();
+41         });
+42         Schema::create('parametres_systeme', function (Blueprint $table) {
+43             $table->id();
+44             $table->string('nom_etablissement', 150)->default('Etablissement');
+45             $table->string('nom_court', 60)->default('Ecole');
+46             $table->timestamps();
+47         });
+48         DB::table('parametres_systeme')->insert(['nom_court' => 'Ecole Test', 'created_at' => now(), 'updated_at' => now()]);
+49     
+50         Schema::create('annonces', function (Blueprint $table) {
+51             $table->id();
+52             $table->string('titre', 150);
+53             $table->text('message');
+54             $table->string('niveau', 20)->default('info');
+55             $table->string('lien', 255)->nullable();
+56             $table->string('cible', 30)->default('tous');
+57             $table->unsignedBigInteger('envoye_par')->nullable();
+58             $table->unsignedInteger('destinataires')->default(0);
+59             $table->timestamps();
+60         });
+61         Schema::create('notifications', function (Blueprint $table) {
+62             $table->uuid('id')->primary();
+63             $table->string('type');
+64             $table->morphs('notifiable');
+65             $table->text('data');
+66             $table->timestamp('read_at')->nullable();
+67             $table->timestamps();
+68         });
+69     });
+70     
+71     test('every role sees the floating bell with the unread count and the announcements', function () {
+72         $admin = User::factory()->create(['role' => 'admin']);
+73         $comptable = User::factory()->create(['role' => 'comptable', 'username' => 'comptable.test']);
+74         $prefet = User::factory()->create(['role' => 'prefetture', 'username' => 'prefet.test']);
+75         $titulaire = User::factory()->create(['role' => 'titulaire', 'username' => 'titulaire.test']);
+76     
+77         $this->actingAs($admin)->post(route('admin.annonces.store'), [
+78             'titre' => 'Réunion pédagogique vendredi',
+79             'message' => 'Présence obligatoire de tout le personnel à 14 h.',
+80             'niveau' => 'warning',
+81             'cible' => 'tous',
+82         ]);
+83     
+84         foreach ([$comptable, $prefet, $titulaire] as $compte) {
+85             Auth::login($compte);
+86             $cloche = view('partials.cloche-flottante')->render();
+87     
+88             expect($cloche)->toContain('cloche-flottante')
+89                 ->toContain('aria-label="Notifications"')
+90                 ->toContain('Réunion pédagogique vendredi')      // le titre de l'annonce
+91                 ->toContain('data-non-lues')                     // le compteur de non lues
+92                 ->toContain(route('notifications.index'));       // le lien vers la boîte de réception
+93     
+94             // La boîte de réception est accessible et affiche l'annonce.
+95             $this->actingAs($compte)
+96                 ->get(route('notifications.index'))
+97                 ->assertOk()
+98                 ->assertSee('Réunion pédagogique vendredi')
+99                 ->assertSee('Nouveau');
+100        }
+101    });
+102    
+103    test('the bell is hidden once everything is read', function () {
+104        $admin = User::factory()->create(['role' => 'admin']);
+105        $comptable = User::factory()->create(['role' => 'comptable']);
+106    
+107        $this->actingAs($admin)->post(route('admin.annonces.store'), [
+108            'titre' => 'Rappel', 'message' => 'Texte', 'niveau' => 'info', 'cible' => 'tous',
+109        ]);
+110    
+111        Auth::login($comptable);
+112        expect(view('partials.cloche-flottante')->render())->toContain('data-non-lues');
+113    
+114        $this->actingAs($comptable)->patch(route('notifications.readall'))->assertRedirect();
+115    
+116        $sansBadge = view('partials.cloche-flottante')->render();
+117        expect($sansBadge)->toContain('cloche-flottante')
+118            ->toContain('Rappel')                     // la notification reste consultable
+119            ->not->toContain('data-non-lues');
+120    });

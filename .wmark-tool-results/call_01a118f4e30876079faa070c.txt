@@ -1,0 +1,11 @@
+[powershell — Windows side]
+=== tests comparant a l'heure/minute courante ===
+=== tests avec freeze/travel ===
+tests\Feature\AdminUserManagementTest.php:438: $this->withSession(['_old_input' => []])
+tests\Feature\FlashGlobalTest.php:7: $this->withSession(['error' => 'Votre compte a été désactivé.'])
+tests\Feature\FlashGlobalTest.php:15: $this->withSession(['success' => 'Vous êtes déconnecté.'])
+tests\Feature\FlashGlobalTest.php:26: $this->withSession(['errors' => $sac])
+tests\Feature\PortailParentTest.php:234: ->withSession(['impersonating_admin_id' => $admin->id])
+tests\Feature\PortailParentTest.php:245: ->withSession(['impersonating_admin_id' => $admin->id])
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

@@ -1,0 +1,12 @@
+Applied patch: 1 file changed (1 updated)
+Updated app/Support/Caisse.php (1 hunk applied)
+Landed at lines 37-37 (the file's new text; no re-read needed):
+37             $paiement = Paiement::create([
+Landed at lines 48-54 (the file's new text; no re-read needed):
+48     
+49             // Le règlement du frais d'inscription valide automatiquement l'inscription.
+50             if ($frais->typeFrais?->estFraisInscription()) {
+51                 $inscription->valider();
+52             }
+53     
+54             return $paiement;

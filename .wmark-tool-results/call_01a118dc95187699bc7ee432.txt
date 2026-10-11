@@ -1,0 +1,49 @@
+1      <?php
+2      
+3      namespace App\Models;
+4      
+5      use Illuminate\Database\Eloquent\Model;
+6      
+7      class Classe extends Model
+8      {
+9          protected $fillable = ['cycle_id', 'salle_id', 'nom', 'ordre', 'section_id', 'option_id', 'statut'];
+10     
+11         /** Classe de l'ordre immédiatement supérieur, dans le même cycle. */
+12         public function suivante(): ?self
+13         {
+14             if ($this->ordre === null) {
+15                 return null;
+16             }
+17     
+18             return static::query()
+19                 ->where('cycle_id', $this->cycle_id)
+20                 ->where('statut', 'actif')
+21                 ->where('ordre', $this->ordre + 1)
+22                 ->first();
+23         }
+24     
+25         public function cycle()
+26         {
+27             return $this->belongsTo(Cycle::class);
+28         }
+29     
+30         public function inscriptions()
+31         {
+32             return $this->hasMany(Inscription::class);
+33         }
+34     
+35         public function salle()
+36         {
+37             return $this->belongsTo(Salle::class);
+38         }
+39     
+40         public function section()
+41         {
+42             return $this->belongsTo(Section::class);
+43         }
+44     
+45         public function option()
+46         {
+47             return $this->belongsTo(Option::class);
+48         }
+49     }

@@ -1,0 +1,24 @@
+64             $table->string('statut');
+65         });
+66         Schema::create('annees_scolaires', function (Blueprint $table) {
+67             $table->id();
+68             $table->string('libelle');
+69             $table->date('date_debut');
+70             $table->date('date_fin');
+71             $table->boolean('is_encours')->default(false);
+72             $table->string('statut');
+73         });
+74         Schema::create('tuteurs', function (Blueprint $table) {
+75             $table->id();
+76             $table->string('nom_mere');
+77             $table->string('telephone_mere');
+78             $table->string('email_mere')->nullable();
+79             $table->text('adresse_mere')->nullable();
+80             $table->string('nom_pere')->nullable();
+81             $table->string('telephone_pere')->nullable();
+82             $table->string('email_pere')->nullable();
+83             $table->string('statut')->default('actif');
+84             $table->timestamps();
+85         });
+
+[showing lines 64-85 of 294; read again with offset=86 for more]

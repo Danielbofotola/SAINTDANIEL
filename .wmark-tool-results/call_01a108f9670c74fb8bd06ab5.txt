@@ -1,0 +1,20 @@
+1      <?php
+2      
+3      namespace App\Http\Controllers;
+4      
+5      use App\Models\AnneeScolaire;
+6      use App\Models\ArchiveAnnee;
+7      use App\Models\Classe;
+8      use App\Models\Depense;
+9      use App\Models\Eleve;
+10     use App\Models\Inscription;
+11     use App\Models\Paiement;
+12     use Illuminate\Http\RedirectResponse;
+13     use Illuminate\Http\Request;
+14     use Illuminate\Support\Facades\DB;
+15     use Illuminate\Validation\Rule;
+16     use Illuminate\View\View;
+17     
+18     class ArchiveAnneeController extends Controller
+
+[showing lines 1-18 of 157; read again with offset=19 for more]

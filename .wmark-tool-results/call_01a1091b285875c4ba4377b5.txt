@@ -1,0 +1,2 @@
+Error: failed to apply diff: applyDiff: overlapping chunk at 189 (cursor 244)
+(section '*** Update File: tests/Feature/EspaceProfesseurTest.php', patch line 2; no files were changed — the patch applies atomically: fix that section and re-send the whole patch)

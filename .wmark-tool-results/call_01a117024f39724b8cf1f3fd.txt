@@ -1,0 +1,25 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\144c63540b62\20261007-163614-bash-call_01a117024f39724b8cf1f3fd.txt (1,308 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Structured view (text):
+[powershell — Windows side]
+account-edit.blade.php:56: <a href="#!" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle drop icon-circle drop-image">
+account-edit.blade.php:228: <select class="form-control" name="role" required>
+account-edit.blade.php:229: @foreach(['admin'=>'Administrateur','prefetture'=>'Pr�fecture','titulaire'=>'Titulaire','professeur'=>'Professeur','comptable'=>'Comptable'] as $value=>$label)
+account-edit.blade.php:230: <option value="{{ $value }}" @selected(old('role', $user->role) === $value)>{{ $label }}</option>
+account-edit.blade.php:235: <label for="professeur_id">Professeur li�</label>
+account-edit.blade.php:236: <select class="form-control" id="professeur_id" name="professeur_id">
+account-edit.blade.php:237: <option value="">S�lectionner un professeur</option>
+account-edit.blade.php:238: @foreach ($professeurs as $professeur)
+account-edit.blade.php:239: <option value="{{ $professeur->id }}" @selected(old('professeur_id', $user->professeur_id) == $professeur->id)>
+account-edit.blade.php:240: {{ $professeur->nom }} {{ $professeur->postnom }} {{ $professeur->prenom }} - {{ $professeur->matricule }}
+account-edit.blade.php:244: <small class="text-muted d-block mt-1">Obligatoire pour le r�le Professeur.</small>
+account-edit.blade.php:245: @error('professeur_id')
+account-request.blade.php:32: @if (session('success'))<div class="alert alert-success" role="status">{{ session('success') }}</div>@endif
+accou
+… 210 chars elided …
+n value="">S�lectionner un r�le</option><option value="prefetture" @selected(old('role_souhaite') === 'prefetture')>Pr�fecture</option><option value="titulaire" @selected(old('role_souhaite') === 'titulaire')>Titulaire</option><option value="professeur" @selected(old('role_souhaite') === 'professeur')>Professeur</option><option value="comptable" @selected(old('role_souhaite') === 'comptable')>Comptable</option></select><div class="hint">L'administration confirmera le r�le avant l'activation.</div></div>
+=== modules view ===
+51: <strong>Portail Parents</strong>
+52: <p class="text-muted mb-0 small">R�serve l'acc�s des parents. Le portail n'est pas encore livr� : ce commutateur m�morise seulement l'intention.</p>
+55: <input type="hidden" name="portail_parents_actif" value="0">
+56: <input type
+… 1,010 chars elided …
+</T></TN><ToString>=== modules view ===</ToString><Props><S N="Message">=== modules view ===</S><B N="NoNewLine">false</B><S N="ForegroundColor">Gray</S><S N="BackgroundColor">Black</S></Props></Obj><S N="Source">Write-Host</S><DT N="TimeGenerated">2026-10-07T16:36:14.0958168+01:00</DT><Obj N="Tags" RefId="3"><TN RefId="3"><T>System.Collections.Generic.List`1[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</T><T>System.Object</T></TN><LST><S>PSHOST</S></LST></Obj><S N="User">DANIELBOFOTOLA\danie</S><S N="Computer">DanielBofotola</S><U32 N="ProcessId">5892</U32><U32 N="NativeThreadId">7784</U32><U32 N="ManagedThreadId">7</U32></Props></Obj></Objs>

@@ -1,0 +1,25 @@
+1      <?php
+2      
+3      namespace App\Models;
+4      
+5      use Illuminate\Database\Eloquent\Model;
+6      
+7      class DemandeCompte extends Model
+8      {
+9          protected $table = 'demandes_comptes';
+10     
+11         protected $fillable = [
+12             'nom', 'postnom', 'prenom', 'username', 'email', 'telephone',
+13             'role_souhaite', 'mot_de_passe', 'statut', 'traite_par', 'traite_le', 'motif_refus',
+14         ];
+15     
+16         protected $hidden = ['mot_de_passe'];
+17     
+18         protected function casts(): array
+19         {
+20             return [
+21                 'mot_de_passe' => 'hashed',
+22                 'traite_le' => 'datetime',
+23             ];
+24         }
+25     }

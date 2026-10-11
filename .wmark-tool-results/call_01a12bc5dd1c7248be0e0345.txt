@@ -1,0 +1,22 @@
+[powershell — Windows side]
+No syntax errors detected in app/Support/StructureClasse.php
+
+   PASS  Tests\Feature\BulletinDocumentTest
+  ✓ the calculator applies the percentage rule and pass threshold                                                0.14s  
+  ✓ a student below the pass threshold is declared failed and listed for retake                                  0.02s  
+  ✓ the bulletin document renders the official layout with the computed results                                  0.08s  
+  ✓ the bulletin document is restricted to administrators                                                        0.04s  
+  ✓ the bulletins list links to the RDC document                                                                 0.04s  
+  ✓ the reference maximum of a branch is displayed even without any note                                         0.03s  
+  ✓ the branch maximums can be recorded from the course form                                                     0.04s  
+  ✓ the settings screen saves the application options and the bulletin settings                                  0.05s  
+  ✓ the bulletin document uses the saved parameters and pass threshold                                           0.03s  
+  ✓ la note maximale d’une évaluation est reprise du barème du cours si elle est omise                           0.03s  
+  ✓ l’en-tête du bulletin affiche le cycle réel de la classe et l’année scolaire                                 0.03s  
+  ✓ l’identité du bulletin reprend cycle et section sans redite                                                  0.02s  
+
+  Tests:    12 passed (73 assertions)
+  Duration: 0.67s
+
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

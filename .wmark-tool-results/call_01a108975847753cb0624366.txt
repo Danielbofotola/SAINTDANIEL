@@ -1,0 +1,14 @@
+[powershell — Windows side]
+INFO  Blade templates cached successfully.  
+
+==exit 0==
+
+  GET|HEAD   admin/cycles ................................................. admin.cycles.index › CycleController@index
+  POST       admin/cycles ................................................. admin.cycles.store › CycleController@store
+  DELETE     admin/cycles/{cycle} ..................................... admin.cycles.destroy › CycleController@destroy
+  PATCH      admin/cycles/{cycle}/statut ................... admin.cycles.toggle-status › CycleController@toggleStatus
+
+                                                                                                    Showing [4] routes
+
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

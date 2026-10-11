@@ -1,0 +1,10 @@
+Applied patch: 1 file changed (1 updated)
+Updated app/Http/Controllers/PaiementController.php (1 hunk applied)
+Landed at lines 112-118 (the file's new text; no re-read needed):
+112            $message = 'Le paiement a été enregistré sous le reçu '.$paiement->num_recu.'.';
+113            if ($paiement->fraisScolaire?->typeFrais?->estFraisInscription()
+114                && Inscription::whereKey($data['inscription_id'])->value('statut') === Inscription::STATUT_ACTIF) {
+115                $message .= ' L’inscription de l’élève a été validée automatiquement (frais d’inscription réglé).';
+116            }
+117    
+118            return redirect()->route('admin.paiements.index')->with('success', $message);

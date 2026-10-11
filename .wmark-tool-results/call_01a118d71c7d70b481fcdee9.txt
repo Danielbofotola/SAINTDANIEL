@@ -1,0 +1,31 @@
+1      <?php
+2      
+3      use Illuminate\Database\Migrations\Migration;
+4      use Illuminate\Database\Schema\Blueprint;
+5      use Illuminate\Support\Facades\Schema;
+6      
+7      /**
+8       * Le suivi « lu / non lu » se fait sur l'identifiant du dernier message lu :
+9       * plus fiable que l'horodatage, dont la précision est à la seconde (un message
+10      * envoyé dans la même seconde que la lecture était considéré comme lu).
+11      */
+12     return new class extends Migration
+13     {
+14         public function up(): void
+15         {
+16             if (Schema::hasTable('conversation_user') && ! Schema::hasColumn('conversation_user', 'dernier_message_id')) {
+17                 Schema::table('conversation_user', function (Blueprint $table) {
+18                     $table->unsignedBigInteger('dernier_message_id')->nullable()->after('dernier_lu_at');
+19                 });
+20             }
+21         }
+22     
+23         public function down(): void
+24         {
+25             if (Schema::hasColumn('conversation_user', 'dernier_message_id')) {
+26                 Schema::table('conversation_user', function (Blueprint $table) {
+27                     $table->dropColumn('dernier_message_id');
+28                 });
+29             }
+30         }
+31     };

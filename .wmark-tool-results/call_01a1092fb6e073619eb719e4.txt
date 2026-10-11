@@ -1,0 +1,8 @@
+310                <li class="menu-section">Pilotage</li>
+311                <li><a class="app-menu__item active" href="{{ route('admin.dashboard') }}"><i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label">Tableau de bord</span></a></li>
+312                <li><a class="app-menu__item" href="{{ route('admin.statistiques.index') }}"><i class="app-menu__icon fa fa-line-chart"></i><span class="app-menu__label">Statistiques &amp; évolution</span></a></li>
+313                <li><a class="app-menu__item {{ request()->routeIs('admin.profile.online') ? 'active' : '' }}" href="{{ route('admin.profile.online') }}"><i class="app-menu__icon fa fa-plug"></i><span class="app-menu__label">Utilisateurs en ligne</span></a></li>
+314                <li class="menu-section">Scolarité</li>
+315                <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-users"></i><span class="app-menu__label">Élèves</span><i class="treeview-indicator fa fa-angle-right"></i></a>
+
+[showing lines 310-315 of 728; read again with offset=316 for more]

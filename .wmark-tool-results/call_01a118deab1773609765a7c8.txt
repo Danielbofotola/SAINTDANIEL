@@ -1,0 +1,52 @@
+10     beforeEach(function () {
+11         Schema::disableForeignKeyConstraints();
+12         foreach (['notifications', 'messages', 'conversation_user', 'conversations', 'parametres_systeme', 'professeurs', 'users'] as $table) {
+13             Schema::dropIfExists($table);
+14         }
+15         Schema::enableForeignKeyConstraints();
+16     
+17         Schema::create('users', function (Blueprint $table) {
+18             $table->id();
+19             $table->unsignedBigInteger('professeur_id')->nullable()->unique();
+20             $table->string('nom', 50)->nullable();
+21             $table->string('postnom', 50)->nullable();
+22             $table->string('prenom', 50)->nullable();
+23             $table->string('photo')->nullable();
+24             $table->string('username')->unique();
+25             $table->string('email')->unique();
+26             $table->string('telephone', 20)->nullable();
+27             $table->string('adresse', 100)->nullable();
+28             $table->string('password');
+29             $table->string('pin_code')->nullable();
+30             $table->string('role');
+31             $table->string('statut');
+32             $table->rememberToken();
+33             $table->timestamps();
+34         });
+35     
+36         Schema::create('professeurs', function (Blueprint $table) {
+37             $table->id();
+38             $table->string('matricule')->unique();
+39             $table->string('nom');
+40             $table->string('postnom')->nullable();
+41             $table->string('prenom');
+42             $table->string('statut')->default('actif');
+43             $table->timestamps();
+44         });
+45     
+46         Schema::create('parametres_systeme', function (Blueprint $table) {
+47             $table->id();
+48             $table->string('nom_etablissement', 150)->default('Etablissement');
+49             $table->string('nom_court', 60)->default('Ecole');
+50             $table->boolean('saisie_notes_active')->default(true);
+51             $table->boolean('portail_parents_actif')->default(false);
+52             $table->timestamps();
+53         });
+54     
+55         Schema::create('conversations', function (Blueprint $table) {
+56             $table->id();
+57             $table->string('sujet', 150);
+58             $table->string('type', 20)->default('directe');
+59             $table->unsignedBigInteger('createur_id')->nullable();
+
+[showing lines 10-59 of 371; read again with offset=60 for more]

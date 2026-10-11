@@ -1,0 +1,6 @@
+Created 5 tasks:
+  [pending] prof-index: Module Liste des professeurs : index + dossier + bascule statut (2 criteria)
+  [pending] affectations: Module Cours & affectation : gestion des cours et des affectations (professeur/cours/classe) (2 criteria)
+  [pending] emplois: Module Horaire & Emploi du temps : grille par classe, création et suppression de créneaux (2 criteria)
+  [pending] menu-p: Brancher le treeview-menu Professeurs sur les routes (2 criteria)
+  [pending] verify-p: Vérifier routes, rendu et suite complète (2 criteria)

@@ -1,0 +1,36 @@
+Applied patch: 1 file changed (1 updated)
+Updated app/Models/AnneeScolaire.php (2 hunks applied)
+Landed at lines 6-7 (the file's new text; no re-read needed):
+6      use Illuminate\Support\Facades\DB;
+7      use Illuminate\Support\Facades\Schema;
+Landed at lines 11-22 (the file's new text; no re-read needed):
+11         /**
+12          * Tables portant une clé étrangère vers annees_scolaires.
+13          */
+14         private const TABLES_LIEES = [
+15             'inscriptions',
+16             'periodes',
+17             'affectations_cours',
+18             'frais_scolaires',
+19             'depenses',
+20             'demandes_inscriptions',
+21         ];
+22     
+Landed at lines 34-56 (the file's new text; no re-read needed):
+34     
+35         /**
+36          * L'année scolaire « en cours » (unique), ou null si aucune n'est définie.
+37          */
+38         public static function enCours(): ?self
+39         {
+40             return static::where('is_encours', true)->first();
+41         }
+      … 7 lines omitted …
+49             foreach (self::TABLES_LIEES as $table) {
+50                 if (Schema::hasTable($table) && DB::table($table)->where('annee_scolaire_id', $this->id)->exists()) {
+51                     return true;
+52                 }
+53             }
+54     
+55             return false;
+56         }

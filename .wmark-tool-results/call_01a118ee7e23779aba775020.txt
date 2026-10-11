@@ -1,0 +1,39 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\b493c9bc81dc\20261008-013406-bash-call_01a118ee7e23779aba775020.txt (794 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Structured view (text):
+[powershell — Windows side]
+PASS  Tests\Feature\ScolaritePagesTest
+  ✓ an admin can create a period and duplicate names are rejected                                                0.18s  
+  ✓ a period with evaluations cannot be deleted and toggles status                                               0.13s  
+  ✓ an admin can create an evaluation only for the current year                                                  0.14s  
+  ✓ notes can be captured and are bounded by the maximum note                                                    0.17s  
+  ✓ bulletins are computed with rank and mention from the captured notes                                         0.18s  
+  ✓ the school menu links point to periods, evaluations and bulletins                                            0.14s  
+
+   PASS  Tests\Feature\SectionOptionPagesTest
+  ✓ the sections page lists the sections with their option and class counts                                      0.13s  
+  ✓ an admin can create a section                                                                                0.13s  
+  ✓ a duplicate section name is rejected                                                                         0.10s  
+  ✓ the options page lists the options with their section                                                        0.11s  
+  ✓ an admin can create an option attached to a section                                                          0.10s  
+  ✓ an option name is unique inside its section but may
+… 197 chars elided …
+ick creation pages stay available and return to the class form                                         0.11s  
+
+   PASS  Tests\Feature\StatistiquesTest
+  ✓ the statistics page shows the yearly totals and the charts                                                   0.19s  
+  ✓ the statistics page is restricted to the admin role                                                          0.13s  
+
+   PASS  Tests\Feature\SystemSettingsTest
+  ✓ admin can update persistent school identity and contact settings                                             0.13s  
+  ✓ non-admin users cannot change establishment settings                                                         0.09s  
+
+   PASS  Tests\Feature\TresorerieAlerteTest
+  ✓ a charge that pushes the treasury negative raises a danger signal       
+… 998 chars elided …
+el that carries a school year exposes the year relation and scope                                   0.08s  
+  ✓ relation foreign keys match the database schema                                                              0.09s  
+
+  Tests:    244 passed (1496 assertions)
+  Duration: 15.54s
+
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

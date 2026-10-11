@@ -1,0 +1,50 @@
+1      <?php
+2      
+3      namespace App\Http\Controllers;
+4      
+5      use App\Models\Cours;
+6      use Illuminate\Http\RedirectResponse;
+7      use Illuminate\Http\Request;
+8      
+9      class CoursController extends Controller
+10     {
+11         public function store(Request $request): RedirectResponse
+12         {
+13             $data = $request->validate([
+14                 'code' => ['required', 'string', 'max:20', 'unique:cours,code'],
+15                 'intitule' => ['required', 'string', 'max:100'],
+16                 'ponderation' => ['required', 'integer', 'min:1', 'max:20'],
+17                 'max_travaux_journaliers' => ['nullable', 'integer', 'min:0', 'max:1000'],
+18                 'max_examen' => ['nullable', 'integer', 'min:0', 'max:1000'],
+19             ], [
+20                 'code.unique' => 'Ce code de cours est déjà utilisé.',
+21                 'code.required' => 'Le code du cours est obligatoire.',
+22                 'intitule.required' => 'L’intitulé du cours est obligatoire.',
+23                 'ponderation.required' => 'La pondération est obligatoire.',
+24                 'max_travaux_journaliers.integer' => 'Le maximum des travaux journaliers doit être un nombre entier.',
+25                 'max_examen.integer' => 'Le maximum d’examen doit être un nombre entier.',
+26             ]);
+27     
+28             Cours::create([
+29                 'code' => $data['code'],
+30                 'intitule' => $data['intitule'],
+31                 'ponderation' => $data['ponderation'],
+32                 'max_travaux_journaliers' => $data['max_travaux_journaliers'] ?? null,
+33                 'max_examen' => $data['max_examen'] ?? null,
+34                 'statut' => 'actif',
+35             ]);
+36     
+37             return redirect()->route('admin.affectations.index')->with('success', 'Le cours a été ajouté.');
+38         }
+39     
+40         public function destroy(Cours $cours): RedirectResponse
+41         {
+42             if ($cours->affectations()->exists()) {
+43                 return back()->with('error', 'Ce cours est affecté à une ou plusieurs classes : supprimez d’abord les affectations.');
+44             }
+45     
+46             $cours->delete();
+47     
+48             return redirect()->route('admin.affectations.index')->with('success', 'Le cours a été supprimé.');
+49         }
+50     }

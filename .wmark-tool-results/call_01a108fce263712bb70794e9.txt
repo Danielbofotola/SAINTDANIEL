@@ -1,0 +1,1 @@
+Wrote app/Models/Salaire.php (49 lines)

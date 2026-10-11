@@ -1,0 +1,22 @@
+193        Route::get('/admin/comptes', [UserProfileController::class, 'accounts'])->middleware('role:admin')->name('admin.profile.accounts');
+194        Route::get('/admin/comptes/{user}/modifier', [UserProfileController::class, 'editAccount'])->middleware('role:admin')->name('admin.profile.accounts.edit');
+195        Route::put('/admin/comptes/{user}', [UserProfileController::class, 'updateAccount'])->middleware('role:admin')->name('admin.profile.accounts.update');
+196        Route::post('/admin/comptes/{user}/impersoner', [UserProfileController::class, 'impersonate'])->middleware('role:admin')->name('admin.profile.accounts.impersonate');
+197        Route::get('/admin/comptes/nouveau', [UserProfileController::class, 'createAccount'])->middleware('role:admin')->name('admin.profile.accounts.create');
+198        Route::post('/admin/comptes', [UserProfileController::class, 'storeAccount'])->middleware('role:admin')->name('admin.profile.accounts.store');
+199        Route::get('/admin/profil/modifier', [UserProfileController::class, 'edit'])->middleware('role:admin')->name('admin.profile.edit');
+200        Route::put('/admin/profil', [UserProfileController::class, 'update'])->middleware('role:admin')->name('admin.profile.update');
+201        Route::patch('/admin/profil/mot-de-passe', [UserProfileController::class, 'updatePassword'])->middleware('role:admin')->name('admin.profile.password');
+202        Route::patch('/admin/profil/desactiver', [UserProfileController::class, 'deactivate'])->middleware('role:admin')->name('admin.profile.deactivate');
+203        Route::patch('/admin/comptes/{user}/statut', [UserProfileController::class, 'toggleAccount'])->middleware('role:admin')->name('admin.profile.accounts.toggle');
+204        Route::get('/admin/comptes/{user}/mot-de-passe', [UserProfileController::class, 'editAccountPassword'])->middleware('role:admin')->name('admin.profile.accounts.password.edit');
+205        Route::patch('/admin/comptes/{user}/mot-de-passe', [UserProfileController::class, 'updateAccountPassword'])->middleware('role:admin')->name('admin.profile.accounts.password.update');
+206        Route::delete('/admin/comptes/{user}', [UserProfileController::class, 'destroyAccount'])->middleware('role:admin')->name('admin.profile.accounts.destroy');
+207        Route::post('/fin-impersonation', [UserProfileController::class, 'stopImpersonation'])->name('admin.impersonation.stop');
+208        Route::get('/admin/eleves', [EleveController::class, 'index'])->middleware('role:admin')->name('admin.eleves.index');
+209        Route::get('/admin/eleves/{eleve}/modifier', [EleveController::class, 'edit'])->middleware('role:admin')->name('admin.eleves.edit');
+210        Route::put('/admin/eleves/{eleve}', [EleveController::class, 'update'])->middleware('role:admin')->name('admin.eleves.update');
+211        Route::post('/admin/eleves/{eleve}/documents', [EleveController::class, 'storeDocument'])->middleware('role:admin')->name('admin.eleves.documents.store');
+212        Route::get('/admin/eleves/{eleve}', [EleveController::class, 'show'])->middleware('role:admin')->name('admin.eleves.show');
+
+[showing lines 193-212 of 273; read again with offset=213 for more]

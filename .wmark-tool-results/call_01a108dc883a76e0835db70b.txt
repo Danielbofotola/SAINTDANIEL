@@ -1,0 +1,12 @@
+122        (function () {
+123            var payeParPaire = @json($soldePaye);
+124            var montantsFrais = @json($montantsFrais);
+125            var classesParInscription = @json($classesParInscription);
+126            var classesParInscription = @json($classesParInscription ?? []);
+127            var classesParFrais = @json($classesParFrais);
+128            var recherche = document.getElementById('eleveSearch');
+129            var inscriptionSelect = document.getElementById('inscriptionSelect');
+130            var fraisSelect = document.getElementById('fraisSelect');
+131            var soldeInfo = document.getElementById('soldeInfo');
+
+[showing lines 122-131 of 190; read again with offset=132 for more]

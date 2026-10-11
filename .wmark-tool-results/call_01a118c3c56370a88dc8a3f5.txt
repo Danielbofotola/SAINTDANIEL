@@ -1,0 +1,27 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\b493c9bc81dc\20261008-004709-bash-call_01a118c3c56370a88dc8a3f5.txt (1,839 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Structured view (text):
+[powershell — Windows side]
+Name          Length LastWriteTime      
+----          ------ -------------      
+.gitignore        14 14/03/2026 09:54:00
+laravel.log 58312952 08/10/2026 00:45:47
+
+
+
+=== last 40 lines ===
+#86 C:/Users/danie/AppData/Roaming/Composer/vendor/bin/ecole/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(137): Illuminate/Pipeline/Pipeline->Illuminate/Pipeline/{closure}(Object(Illuminate/Http/Request))
+#87 C:/Users/danie/AppData/Roaming/Composer/vendor/bin/ecole/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(175): Illuminate/Pipeline/Pipeline->then(Object(Closure))
+#88 C:/Users/danie/AppData/Roaming/Composer/vendor/bin/ecole/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(144): Illuminate/Foundation/Http/Kernel->sendRequestThroughRouter(Object(Illuminate/Http/Request))
+#89 C:/Users/danie/AppData/Roaming/Composer/vendor/bin/ecole/vendor/laravel/framework/src/Illuminate/Foundation/Testing/Concerns/MakesHttpRequests.php(607): Illuminate/Foundation/Http/Kernel->handle(Object(Illuminate/Http/Request))
+#90 C:/Users/danie/AppData/Roaming/Composer/vendor/bin/ecole/vendor/laravel/framework/src/Illuminate/Foundation/Testing/Concerns/MakesHttpRequests.php(368): Illuminate/Foundation/Testing/TestCase->call('GET', 'http://localhos...', Array, Array, Array, Array)
+#91 C:/Users/danie/AppData/Roaming/Composer/vendor/bin/ecole/tests/Feature/StatistiquesTest.php(215): Illuminate/Foundation/Testing/TestCase->get('http://loc
+… 121 chars elided …
+actory.php(171): P/Tests/Feature/StatistiquesTest->{closure}()
+#93 [internal function]: P/Tests/Feature/StatistiquesTest->Pest/Factories/{closure}()
+#94 C:/Users/danie/AppData/Roaming/Composer/vendor/bin/ecole/vendor/pestphp/pest/src/Concerns/Testable.php(419): call_user_func_array(Object(Closure), Array)
+#95 C:/Users/danie/AppData/Roaming/Composer/vendor/bin/ecole/vendor/pestphp/pest/src/Support/ExceptionTrace.php(26): P/Tests/Feature/StatistiquesTest->Pest/Concerns/{closure}()
+#96 C:/Users/danie/AppData/Roaming/Composer/vendor/bin/ecole/vendor/pestphp/pest/src/Concerns/Testable.php(419): Pest/Support/ExceptionTrace::ensure(Object(Closure))
+#97 C:/Users/danie/AppData/Roaming/Composer/vendor/bin/ecole/vendor/pestphp/pest/src/Concerns/Testable.php(321): P/Tests/Feature/StatistiquesTest->__c
+… 3,433 chars elided …
+ccount impersonation {"admin_id":1,"user_id":2} 
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

@@ -1,0 +1,3 @@
+Updated tests/Feature/PortailParentTest.php: replaced 1 lines with 1 lines (fuzzy match: indent-shift)
+Auto-corrected edit landed at lines 428-428:
+428            'notifiable_type' => $parent->getMorphClass(),

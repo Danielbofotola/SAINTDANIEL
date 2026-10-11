@@ -1,0 +1,1 @@
+Wrote resources/views/errors/layout.blade.php (43 lines)

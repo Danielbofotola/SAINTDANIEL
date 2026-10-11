@@ -1,0 +1,6 @@
+49                     </div>
+50                     <h2 class="section-title">Inscription souhaitée</h2>
+51                     <div class="row">
+52                         <div class="col-md-6 form-group"><label class="form-label" for="classe_id">Classe demandée *</label><select class="form-control" id="classe_id" name="classe_id" required><option value="">Sélectionner une classe</option>@foreach ($classes as $classe)<option value="{{ $classe->id }}" @selected(old('classe_id') == $classe->id)>{{ $classe->nom }} · {{ $classe->cycle?->nom }}</option>@endforeach</select></div>
+
+[showing lines 49-52 of 68; read again with offset=53 for more]

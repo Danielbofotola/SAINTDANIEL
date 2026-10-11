@@ -1,0 +1,11 @@
+Applied patch: 2 files changed (2 updated)
+Updated resources/views/admin/dashboard.blade.php (1 hunk applied)
+Updated resources/views/professeur/layout.blade.php (1 hunk applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 271-271 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 271-271:
+271            @include('partials.raccourcis', ['raccourcis' => \App\Support\Raccourcis::pour(auth()->user())])
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 102-102 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 102-102:
+102            @include('partials.raccourcis', ['raccourcis' => \App\Support\Raccourcis::pour(auth()->user())])

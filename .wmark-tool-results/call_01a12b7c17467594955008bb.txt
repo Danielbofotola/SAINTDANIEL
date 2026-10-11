@@ -1,0 +1,22 @@
+177         */
+178        public function appliquer(Request $request): RedirectResponse
+179        {
+180            $data = $request->validate([
+181                'annee_scolaire_id' => ['required', 'exists:annees_scolaires,id'],
+182                'annee_cible_id' => ['required', 'exists:annees_scolaires,id', 'different:annee_scolaire_id'],
+183            ], [
+184                'annee_cible_id.different' => 'L’année cible doit être différente de l’année délibérée.',
+185            ]);
+186    
+187            $annee = AnneeScolaire::findOrFail($data['annee_scolaire_id']);
+188            $cible = AnneeScolaire::findOrFail($data['annee_cible_id']);
+189    
+190            // Le passage va toujours vers l'année suivante : une cible antérieure
+191            // (ou égale) à l'année délibérée n'a pas de sens.
+192            if ($cible->date_debut <= $annee->date_debut) {
+193                return back()->with('error', 'L’année cible doit être postérieure à l’année délibérée.');
+194            }
+195    
+196            $promus = 0;
+
+[showing lines 177-196 of 248; read again with offset=197 for more]

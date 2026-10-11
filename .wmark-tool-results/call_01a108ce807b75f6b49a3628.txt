@@ -1,0 +1,11 @@
+Applied patch: 1 file changed (1 updated)
+Updated app/Http/Controllers/AdminRegistrationRequestController.php (3 hunks applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 2: context matched at lines 103-107 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+  ⚠ hunk 3: context matched at lines 120-121 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 105-105:
+105                    'statut' => Inscription::STATUT_EN_ATTENTE,
+Auto-corrected hunk landed at lines 122-122:
+122                ->with($result ? 'success' : 'error', $result ? 'La demande a été acceptée : l’inscription est en attente de validation, elle sera activée automatiquement à l’encaissement du frais d’inscription.' : 'Cette demande a déjà été traitée.');
+Landed at lines 10-10 (the file's new text; no re-read needed):
+10     use App\Models\Inscription;

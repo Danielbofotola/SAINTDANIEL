@@ -1,0 +1,16 @@
+Applied patch: 3 files changed (3 updated)
+Updated resources/views/comptable/dashboard.blade.php (1 hunk applied)
+Updated resources/views/prefecture/dashboard.blade.php (1 hunk applied)
+Updated resources/views/titulaire/dashboard.blade.php (1 hunk applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 510-510 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 510-510:
+510    @include('partials.cloche-flottante')
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 157-157 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 157-157:
+157    @include('partials.cloche-flottante')
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 133-133 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 133-133:
+133    @include('partials.cloche-flottante')

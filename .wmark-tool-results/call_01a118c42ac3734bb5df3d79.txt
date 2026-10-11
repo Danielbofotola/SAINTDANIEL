@@ -1,0 +1,44 @@
+1      @php($etablissement = rescue(fn () => \App\Models\ParametreSysteme::current()?->nom_etablissement, null) ?: config('app.name', 'Établissement scolaire'))
+2      <!DOCTYPE html>
+3      <html lang="fr">
+4      <head>
+5          <meta charset="utf-8">
+6          <meta name="viewport" content="width=device-width, initial-scale=1">
+7          <title>@yield('titre', 'Erreur') — {{ $etablissement }}</title>
+8          <style>
+9              * { box-sizing: border-box; }
+10             body { margin:0; min-height:100vh; display:flex; align-items:center; justify-content:center; padding:24px;
+11                    background:#d0dbe5; color:#1e293b; font-family:'Segoe UI', system-ui, -apple-system, sans-serif; }
+12             .carte { width:100%; max-width:620px; background:#f2f5f8; border:1px solid #b0c2d0; border-radius:12px;
+13                      padding:32px; box-shadow:0 6px 24px rgba(15,23,42,.12); text-align:center; }
+14             .code { font-size:4rem; font-weight:800; line-height:1; color:#0f172a; letter-spacing:2px; }
+15             .titre { font-size:1.35rem; font-weight:700; margin:12px 0 6px; text-transform:uppercase; }
+16             .message { color:#475569; margin-bottom:22px; }
+17             .detail { background:#fff; border:1px solid #cbd5e1; border-radius:8px; padding:10px 14px; margin:0 0 22px;
+18                       font-family:Consolas, monospace; font-size:.78rem; color:#64748b; word-break:break-word; text-align:left; }
+19             .actions { display:flex; gap:10px; flex-wrap:wrap; justify-content:center; }
+20             .btn { display:inline-block; padding:9px 18px; border-radius:8px; text-decoration:none; font-weight:600; font-size:.85rem; }
+21             .btn-principal { background:#107c41; color:#fff; }
+22             .btn-secondaire { background:#fff; color:#0f172a; border:1px solid #94a3b8; }
+23             .pied { margin-top:20px; font-size:.75rem; color:#64748b; }
+24         </style>
+25     </head>
+26     <body>
+27         <div class="carte">
+28             <div class="code">@yield('code', '500')</div>
+29             <div class="titre">@yield('titre', 'Erreur')</div>
+30             <p class="message">@yield('message', "Une erreur inattendue s'est produite.")</p>
+31     
+32             @hasSection('detail')
+33                 <div class="detail">@yield('detail')</div>
+34             @endif
+35     
+36             <div class="actions">
+37                 <a href="{{ url()->previous() }}" class="btn btn-secondaire">← Retour</a>
+38                 <a href="{{ url('/') }}" class="btn btn-principal">Retour à l’accueil</a>
+39             </div>
+40     
+41             <div class="pied">{{ $etablissement }} — si le problème persiste, contactez l’administrateur.</div>
+42         </div>
+43     </body>
+44     </html>

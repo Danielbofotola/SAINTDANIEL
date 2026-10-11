@@ -1,0 +1,37 @@
+200    });
+201    
+202    test('le portail du parent affiche ses enfants', function () {
+203        DB::table('parametres_systeme')->insert([
+204            'nom_court' => 'Ecole Test',
+205            'portail_parents_actif' => true,
+206            'created_at' => now(),
+207            'updated_at' => now(),
+208        ]);
+209    
+210        $parent = User::factory()->create(['role' => 'parent']);
+211        $aicha = Eleve::create(['nom' => 'Bofotola', 'postnom' => 'M.', 'prenom' => 'Aicha', 'matricule' => 'ELV-1']);
+212        $parent->eleves()->sync([$aicha->id]);
+213    
+214        $this->actingAs($parent)
+215            ->get(route('parent.dashboard'))
+216            ->assertOk()
+217            ->assertSee('Mes enfants')
+218            ->assertSee('Aicha')
+219            ->assertSee('ELV-1');
+220    });
+221    
+222    test('un parent sans enfant rattaché voit un message d’information', function () {
+223        DB::table('parametres_systeme')->insert([
+224            'nom_court' => 'Ecole Test',
+225            'portail_parents_actif' => true,
+226            'created_at' => now(),
+227            'updated_at' => now(),
+228        ]);
+229    
+230        $parent = User::factory()->create(['role' => 'parent']);
+231    
+232        $this->actingAs($parent)
+233            ->get(route('parent.dashboard'))
+234            ->assertOk()
+235            ->assertSee('Aucun enfant n’est encore rattaché');
+236    });

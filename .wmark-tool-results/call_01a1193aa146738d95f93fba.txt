@@ -1,0 +1,70 @@
+312            {{-- ==================== DÉTAIL DES FRAIS ==================== --}}
+313            @if ($courant && $courant['frais']['totaux']['exige'] > 0)
+314                <div class="row">
+315                    <div class="col-md-12">
+316                        <div class="dossier-carte">
+317                            <h4 class="dossier-carte__titre">
+318                                <i class="fa fa-list-alt" style="color:var(--dossier)"></i> Détail des frais —
+319                                {{ $courant['inscription']->anneeScolaire?->libelle ?? 'année de référence' }}
+320                                <small class="text-muted ml-2">{{ $courant['frais']['lignes']->count() }} ligne(s)</small>
+321                            </h4>
+322                            <div class="table-responsive">
+323                                <table class="table table-sm">
+324                                    <thead>
+325                                        <tr>
+326                                            <th>Nature du frais</th><th>Échéance</th><th class="text-right">Exigible</th>
+327                                            <th class="text-right">Payé</th><th class="text-right">Reste à payer</th><th>État</th>
+328                                        </tr>
+329                                    </thead>
+330                                    <tbody>
+331                                        @foreach ($courant['frais']['lignes'] as $ligne)
+332                                            <tr>
+333                                                <td class="font-weight-bold">
+334                                                    {{ $ligne['frais']->typeFrais?->libelle ?? $ligne['frais']->typeFrais?->nom ?? 'Frais scolaires' }}
+335                                                </td>
+336                                                <td>{{ $ligne['frais']->date_echeance?->format('d/m/Y') ?? '—' }}</td>
+337                                                <td class="text-right">{{ number_format($ligne['exige'], 2) }}</td>
+338                                                <td class="text-right text-success">{{ number_format($ligne['paye'], 2) }}</td>
+339                                                <td class="text-right {{ $ligne['reste'] > 0 ? 'text-danger font-weight-bold' : 'text-muted' }}">
+340                                                    {{ number_format($ligne['reste'], 2) }}
+341                                                </td>
+342                                                <td>
+343                                                    @if ($ligne['reste'] <= 0)
+344                                                        <span class="badge badge-success">Soldé</span>
+345                                                    @elseif ($ligne['paye'] > 0)
+346                                                        <span class="badge badge-warning">Partiel</span>
+347                                                    @else
+348                                                        <span class="badge badge-danger">Non payé</span>
+349                                                    @endif
+350                                                </td>
+351                                            </tr>
+352                                        @endforeach
+353                                        <tr class="font-weight-bold" style="background:#f8f9fa">
+354                                            <td colspan="2">Total de l'année</td>
+355                                            <td class="text-right">{{ number_format($courant['frais']['totaux']['exige'], 2) }}</td>
+356                                            <td class="text-right text-success">{{ number_format($courant['frais']['totaux']['paye'], 2) }}</td>
+357                                            <td class="text-right {{ $courant['frais']['totaux']['reste'] > 0 ? 'text-danger' : 'text-success' }}">
+358                                                {{ number_format($courant['frais']['totaux']['reste'], 2) }}
+359                                            </td>
+360                                            <td></td>
+361                                        </tr>
+362                                    </tbody>
+363                                </table>
+364                            </div>
+365                            @if ($courant['frais']['non_affectes'] > 0)
+366                                <p class="text-muted mb-0" style="font-size:.85rem">
+367                                    <i class="fa fa-info-circle"></i>
+368                                    {{ number_format($courant['frais']['non_affectes'], 2) }} encaissé(s) sans affectation à une ligne de frais
+369                                    (déjà compté(s) dans le total payé).
+370                                </p>
+371                            @endif
+372                        </div>
+373                    </div>
+374                </div>
+375            @endif
+376    
+377            {{-- ==================== DOCUMENTS ==================== --}}
+378            <div class="row">
+379                <div class="col-md-12">
+
+[showing lines 312-379 of 404; read again with offset=380 for more]

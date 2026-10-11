@@ -1,0 +1,23 @@
+Applied patch: 1 file changed (1 updated)
+Updated resources/views/admin/annees/index.blade.php (3 hunks applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 37-39 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+  ⚠ hunk 2: context matched at lines 86-87 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+  ⚠ hunk 3: context matched at lines 116-121 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 40-42:
+40             @if (session('error'))
+41                 <div class="alert alert-danger">{{ session('error') }}</div>
+42             @endif
+Auto-corrected hunk landed at lines 91-91:
+91                                         <th class="text-center">Actions</th>
+Auto-corrected hunk landed at lines 121-128:
+121                                            <td class="text-center">
+122                                                <a href="{{ route('admin.annees.edit', $annee) }}" class="btn btn-sm btn-info" title="Modifier"><i class="fa fa-pencil"></i></a>
+123                                                <form method="POST" action="{{ route('admin.annees.destroy', $annee) }}" class="d-inline" onsubmit="return confirm('Voulez-vous vraiment supprimer cette année scolaire ?');">
+124                                                    @csrf
+125                                                    @method('DELETE')
+126                                                    <button class="btn btn-sm btn-danger" type="submit" title="Supprimer"><i class="fa fa-trash"></i></button>
+127                                                </form>
+128                                            </td>
+Auto-corrected hunk landed at lines 132-132:
+132                                            <td class="text-center" colspan="6">Aucune année scolaire enregistrée.</td>

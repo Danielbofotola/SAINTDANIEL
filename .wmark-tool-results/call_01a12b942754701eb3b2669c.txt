@@ -1,0 +1,23 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\aba9102c187c\20261011-162813-bash-call_01a12b942754701eb3b2669c.txt (4,513 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Structured view (text):
+[powershell — Windows side]
+Path                                                                                                                                LineNumber Line                                                     
+----                                                                                                                                ---------- ----                                                     
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Http\Controllers\ComptabiliteController.php                                    40             'totaux' => [                                
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Http\Controllers\ComptableDashboardController.php                              44         $taux = $fraisDefinis > 0 ? round($encaisse /    
+                                                                                                                                               $fraisDefinis * 100, 1) : 0.0;                           
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Http\Controllers\ComptableDashboardController.php                              52             'taux' => $taux,                             
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Http\Controllers\ComptableRecouvrementController.php                           28         $taux = 0.0;                                     
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Http
+… 13,817 chars elided …
+                                                                                                                                  : 'text-success' }}">                                    
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\resources\views\admin\eleves\show.blade.php                                       372                                             {{           
+                                                                                                                                               number_format($courant['frais']['totaux']['reste'], 2) }}
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\resources\views\admin\professeurs\emploi-du-temps.blade.php                        19         .table-schedule td { height: 85px;               
+         
+… 14,618 chars elided …
+['531', 'Ch�ques postaux', 5, 'actif'],      
+
+
+
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

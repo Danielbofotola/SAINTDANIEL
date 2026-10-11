@@ -1,0 +1,7 @@
+[powershell — Windows side]
+20:             <div><h1><i class="fa fa-graduation-cap"></i> Classes créées</h1><p>Consultez les classes et leur organisation scolaire@if($anneeEnCours) — année <strong><?php echo e($anneeEnCours->libelle); ?></strong><?php endif; ?>.</p></div>
+
+29:                     <thead><tr><th>#</th><th>Classe</th><th>Cycle</th><th>Section</th><th>Option</th><th>Salle</th><th>Élèves <?php if($anneeEnCours): ?><small><?php echo e($anneeEnCours->libelle); ?></small><?php endif; ?></th><th>Statut</th><th>Actions</th></tr></thead>
+
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

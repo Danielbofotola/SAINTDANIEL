@@ -1,0 +1,14 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/EspaceProfesseurTest.php (2 hunks applied)
+Landed at lines 190-200 (the file's new text; no re-read needed):
+190        Schema::create('parametres_systeme', function (Blueprint $table) {
+191            $table->id();
+192            $table->string('nom_etablissement', 150)->default('Etablissement');
+193            $table->string('nom_court', 60)->default('Ecole');
+194            $table->string('telephone', 30)->nullable();
+195            $table->string('email', 150)->nullable();
+196            $table->text('adresse')->nullable();
+197            $table->timestamps();
+198        });
+199        DB::table('parametres_systeme')->insert(['nom_court' => 'Ecole Test', 'created_at' => now(), 'updated_at' => now()]);
+200

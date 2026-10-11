@@ -1,0 +1,16 @@
+45         Schema::create('documents_professeurs', function (Blueprint $table) {
+46             $table->id();
+47             $table->unsignedBigInteger('professeur_id');
+48             $table->string('titre', 150);
+49             $table->string('type_document');
+50             $table->string('chemin_fichier');
+51             $table->unsignedInteger('taille_ko')->nullable();
+52             $table->string('statut')->default('actif');
+53             $table->timestamps();
+54         });
+55         Schema::create('cours', function (Blueprint $table) {
+56             $table->id();
+57             $table->string('code', 20)->unique();
+58             $table->string('intitule', 100);
+
+[showing lines 45-58 of 366; read again with offset=59 for more]

@@ -1,0 +1,11 @@
+Applied patch: 2 files changed (2 updated)
+Updated resources/views/admin/dashboard.blade.php (1 hunk applied)
+Updated resources/views/admin/profile/show.blade.php (1 hunk applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 357-357 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 358-358:
+358                        <li><a class="treeview-item" href="{{ route('admin.comptabilite.index') }}"><i class="icon fa fa-calculator"></i> Comptabilité OHADA</a></li>
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 205-205 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 206-206:
+206                            <li><a class="waves-effect waves-dark" href="{{ route('admin.comptabilite.index') }}"><i class="icon-arrow-right"></i>Comptabilité OHADA</a></li>

@@ -1,0 +1,84 @@
+371                'email.unique' => "Cette adresse e-mail est déjà utilisée.",
+372            ]);
+373    
+374            if ($request->hasFile('photo')) {
+375                if ($user->photo) {
+376                    Storage::disk('public')->delete($user->photo);
+377                }
+378    
+379                $data['photo'] = $request->file('photo')->store('users/photos', 'public');
+380            }
+381    
+382            $user->update($data);
+383    
+384            return redirect()->route('profile.show')->with('success', 'Les propriétés du profil ont été modifiées.');
+385        }
+386    
+387        public function updatePassword(Request $request): RedirectResponse
+388        {
+389            $user = $request->user();
+390    
+391            $data = $request->validate([
+392                'current_password' => ['required', 'current_password'],
+393                'password' => ['required', 'string', 'min:8', 'confirmed'],
+394            ], [
+395                'current_password.required' => 'Le mot de passe actuel est obligatoire.',
+396                'current_password.current_password' => 'Le mot de passe actuel est incorrect.',
+397                'password.min' => 'Le nouveau mot de passe doit contenir au moins 8 caractères.',
+398                'password.confirmed' => 'La confirmation du mot de passe ne correspond pas.',
+399            ]);
+400    
+401            $user->update(['password' => Hash::make($data['password'])]);
+402    
+403            return back()->with('success', 'Le mot de passe a été réinitialisé.');
+404        }
+405    
+406        public function deactivate(Request $request): RedirectResponse
+407        {
+408            $request->user()->update(['statut' => 'inactif']);
+409    
+410            auth()->logout();
+411            $request->session()->invalidate();
+412            $request->session()->regenerateToken();
+413    
+414            return redirect()->route('login')->with('success', 'Votre compte administrateur a été désactivé.');
+415        }
+416    
+417        public function toggleAccount(User $user): RedirectResponse
+418        {
+419            if ($user->is(auth()->user())) {
+420                return back()->with('error', 'Vous ne pouvez pas désactiver votre propre compte depuis cette page.');
+421            }
+422    
+423            $user->update(['statut' => $user->statut === 'actif' ? 'inactif' : 'actif']);
+424    
+425            if ($user->statut !== 'actif') {
+426                $this->purgerSessions($user);
+427            }
+428    
+429            return back()->with('success', 'Le statut du compte a été mis à jour.');
+430        }
+431    
+432        public function destroyAccount(User $user): RedirectResponse
+433        {
+434            if ($user->is(auth()->user())) {
+435                return back()->with('error', 'Vous ne pouvez pas supprimer votre propre compte.');
+436            }
+437    
+438            $this->purgerSessions($user);
+439            $user->delete();
+440    
+441            return back()->with('success', 'Le compte a été supprimé définitivement.');
+442        }
+443    
+444        /**
+445         * Met fin aux sessions actives d'un compte (driver « database ») : un
+446         * utilisateur désactivé ou supprimé ne reste pas connecté.
+447         */
+448        private function purgerSessions(User $user): void
+449        {
+450            if (config('session.driver') === 'database' && Schema::hasTable('sessions')) {
+451                DB::table('sessions')->where('user_id', $user->id)->delete();
+452            }
+453        }
+454    }

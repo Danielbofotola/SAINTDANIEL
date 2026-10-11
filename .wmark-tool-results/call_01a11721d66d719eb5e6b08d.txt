@@ -1,0 +1,18 @@
+665        });
+666    
+667        /* ---------- Correspondants / Discussions ---------- */
+668        window.msgTab = function (cible, bouton) {
+669            document.querySelectorAll('.msg-tab').forEach(b => b.classList.toggle('active', b === bouton));
+670            document.querySelectorAll('[data-vue]').forEach(el => {
+671                el.style.display = el.getAttribute('data-vue') === cible ? '' : 'none';
+672            });
+673        };
+674    
+675        window.ouvrirDiscussion = async function (id) {
+676            try {
+677                const donnees = new FormData();
+678                donnees.append('_token', CSRF);
+679                donnees.append('destinataire', id);
+680                const rep = await fetch(DEMARRER_URL, {
+
+[showing lines 665-680 of 736; read again with offset=681 for more]

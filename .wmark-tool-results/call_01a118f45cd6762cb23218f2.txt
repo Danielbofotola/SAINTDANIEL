@@ -1,0 +1,37 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\b493c9bc81dc\20261008-014014-bash-call_01a118f45cd6762cb23218f2.txt (911 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Structured view (text):
+[powershell — Windows side]
+tests\Feature\AnneeEnCoursScopingTest.php:155: expect(Eleve::inscritAnneeEnCours()->pluck('id')->all())->toBe([2]);
+tests\Feature\AppelsTest.php:169: expect($this->actingAs($alice)->getJson(route('appels.show', $id))->json('ice'))->toBe(['CAND-B'])
+tests\Feature\AppelsTest.php:170: ->and($this->actingAs($bruno)->getJson(route('appels.show', $id))->json('ice'))->toBe(['CAND-A']);
+tests\Feature\BulletinDocumentTest.php:215: ->and($data['branches_repechage'])->toBe([]);
+tests\Feature\BulletinDocumentTest.php:228: ->and($data['branches_repechage'])->toBe(['Algèbre']);
+tests\Feature\PortailParentTest.php:262: expect($correspondants->pluck('id')->all())->toBe([$prefet->id])
+tests\Feature\PortailParentTest.php:263: ->and($correspondants->pluck('role')->unique()->all())->toBe(['prefetture']);
+tests\Feature\PortailParentTest.php:351: expect($conversations->pluck('id')->all())->toBe([$avecPrefet->id]);
+tests\Feature\RaccourcisTest.php:83: ->and($prefet['rapports'])->toBe([]);
+tests\Feature\RaccourcisTest.php:92: expect(Raccourcis::pour(null)['rapports'])->toBe([]);
+tests\Feature\TresorerieAlerteTest.php:237: expect(Tresorerie::alertes())->toBe([]);
+tests\Feature\UtilisateursEnLigneTest.php:93: expect(PresenceUtilisateurs::idsEnLigne())->toBe([$admin->id]);
+=== avancement de la boucle ===
+=== boucle de detection du test instable ===
+run 1 :   Tests:    244 passed (1496 assertions)
+---- RUN 1 : ECHEC ----
+
+   PASS  Tests\Unit\ExampleTest
+  ? that true is true 
+… 0 chars elided …
+                                                                                           0.01s  
+
+   PASS  Tests\Feature\ActiveAccountTest
+  ? an authenticated but inactive account is redirected to the login page                                        0.23s  
+  ? a user deactivated while connected loses the session immediately                                             0.02s  
+  ? an inactive account cannot log in with its password                                                          0.24s  
+  ? deactivating an account purges its stored sessions                                                           0.03s  
+
+   PASS  Tests\Feature\AdminAccountCredentialsTest
+  ? the dedicated page shows the account and the credentials form                                                0.03s  
+  
+… 554 chars elided …
+                                         0.02s  
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

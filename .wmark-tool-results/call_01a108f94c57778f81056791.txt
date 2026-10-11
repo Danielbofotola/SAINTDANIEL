@@ -1,0 +1,1 @@
+Wrote database/migrations/2026_10_08_000000_add_details_to_archives_annees_table.php (44 lines)

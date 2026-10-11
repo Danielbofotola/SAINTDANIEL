@@ -1,0 +1,22 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/ComptableCaisseTest.php (1 hunk applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 342-344 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 345-378:
+345    
+346    test('le profil du caissier est propre au caissier', function () {
+347        $comptable = User::factory()->create(['role' => 'comptable', 'nom' => 'Kasa', 'prenom' => 'Yao']);
+348        $admin = User::factory()->create(['role' => 'admin']);
+349    
+350        $this->actingAs($comptable)
+351            ->get(route('comptable.profil'))
+352            ->assertOk()
+      … 18 lines omitted …
+371        $this->actingAs($comptable)->get(route('comptable.paiements.recu', $paiementId))->assertOk();
+372    
+373        // Désactivées : les pages sont fermées (404).
+374        DB::table('parametres_systeme')->update(['module_recus_actif' => 0, 'module_recouvrement_actif' => 0]);
+375    
+376        $this->actingAs($comptable)->get(route('comptable.recouvrement.index'))->assertNotFound();
+377        $this->actingAs($comptable)->get(route('comptable.paiements.recu', $paiementId))->assertNotFound();
+378    });

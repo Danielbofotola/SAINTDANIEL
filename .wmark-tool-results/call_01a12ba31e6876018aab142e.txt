@@ -1,0 +1,31 @@
+85                 'nomsClasses' => $classes->pluck('nom', 'id'),
+86                 'devises' => Monnaie::DEVISES,
+87                 'tauxParDefaut' => ParametreSysteme::tauxChange(),
+88                 'tarifsDisponibles' => $tarifs->map(fn ($tarif) => [
+89                     'id' => $tarif->id,
+90                     'classe' => $tarif->classe_id,
+91                     'libelle' => ($tarif->typeFrais?->nom ?? 'Tarif').' — '.($tarif->classe?->nom ?? '—')
+92                         .' ('.Monnaie::format($tarif->montant_exige, $tarif->devise).')',
+93                     'devise' => Monnaie::normaliser($tarif->devise),
+94                 ])->values(),
+95                 'paiements' => $paiements,
+96                 'modes' => self::MODES,
+97                 'periodes' => Periode::anneeEnCours()->orderBy('id')->get(),
+98                 'encaisse' => $annee
+99                     ? (float) Paiement::query()->where('statut', 'actif')
+100                        ->whereHas('inscription', fn ($query) => $query->where('annee_scolaire_id', $annee->id))
+101                        ->sum('montant_paye')
+102                    : 0.0,
+103                'totauxParDevise' => Encaisse::parDevise($annee),
+104            ]);
+105        }
+106    
+107        public function store(Request $request): RedirectResponse
+108        {
+109            $annee = AnneeScolaire::enCours();
+110    
+111            if (! $annee) {
+112                return back()->withInput()->with('error', 'Aucune année scolaire en cours : impossible d’encaisser un paiement.');
+113            }
+
+[showing lines 85-114 of 149; read again with offset=115 for more]

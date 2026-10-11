@@ -1,0 +1,52 @@
+95                     </div>
+96                     <div>
+97                         <label>Note minimale par cours (%) (indicatif)</label>
+98                         <input type="number" step="0.01" min="0" max="100" name="deliberation_note_min_cours"
+99                                value="{{ old('deliberation_note_min_cours', $regles['note_min_cours']) }}">
+100                    </div>
+101                </div>
+102                <div class="rangee" style="margin-top:12px">
+103                    <label style="margin:0"><input type="checkbox" name="deliberation_active" value="1"
+104                        @checked($parametres->deliberation_active)> Module de délibération actif</label>
+105                    <button class="btn" type="submit"><i class="fa-solid fa-save"></i> Enregistrer les critères</button>
+106                </div>
+107            </form>
+108        </section>
+109    
+110        {{-- Synthèse de l'effectif délibéré --}}
+111        @if ($classe && $lignes->isNotEmpty())
+112            <section class="carte">
+113                <h2><i class="fa-solid fa-chart-pie"></i> Synthèse — {{ $classe->nom }}</h2>
+114                <div class="stats">
+115                    <div class="stat">
+116                        <span class="stat__v">{{ $synthese['total'] }}</span>
+117                        <span class="stat__k">Élèves délibérés</span>
+118                        <span class="stat__s">{{ $synthese['garcons'] }} G · {{ $synthese['filles'] }} F</span>
+119                    </div>
+120                    @foreach (['admis' => 'Admis (passent)', 'ajourne' => 'Ajournés (repêchage)', 'redouble' => 'Redoublants'] as $cle => $libelle)
+121                        <div class="stat stat--{{ $cle }}">
+122                            <span class="stat__v">{{ $synthese['decisions'][$cle]['total'] }}</span>
+123                            <span class="stat__k">{{ $libelle }}</span>
+124                            <span class="stat__s">{{ $synthese['decisions'][$cle]['g'] }} G · {{ $synthese['decisions'][$cle]['f'] }} F</span>
+125                        </div>
+126                    @endforeach
+127                </div>
+128            </section>
+129        @endif
+130    
+131        {{-- Effectif --}}
+132        <section class="carte">
+133            <h2><i class="fa-solid fa-users"></i> Effectif à délibérer</h2>
+134            <form method="GET" action="{{ route('admin.deliberations.index') }}" class="rangee">
+135                <select name="classe" onchange="this.form.submit()" style="max-width:320px">
+136                    @foreach ($classes as $c)
+137                        <option value="{{ $c->id }}" @selected($classe && $classe->id === $c->id)>
+138                            {{ $c->nom }}@if ($c->ordre !== null) · niveau {{ $c->ordre }}@endif
+139                        </option>
+140                    @endforeach
+141                </select>
+142                <span style="color:var(--mut);font-size:.8rem">
+143                    @if ($classeSuivante)
+144                        Passage vers : <strong style="color:#fff">{{ $classeSuivante->nom }}</strong>
+
+[showing lines 95-144 of 231; read again with offset=145 for more]

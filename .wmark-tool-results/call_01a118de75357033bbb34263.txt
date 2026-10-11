@@ -1,0 +1,14 @@
+Applied patch: 1 file changed (1 updated)
+Updated app/Http/Controllers/UserProfileController.php (1 hunk applied)
+Landed at lines 156-166 (the file's new text; no re-read needed):
+156            $etaitParent = $user->role === 'parent';
+157    
+158            $user->update($data);
+159    
+160            // Seul un compte parent porte des enfants ; un ancien compte parent en est
+161            // détaché lorsqu'il change de rôle.
+162            if ($data['role'] === 'parent') {
+163                $user->eleves()->sync($data['enfants'] ?? []);
+164            } elseif ($etaitParent) {
+165                $user->eleves()->sync([]);
+166            }

@@ -1,0 +1,15 @@
+Applied patch: 2 files changed (2 updated)
+Updated app/Http/Controllers/ComptablePaiementController.php (2 hunks applied)
+Updated app/Http/Controllers/PaiementController.php (2 hunks applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 2: context matched at lines 97-103 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 103-103:
+103                'totauxParDevise' => Encaisse::parDevise($annee),
+Landed at lines 13-13 (the file's new text; no re-read needed):
+13     use App\Support\Encaisse;
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 2: context matched at lines 82-85 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 85-85:
+85                 'totauxParDevise' => Encaisse::parDevise($annee),
+Landed at lines 13-13 (the file's new text; no re-read needed):
+13     use App\Support\Encaisse;

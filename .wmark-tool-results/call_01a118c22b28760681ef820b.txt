@@ -1,0 +1,38 @@
+[powershell — Windows side]
+public const ROLES = ['admin', 'prefetture', 'titulaire', 'professeur', 'comptable', 'parent'];
+
+    /** Libellé lisible d'un rôle. */
+    public const ROLE_LABELS = [
+        'admin' => 'Administrateur',
+        'prefetture' => 'Préfecture',
+        'titulaire' => 'Titulaire',
+    public const ROLE_LABELS = [
+        'admin' => 'Administrateur',
+        'prefetture' => 'Préfecture',
+        'titulaire' => 'Titulaire',
+        'professeur' => 'Professeur',
+        'comptable' => 'Comptable',
+        'parent' => 'Parent',
+        'parent' => 'Parent',
+    ];
+
+    public static function libelleRole(?string $role): string
+    {
+        return self::ROLE_LABELS[$role] ?? ucfirst((string) $role);
+    }
+    public static function libelleRole(?string $role): string
+    {
+        return self::ROLE_LABELS[$role] ?? ucfirst((string) $role);
+    }
+
+    /**
+     * Nom de route du tableau de bord correspondant au rôle.
+        return self::ROLE_LABELS[$role] ?? ucfirst((string) $role);
+    }
+
+    /**
+     * Nom de route du tableau de bord correspondant au rôle.
+     *
+     * Source unique : login, « retour au tableau de bord » et impersonation s'y réfèrent.
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

@@ -1,0 +1,68 @@
+1      <?php
+2      
+3      namespace App\Http\Controllers;
+4      
+5      use App\Models\AnneeScolaire;
+6      use App\Models\Periode;
+7      use Illuminate\Http\RedirectResponse;
+8      use Illuminate\Http\Request;
+9      use Illuminate\Validation\Rule;
+10     use Illuminate\View\View;
+11     
+12     class PeriodeController extends Controller
+13     {
+14         public function index(): View
+15         {
+16             return view('admin.periodes.index', [
+17                 'annee' => AnneeScolaire::enCours(),
+18                 'periodes' => Periode::query()
+19                     ->anneeEnCours()
+20                     ->withCount(['evaluations', 'bulletins'])
+21                     ->orderBy('id')
+22                     ->get(),
+23             ]);
+24         }
+25     
+26         public function store(Request $request): RedirectResponse
+27         {
+28             $annee = AnneeScolaire::enCours();
+29     
+30             if (! $annee) {
+31                 return back()->withInput()->with('error', 'Aucune année scolaire en cours : impossible de créer une période.');
+32             }
+33     
+34             $data = $request->validate([
+35                 'nom' => [
+36                     'required',
+37                     'string',
+38                     'max:50',
+39                     Rule::unique('periodes', 'nom')->where('annee_scolaire_id', $annee->id),
+40                 ],
+41             ], [
+42                 'nom.required' => 'Le nom de la période est obligatoire.',
+43                 'nom.unique' => 'Cette période existe déjà pour l’année en cours.',
+44             ]);
+45     
+46             Periode::create($data + ['annee_scolaire_id' => $annee->id, 'statut' => 'actif']);
+47     
+48             return redirect()->route('admin.periodes.index')->with('success', 'La période a été créée.');
+49         }
+50     
+51         public function toggleStatus(Periode $periode): RedirectResponse
+52         {
+53             $periode->update(['statut' => $periode->statut === 'actif' ? 'inactif' : 'actif']);
+54     
+55             return back()->with('success', 'Le statut de la période a été mis à jour.');
+56         }
+57     
+58         public function destroy(Periode $periode): RedirectResponse
+59         {
+60             if ($periode->evaluations()->exists() || $periode->bulletins()->exists()) {
+61                 return back()->with('error', 'Cette période contient des évaluations ou des bulletins : supprimez-les d’abord.');
+62             }
+63     
+64             $periode->delete();
+65     
+66             return redirect()->route('admin.periodes.index')->with('success', 'La période a été supprimée.');
+67         }
+68     }

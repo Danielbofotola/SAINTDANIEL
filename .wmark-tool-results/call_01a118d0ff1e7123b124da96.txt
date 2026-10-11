@@ -1,0 +1,33 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\b493c9bc81dc\20261008-010138-bash-call_01a118d0ff1e7123b124da96.txt (816 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Structured view (text):
+[powershell — Windows side]
+PASS  Tests\Feature\PortailParentTest
+  ✓ un parent accède à son espace quand le module est ouvert                                                     0.20s  
+  ✓ l’espace parent répond 404 quand le module est fermé                                                         0.03s  
+  ✓ l’espace parent est interdit aux autres rôles                                                                0.02s  
+  ✓ un administrateur connecté peut ouvrir le portail parent                                                     0.04s  
+  ✓ un admin qui consulte un compte parent accède au portail                                                     0.03s  
+  ✓ en consultation, une route strictement réservée à l’admin reste interdite                                    0.03s  
+  ✓ le portail d’un parent ne propose que le préfet comme correspondant                                          0.02s  
+  ✓ un parent écrit au préfet depuis le portail                                                                  0.03s  
+  ✓ un parent ne peut pas écrire à un professeur (destinataire hors périmètre)                                   0.02s  
+  ✓ un parent ne peut pas démarrer une discussion avec un professeur                                             0.03s  
+  ✓ un parent ne voit ni ne lit les discussions avec les autres services                                         0.03s  
+  ✓ un message vocal est enregistré et rendu par un lecteur audio                                      
+… 141 chars elided …
+  PASS  Tests\Feature\MessagerieTest
+  ✓ a user writes to a colleague who then sees the message                                                       0.06s  
+  ✓ a broadcast reaches every active user                                                                        0.03s  
+  ✓ a participant answers and only the others get an unread message                                              0.03s  
+  ✓ an outsider cannot write into a conversation he does not belong to                                           0.03s  
+  ✓ the messaging page is reserved to authenticated users                                                        0.02s  
+  ✓ a message without recipient or without text is refused                                                       0.03s  
+  ✓ the picture of the correspondent 
+… 941 chars elided …
+ponse citée apparaît sur la bulle du nouveau message                                                   0.02s  
+  ✓ une réaction émoji est enregistrée, affichée et retirée                                                      0.03s  
+
+  Tests:    29 passed (213 assertions)
+  Duration: 1.23s
+
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

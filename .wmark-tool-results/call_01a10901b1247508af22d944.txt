@@ -1,0 +1,42 @@
+126    
+127            $anneeId = (int) $data['annee_scolaire_id'];
+128    
+129            $recettes = (float) Paiement::query()
+130                ->where('statut', 'actif')
+131                ->whereHas('inscription', fn ($query) => $query->where('annee_scolaire_id', $anneeId))
+132                ->sum('montant_paye');
+133    
+134            $depenses = (float) Depense::query()
+135                ->where('annee_scolaire_id', $anneeId)
+136                ->where('statut', 'actif')
+137                ->sum('montant');
+138    
+139            // Tout ce qui reste à figer à la clôture : frais attendus, impayés,
+140            // effectifs par sexe et résultats (bulletins / notes).
+141            $totalEleves = Inscription::query()->where('annee_scolaire_id', $anneeId)->where('statut', 'actif')->count();
+142            $attendu = (float) FraisScolaire::query()->where('annee_scolaire_id', $anneeId)->where('statut', 'actif')->sum('montant_exige');
+143            $garcons = Eleve::query()->where('sexe', 'M')
+144                ->whereHas('inscriptions', fn ($query) => $query->where('annee_scolaire_id', $anneeId)->where('statut', 'actif'))
+145                ->count();
+146            $filles = Eleve::query()->where('sexe', 'F')
+147                ->whereHas('inscriptions', fn ($query) => $query->where('annee_scolaire_id', $anneeId)->where('statut', 'actif'))
+148                ->count();
+149            $bulletins = Bulletin::query()
+150                ->whereHas('inscription', fn ($query) => $query->where('annee_scolaire_id', $anneeId))
+151                ->count();
+152            $notes = Note::query()
+153                ->whereHas('evaluation.affectation', fn ($query) => $query->where('annee_scolaire_id', $anneeId))
+154                ->count();
+155    
+156            DB::transaction(function () use ($anneeId, $data, $recettes, $depenses, $totalEleves, $attendu, $garcons, $filles, $bulletins, $notes) {
+157                ArchiveAnnee::create([
+158                    'annee_scolaire_id' => $anneeId,
+159                    'total_eleves_inscrits' => $totalEleves,
+160                    'total_recettes' => $recettes,
+161                    'total_depenses' => $depenses,
+162                    'solde_final' => $recettes - $depenses,
+163                    'total_attendu' => $attendu,
+164                    'total_impayes' => max($attendu - $recettes, 0),
+165                    'eleves_garcons' => $garcons,
+
+[showing lines 126-165 of 183; read again with offset=166 for more]

@@ -1,0 +1,43 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\aba9102c187c\20261011-165604-apply_patch-call_01a12bad9741747dbc386c59.txt (845 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Structured view (text):
+Applied patch: 1 file changed (1 updated)
+Updated resources/views/admin/affectations/index.blade.php (3 hunks applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 45-74 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+  ⚠ hunk 2: context matched at lines 95-96 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+  ⚠ hunk 3: context matched at lines 114-115 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 45-75:
+45                 <div class="col-md-6">
+46                     <div class="tile mb-4">
+47                         <h4 class="tile-title"><i class="fa fa-exchange"></i> Mutation &amp; permutation</h4>
+48                         <p class="text-muted small mb-2">
+49                             La <strong>mutation</strong> réaffecte une affectation (professeur / cours / classe) depuis la liste ci-dessous.
+50                             La <strong>permutation</strong> échange les professeurs de deux affectations.
+51                         </p>
+52                         <form method="POST" action="{{ route('admin.affectations.permuter') }}">
+      … 15 lines omitted …
+68                                 </select>
+69                             </div>
+70                             <button class="
+… 0 chars elided …
+btn btn-warning" type="submit" @disabled(! $annee || $toutesAffectations->count() < 2)><i class="fa fa-exchange"></i> Permuter les professeurs</button>
+71                         </form>
+72                         <hr>
+73                         <a href="{{ route('admin.cours.index') }}" class="btn btn-outline-secondary btn-block"><i class="fa fa-book"></i> Gérer les cours (page dédiée)</a>
+74                     </div>
+75                 </div>
+Auto-corrected hunk landed at lines 97-102:
+97                                         <button type="button" class="btn btn-sm btn-warning" title="Muter cette affectation"
+98                                             data-toggle="modal" data-target="#muterModal"
+99                                             data-action="{{ route('admin.affectati
+… 769 chars elided …
+tle">Muter l’affectation</h5><button type="button" class="close" data-dismiss="modal" aria-label="Fermer"><span aria-hidden="true">&times;</span></button></div>
+128                    <div class="modal-body">
+      … 13 lines omitted …
+142                var b = $(event.relatedTarget);
+143                document.getElementById('muterForm').action = b.data('action');
+144                document.getElementById('muterProfesseur').value = b.data('professeur') || '';
+145                document.getElementById('muterCours').value = b.data('cours') || '';
+146                document.getElementById('muterClasse').value = b.data('classe') || '';
+147            });
+148        </script>
+149    </body>

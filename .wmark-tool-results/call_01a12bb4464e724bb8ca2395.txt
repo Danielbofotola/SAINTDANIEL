@@ -1,0 +1,29 @@
+1      <?php
+2      
+3      namespace App\Models;
+4      
+5      use Illuminate\Database\Eloquent\Model;
+6      
+7      class Cours extends Model
+8      {
+9          protected $table = 'cours';
+10     
+11         protected $fillable = ['code', 'intitule', 'ponderation', 'max_travaux_journaliers', 'max_examen', 'statut'];
+12     
+13         /**
+14          * Maximum total de la branche pour une période (T.J. + Examen), ou null si non défini.
+15          */
+16         public function maximumParPeriode(): ?int
+17         {
+18             if ($this->max_travaux_journaliers === null && $this->max_examen === null) {
+19                 return null;
+20             }
+21     
+22             return (int) $this->max_travaux_journaliers + (int) $this->max_examen;
+23         }
+24     
+25         public function affectations()
+26         {
+27             return $this->hasMany(AffectationCours::class);
+28         }
+29     }

@@ -1,0 +1,26 @@
+[powershell — Windows side]
+FAIL  Tests\Feature\AdminUserManagementTest
+  ✓ a professor without an assigned teacher record can open the professor dashboard                              0.22s  
+  ⨯ a professor dashboard shows the teacher assigned courses and evaluations                                     0.02s  
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\AdminUserManagementTest > a professor dashboard shows the teacher assigned…   ErrorException   
+  Undefined array key 6
+
+  at tests\Feature\AdminUserManagementTest.php:291
+    287▕         ['eleve_id' => 2, 'classe_id' => 1, 'annee_scolaire_id' => 1, 'statut' => 'actif'],
+    288▕     ]);
+    289▕     DB::table('emplois_du_temps')->insert([
+    290▕         'affectation_id' => 1,
+  ➜ 291▕         'jour' => ['lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'][now()->addDay()->dayOfWeekIso - 1],
+    292▕         'heure_debut' => '10:00:00',
+    293▕         'heure_fin' => '11:00:00',
+    294▕         'statut' => 'actif',
+    295▕     ]);
+
+
+  Tests:    1 failed, 1 passed (11 assertions)
+  Duration: 0.46s
+
+
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

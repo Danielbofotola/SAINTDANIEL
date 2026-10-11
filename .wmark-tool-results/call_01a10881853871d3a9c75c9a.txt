@@ -1,0 +1,42 @@
+198    
+199        $rows = [
+200            ['Acceptee', 'F', 'acceptee', 1, 1, null],
+201            ['Refusee', 'M', 'refusee', 1, 1, 'Dossier incomplet'],
+202            ['EnAttente', 'M', 'en_attente', null, null, null],
+203        ];
+204    
+205        foreach ($rows as [$nom, $sexe, $statut, $classeId, $anneeId, $motif]) {
+206            DB::table('demandes_inscription')->insert([
+207                'nom' => $nom, 'postnom' => 'Cas', 'prenom' => 'Cas', 'sexe' => $sexe,
+208                'date_naissance' => '2014-01-01', 'lieu_naissance' => null,
+209                'classe_id' => $classeId, 'annee_scolaire_id' => $anneeId,
+210                'nom_mere' => 'Marie', 'telephone_mere' => '0990000000',
+211                'email_mere' => null, 'adresse_mere' => null,
+212                'nom_pere' => null, 'telephone_pere' => null, 'email_pere' => null,
+213                'statut' => $statut, 'traite_par' => $statut === 'en_attente' ? null : $admin->id,
+214                'traite_le' => $statut === 'en_attente' ? null : now(),
+215                'motif_refus' => $motif, 'created_at' => now(), 'updated_at' => now(),
+216            ]);
+217        }
+218    
+219        $this->actingAs($admin)
+220            ->get(route('admin.registration.students.history'))
+221            ->assertOk()
+222            ->assertSee("Historique d'inscription", false)
+223            ->assertSee('Acceptee Cas Cas')
+224            ->assertSee('Refusee Cas Cas')
+225            ->assertSee('Dossier incomplet')
+226            ->assertDontSee('EnAttente Cas Cas');
+227    
+228        $this->actingAs($admin)
+229            ->get(route('admin.registration.students.history', ['statut' => 'refusee']))
+230            ->assertOk()
+231    });
+232    
+233    test('the admin dashboard menu links to the student list and the enrollment history', function () {
+234        $admin = User::factory()->create(['role' => 'admin']);
+235    
+236        $this->actingAs($admin)
+237            ->get(route('admin.dashboard'))
+
+[showing lines 198-237 of 241; read again with offset=238 for more]

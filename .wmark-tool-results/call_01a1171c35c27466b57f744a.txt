@@ -1,0 +1,32 @@
+150            .msg-shell:not(.show-thread) .msg-thread { display: none; }
+151            .msg-shell.show-thread .msg-list { display: none; }
+152        }
+153    </style>
+154    @endonce
+155    
+156    <div class="msg-shell {{ $active ? 'show-thread' : '' }}" id="msgShell">
+157        <aside class="msg-list">
+158            <div class="msg-list__title">
+159                <h2>Messages</h2>
+160                <span style="color:var(--chat-muted)"><i class="fa-solid fa-magnifying-glass"></i></span>
+161            </div>
+162            <div class="msg-list__head">
+163                <div class="msg-tabs">
+164                    <button type="button" class="msg-tab {{ $vueParDefaut === 'correspondants' ? 'active' : '' }}"
+165                            data-cible="correspondants" onclick="msgTab('correspondants', this)">
+166                        <i class="fa-solid fa-user-group"></i> Correspondants
+167                    </button>
+168                    <button type="button" class="msg-tab {{ $vueParDefaut === 'discussions' ? 'active' : '' }}"
+169                            data-cible="discussions" onclick="msgTab('discussions', this)">
+170                        <i class="fa-solid fa-comments"></i> Discussions
+171                    </button>
+172                </div>
+173                <button class="btn-compose" type="button" onclick="ouvrirCompose()">
+174                    <i class="fa-solid fa-pen-to-square"></i> Nouveau message
+175                </button>
+176                <input type="text" id="convSearch" placeholder="Rechercher…">
+177            </div>
+178    
+179            <div class="conv-scroll" id="convContainer" data-vue="discussions" @if ($vueParDefaut !== 'discussions') style="display:none" @endif>
+
+[showing lines 150-179 of 729; read again with offset=180 for more]

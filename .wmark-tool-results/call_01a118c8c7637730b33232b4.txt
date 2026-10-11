@@ -1,0 +1,38 @@
+1      <?php
+2      
+3      namespace App\Http\Controllers;
+4      
+5      use App\Models\ParametreSysteme;
+6      use Illuminate\Http\RedirectResponse;
+7      use Illuminate\Http\Request;
+8      use Illuminate\View\View;
+9      
+10     class ModuleSwitchController extends Controller
+11     {
+12         public function index(): View
+13         {
+14             return view('admin.modules.index', [
+15                 'settings' => ParametreSysteme::query()->first() ?? ParametreSysteme::defaults(),
+16             ]);
+17         }
+18     
+19         public function update(Request $request): RedirectResponse
+20         {
+21             $request->validate([
+22                 'saisie_notes_active' => ['nullable', 'boolean'],
+23                 'portail_parents_actif' => ['nullable', 'boolean'],
+24                 'deliberation_active' => ['nullable', 'boolean'],
+25             ]);
+26     
+27             $settings = ParametreSysteme::query()->first()
+28                 ?? ParametreSysteme::create(ParametreSysteme::defaults()->getAttributes());
+29     
+30             $settings->update([
+31                 'saisie_notes_active' => $request->boolean('saisie_notes_active'),
+32                 'portail_parents_actif' => $request->boolean('portail_parents_actif'),
+33                 'deliberation_active' => $request->boolean('deliberation_active'),
+34             ]);
+35     
+36             return redirect()->route('admin.modules.index')->with('success', 'L’état des modules a été mis à jour.');
+37         }
+38     }

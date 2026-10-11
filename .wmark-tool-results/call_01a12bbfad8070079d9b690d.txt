@@ -1,0 +1,18 @@
+103        public static function defaults(): self
+104        {
+105            return new self([
+106                'nom_etablissement' => 'COMPLEXE SCOLAIRE BABAZIN',
+107                'nom_court' => 'C.S. Moty',
+108                'saisie_notes_active' => true,
+109                'portail_parents_actif' => false,
+110                'bulletin_pays' => 'République Démocratique du Congo',
+111                'bulletin_ministere' => "Ministère de l'Enseignement Primaire, Secondaire et Professionnel",
+112                'bulletin_titre' => 'Bulletin annuel — Cycle terminal de l’éducation de base (CTEB)',
+113                'bulletin_reference' => 'EBE/P.S./010',
+114                'bulletin_signataire' => 'Le Chef d’Établissement',
+115                'bulletin_seuil_reussite' => self::SEUIL_REUSSITE_DEFAUT,
+116                'bulletin_afficher_place' => true,
+117                'bulletin_afficher_conduite' => true,
+118            ]);
+119        }
+120    }

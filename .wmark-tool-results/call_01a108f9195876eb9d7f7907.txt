@@ -1,0 +1,10 @@
+[powershell — Windows side]
+ANNEE_EN_COURS=2026-2027 (id 1)
+inscriptions.total=11 actif=11 en_attente=0 inactif=0
+paiements.total=3 actifs=3 montant_actif=410 montant_tous=410
+depenses.total=1 actives=1 montant_actif=500 montant_tous=500
+frais_exiges=1110 encaisse=410 impayes=700
+bulletins=3 notes=3
+archives=0
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

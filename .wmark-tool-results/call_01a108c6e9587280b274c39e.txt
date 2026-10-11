@@ -1,0 +1,15 @@
+Applied patch: 1 file changed (1 updated)
+Updated resources/views/comptable/paiements.blade.php (4 hunks applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 80-81 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+  ⚠ hunk 3: context matched at lines 104-105 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 81-83:
+81                             <div class="row g-2">
+82                                 <div class="col-md-6"><label class="form-label mb-1 fw-bold">Période</label><select class="form-select form-select-sm" name="periode_id"><option value="">Non précisée</option>@foreach ($periodes as $periode)<option value="{{ $periode->id }}" @selected(old('periode_id') == $periode->id)>{{ $periode->nom }}</option>@endforeach</select></div>
+83                             </div>
+Auto-corrected hunk landed at lines 108-108:
+108                                        <td class="text-end"><a href="{{ route('comptable.paiements.recu', $paiement) }}" class="btn btn-sm btn-outline-info" title="Voir le reçu"><i class="bi bi-receipt"></i></a></td>
+Landed at lines 101-101 (the file's new text; no re-read needed):
+101                            <thead><tr><th>Reçu</th><th>Élève</th><th class="text-end">Montant</th><th></th></tr></thead>
+Landed at lines 111-111 (the file's new text; no re-read needed):
+111                                    <tr><td colspan="4" class="text-center text-muted">Aucun paiement enregistré.</td></tr>

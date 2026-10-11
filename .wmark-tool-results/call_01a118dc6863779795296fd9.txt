@@ -1,0 +1,55 @@
+1      <?php
+2      
+3      namespace App\Http\Controllers;
+4      
+5      use App\Models\Annonce;
+6      use App\Models\ParametreSysteme;
+7      use App\Support\Messagerie;
+8      use Illuminate\Http\Request;
+9      use Illuminate\View\View;
+10     
+11     /**
+12      * Espace Parent : page de communication dédiée aux parents, ouverte seulement
+13      * quand l'administrateur active le module « Portail Parents ». Elle réutilise
+14      * la messagerie interne (conversations, messages, pièces jointes dont les
+15      * vocaux) avec une interface grand public.
+16      */
+17     class PortailParentController extends Controller
+18     {
+19         public function index(Request $request): View
+20         {
+21             $utilisateur = $request->user();
+22             $parametres = ParametreSysteme::current();
+23     
+24             // Le portail n'existe que si l'administration l'a ouvert.
+25             abort_unless($parametres->portail_parents_actif, 404);
+26     
+27             $conversations = Messagerie::conversationsDe($utilisateur);
+28     
+29             $active = $request->query('conversation')
+30                 ? $conversations->firstWhere('id', (int) $request->query('conversation'))
+31                 : $conversations->first();
+32     
+33             if ($active) {
+34                 Messagerie::marquerLu($active, $utilisateur);
+35                 $active->setAttribute('non_lus', 0);
+36             }
+37     
+38             return view('parent.portail', [
+39                 'user' => $utilisateur,
+40                 'parametres' => $parametres,
+41                 'conversations' => $conversations,
+42                 'active' => $active,
+43                 'messages' => $active ? $active->messages()->with('auteur')->get() : collect(),
+44                 'annonces' => Annonce::query()
+45                     ->where(fn ($query) => $query->where('cible', 'tous')->orWhere('cible', 'parent'))
+46                     ->latest()
+47                     ->limit(10)
+48                     ->get(),
+49                 'notifications' => $utilisateur->notifications()->latest()->limit(15)->get(),
+50                 // Correspondants possibles : pour un parent, le préfet (préfecture).
+51                 'destinataires' => Messagerie::correspondantsQuery($utilisateur)->get(),
+52                 'nonLus' => (int) $conversations->sum('non_lus'),
+53             ]);
+54         }
+55     }

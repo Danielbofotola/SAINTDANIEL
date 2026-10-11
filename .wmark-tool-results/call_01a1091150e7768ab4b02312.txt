@@ -1,0 +1,10 @@
+15             <div class="app-title">
+16                 <div>
+17                     <h1><i class="fa fa-sitemap"></i> Plan comptable SYSCOHADA</h1>
+18                     <p>{{ $comptes->count() }} compte(s) — classes 1 à 9 du référentiel OHADA.</p>
+19                 </div>
+20                 <div>
+21                     <a class="btn btn-secondary" href="{{ route('admin.comptabilite.index') }}"><i class="fa fa-arrow-left"></i> Comptabilité</a>
+22                     <a class="btn btn-info" href="{{ route('admin.comptabilite.balance') }}"><i class="fa fa-balance-scale"></i> Balance</a>
+
+[showing lines 15-22 of 71; read again with offset=23 for more]

@@ -1,0 +1,30 @@
+50                             </form>
+51                         @endif
+52                     </div>
+53                     <div class="table-responsive">
+54                         <table class="table table-hover table-bordered">
+55                             <thead><tr><th>Place</th><th>Élève</th><th>Notes</th><th>Total</th><th>Max</th><th>Pourcentage</th><th>Mention</th><th>Bulletin</th></tr></thead>
+56                             <tbody>
+57                                 @forelse ($rows as $row)
+58                                     <tr>
+59                                         <td><span class="badge badge-{{ $row['place'] <= 3 ? 'success' : 'secondary' }}">{{ $row['place'] }}</span></td>
+60                                         <td>{{ $row['inscription']->eleve?->nom }} {{ $row['inscription']->eleve?->postnom }} {{ $row['inscription']->eleve?->prenom }}<br><small class="text-muted">{{ $row['inscription']->eleve?->matricule }}</small></td>
+61                                         <td>{{ $row['nb_notes'] }}</td>
+62                                         <td>{{ rtrim(rtrim(number_format($row['total'], 2, '.', ''), '0'), '.') }}</td>
+63                                         <td>{{ rtrim(rtrim(number_format($row['max'], 2, '.', ''), '0'), '.') }}</td>
+64                                         <td>{{ number_format($row['pourcentage'], 2) }} %</td>
+65                                         <td>{{ $row['mention'] }}</td>
+66                                         <td>
+67                                             @if ($row['bulletin'])
+68                                                 <span class="badge badge-success">Généré</span>
+69                                             @else
+70                                                 <span class="badge badge-secondary">Non généré</span>
+71                                             @endif
+72                                         </td>
+73                                     </tr>
+74                                 @empty
+75                                     <tr><td colspan="8" class="text-center text-muted">Aucun élève inscrit dans cette classe pour l'année en cours.</td></tr>
+76                                 @endforelse
+77                             </tbody>
+
+[showing lines 50-77 of 86; read again with offset=78 for more]

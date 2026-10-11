@@ -1,0 +1,23 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\b493c9bc81dc\20261008-010614-bash-call_01a118d53c2774d8853631b5.txt (513 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+[powershell — Windows side]
+view:clear fait
+status = 200
+« Démarrer la discussion » : non
+« Écrire à » : non
+
+--- extrait autour de tab-messages ---
+tab-messages" class="portail-panel">
+            
+            <style>
+    :root {
+        --chat-bg: #18191a; --chat-card: #242526; --chat-hover: #3a3b3c;
+        --chat-text: #e4e6eb; --chat-muted: #b0b3b8; --chat-blue: #0084ff;
+        --chat-divider: #2f3031; --chat-sent: #0084ff; --chat-received: #3e4042;
+    }
+    .msg-shell { display: grid; grid-template-columns: 360px minmax(0, 1fr); gap: 0; height: 76vh; min-height: 480px;
+        background: var(--chat-bg); border: 1px solid var(--chat-divider); border-radius: 12px; overflow: hidden; }
+
+    /* ===== Colonne liste (façon liste de discussions Facebook Lite) ===== */
+    /* min-height:0 : sans ça, un enfant de grille/flex refuse de rét
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

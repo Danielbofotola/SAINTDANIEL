@@ -1,0 +1,42 @@
+330        });
+331        Schema::create('classes', function (Blueprint $table) {
+332            $table->id();
+333            $table->string('statut');
+334        });
+335        Schema::create('professeurs', function (Blueprint $table) {
+336            $table->id();
+337            $table->string('statut');
+338        });
+339        Schema::create('salles', function (Blueprint $table) {
+340            $table->id();
+341            $table->string('statut');
+342        });
+343    
+344        $admin = User::factory()->create(['role' => 'admin']);
+345    
+346        $this->actingAs($admin)
+347            ->get(route('admin.profile.statistics'))
+348            ->assertOk()
+349            ->assertSee('Comptes par rôle')
+350            ->assertSee('Ressources scolaires')
+351            ->assertSee('administrationChart')
+352            ->assertSee('resourcesChart');
+353    
+354        $this->get(route('admin.profile.show'))
+355            ->assertOk()
+356            ->assertSee('Sécurité du compte')
+357            ->assertDontSee('administrationChart')
+358            ->assertDontSee('resourcesChart');
+359    });
+360    
+361    test('admin can create a section and option before returning to the class form', function () {
+362        Schema::dropIfExists('options');
+363        Schema::dropIfExists('sections');
+364    
+365        // Schéma réel de `sections` : la migration align_sections_options_schema a
+366        // retiré les colonnes code/description/statut.
+367        Schema::create('sections', function (Blueprint $table) {
+368            $table->id();
+369            $table->string('nom', 100)->unique();
+
+[showing lines 330-369 of 480; read again with offset=370 for more]

@@ -1,0 +1,19 @@
+[powershell — Windows side]
+PASS  Tests\Feature\ComptableCaisseTest
+  ✓ the cashier sees the payment page with a student filter and can record a payment                             0.21s  
+  ✓ the cashier payment page filters the student list by class                                                   0.03s  
+  ✓ the cashier dashboard links to the payment page                                                              0.02s  
+  ✓ the payment page is restricted to the cashier role                                                           0.03s  
+  ✓ the receipt number is generated automatically and the payment keeps its period                               0.03s  
+  ✓ the receipt page shows the auto-generated number, the student and the period                                 0.02s  
+  ✓ the recovery page shows the collection and filters by period                                                 0.03s  
+  ✓ the cashier payment page only lists the tariffs of the selected class                                        0.02s  
+  ✓ un paiement en francs congolais est converti dans la devise du tarif                                         0.02s  
+  ✓ l’affichage des montants retire les décimales du franc congolais                                             0.01s  
+  ✓ la période et la référence sont automatiques au paiement                                                     0.02s  
+
+  Tests:    11 passed (54 assertions)
+  Duration: 0.62s
+
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

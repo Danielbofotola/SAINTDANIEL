@@ -1,0 +1,62 @@
+300    
+301            $data = $request->validate([
+302                'nom' => ['nullable', 'string', 'max:50'],
+303                'postnom' => ['nullable', 'string', 'max:50'],
+304                'prenom' => ['nullable', 'string', 'max:50'],
+305                'date_naissance' => ['nullable', 'date', 'before:today'],
+306                'username' => ['required', 'string', 'max:50', Rule::unique('users', 'username')->ignore($user->id)],
+307                'email' => ['required', 'email', 'max:100', Rule::unique('users', 'email')->ignore($user->id)],
+308                'telephone' => ['nullable', 'string', 'max:20'],
+309                'adresse' => ['nullable', 'string', 'max:500'],
+310                'photo' => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:2048'],
+311            ], [
+312                'username.required' => "Le nom d'utilisateur est obligatoire.",
+313                'username.unique' => "Ce nom d'utilisateur est déjà utilisé.",
+314                'email.required' => "L'adresse e-mail est obligatoire.",
+315                'email.email' => "L'adresse e-mail n'est pas valide.",
+316                'email.unique' => "Cette adresse e-mail est déjà utilisée.",
+317            ]);
+318    
+319            if ($request->hasFile('photo')) {
+320                if ($user->photo) {
+321                    Storage::disk('public')->delete($user->photo);
+322                }
+323    
+324                $data['photo'] = $request->file('photo')->store('users/photos', 'public');
+325            }
+326    
+327            $user->update($data);
+328    
+329            return redirect()->route('profile.show')->with('success', 'Les propriétés du profil ont été modifiées.');
+330        }
+331    
+332        public function updatePassword(Request $request): RedirectResponse
+333        {
+334            $user = $request->user();
+335    
+336            $data = $request->validate([
+337                'current_password' => ['required', 'current_password'],
+338                'password' => ['required', 'string', 'min:8', 'confirmed'],
+339            ], [
+340                'current_password.required' => 'Le mot de passe actuel est obligatoire.',
+341                'current_password.current_password' => 'Le mot de passe actuel est incorrect.',
+342                'password.min' => 'Le nouveau mot de passe doit contenir au moins 8 caractères.',
+343                'password.confirmed' => 'La confirmation du mot de passe ne correspond pas.',
+344            ]);
+345    
+346            $user->update(['password' => Hash::make($data['password'])]);
+347    
+348            return back()->with('success', 'Le mot de passe a été réinitialisé.');
+349        }
+350    
+351        public function deactivate(Request $request): RedirectResponse
+352        {
+353            $request->user()->update(['statut' => 'inactif']);
+354    
+355            auth()->logout();
+356            $request->session()->invalidate();
+357            $request->session()->regenerateToken();
+358    
+359            return redirect()->route('login')->with('success', 'Votre compte administrateur a été désactivé.');
+
+[showing lines 300-359 of 399; read again with offset=360 for more]

@@ -1,0 +1,15 @@
+72             return view('admin.deliberations.index', [
+73                 'parametres' => ParametreSysteme::current(),
+74                 'annee' => $annee,
+75                 'anneeSuivante' => $annee ? AnneeScolaire::suivante($annee) : null,
+76                 'classes' => $classes,
+77                 'classe' => $classe,
+78                 'lignes' => $lignes,
+79                 'decisions' => Deliberation::DECISIONS,
+80                 'annees' => AnneeScolaire::query()->orderByDesc('date_debut')->get(),
+81                 'classeSuivante' => $classe?->suivante(),
+82                 'regles' => $jury->critere(),
+83             ]);
+84         }
+
+[showing lines 72-85 of 248; read again with offset=86 for more]

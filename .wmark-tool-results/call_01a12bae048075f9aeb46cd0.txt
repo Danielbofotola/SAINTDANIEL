@@ -1,0 +1,47 @@
+240    
+241        expect(DB::table('professeurs')->where('id', $professeurId)->value('statut'))->toBe('inactif');
+242    });
+243    
+244    test('an admin can create a cours and an affectation for the current year', function () {
+245        $professeurId = seedProfesseur();
+246        $admin = User::factory()->create(['role' => 'admin']);
+247    
+248        $this->actingAs($admin)
+249            ->post(route('admin.cours.store'), ['code' => 'FRAN6', 'intitule' => 'Français 6', 'ponderation' => 3])
+250            ->assertRedirect(route('admin.affectations.index'));
+251        $this->assertDatabaseHas('cours', ['code' => 'FRAN6']);
+252    
+253        $coursId = (int) DB::table('cours')->where('code', 'FRAN6')->value('id');
+254    
+255        $this->actingAs($admin)
+256            ->post(route('admin.affectations.store'), [
+257                'professeur_id' => $professeurId, 'cours_id' => $coursId, 'classe_id' => 1,
+258            ])
+259            ->assertRedirect(route('admin.affectations.index'));
+260    
+261        expect(DB::table('affectations_cours')->count())->toBe(1);
+262        expect((int) DB::table('affectations_cours')->value('annee_scolaire_id'))
+263            ->toBe((int) DB::table('annees_scolaires')->where('is_encours', true)->value('id'));
+264    });
+265    
+266    test('a duplicate affectation is rejected and a cours in use cannot be deleted', function () {
+267        $professeurId = seedProfesseur();
+268        $coursId = seedCours();
+269        seedAffectation($professeurId, $coursId, 1);
+270        $admin = User::factory()->create(['role' => 'admin']);
+271    
+272        $this->actingAs($admin)
+273            ->post(route('admin.affectations.store'), [
+274                'professeur_id' => $professeurId, 'cours_id' => $coursId, 'classe_id' => 1,
+275            ])
+276            ->assertSessionHas('error');
+277    
+278        expect(DB::table('affectations_cours')->count())->toBe(1);
+279    
+280        $this->actingAs($admin)
+281            ->delete(route('admin.cours.destroy', $coursId))
+282            ->assertSessionHas('error');
+283    
+284        expect(DB::table('cours')->count())->toBe(1);
+
+[showing lines 240-284 of 430; read again with offset=285 for more]

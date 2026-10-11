@@ -1,0 +1,126 @@
+1      <?php
+2      
+3      namespace App\Http\Controllers;
+4      
+5      use App\Models\Classe;
+6      use App\Models\Cycle;
+7      use App\Models\Option;
+8      use App\Models\Salle;
+9      use App\Models\Section;
+10     use Illuminate\Http\RedirectResponse;
+11     use Illuminate\Http\Request;
+12     use Illuminate\Validation\Rule;
+13     use Illuminate\View\View;
+14     
+15     class ClasseController extends Controller
+16     {
+17         public function index(): View
+18         {
+19             return view('admin.classes.index', [
+20                 'classes' => Classe::with(['cycle', 'section', 'option', 'salle'])
+21                     ->withCount(['inscriptions as eleves_count' => fn ($query) => $query->where('statut', 'actif')])
+22                     ->orderBy('nom')
+23                     ->get(),
+24             ]);
+25         }
+26     
+27         public function students(Classe $classe): View
+28         {
+29             $classe->load(['cycle', 'section', 'option', 'salle']);
+30     
+31             $inscriptions = $classe->inscriptions()
+32                 ->with('eleve')
+33                 ->where('statut', 'actif')
+34                 ->latest('date_inscription')
+35                 ->get();
+36     
+37             return view('admin.classes.students', compact('classe', 'inscriptions'));
+38         }
+39     
+40         public function create(): View
+41         {
+42             return view('admin.classes.create', $this->formData());
+43         }
+44     
+45         public function edit(Classe $classe): View
+46         {
+47             return view('admin.classes.create', array_merge(['classe' => $classe], $this->formData($classe)));
+48         }
+49     
+50         public function store(Request $request): RedirectResponse
+51         {
+52             Classe::create($this->validatedData($request));
+53     
+54             return redirect()
+55                 ->route('admin.classes.index')
+56                 ->with('success', 'La classe a été créée avec succès.');
+57         }
+58     
+59         public function update(Request $request, Classe $classe): RedirectResponse
+60         {
+61             $classe->update($this->validatedData($request, $classe));
+62     
+63             return redirect()
+64                 ->route('admin.classes.index')
+65                 ->with('success', 'La classe a été modifiée avec succès.');
+66         }
+67     
+68         public function toggleStatus(Classe $classe): RedirectResponse
+69         {
+70             $classe->update(['statut' => $classe->statut === 'actif' ? 'inactif' : 'actif']);
+71     
+72             return back()->with('success', 'Le statut de la classe a été mis à jour.');
+73         }
+74     
+75         public function destroy(Classe $classe): RedirectResponse
+76         {
+77             if ($classe->inscriptions()->exists()) {
+78                 return back()->with('error', 'Cette classe ne peut pas être supprimée car elle contient des inscriptions.');
+79             }
+80     
+81             $classe->delete();
+82     
+83             return redirect()
+84                 ->route('admin.classes.index')
+85                 ->with('success', 'La classe a été supprimée.');
+86         }
+87     
+88         private function formData(?Classe $classe = null): array
+89         {
+90             return [
+91                 'cycles' => Cycle::where('statut', 'actif')->orderBy('nom')->get(),
+92                 'salles' => Salle::where('statut', 'actif')
+93                     ->where(function ($query) use ($classe) {
+94                         $query->whereDoesntHave('classes')
+95                             ->when($classe, fn ($query) => $query->orWhereHas('classes', fn ($classes) => $classes->whereKey($classe->id)));
+96                     })
+97                     ->orderBy('nom')
+98                     ->get(),
+99                 'sections' => Section::orderBy('nom')->get(),
+100                'options' => Option::orderBy('nom')->get(),
+101            ];
+102        }
+103    
+104        private function validatedData(Request $request, ?Classe $classe = null): array
+105        {
+106            return $request->validate([
+107                'cycle_id' => ['required', 'exists:cycles,id'],
+108                'salle_id' => [
+109                    'nullable',
+110                    'exists:salles,id',
+111                    Rule::unique('classes', 'salle_id')->ignore($classe?->id),
+112                ],
+113                'nom' => ['required', 'string', 'max:50'],
+114                'section_id' => ['nullable', 'exists:sections,id'],
+115                'option_id' => [
+116                    'nullable',
+117                    Rule::exists('options', 'id')->where(function ($query) use ($request) {
+118                        if ($request->filled('section_id')) {
+119                            $query->where('section_id', $request->input('section_id'));
+120                        }
+121                    }),
+122                ],
+123                'statut' => ['required', 'in:actif,inactif'],
+124            ]);
+125        }
+126    }

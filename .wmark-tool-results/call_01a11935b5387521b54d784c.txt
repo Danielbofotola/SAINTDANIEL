@@ -1,0 +1,29 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\b493c9bc81dc\20261008-025139-apply_patch-call_01a11935b5387521b54d784c.txt (595 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+Applied patch: 1 file changed (1 updated)
+Updated resources/views/prefecture/eleve-fiche.blade.php (1 hunk applied)
+Landed at lines 318-322 (the file's new text; no re-read needed):
+318                                <tr>
+319                                    <th>Année</th><th>Classe</th><th>Cycle</th><th>Section / Option</th>
+320                                    <th class="text-right">Moyenne</th><th class="text-right">Exigible</th>
+321                                    <th class="text-righ
+
+... 857 chars truncated ...
+
+                    <span class="badge badge-primary">en cours</span>
+334                                            @endif
+335                                        </td>
+336                                        <td>{{ $inscription->classe?->nom ?? '—' }}</td>
+Landed at lines 338-349 (the file's new text; no re-read needed):
+338                                        <td class="fs-7">
+339                                            {{ $inscription->classe?->section?->nom ?? '—' }}
+340                                            @if ($inscription->classe?->option?->nom)
+341                                                <br><span class="text-muted">Option {{ $inscription->classe->option->nom }}</span>
+342                                            @endif
+343                                        </td>
+344                                        <td class="text-right">{{ $moyenne !== null ? number_format((float) $moyenne, 1).'%' : '—' }}</td>
+345                                        <td class="text-right">{{ number_format($finances['attendu'], 2) }}</td>
+346                                        <td class="text-right text-success">{{ number_format($finances['paye'], 2) }}</td>
+347                                        <td class="text-right {{ $finances['reste'] > 0 ? 'text-danger fw-bold' : 'text-muted' }}">
+348                                            {{ number_format($finances['reste'], 2) }}
+349                                        </td>
+… 2 more hunks not echoed …

@@ -1,0 +1,71 @@
+1      <?php
+2      
+3      namespace App\Providers;
+4      
+5      use App\Models\ParametreSysteme;
+6      use App\Models\AnneeScolaire;
+7      use Illuminate\Database\Eloquent\Relations\Relation;
+8      use Illuminate\Support\ServiceProvider;
+9      use Illuminate\Support\Facades\View;
+10     
+11     class AppServiceProvider extends ServiceProvider
+12     {
+13         /**
+14          * Register any application services.
+15          */
+16         public function register(): void
+17         {
+18             //
+19         }
+20     
+21         
+22     
+23         /**
+24          * Bootstrap any application services.
+25          */
+26         public function boot(): void
+27         {
+28             // Bénéficiaires d'un salaire : un professeur (entité) ou un autre
+29             // membre du personnel (compte utilisateur).
+30             Relation::morphMap([
+31                 'professeur' => \App\Models\Professeurs::class,
+32                 'utilisateur' => \App\Models\User::class,
+33             ]);
+34     
+35             View::composer('*', static function ($view): void {
+36                 $settings = request()->attributes->get('system_settings');
+37                 if (! $settings) {
+38                     $settings = self::firstOrNull(fn () => ParametreSysteme::query()->first());
+39                     $settings ??= ParametreSysteme::defaults();
+40                     request()->attributes->set('system_settings', $settings);
+41                 }
+42     
+43                 $view->with('systemSettings', $settings);
+44     
+45                 if (! request()->attributes->has('annee_en_cours')) {
+46                     request()->attributes->set('annee_en_cours', self::firstOrNull(
+47                         fn () => AnneeScolaire::where('is_encours', true)->first()
+48                     ));
+49                 }
+50     
+51                 $view->with('anneeEnCours', request()->attributes->get('annee_en_cours'));
+52             });
+53         }
+54     
+55         /**
+56          * Exécute une lecture destinée à l'affichage et renvoie null en cas d'échec.
+57          *
+58          * Ces valeurs ne sont que du contexte d'affichage : une table absente ou
+59          * indisponible ne doit jamais faire échouer le rendu d'une page.
+60          */
+61         private static function firstOrNull(callable $query): mixed
+62         {
+63             try {
+64                 return $query();
+65             } catch (\Throwable) {
+66                 return null;
+67             }
+68         }
+69     
+70         
+71     }

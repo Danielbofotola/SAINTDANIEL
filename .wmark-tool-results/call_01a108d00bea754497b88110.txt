@@ -1,0 +1,10 @@
+68                 'periodes' => Periode::anneeEnCours()->orderBy('id')->get(),
+69                 'inscriptions' => $annee
+70                     ? Inscription::query()->where('annee_scolaire_id', $annee->id)->where('statut', 'actif')->with(['eleve', 'classe'])->get()
+71                     : collect(),
+72                 'tarifs' => $tarifs,
+73                 'soldePaye' => $soldePaye,
+74                 'montantsFrais' => $tarifs->pluck('montant_exige', 'id'),
+75                 'totalEncaisse' => $annee
+
+[showing lines 68-75 of 127; read again with offset=76 for more]

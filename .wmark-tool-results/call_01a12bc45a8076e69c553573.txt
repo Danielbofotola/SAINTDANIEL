@@ -1,0 +1,8 @@
+54         public function document(Inscription $inscription): View
+55         {
+56             $inscription->load(['eleve', 'classe.cycle', 'anneeScolaire']);
+57     
+58             // Seuil de réussite configuré dans les paramètres : lu une seule fois pour
+59             // tout le classement de la classe (évite une requête par élève).
+
+[showing lines 54-59 of 196; read again with offset=60 for more]

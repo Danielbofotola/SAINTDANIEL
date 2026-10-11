@@ -1,0 +1,11 @@
+[powershell — Windows side]
+BelongsToAnneeScolaire.php
+BelongsToAnneeScolaire.php:5: use App\Models\AnneeScolaire;
+BelongsToAnneeScolaire.php:7: use Illuminate\Database\Eloquent\Relations\BelongsTo;
+BelongsToAnneeScolaire.php:12: * Fournit la relation vers l'année et un scope qui restreint la requête à
+BelongsToAnneeScolaire.php:16: trait BelongsToAnneeScolaire
+BelongsToAnneeScolaire.php:18: public function anneeScolaire(): BelongsTo
+BelongsToAnneeScolaire.php:20: return $this->belongsTo(AnneeScolaire::class);
+BelongsToAnneeScolaire.php:25: $anneeId = AnneeScolaire::enCours()?->id;
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

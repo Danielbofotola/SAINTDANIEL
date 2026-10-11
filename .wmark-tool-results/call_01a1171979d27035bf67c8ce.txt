@@ -1,0 +1,47 @@
+455                            const rep = await fetch(FLUX_URL + '?apres=' + dernierId, {
+456                                headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+457                                credentials: 'same-origin',
+458                            });
+459                            if (!rep.ok) continue;
+460                            const json = await rep.json();
+461                            (json.messages || []).forEach(m => ajouter(m.html, m.id));
+462                            majBadges(json.non_lus);
+463                        } catch (e) { /* réessai */ }
+464                    }
+465                })();
+466            }
+467        })();
+468    
+469        window.toggleStickers = function () {
+470            document.getElementById('stickerPicker').classList.toggle('on');
+471        };
+472    
+473        window.envoyerSticker = function (sticker) {
+474            window.toggleStickers();
+475            window.envoyerTexte(sticker);
+476        };
+477    
+478        /* ---------- Répondre à un message (citation) ---------- */
+479        window.repondreA = function (id) {
+480            const bloc = document.querySelector('[data-message-id="' + id + '"] .bulle');
+481            if (!bloc) return;
+482            reponseAId = id;
+483            document.getElementById('replyExtrait').textContent = bloc.textContent.trim().slice(0, 80);
+484            const barre = document.getElementById('replyBar');
+485            barre.style.display = 'flex';
+486            const input = document.getElementById('messageInput');
+487            if (input) input.focus();
+488        };
+489    
+490        window.annulerReponse = function () {
+491            reponseAId = null;
+492            const barre = document.getElementById('replyBar');
+493            if (barre) barre.style.display = 'none';
+494        };
+495    
+496        /* ---------- Réactions émoji ---------- */
+497        window.toggleReactions = function (id, bouton) {
+498            const pop = document.getElementById('reactionPop');
+499            pop.dataset.messageId = id;
+
+[showing lines 455-499 of 607; read again with offset=500 for more]

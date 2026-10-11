@@ -1,0 +1,20 @@
+Applied patch: 1 file changed (1 updated)
+Updated app/Models/AnneeScolaire.php (1 hunk applied)
+Landed at lines 50-74 (the file's new text; no re-read needed):
+50     
+51         public function periodes()
+52         {
+53             return $this->hasMany(Periode::class);
+54         }
+55     
+56         public function affectationsCours()
+57         {
+      … 9 lines omitted …
+67         {
+68             return $this->hasMany(Depense::class);
+69         }
+70     
+71         public function archive()
+72         {
+73             return $this->hasOne(ArchiveAnnee::class);
+74         }

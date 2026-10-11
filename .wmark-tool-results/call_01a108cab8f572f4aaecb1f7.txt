@@ -1,0 +1,37 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\e1ce9c26600a\20261004-222053-apply_patch-call_01a108cab8f572f4aaecb1f7.txt (692 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+Applied patch: 1 file changed (1 updated)
+Updated resources/views/comptable/recouvrement.blade.php (7 hunks applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 2: context matched at lines 18-19 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+  ⚠ hunk 3: context matched at lines 86-86 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+  ⚠ hunk 4:
+
+... 662 chars truncated ...
+
+ble-sm align-middle mb-0" style="width:100%">
+Auto-corrected hunk landed at lines 113-113:
+113                <table id="tablePaiements" class="table table-sm align-middle mb-0" style="width:100%">
+Auto-corrected hunk landed at lines 132-163:
+132    </div>
+133    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+134    <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+135    <script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap5.min.js"></script>
+136    <script>
+137        jQuery(function ($) {
+138            if (!$.fn.dataTable) { return; }
+139            var langueFr = {
+      … 16 lines omitted …
+156            if ($('#tableRecouvrement').length) {
+157                $('#tableRecouvrement').DataTable($.extend({}, base, { columnDefs: [{ orderable: false, targets: 4 }] }));
+158            }
+159            if ($('#tablePaiements').length) {
+160                $('#tablePaiements').DataTable($.extend({}, base, { columnDefs: [{ orderable: false, targets: 7 }] }));
+161            }
+162        });
+163    </script>
+Landed at lines 9-9 (the file's new text; no re-read needed):
+9          <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap5.min.css">
+Landed at lines 116-116 (the file's new text; no re-read needed):
+116                        @foreach ($paiements as $paiement)
+Landed at lines 127-127 (the file's new text; no re-read needed):
+127                        @endforeach

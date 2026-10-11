@@ -1,0 +1,8 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/PortailParentTest.php (1 hunk applied)
+Landed at lines 258-262 (the file's new text; no re-read needed):
+258        // La page se rend, et seuls les préfets sont proposés comme correspondants.
+259        $this->actingAs($parent)->get(route('parent.messages'))->assertOk()
+260            ->assertSee('Espace Parent');
+261    
+262        $correspondants = Messagerie::correspondantsQuery($parent)->get();

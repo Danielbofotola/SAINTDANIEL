@@ -1,0 +1,20 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/ProfesseursPagesTest.php (1 hunk applied)
+Landed at lines 431-482 (the file's new text; no re-read needed):
+431    
+432    test('la page des cours gère la création, la modification et le statut', function () {
+433        $admin = User::factory()->create(['role' => 'admin']);
+434        $coursId = seedCours();
+435    
+436        $this->actingAs($admin)->get(route('admin.cours.index'))
+437            ->assertOk()
+438            ->assertSee('Cours (branches)');
+      … 36 lines omitted …
+475    
+476        $this->actingAs($admin)
+477            ->post(route('admin.affectations.permuter'), ['affectation_a' => $a, 'affectation_b' => $b])
+478            ->assertRedirect();
+479    
+480        expect((int) DB::table('affectations_cours')->where('id', $a)->value('professeur_id'))->toBe($p2)
+481            ->and((int) DB::table('affectations_cours')->where('id', $b)->value('professeur_id'))->toBe($p1);
+482    });

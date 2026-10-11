@@ -1,0 +1,10 @@
+100        Route::patch('/admin/professeurs/{professeur}/statut', [ProfesseurController::class, 'toggleStatus'])->middleware('role:admin')->name('admin.professeurs.toggle-status');
+101        Route::get('/admin/cours-affectations', [AffectationCoursController::class, 'index'])->middleware('role:admin')->name('admin.affectations.index');
+102        Route::post('/admin/affectations', [AffectationCoursController::class, 'store'])->middleware('role:admin')->name('admin.affectations.store');
+103        Route::delete('/admin/affectations/{affectation}', [AffectationCoursController::class, 'destroy'])->middleware('role:admin')->name('admin.affectations.destroy');
+104        Route::post('/admin/cours', [CoursController::class, 'store'])->middleware('role:admin')->name('admin.cours.store');
+105        Route::delete('/admin/cours/{cours}', [CoursController::class, 'destroy'])->middleware('role:admin')->name('admin.cours.destroy');
+106        Route::get('/admin/emplois-du-temps', [EmploiDuTempsController::class, 'index'])->middleware('role:admin')->name('admin.emplois-du-temps.index');
+107        Route::post('/admin/emplois-du-temps', [EmploiDuTempsController::class, 'store'])->middleware('role:admin')->name('admin.emplois-du-temps.store');
+
+[showing lines 100-107 of 326; read again with offset=108 for more]

@@ -1,0 +1,34 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\e8f943213216\20261003-011715-bash-call_01a0ff1f801e701ea4e09d34.txt (1,077 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Structured view (text):
+[powershell — Windows side]
+app\Http\Controllers\RegistrationRequestController.php:2:
+  app\Http\Controllers\RegistrationRequestController.php:3:namespace App\Http\Controllers;
+  app\Http\Controllers\RegistrationRequestController.php:4:
+> app\Http\Controllers\RegistrationRequestController.php:5:use App\Models\AnneeScolaire;
+  app\Http\Controllers\RegistrationRequestController.php:6:use App\Models\Classe;
+  app\Http\Controllers\RegistrationRequestController.php:7:use App\Models\DemandeCompte;
+  app\Http\Controllers\RegistrationRequestController.php:8:use App\Models\DemandeInscription;
+  app\Http\Controllers\RegistrationRequestController.php:22:                ->whereHas('cycle', fn ($query) => $query->where('statut', 'actif'))
+  app\Http\Controllers\RegistrationRequestController.php:23:                ->orderBy('nom')
+  app\Http\Controllers\RegistrationRequestController.php:24:                ->get(),
+> app\Http\Controllers\RegistrationRequestController.php:25:            'schoolYears' => AnneeScolaire::query()
+  app\Http\Controllers\RegistrationRequestController.php:26:                ->where('statut', 'actif')
+  app\Http\Controllers\RegistrationRequestController.php:27:                ->orderByDesc('is_encours')
+  app\Http\Controllers\RegistrationRequestController.php:28:                ->orderByDesc('date_debut')
+  app\Http\Controllers\RegistrationRequestController.php:30:        ]);
+  app\Http\Controllers\RegistrationRequestController.php:31:    }
+  app\Http\Controllers\Re
+… 266 chars elided …
+trationRequestController.php:35:        $data = $request->validate([
+  app\Http\Controllers\RegistrationRequestController.php:36:            'nom' => ['required', 'string', 'max:50'],
+  app\Http\Controllers\RegistrationRequestController.php:40:            'date_naissance' => ['required', 'date', 'before:today'],
+  app\Http\Controllers\RegistrationRequestController.php:41:            'lieu_naissance' => ['nullable', 'string', 'max:100'],
+  app\Http\Controllers\RegistrationRequestController.php:42:            'classe_id' => ['required', Rule::exists('classes', 'id')->where('statut', 'actif')],
+> app\Http\Controllers\RegistrationRequestController.php:43:            'annee_scolaire_id' => ['required', Rule::exists('annees_scolaires', 'id')->where('statut', 'actif')],
+  app\Http\Controllers\Reg
+… 1,066 chars elided …
+57:        DemandeInscription::create($data);
+
+
+
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">2</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

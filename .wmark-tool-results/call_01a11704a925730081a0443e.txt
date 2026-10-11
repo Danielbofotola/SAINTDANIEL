@@ -1,0 +1,33 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/PortailParentTest.php (3 hunks applied)
+Landed at lines 90-101 (the file's new text; no re-read needed):
+90     
+91         Schema::create('annonces', function (Blueprint $table) {
+92             $table->id();
+93             $table->string('titre', 150);
+94             $table->text('message');
+95             $table->string('niveau', 20)->default('info');
+96             $table->string('lien', 255)->nullable();
+97             $table->string('cible', 30)->default('tous');
+98             $table->unsignedBigInteger('envoye_par')->nullable();
+99             $table->unsignedInteger('destinataires')->default(0);
+100            $table->timestamps();
+101        });
+Landed at lines 179-179 (the file's new text; no re-read needed):
+179                'piece_jointe' => fichierAudioDeTest('vocal.wav'),
+Landed at lines 207-221 (the file's new text; no re-read needed):
+207    
+208    /**
+209     * Petit fichier audio WAVE valide, pour tester les pièces jointes vocales sans
+210     * dépendre d'un encodeur : la règle « mimes » détecte le type par le contenu.
+211     */
+212    function fichierAudioDeTest(string $nom = 'vocal.wav'): \Illuminate\Http\UploadedFile
+213    {
+214        $entete = 'RIFF'.pack('V', 36).'WAVEfmt '.pack('V', 16).pack('v', 1).pack('v', 1)
+215            .pack('V', 8000).pack('V', 8000).pack('v', 1).pack('v', 8).'data'.pack('V', 0);
+216    
+217        $chemin = tempnam(sys_get_temp_dir(), 'wmark_').'.wav';
+218        file_put_contents($chemin, $entete);
+219    
+220        return new \Illuminate\Http\UploadedFile($chemin, $nom, 'audio/wav', null, true);
+221    }

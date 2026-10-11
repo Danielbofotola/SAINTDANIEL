@@ -1,0 +1,3 @@
+[powershell — Windows side]
+No syntax errors detected in app/Support/Messagerie.php
+No syntax errors detected in app/Http/Controllers/MessagerieController.php

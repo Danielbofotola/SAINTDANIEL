@@ -1,0 +1,41 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\b493c9bc81dc\20261007-235007-bash-call_01a1188f8bdc70e68e8ceb81.txt (596 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+[powershell — Windows side]
+8: <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+--- FA6 icon classes used in those 6 files ---
+class="fa {{ $notification->read_at ? 'fa-eye' : 'fa-check
+class="fa-brands fa-facebook-messenger
+class="fa-regular fa-bell-slash fa-3x
+class="fa-regular fa-clock
+class="fa-regular fa-user
+class="fa-solid fa-arrow-left
+class="fa-solid fa-arrow-up-right-dots
+class="fa-solid fa-bell
+class="fa-solid fa-building
+class="fa-solid fa-bullhorn
+class="fa-solid fa-check
+class="fa-solid fa-check-double
+class="fa-solid fa-circle-user
+class="fa-solid fa-comment-dots
+class="fa-solid fa-comments
+class="fa-solid fa-envelope
+class="fa-solid fa-eye
+class="fa-solid fa-gauge
+class="fa-solid fa-gavel
+class="fa-solid fa-graduation-cap
+class="fa-solid fa-link
+class="fa-solid fa-list-check
+class="fa-solid fa-location-dot
+class="fa-solid fa-magnifying-glass
+class="fa-solid fa-newspaper
+class="fa-solid fa-paperclip
+class="fa-solid fa-pen
+class="fa-solid fa-phone
+class="fa-solid fa-power-off
+class="fa-solid fa-rocket
+class="fa-solid fa-save
+class="fa-solid fa-sliders
+class="fa-solid fa-trash
+class="fa-solid fa-user
+class="fa-solid fa-users
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

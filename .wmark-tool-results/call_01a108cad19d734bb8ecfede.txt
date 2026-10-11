@@ -1,0 +1,12 @@
+62     
+63                 $paiements = $requete()
+64                     ->with(['inscription.eleve', 'inscription.classe', 'fraisScolaire.typeFrais', 'periode'])
+65                     ->latest('date_paiement')
+66                     ->limit(50)
+67                     ->get();
+68             }
+69     
+70             return view('comptable.recouvrement', [
+71                 'user' => $request->user(),
+
+[showing lines 62-71 of 120; read again with offset=72 for more]

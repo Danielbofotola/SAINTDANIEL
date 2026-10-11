@@ -1,0 +1,40 @@
+118        </div>
+119    </div>
+120    
+121    <script>
+122        (function () {
+123            var payeParPaire = @json($soldePaye);
+124            var montantsFrais = @json($montantsFrais);
+125            var recherche = document.getElementById('eleveSearch');
+126            var inscriptionSelect = document.getElementById('inscriptionSelect');
+127            var fraisSelect = document.getElementById('fraisSelect');
+128            var soldeInfo = document.getElementById('soldeInfo');
+129    
+130            function filtrerEleves() {
+131                if (!recherche || !inscriptionSelect) { return; }
+132                var terme = recherche.value.trim().toLowerCase();
+133                Array.prototype.forEach.call(inscriptionSelect.options, function (option) {
+134                    if (!option.value) { option.hidden = false; return; }
+135                    option.hidden = terme !== '' && option.text.toLowerCase().indexOf(terme) === -1;
+136                });
+137            }
+138    
+139            function majSolde() {
+140                if (!inscriptionSelect || !fraisSelect || !soldeInfo) { return; }
+141                var inscription = inscriptionSelect.value;
+142                var frais = fraisSelect.value;
+143                if (!inscription || !frais) { soldeInfo.classList.add('d-none'); return; }
+144                var exige = Number(montantsFrais[frais] || 0);
+145                var paye = Number(payeParPaire[inscription + '-' + frais] || 0);
+146                var reste = Math.max(exige - paye, 0);
+147                soldeInfo.classList.remove('d-none');
+148                soldeInfo.innerHTML = 'Montant exigé : <b>' + exige.toFixed(2) + '</b> · Déjà payé : <b>' + paye.toFixed(2) + '</b> · <b>Reste à payer : ' + reste.toFixed(2) + '</b>';
+149            }
+150    
+151            if (recherche) { recherche.addEventListener('input', filtrerEleves); }
+152            if (inscriptionSelect) { inscriptionSelect.addEventListener('change', majSolde); }
+153            if (fraisSelect) { fraisSelect.addEventListener('change', majSolde); }
+154        })();
+155    </script>
+156    </body>
+157    </html>

@@ -1,0 +1,30 @@
+219                            <a href="{{ route('notifications.index') }}">
+220                                <i class="far fa-bell"></i>
+221                                <p>Notifications</p>
+222                            </a>
+223                        </li>
+224                        <li class="nav-section">
+225                            <span class="sidebar-mini-icon"><i class="fa fa-ellipsis-h"></i></span>
+226                            <h4 class="text-section">Mon compte</h4>
+227                        </li>
+228                        <li class="nav-item {{ request()->routeIs('prefecture.profil') ? 'active' : '' }}">
+229                            <a href="{{ route('prefecture.profil') }}">
+230                                <i class="far fa-user"></i>
+231                                <p>Mon profil</p>
+232                            </a>
+233                        </li>
+234                    </ul>
+235                </div>
+236            </div>
+237        </div>
+238    
+239        {{-- Contenu --}}
+240        <div class="main-panel">
+241            <div class="content">
+242                <div class="page-inner">
+243                    @include('partials.impersonation-banner')
+244    
+245                    <div class="page-header">
+246                        <h4 class="page-title">@yield('titre', 'Espace préfecture')</h4>
+
+[showing lines 219-246 of 299; read again with offset=247 for more]

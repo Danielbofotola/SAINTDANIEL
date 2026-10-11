@@ -1,0 +1,27 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\b493c9bc81dc\20261008-014935-bash-call_01a118fcebfc73fd907836c8.txt (1,057 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Structured view (text):
+[powershell — Windows side]
+app\Http\Controllers\AdminRegistrationRequestController.php:27: ->where('statut', 'en_attente')
+app\Http\Controllers\AdminRegistrationRequestController.php:66: if ($application->statut !== 'en_attente') {
+app\Http\Controllers\AdminRegistrationRequestController.php:130: ->where('statut', 'en_attente')
+app\Http\Controllers\AdminRegistrationRequestController.php:145: 'requests' => DemandeCompte::where('statut', 'en_attente')->oldest()->get(),
+app\Http\Controllers\AdminRegistrationRequestController.php:157: if ($demandeCompte->refresh()->statut !== 'en_attente') {
+app\Http\Controllers\AdminRegistrationRequestController.php:176: if ($application->statut !== 'en_attente') {
+app\Http\Controllers\AdminRegistrationRequestController.php:212: ->where('statut', 'en_attente')
+app\Http\Controllers\ComptablePaiementController.php:34: ->whereIn('statut', ['actif', 'en_attente'])
+app\Http\Controllers\ComptablePaiementController.php:109: 'inscription_id' => ['required', Rule::exists('inscriptions', 'id')->where(fn ($query) => $query->where('annee_scolaire_id', $annee->id)->whereIn('statut', ['actif', 'en_attente']))],
+app\Http\Controllers\EleveController.php:22: ->whereIn('statut', ['actif', 'en_attente'])
+app\Http\Controllers\EleveController.php:127: ->whereIn('statut', ['actif', 'en_attente'])
+app\Http\Controllers\EvaluationController.php:60: 'type_evaluation' => ['required', Rule::in(['interro', 'devoir', 'examen', 'autre'])],
+app\Http\Controllers\EvaluationContr
+… 0 chars elided …
+oller.php:67: 'type_evaluation.required' => 'Choisissez le type d’évaluation.',
+app\Http\Controllers\EvaluationController.php:72: Evaluation::create($data + ['statut' => 'actif']);
+app\Http\Controllers\PaiementController.php:70: ? Inscription::query()->where('annee_scolaire_id', $annee->id)->whereIn('statut', ['actif', 'en_attente'])->with(['eleve', 'classe'])->get()
+app\Http\Controllers\PaiementController.php:92: 'inscription_id' => ['required', Rule::exists('inscriptions', 'id')->where(fn ($query) => $query->where('annee_scolaire_id', $annee->id)->whereIn('statut', ['actif', 'en_attente']))],
+app\Http\Controllers\ProfesseurDashboardController.php:86: ->where('evaluations.statut', 'actif')
+app\Http\Controllers\ProfesseurDashboardController.php:92: 'evaluations.type_evaluation',
+app\Http\C
+… 786 chars elided …
+: public const STATUT_EN_ATTENTE = 'en_attente';
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

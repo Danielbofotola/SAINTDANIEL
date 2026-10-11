@@ -1,0 +1,1828 @@
+# wmark session 144c63540b62:sub:0
+
+## User
+Projet Laravel "ecole" (gestion scolaire, dossier: C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole). Je dois construire un module de DÉLIBÉRATION (décider si un élève passe dans la classe supérieure) qui doit être en harmonie avec le BULLETIN existant. Cartographie-moi précisément l'existant.
+
+Réponds avec des chemins de fichiers + numéros de ligne et, quand ça existe, le code exact des formules.
+
+1) NOTES : modèles et tables (Note, Evaluation, Periode, Cours, AffectationCours). Où et comment les notes sont-elles saisies (NotesController, EvaluationController) ? Quelles clés étrangères (inscription_id ? eleve_id ? evaluation_id ? affectation ?) et quelles colonnes (valeur, maxima, coefficient, poids) ?
+
+2) BULLETIN : BulletinController et le modèle Bulletin. Où la MOYENNE est-elle CALCULÉE exactement (par cours, par période, générale) ? Donne la formule exacte (somme pondérée ? coefficients ? maxima ?). Y a-t-il un rang, une mention, un seuil de réussite (ex. 50%) ? Le résultat est-il stocké en base ou recalculé à l'affichage ?
+
+3) CLASSES / PASSAGE : modèles Classe, Cycle, Section, Option, Inscription, Eleve, AnneeScolaire. Comment sont modélisées les classes (nom, ordre, cycle) ? Existe-t-il un ordre de progression (classe suivante) ou faut-il le déduire ? Comment une inscription est-elle créée pour une année (EleveInscriptionController) et quels statuts existent (Inscription::STATUT_*)? Y a-t-il déjà une notion de redoublement/admission (colonne ou statut) ?
+
+4) PARAMÈTRES : le modèle ParametreSysteme et sa table — quelles colonnes existent (notamment tout ce qui touche aux notes/bulletins/modules) ? Y a-t-il déjà des seuils (saisie_notes_active, etc.) ?
+
+5) Est-ce qu'il existe déjà quoi que ce soit nommé "deliberation", "decision", "admission", "promotion", "passage" ? Cherche dans app/, routes/, database/, resources/.
+
+Conclue par un résumé court : (a) la formule de moyenne à réutiliser telle quelle, (b) comment déterminer la classe suivante, (c) où brancher un nouveau module de délibération sans casser le bulletin. Si un élément n'existe pas, dis-le explicitement.
+
+### Tool call — bash
+```
+{"command":"cd C:\\Users\\danie\\AppData\\Roaming\\Composer\\vendor\\bin\\ecole ; Get-ChildItem -Directory | Select-Object Name","description":"List project root directories"}
+```
+
+### Tool call — glob
+```
+{"pattern":"app/Models/*.php"}
+```
+
+### Tool call — glob
+```
+{"pattern":"app/Http/Controllers/*.php"}
+```
+
+### Tool result
+```
+[powershell — Windows side]
+Name               
+----               
+.wmark-tool-results
+app                
+bootstrap          
+config             
+database           
+node_modules       
+public             
+resources          
+routes             
+storage            
+tests              
+vendor             
+
+
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>
+```
+
+### Tool result
+```
+app/Models/ (40 lines, newest first):
+  Message.php
+  Appel.php
+  Annonce.php
+  User.php
+  Conversation.php
+  Presence.php
+  LigneEcriture.php
+  Ecriture.php
+  CompteComptable.php
+  ArchiveAnnee.php
+  Paie.php
+  Salaire.php
+  Inscription.php
+  TypeFrais.php
+  Paiement.php
+  Cours.php
+  ParametreSysteme.php
+  Professeurs.php
+  DemandeInscription.php
+  Option.php
+  Section.php
+  Cycle.php
+  AnneeScolaire.php
+  DocumentProfesseur.php
+  Depense.php
+  CategorieDepense.php
+  Bulletin.php
+  FraisScolaire.php
+  EmploiDuTemps.php
+  Evaluation.php
+  Note.php
+  AffectationCours.php
+  Periode.php
+  Eleve.php
+  DemandeCompte.php
+  Salle.php
+  DocumentEleve.php
+  EleveSante.php
+  Classe.php
+  Tuteur.php
+```
+
+### Tool result
+```
+app/Http/Controllers/ (48 lines, newest first):
+  AppelController.php
+  UserProfileController.php
+  MessagerieController.php
+  AdminRegistrationRequestController.php
+  RegistrationRequestController.php
+  PortailParentController.php
+  AnnonceController.php
+  NotificationController.php
+  ProfesseurEspaceController.php
+  ProfesseurPresenceController.php
+  ProfesseurEvaluationController.php
+  ComptableDepenseController.php
+  DepenseController.php
+  StatistiquesController.php
+  ComptabiliteController.php
+  ArchiveAnneeController.php
+  PaieController.php
+  ProfesseurController.php
+  ComptablePaiementController.php
+  PaiementController.php
+  EleveController.php
+  FraisController.php
+  EleveInscriptionController.php
+  ComptableRecouvrementController.php
+  RecuController.php
+  NotesController.php
+  CoursController.php
+  BulletinController.php
+  EvaluationController.php
+  ModuleSwitchController.php
+  CycleController.php
+  PeriodeController.php
+  EmploiDuTempsController.php
+  AffectationCoursController.php
+  PrefectureDashboardController.php
+  HomeController.php
+  AuthController.php
+  SectionOptionController.php
+  TitulaireDashboardController.php
+  ComptableDashboardController.php
+  AdminDashboardController.php
+  AnneeScolaireController.php
+  ClasseController.php
+  ParametreSystemeController.php
+  ProfesseurDashboardController.php
+  SalleController.php
+  ProfesseursController.php
+  Controller.php
+```
+
+### Tool call — read_file
+```
+{"path":"app/Models/Note.php"}
+```
+
+### Tool call — read_file
+```
+{"path":"app/Models/Evaluation.php"}
+```
+
+### Tool call — read_file
+```
+{"path":"app/Models/Periode.php"}
+```
+
+### Tool call — read_file
+```
+{"path":"app/Models/Cours.php"}
+```
+
+### Tool call — read_file
+```
+{"path":"app/Models/AffectationCours.php"}
+```
+
+### Tool call — read_file
+```
+{"path":"app/Models/Bulletin.php"}
+```
+
+### Tool result
+```
+1      <?php
+2      
+3      namespace App\Models;
+4      
+5      use Illuminate\Database\Eloquent\Model;
+6      
+7      class Note extends Model
+8      {
+9          protected $table = 'notes';
+10     
+11         protected $fillable = ['evaluation_id', 'eleve_id', 'note_obtenue', 'observation', 'statut'];
+12     
+13         protected function casts(): array
+14         {
+15             return ['note_obtenue' => 'decimal:2'];
+16         }
+17     
+18         public function evaluation()
+19         {
+20             return $this->belongsTo(Evaluation::class);
+21         }
+22     
+23         public function eleve()
+24         {
+25             return $this->belongsTo(Eleve::class);
+26         }
+27     }
+```
+
+### Tool result
+```
+1      <?php
+2      
+3      namespace App\Models;
+4      
+5      use Illuminate\Database\Eloquent\Model;
+6      
+7      class Evaluation extends Model
+8      {
+9          protected $table = 'evaluations';
+10     
+11         protected $fillable = ['affectation_id', 'periode_id', 'titre', 'type_evaluation', 'max_note', 'date_evaluation', 'statut'];
+12     
+13         protected function casts(): array
+14         {
+15             return [
+16                 'date_evaluation' => 'date',
+17                 'max_note' => 'decimal:2',
+18             ];
+19         }
+20     
+21         public function affectation()
+22         {
+23             return $this->belongsTo(AffectationCours::class, 'affectation_id');
+24         }
+25     
+26         public function periode()
+27         {
+28             return $this->belongsTo(Periode::class);
+29         }
+30     
+31         public function notes()
+32         {
+33             return $this->hasMany(Note::class);
+34         }
+35     }
+```
+
+### Tool result
+```
+1      <?php
+2      
+3      namespace App\Models;
+4      
+5      use App\Models\Concerns\BelongsToAnneeScolaire;
+6      use Illuminate\Database\Eloquent\Model;
+7      
+8      class Periode extends Model
+9      {
+10         use BelongsToAnneeScolaire;
+11     
+12         protected $table = 'periodes';
+13     
+14         protected $fillable = ['annee_scolaire_id', 'nom', 'statut'];
+15     
+16         public function evaluations()
+17         {
+18             return $this->hasMany(Evaluation::class);
+19         }
+20     
+21         public function bulletins()
+22         {
+23             return $this->hasMany(Bulletin::class);
+24         }
+25     }
+```
+
+### Tool result
+```
+1      <?php
+2      
+3      namespace App\Models;
+4      
+5      use Illuminate\Database\Eloquent\Model;
+6      
+7      class Cours extends Model
+8      {
+9          protected $table = 'cours';
+10     
+11         protected $fillable = ['code', 'intitule', 'ponderation', 'max_travaux_journaliers', 'max_examen', 'statut'];
+12     
+13         /**
+14          * Maximum total de la branche pour une période (T.J. + Examen), ou null si non défini.
+15          */
+16         public function maximumParPeriode(): ?int
+17         {
+18             if ($this->max_travaux_journaliers === null && $this->max_examen === null) {
+19                 return null;
+20             }
+21     
+22             return (int) $this->max_travaux_journaliers + (int) $this->max_examen;
+23         }
+24     
+25         public function affectations()
+26         {
+27             return $this->hasMany(AffectationCours::class);
+28         }
+29     }
+```
+
+### Tool result
+```
+1      <?php
+2      
+3      namespace App\Models;
+4      
+5      use App\Models\Concerns\BelongsToAnneeScolaire;
+6      use Illuminate\Database\Eloquent\Model;
+7      
+8      class AffectationCours extends Model
+9      {
+10         use BelongsToAnneeScolaire;
+11     
+12         protected $table = 'affectations_cours';
+13     
+14         protected $fillable = ['professeur_id', 'cours_id', 'classe_id', 'annee_scolaire_id', 'statut'];
+15     
+16         public function professeur()
+17         {
+18             return $this->belongsTo(Professeurs::class, 'professeur_id');
+19         }
+20     
+21         public function cours()
+22         {
+23             return $this->belongsTo(Cours::class);
+24         }
+25     
+26         public function classe()
+27         {
+28             return $this->belongsTo(Classe::class);
+29         }
+30     
+31         public function emploisDuTemps()
+32         {
+33             return $this->hasMany(EmploiDuTemps::class, 'affectation_id');
+34         }
+35     
+36         public function evaluations()
+37         {
+38             return $this->hasMany(Evaluation::class, 'affectation_id');
+39         }
+40     }
+```
+
+### Tool result
+```
+1      <?php
+2      
+3      namespace App\Models;
+4      
+5      use Illuminate\Database\Eloquent\Model;
+6      
+7      class Bulletin extends Model
+8      {
+9          protected $table = 'bulletins';
+10     
+11         protected $fillable = [
+12             'inscription_id', 'periode_id', 'total_points', 'max_possible', 'pourcentage',
+13             'place_classe', 'mention', 'application', 'conduite', 'chemin_pdf', 'statut',
+14         ];
+15     
+16         protected function casts(): array
+17         {
+18             return [
+19                 'total_points' => 'decimal:2',
+20                 'max_possible' => 'decimal:2',
+21                 'pourcentage' => 'decimal:2',
+22             ];
+23         }
+24     
+25         public function inscription()
+26         {
+27             return $this->belongsTo(Inscription::class);
+28         }
+29     
+30         public function periode()
+31         {
+32             return $this->belongsTo(Periode::class);
+33         }
+34     }
+```
+
+### Tool call — read_file
+```
+{"path":"app/Http/Controllers/BulletinController.php"}
+```
+
+### Tool call — read_file
+```
+{"path":"app/Http/Controllers/NotesController.php"}
+```
+
+### Tool call — read_file
+```
+{"path":"app/Http/Controllers/EvaluationController.php"}
+```
+
+### Tool result
+```
+1      <?php
+2      
+3      namespace App\Http\Controllers;
+4      
+5      use App\Models\AnneeScolaire;
+6      use App\Models\Bulletin;
+7      use App\Models\Classe;
+8      use App\Models\Evaluation;
+9      use App\Models\Inscription;
+10     use App\Models\Note;
+11     use App\Models\Periode;
+12     use App\Support\BulletinRdc;
+13     use Illuminate\Http\RedirectResponse;
+14     use Illuminate\Http\Request;
+15     use Illuminate\Support\Facades\DB;
+16     use Illuminate\Validation\Rule;
+17     use Illuminate\View\View;
+18     
+19     class BulletinController extends Controller
+20     {
+21         public function index(Request $request): View
+22         {
+23             $periodeId = $request->query('periode_id');
+24             $classeId = $request->query('classe_id');
+25     
+26             $annee = AnneeScolaire::enCours();
+27             $periodes = Periode::anneeEnCours()->orderBy('id')->get();
+28             $classes = Classe::where('statut', 'actif')->orderBy('nom')->get();
+29     
+30             $periode = null;
+31             $classe = null;
+32             $rows = collect();
+33     
+34             if ($annee && $periodeId && $classeId) {
+35                 $periode = $periodes->firstWhere('id', (int) $periodeId);
+36                 $classe = $classes->firstWhere('id', (int) $classeId);
+37     
+38                 if ($periode && $classe) {
+39                     $rows = collect($this->computeForClasse($classe, $periode))->map(function (array $row) use ($periode) {
+40                         $row['bulletin'] = Bulletin::query()
+41                             ->where('periode_id', $periode->id)
+42                             ->where('inscription_id', $row['inscription']->id)
+43                             ->first();
+44     
+45                         return $row;
+46                     });
+47                 }
+48             }
+49     
+50             return view('admin.bulletins.index', compact('annee', 'periodes', 'classes', 'periode', 'classe', 'rows', 'period
+```
+
+### Tool result
+```
+1      <?php
+2      
+3      namespace App\Http\Controllers;
+4      
+5      use App\Models\AnneeScolaire;
+6      use App\Models\Classe;
+7      use App\Models\Evaluation;
+8      use App\Models\Note;
+9      use App\Models\ParametreSysteme;
+10     use App\Models\Periode;
+11     use Illuminate\Http\RedirectResponse;
+12     use Illuminate\Http\Request;
+13     use Illuminate\Support\Facades\DB;
+14     use Illuminate\Validation\Rule;
+15     use Illuminate\View\View;
+16     
+17     /**
+18      * Carnet de notes par classe : l'administrateur choisit une classe
+19      * (et éventuellement une période) puis saisit les notes de tous ses élèves
+20      * dans une grille élèves × évaluations.
+21      */
+22     class NotesController extends Controller
+23     {
+24         public function index(Request $request): View
+25         {
+26             $annee = AnneeScolaire::enCours();
+27             $classeId = $request->query('classe_id');
+28             $periodeId = $request->query('periode_id');
+29     
+30             $classes = Classe::where('statut', 'actif')->orderBy('nom')->get();
+31             $periodes = Periode::anneeEnCours()->orderBy('id')->get();
+32     
+33             $classe = $classeId ? $classes->firstWhere('id', (int) $classeId) : null;
+34             $periode = $periodeId ? $periodes->firstWhere('id', (int) $periodeId) : null;
+35     
+36             $inscriptions = collect();
+37             $evaluations = collect();
+38             $notes = collect();
+39     
+40             if ($classe && $annee) {
+41                 $inscriptions = $classe->inscriptions()
+42                     ->anneeEnCours()
+43                     ->where('statut', 'actif')
+44                     ->with('eleve')
+45                     ->get();
+46     
+47                 $evaluations = Evaluation::query()
+48                     ->where('statut', 'actif')
+49                     ->whereHas('affectation', fn ($query) => $query
+50                         ->where('classe_id', $classe->id)
+51             
+```
+
+### Tool result
+```
+1      <?php
+2      
+3      namespace App\Http\Controllers;
+4      
+5      use App\Models\AffectationCours;
+6      use App\Models\AnneeScolaire;
+7      use App\Models\Classe;
+8      use App\Models\Evaluation;
+9      use App\Models\Note;
+10     use App\Models\ParametreSysteme;
+11     use App\Models\Periode;
+12     use Illuminate\Http\RedirectResponse;
+13     use Illuminate\Http\Request;
+14     use Illuminate\Validation\Rule;
+15     use Illuminate\View\View;
+16     
+17     class EvaluationController extends Controller
+18     {
+19         public function index(Request $request): View
+20         {
+21             $periodeId = $request->query('periode_id');
+22             $classeId = $request->query('classe_id');
+23     
+24             $evaluations = Evaluation::query()
+25                 ->with(['periode', 'affectation.professeur', 'affectation.cours', 'affectation.classe'])
+26                 ->whereHas('affectation', fn ($query) => $query->anneeEnCours())
+27                 ->when($periodeId, fn ($query) => $query->where('periode_id', $periodeId))
+28                 ->when($classeId, fn ($query) => $query->whereHas('affectation', fn ($affectation) => $affectation->where('classe_id', $classeId)))
+29                 ->withCount('notes')
+30                 ->orderByDesc('date_evaluation')
+31                 ->orderByDesc('id')
+32                 ->paginate(25)
+33                 ->withQueryString();
+34     
+35             return view('admin.evaluations.index', [
+36                 'evaluations' => $evaluations,
+37                 'annee' => AnneeScolaire::enCours(),
+38                 'periodeId' => $periodeId,
+39                 'classeId' => $classeId,
+40                 'periodes' => Periode::anneeEnCours()->where('statut', 'actif')->orderBy('id')->get(),
+41                 'classes' => Classe::where('statut', 'actif')->orderBy('nom')->get(),
+42                 'affectations' => AffectationCours::anneeEnCours()->where('statut', 'actif')->with(['professeur', 'cours', 'c
+```
+
+### Tool call — read_file
+```
+{"path":"app/Models/Classe.php"}
+```
+
+### Tool call — glob
+```
+{"pattern":"app/Support/*.php"}
+```
+
+### Tool call — read_file
+```
+{"path":"app/Models/Inscription.php"}
+```
+
+### Tool call — read_file
+```
+{"path":"app/Models/Eleve.php"}
+```
+
+### Tool call — read_file
+```
+{"path":"app/Models/Cycle.php"}
+```
+
+### Tool call — read_file
+```
+{"path":"app/Models/Section.php"}
+```
+
+### Tool call — read_file
+```
+{"path":"app/Models/Option.php"}
+```
+
+### Tool call — read_file
+```
+{"path":"app/Models/AnneeScolaire.php"}
+```
+
+### Tool call — read_file
+```
+{"path":"app/Models/ParametreSysteme.php"}
+```
+
+### Tool result
+```
+1      <?php
+2      
+3      namespace App\Models;
+4      
+5      use Illuminate\Database\Eloquent\Model;
+6      
+7      class Classe extends Model
+8      {
+9          protected $fillable = ['cycle_id', 'salle_id', 'nom', 'section_id', 'option_id', 'statut'];
+10     
+11         public function cycle()
+12         {
+13             return $this->belongsTo(Cycle::class);
+14         }
+15     
+16         public function inscriptions()
+17         {
+18             return $this->hasMany(Inscription::class);
+19         }
+20     
+21         public function salle()
+22         {
+23             return $this->belongsTo(Salle::class);
+24         }
+25     
+26         public function section()
+27         {
+28             return $this->belongsTo(Section::class);
+29         }
+30     
+31         public function option()
+32         {
+33             return $this->belongsTo(Option::class);
+34         }
+35     }
+```
+
+### Tool result
+```
+app/Support/ (9 lines, newest first):
+  Messagerie.php
+  Raccourcis.php
+  PresenceUtilisateurs.php
+  EspaceProfesseur.php
+  Tresorerie.php
+  Comptabilite.php
+  Paie.php
+  Caisse.php
+  BulletinRdc.php
+```
+
+### Tool result
+```
+1      <?php
+2      
+3      namespace App\Models;
+4      
+5      use App\Models\Concerns\BelongsToAnneeScolaire;
+6      use Illuminate\Database\Eloquent\Model;
+7      
+8      class Inscription extends Model
+9      {
+10         use BelongsToAnneeScolaire;
+11     
+12         public const STATUT_EN_ATTENTE = 'en_attente';
+13     
+14         public const STATUT_ACTIF = 'actif';
+15     
+16         protected $fillable = ['eleve_id', 'classe_id', 'annee_scolaire_id', 'date_inscription', 'statut'];
+17     
+18         /**
+19          * Valide l'inscription : elle devient active (généralement après le
+20          * règlement du frais d'inscription par la caisse).
+21          */
+22         public function valider(): void
+23         {
+24             if ($this->statut !== self::STATUT_ACTIF) {
+25                 $this->update(['statut' => self::STATUT_ACTIF]);
+26             }
+27         }
+28     
+29         public function estEnAttente(): bool
+30         {
+31             return $this->statut === self::STATUT_EN_ATTENTE;
+32         }
+33     
+34         protected function casts(): array
+35         {
+36             return ['date_inscription' => 'date'];
+37         }
+38     
+39         public function eleve()
+40         {
+41             return $this->belongsTo(Eleve::class);
+42         }
+43     
+44         public function classe()
+45         {
+46             return $this->belongsTo(Classe::class);
+47         }
+48     
+49         public function bulletins()
+50         {
+51             return $this->hasMany(Bulletin::class);
+52         }
+53     
+54         public function paiements()
+55         {
+56             return $this->hasMany(Paiement::class);
+57         }
+58     }
+```
+
+### Tool result
+```
+1      <?php
+2      
+3      namespace App\Models;
+4      
+5      use Illuminate\Database\Eloquent\Builder;
+6      use Illuminate\Database\Eloquent\Factories\HasFactory;
+7      use Illuminate\Database\Eloquent\Model;
+8      
+9      class Eleve extends Model
+10     {
+11         use HasFactory;
+12     
+13         protected $fillable = [
+14             'nom',
+15             'matricule',
+16             'postnom',
+17             'prenom',
+18             'sexe',
+19             'date_naissance',
+20             'lieu_naissance',
+21             'tuteur_id',
+22             'photo',
+23             'statut',
+24         ];
+25     
+26         protected function casts(): array
+27         {
+28             return ['date_naissance' => 'date'];
+29         }
+30     
+31         public function tuteur()
+32         {
+33             return $this->belongsTo(Tuteur::class);
+34         }
+35     
+36         /**
+37          * Limite la requête aux élèves inscrits (inscription active) pour l'année en cours.
+38          */
+39         public function scopeInscritAnneeEnCours(Builder $query): Builder
+40         {
+41             return $query->whereHas('inscriptions', fn (Builder $inscription) => $inscription
+42                 ->anneeEnCours()
+43                 ->where('statut', 'actif'));
+44         }
+45     
+46         public function inscriptions()
+47         {
+48             return $this->hasMany(Inscription::class);
+49         }
+50     
+51         public function sante()
+52         {
+53             return $this->hasOne(EleveSante::class);
+54         }
+55     
+56         public function documents()
+57         {
+58             return $this->hasMany(DocumentEleve::class);
+59         }
+60     }
+```
+
+### Tool result
+```
+1      <?php
+2      
+3      namespace App\Models;
+4      
+5      use Illuminate\Database\Eloquent\Model;
+6      
+7      class Cycle extends Model
+8      {
+9          protected $fillable = ['nom', 'statut'];
+10     
+11         public function classes()
+12         {
+13             return $this->hasMany(Classe::class);
+14         }
+15     
+16         /**
+17          * Les inscriptions des élèves passées dans les classes de ce cycle.
+18          */
+19         public function inscriptions()
+20         {
+21             return $this->hasManyThrough(Inscription::class, Classe::class);
+22         }
+23     }
+```
+
+### Tool result
+```
+1      <?php
+2      
+3      namespace App\Models;
+4      
+5      use Illuminate\Database\Eloquent\Model;
+6      
+7      class Section extends Model
+8      {
+9          // La table `sections` ne porte que le nom (les colonnes code/description/statut
+10         // ont été retirées par la migration align_sections_options_schema).
+11         protected $fillable = ['nom'];
+12     
+13         public function options()
+14         {
+15             return $this->hasMany(Option::class);
+16         }
+17     
+18         public function classes()
+19         {
+20             return $this->hasMany(Classe::class);
+21         }
+22     }
+```
+
+### Tool result
+```
+1      <?php
+2      
+3      namespace App\Models;
+4      
+5      use Illuminate\Database\Eloquent\Model;
+6      
+7      class Option extends Model
+8      {
+9          protected $table = 'options';
+10     
+11         // La table `options` ne porte que le nom et la section de rattachement.
+12         protected $fillable = ['nom', 'section_id'];
+13     
+14         public function section()
+15         {
+16             return $this->belongsTo(Section::class);
+17         }
+18     
+19         public function classes()
+20         {
+21             return $this->hasMany(Classe::class);
+22         }
+23     }
+```
+
+### Tool result
+```
+1      <?php
+2      
+3      namespace App\Models;
+4      
+5      use Illuminate\Database\Eloquent\Model;
+6      use Illuminate\Support\Facades\DB;
+7      use Illuminate\Support\Facades\Schema;
+8      
+9      class AnneeScolaire extends Model
+10     {
+11         /**
+12          * Tables portant une clé étrangère vers annees_scolaires.
+13          */
+14         private const TABLES_LIEES = [
+15             'inscriptions',
+16             'periodes',
+17             'affectations_cours',
+18             'frais_scolaires',
+19             'depenses',
+20             'demandes_inscription',
+21         ];
+22     
+23         protected $table = 'annees_scolaires';
+24         protected $fillable = ['libelle', 'date_debut', 'date_fin', 'is_encours', 'statut'];
+25     
+26         protected function casts(): array
+27         {
+28             return [
+29                 'date_debut' => 'date',
+30                 'date_fin' => 'date',
+31                 'is_encours' => 'boolean',
+32             ];
+33         }
+34     
+35         /**
+36          * L'année scolaire « en cours » (unique), ou null si aucune n'est définie.
+37          */
+38         public static function enCours(): ?self
+39         {
+40             return static::where('is_encours', true)->first();
+41         }
+42     
+43         /**
+44          * Les inscriptions rattachées à cette année scolaire.
+45          */
+46         public function inscriptions()
+47         {
+48             return $this->hasMany(Inscription::class);
+49         }
+50     
+51         public function periodes()
+52         {
+53             return $this->hasMany(Periode::class);
+54         }
+55     
+56         public function affectationsCours()
+57         {
+58             return $this->hasMany(AffectationCours::class);
+59         }
+60     
+61         public function fraisScolaires()
+62         {
+63             return $this->hasMany(FraisScolaire::class);
+64         }
+65     
+66         public function depenses()
+67         {
+68             return $this-
+```
+
+### Tool result
+```
+1      <?php
+2      
+3      namespace App\Models;
+4      
+5      use Illuminate\Database\Eloquent\Model;
+6      
+7      class ParametreSysteme extends Model
+8      {
+9          protected $table = 'parametres_systeme';
+10     
+11         protected $fillable = ['nom_etablissement', 'nom_court', 'telephone', 'email', 'adresse', 'saisie_notes_active', 'portail_parents_actif'];
+12     
+13         protected function casts(): array
+14         {
+15             return [
+16                 'saisie_notes_active' => 'boolean',
+17                 'portail_parents_actif' => 'boolean',
+18             ];
+19         }
+20     
+21         /**
+22          * Réglages en vigueur (ligne unique), ou valeurs par défaut si aucune n'existe.
+23          */
+24         public static function current(): self
+25         {
+26             return static::query()->first() ?? static::defaults();
+27         }
+28     
+29         public static function defaults(): self
+30         {
+31             return new self([
+32                 'nom_etablissement' => 'COMPLEXE SCOLAIRE BABAZIN',
+33                 'nom_court' => 'C.S. Moty',
+34                 'saisie_notes_active' => true,
+35                 'portail_parents_actif' => false,
+36             ]);
+37         }
+38     }
+```
+
+### Tool call — read_file
+```
+{"path":"app/Support/BulletinRdc.php"}
+```
+
+### Tool call — glob
+```
+{"pattern":"database/migrations/*.php"}
+```
+
+### Tool result
+```
+1      <?php
+2      
+3      namespace App\Support;
+4      
+5      use App\Models\AffectationCours;
+6      use App\Models\Inscription;
+7      use App\Models\Note;
+8      use App\Models\Periode;
+9      
+10     /**
+11      * Calcul du bulletin annuel selon la norme congolaise (RDC — CTEB).
+12      *
+13      * Règles retenues :
+14      *  - Pour une branche et une période, les notes se répartissent en
+15      *    « Travaux journaliers » (interrogations / devoirs) et « Examen » ;
+16      *    le total obtenu est TJ + Examen, le maximum est la somme des notes
+17      *    maximales des évaluations notées de la période.
+18      *  - Le pourcentage d'une branche est le rapport total obtenu / total maximum,
+19      *    exprimé en pourcentage ; le pourcentage général est le rapport des sommes
+20      *    de tous les totaux sur tous les maxima (et non la moyenne des pourcentages).
+21      *  - L'élève passe à partir de 50 % (seuil de réussite) ; en dessous, il double,
+22      *    et les branches sous le seuil sont listées pour l'examen de repêchage.
+23      */
+24     class BulletinRdc
+25     {
+26         public const SEUIL_REUSSITE = 50.0;
+27     
+28         public function __construct(private readonly Inscription $inscription)
+29         {
+30         }
+31     
+32         public static function for(Inscription $inscription): self
+33         {
+34             return new self($inscription);
+35         }
+36     
+37         /**
+38          * @return array{
+39          *     inscription: Inscription,
+40          *     periodes: \Illuminate\Support\Collection<int, Periode>,
+41          *     branches: array<int, array<string, mixed>>,
+42          *     total_general: float,
+43          *     max_general: float,
+44          *     pourcentage_general: float,
+45          *     decision: string,
+46          *     branches_repechage: array<int, string>
+47          * }
+48          */
+49         public function build(): array
+50         {
+51             $anneeId = $this->inscription->an
+```
+
+### Tool result
+```
+Output saved to C:\Users\danie\.wmark\tool-outputs\144c63540b62-sub-0\20261007-174914-glob-call_01a1174528bf71d981b50c0d.txt (626 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+database/migrations/ (32 lines, newest first):
+  2026_10_19_000000_add_appels_events.php
+  2026_10_18_000000_create_appels_table.php
+  2026_10_17_000000_add_reponse_et_reaction_to_messages_table.php
+  2026_10_16_000000_add_parent_role_to_users_table.php
+  2026_10_15_000000_add_piece_jointe_to_messages_table.php
+  2026_10_14_010000_add_dernier_message_id_to_conversation_user_table.php
+  2026_10_14_000000_create_messagerie_tables.php
+  2026_10_13_000000_create_annonces_and_notifications_tables.php
+  2026_10_12_000000_create_presences_table.php
+  2026_10_11_000000_create_comptabilite_tables.php
+  2026_10_10_000000_add_salaires_to_archives_annees_table.php
+  2026_10_09_000000_create_salaires_and_paies_tables.php
+  2026_10_08_000000_add_details_to_archives_annees_table.php
+  2026_10_07_000000_widen_statut_on_inscriptions_table.php
+  2026_10_06_000000_add_est_inscription_to_types_frais_table.php
+  2026_10_05_000000_add_periode_to_paiements_table.php
+  2026_10_04_010000_add_maxima_to_cours_table.php
+  2026_10_04_000000_add_module_switches_to_parametres_systeme_table.php
+  2026_10_03_000000_enforce_single_current_school_year.php
+  2026_09_29_010000_create_parametres_systeme_table.php
+  2026_09_29_000000_create_registration_request_tables.php
+  2026_09_21_050000_add_profile_fields_to_users_table.php
+  2026_09_21_040000_align_sections_options_schema.php
+  2026_09_21_030000_create_sections_and_options_tables.php
+  2026_09_21_020000_create_school_management_tables.php
+  2026_09_21_010000_create_eleves_table.php
+  2026_09_21_000000_add_professeur_foreign_key_to_users_table.php
+  0001_01_01_000000_create_users_table.php
+  2026_09_20_225243_add_professeur_id_to_users_table.php
+  2026_09_20_222131_create_professeurs_table.php
+  0001
+```
+
+### Tool call — read_file
+```
+{"path":"database/migrations/2026_09_21_020000_create_school_management_tables.php"}
+```
+
+### Tool call — read_file
+```
+{"path":"database/migrations/2026_10_04_000000_add_module_switches_to_parametres_systeme_table.php"}
+```
+
+### Tool call — read_file
+```
+{"path":"database/migrations/2026_10_04_010000_add_maxima_to_cours_table.php"}
+```
+
+### Tool call — read_file
+```
+{"path":"app/Http/Controllers/EleveInscriptionController.php"}
+```
+
+### Tool call — grep
+```
+{"pattern":"deliberation|d[ée]lib[ée]r|decision|admission|promotion|passage|redouble|passe","output_mode":"files_with_matches","-i":true}
+```
+
+### Tool result
+```
+1      <?php
+2      
+3      use Illuminate\Database\Migrations\Migration;
+4      use Illuminate\Database\Schema\Blueprint;
+5      use Illuminate\Support\Facades\Schema;
+6      
+7      return new class extends Migration
+8      {
+9          public function up(): void
+10         {
+11             Schema::create('annees_scolaires', function (Blueprint $t) { $t->id(); $t->string('libelle', 20)->unique(); $t->date('date_debut'); $t->date('date_fin'); $t->boolean('is_encours')->default(false); $t->enum('statut', ['actif', 'inactif'])->default('actif'); $t->timestamps(); });
+12             Schema::create('cycles', function (Blueprint $t) { $t->id(); $t->string('nom', 50)->unique(); $t->enum('statut', ['actif', 'inactif'])->default('actif'); $t->timestamps(); });
+13             Schema::create('salles', function (Blueprint $t) { $t->id(); $t->string('nom', 50)->unique(); $t->unsignedInteger('capacite')->nullable(); $t->enum('statut', ['actif', 'inactif'])->default('actif'); $t->timestamps(); });
+14             Schema::create('cours', function (Blueprint $t) { $t->id(); $t->string('code', 20)->unique(); $t->string('intitule', 100); $t->unsignedInteger('ponderation')->default(1); $t->enum('statut', ['actif', 'inactif'])->default('actif'); $t->timestamps(); });
+15             Schema::create('tuteurs', function (Blueprint $t) { $t->id(); $t->string('nom_pere', 100)->nullable(); $t->string('profession_pere', 100)->nullable(); $t->string('telephone_pere', 20)->nullable(); $t->string('email_pere', 100)->nullable(); $t->text('adresse_pere')->nullable(); $t->string('nom_mere', 100); $t->string('profession_mere', 100)->nullable(); $t->string('telephone_mere', 20); $t->string('email_mere', 100)->nullable(); $t->text('adresse_mere')->nullable(); $t->enum('statut', ['actif', 'inactif'])->default('actif'); $t->timestamps(); });
+16             Schema::create('periodes', function (Blueprint $t) { $t->id(); $t->foreignId('annee_scolaire_id')->constrained('annees_scolaires')->cascadeOnDelete();
+```
+
+### Tool result
+```
+1      <?php
+2      
+3      use Illuminate\Database\Migrations\Migration;
+4      use Illuminate\Database\Schema\Blueprint;
+5      use Illuminate\Support\Facades\Schema;
+6      
+7      return new class extends Migration
+8      {
+9          public function up(): void
+10         {
+11             if (! Schema::hasColumn('parametres_systeme', 'saisie_notes_active')) {
+12                 Schema::table('parametres_systeme', function (Blueprint $table) {
+13                     $table->boolean('saisie_notes_active')->default(true);
+14                 });
+15             }
+16     
+17             if (! Schema::hasColumn('parametres_systeme', 'portail_parents_actif')) {
+18                 Schema::table('parametres_systeme', function (Blueprint $table) {
+19                     $table->boolean('portail_parents_actif')->default(false);
+20                 });
+21             }
+22         }
+23     
+24         public function down(): void
+25         {
+26             foreach (['saisie_notes_active', 'portail_parents_actif'] as $column) {
+27                 if (Schema::hasColumn('parametres_systeme', $column)) {
+28                     Schema::table('parametres_systeme', function (Blueprint $table) use ($column) {
+29                         $table->dropColumn($column);
+30                     });
+31                 }
+32             }
+33         }
+34     };
+```
+
+### Tool result
+```
+1      <?php
+2      
+3      use Illuminate\Database\Migrations\Migration;
+4      use Illuminate\Database\Schema\Blueprint;
+5      use Illuminate\Support\Facades\Schema;
+6      
+7      return new class extends Migration
+8      {
+9          public function up(): void
+10         {
+11             if (! Schema::hasColumn('cours', 'max_travaux_journaliers')) {
+12                 Schema::table('cours', function (Blueprint $table) {
+13                     $table->unsignedInteger('max_travaux_journaliers')->nullable()->after('ponderation');
+14                 });
+15             }
+16     
+17             if (! Schema::hasColumn('cours', 'max_examen')) {
+18                 Schema::table('cours', function (Blueprint $table) {
+19                     $table->unsignedInteger('max_examen')->nullable()->after('max_travaux_journaliers');
+20                 });
+21             }
+22         }
+23     
+24         public function down(): void
+25         {
+26             foreach (['max_travaux_journaliers', 'max_examen'] as $column) {
+27                 if (Schema::hasColumn('cours', $column)) {
+28                     Schema::table('cours', function (Blueprint $table) use ($column) {
+29                         $table->dropColumn($column);
+30                     });
+31                 }
+32             }
+33         }
+34     };
+```
+
+### Tool result
+```
+1      <?php
+2      
+3      namespace App\Http\Controllers;
+4      
+5      use App\Models\AnneeScolaire;
+6      use App\Models\Classe;
+7      use App\Models\Eleve;
+8      use App\Models\Inscription;
+9      use App\Models\Tuteur;
+10     use Illuminate\Http\RedirectResponse;
+11     use Illuminate\Http\Request;
+12     use Illuminate\Support\Facades\DB;
+13     use Illuminate\Support\Str;
+14     use Illuminate\Validation\Rule;
+15     use Illuminate\View\View;
+16     
+17     class EleveInscriptionController extends Controller
+18     {
+19         public function create(): View
+20         {
+21             return view('admin.eleves.create', [
+22                 'classes' => Classe::with('cycle')->where('statut', 'actif')->whereHas('cycle', fn ($query) => $query->where('statut', 'actif'))->orderBy('nom')->get(),
+23                 'annees' => AnneeScolaire::where('statut', 'actif')->orderByDesc('is_encours')->orderByDesc('date_debut')->get(),
+24             ]);
+25         }
+26     
+27         public function store(Request $request): RedirectResponse
+28         {
+29             $data = $request->validate([
+30                 'classe_id' => ['required', Rule::exists('classes', 'id')->where(fn ($query) => $query
+31                     ->where('statut', 'actif')
+32                     ->whereIn('cycle_id', DB::table('cycles')->where('statut', 'actif')->select('id')))],
+33                 'nom' => ['required', 'string', 'max:50'], 'postnom' => ['required', 'string', 'max:50'], 'prenom' => ['required', 'string', 'max:50'],
+34                 'sexe' => ['required', 'in:M,F'], 'date_naissance' => ['required', 'date', 'before:today'], 'lieu_naissance' => ['nullable', 'string', 'max:100'],
+35                 'photo' => ['nullable', 'image', 'max:2048'],
+36                 'nom_mere' => ['required', 'string', 'max:100'], 'telephone_mere' => ['required', 'string', 'max:20'], 'profession_mere' => ['nullable', 'string', 'max:100'], 'email_mere' => ['nullable', 'email', 'max:100'], 'adresse
+```
+
+### Tool result
+```
+Error: ripgrep (rg) is not available, so the grep tool cannot run. Use the bash tool with grep/find instead. environment: native Windows. Install ripgrep with 'winget install BurntSushi.ripgrep.MSVC' (or 'choco install ripgrep'). If wmark came from the official Windows binary, the bundled vendor\windows\rg.exe is missing — reinstall wmark.
+```
+
+### Tool call — read_file
+```
+{"path":"database/migrations/2026_09_29_010000_create_parametres_systeme_table.php"}
+```
+
+### Tool call — read_file
+```
+{"path":"database/migrations/2026_10_07_000000_widen_statut_on_inscriptions_table.php"}
+```
+
+### Tool call — bash
+```
+{"command":"Select-String -Path (Get-ChildItem -Recurse -Include *.php,*.blade.php app,routes,database,resources -File | Select-Object -Expand FullName) -Pattern 'deliberation|délibér|admission|promotion|redouble|passage|decision|décision' -List 2>$null | Select-Object Path,LineNumber | Format-Table -AutoSize","description":"Search deliberation-related terms"}
+```
+
+### Tool result
+```
+1      <?php
+2      
+3      use Illuminate\Database\Migrations\Migration;
+4      use Illuminate\Database\Schema\Blueprint;
+5      use Illuminate\Support\Facades\DB;
+6      use Illuminate\Support\Facades\Schema;
+7      
+8      return new class extends Migration
+9      {
+10         public function up(): void
+11         {
+12             Schema::create('parametres_systeme', function (Blueprint $table) {
+13                 $table->id();
+14                 $table->string('nom_etablissement', 150)->default('COMPLEXE SCOLAIRE BABAZIN');
+15                 $table->string('nom_court', 60)->default('C.S. Moty');
+16                 $table->string('telephone', 30)->nullable();
+17                 $table->string('email', 150)->nullable();
+18                 $table->text('adresse')->nullable();
+19                 $table->timestamps();
+20             });
+21     
+22             DB::table('parametres_systeme')->insert([
+23                 'nom_etablissement' => 'COMPLEXE SCOLAIRE BABAZIN',
+24                 'nom_court' => 'C.S. Moty',
+25                 'created_at' => now(),
+26                 'updated_at' => now(),
+27             ]);
+28         }
+29     
+30         public function down(): void
+31         {
+32             Schema::dropIfExists('parametres_systeme');
+33         }
+34     };
+```
+
+### Tool result
+```
+1      <?php
+2      
+3      use Illuminate\Database\Migrations\Migration;
+4      use Illuminate\Database\Schema\Blueprint;
+5      use Illuminate\Support\Facades\Schema;
+6      
+7      return new class extends Migration
+8      {
+9          /**
+10          * La colonne `statut` de `inscriptions` était un ENUM limité à
+11          * ('actif','inactif') : « en_attente » (inscription en attente du frais
+12          * d'inscription) provoquait « Data truncated for column 'statut' ».
+13          */
+14         public function up(): void
+15         {
+16             Schema::table('inscriptions', function (Blueprint $table) {
+17                 $table->enum('statut', ['actif', 'inactif', 'en_attente'])->default('actif')->change();
+18             });
+19         }
+20     
+21         public function down(): void
+22         {
+23             Schema::table('inscriptions', function (Blueprint $table) {
+24                 $table->enum('statut', ['actif', 'inactif'])->default('actif')->change();
+25             });
+26         }
+27     };
+```
+
+### Tool result
+```
+[powershell — Windows side]
+Path                                                                                                                  
+----                                                                                                                  
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Http\Controllers\AdminRegistrationRequestController.php  
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Support\BulletinRdc.php                                  
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\resources\views\admin\bulletins\document.blade.php           
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\resources\views\admin\registration\account-requests.blade.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\resources\views\admin\registration\student-history.blade.php 
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\resources\views\admin\registration\student-requests.blade.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\resources\views\registration\student-request.blade.php       
+
+
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>
+```
+
+### Tool call — bash
+```
+{"command":"$files = Get-ChildItem -Recurse -Include *.php,*.blade.php app,routes,database,resources -File | Select-Object -Expand FullName\nforeach ($w in 'deliberation','délibér','admission','promotion','redouble','passage','decision','décision','Passe') {\n  \"=== $w ===\"\n  Select-String -Path $files -Pattern $w 2>$null | ForEach-Object { \"$($_.Path -replace [regex]::Escape('C:\\Users\\danie\\AppData\\Roaming\\Composer\\vendor\\bin\\ecole\\'),''):$($_.LineNumber): $($_.Line.Trim())\" } | Select-Object -First 12\n}","description":"Show matched lines for each term"}
+```
+
+### Tool result
+```
+Output saved to C:\Users\danie\.wmark\tool-outputs\144c63540b62-sub-0\20261007-174922-bash-call_01a1174543e0706493d2f426.txt (1,550 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+[powershell — Windows side]
+=== deliberation ===
+=== d�lib�r ===
+=== admission ===
+app\Http\Controllers\AdminRegistrationRequestController.php:139: return back()->with($updated ? 'success' : 'error', $updated ? 'La demande d'admission a �t� refus�e.' : 'Cette demande a d�j� �t� trait�e.');
+resources\views\admin\registration\student-history.blade.php:39: <div><p class="eyebrow">Admissions</p><h1>Historique d'inscription</h1><p>Demandes d'inscription d�j� trait�es : accept�es et refus�es.</p></div
+
+... 3,329 chars truncated ...
+
+\Controllers\EleveController.php:140: 'photo.max' => 'La photo ne doit pas d�passer 2 Mo.',
+app\Http\Controllers\EleveInscriptionController.php:41: 'photo.max' => 'La photo ne doit pas d�passer 2 Mo.',
+app\Http\Controllers\EleveInscriptionController.php:42: 'acte_naissance.max' => "L'acte de naissance ne doit pas d�passer 4 Mo.",
+app\Http\Controllers\EleveInscriptionController.php:43: 'bulletin.max' => 'Le bulletin ne doit pas d�passer 4 Mo.',
+app\Http\Controllers\EleveInscriptionController.php:44: 'certificat_medical.max' => 'Le certificat m�dical ne doit pas d�passer 4 Mo.',
+app\Http\Controllers\EvaluationController.php:111: 'notes.*.max' => 'La note ne peut pas d�passer la note maximale ('.$evaluation->max_note.').',
+app\Http\Controllers\MessagerieController.php:103: 'piece_jointe.max' => 'La pi�ce jointe ne doit pas d�passer 5 Mo.',
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed<
+```
+
+### Tool call — read_file
+```
+{"path":"C:\\Users\\danie\\.wmark\\tool-outputs\\144c63540b62-sub-0\\20261007-174922-bash-call_01a1174543e0706493d2f426.txt"}
+```
+
+### Tool result
+```
+1      [powershell — Windows side]
+2      === deliberation ===
+3      === d�lib�r ===
+4      === admission ===
+5      app\Http\Controllers\AdminRegistrationRequestController.php:139: return back()->with($updated ? 'success' : 'error', $updated ? 'La demande d'admission a �t� refus�e.' : 'Cette demande a d�j� �t� trait�e.');
+6      resources\views\admin\registration\student-history.blade.php:39: <div><p class="eyebrow">Admissions</p><h1>Historique d'inscription</h1><p>Demandes d'inscription d�j� trait�es : accept�es et refus�es.</p></div>
+7      resources\views\admin\registration\student-requests.blade.php:40: <div class="heading"><div><p class="eyebrow">Admissions</p><h1>Demandes d'inscription</h1><p>Une acceptation cr�e le dossier �l�ve et son inscription dans la classe choisie.</p></div><span class="badge badge-warning">{{ $requests->count() }} en attente</span></div>
+8      resources\views\registration\student-request.blade.php:34: <div class="request-heading"><p class="eyebrow">Admission scolaire</p><h1>Demande d'inscription</h1><p>Le dossier sera examin� par l'administration avant la cr�ation de l'inscription d�finitive.</p></div>
+9      === promotion ===
+10     === redouble ===
+11     === passage ===
+12     === decision ===
+13     app\Support\BulletinRdc.php:45: *     decision: string,
+14     app\Support\BulletinRdc.php:141: 'decision' => $pourcentageGeneral >= self::SEUIL_REUSSITE ? 'Passe' : 'Double',
+15     resources\views\admin\bulletins\document.blade.php:154: <label><input type="checkbox" disabled @checked($decision === 'Passe')> *PASSE (1)</label><br>
+16     resources\views\admin\bulletins\document.blade.php:155: <label><input type="checkbox" disabled @checked($decision === 'Double')> *DOUBLE (1)</label>
+17     resources\views\admin\registration\account-requests.blade.php:57: <div class="form-group"><label class="form-label" for="decision-{{ $application->id }}">D�cision</label><button class="btn btn-success btn-block" id="decision-{{ $application->id }
+```
+
+### Tool call — read_file
+```
+{"path":"app/Http/Controllers/ModuleSwitchController.php"}
+```
+
+### Tool call — read_file
+```
+{"path":"resources/views/admin/bulletins/document.blade.php","offset":100,"limit":90}
+```
+
+### Tool call — grep
+```
+{"pattern":"ponderation","output_mode":"content","-n":true}
+```
+
+### Tool call — grep
+```
+{"pattern":"bulletins|notes|evaluations|deliberation|passage","path":"routes","output_mode":"content","-n":true}
+```
+
+### Tool result
+```
+1      <?php
+2      
+3      namespace App\Http\Controllers;
+4      
+5      use App\Models\ParametreSysteme;
+6      use Illuminate\Http\RedirectResponse;
+7      use Illuminate\Http\Request;
+8      use Illuminate\View\View;
+9      
+10     class ModuleSwitchController extends Controller
+11     {
+12         public function index(): View
+13         {
+14             return view('admin.modules.index', [
+15                 'settings' => ParametreSysteme::query()->first() ?? ParametreSysteme::defaults(),
+16             ]);
+17         }
+18     
+19         public function update(Request $request): RedirectResponse
+20         {
+21             $request->validate([
+22                 'saisie_notes_active' => ['nullable', 'boolean'],
+23                 'portail_parents_actif' => ['nullable', 'boolean'],
+24             ]);
+25     
+26             $settings = ParametreSysteme::query()->first()
+27                 ?? ParametreSysteme::create(ParametreSysteme::defaults()->getAttributes());
+28     
+29             $settings->update([
+30                 'saisie_notes_active' => $request->boolean('saisie_notes_active'),
+31                 'portail_parents_actif' => $request->boolean('portail_parents_actif'),
+32             ]);
+33     
+34             return redirect()->route('admin.modules.index')->with('success', 'L’état des modules a été mis à jour.');
+35         }
+36     }
+```
+
+### Tool result
+```
+100                <tr>
+101                    @foreach ($periodes as $periode)
+102                        <th>M.J.</th><th>T.J.</th><th>M.EX.</th><th>EX.</th><th>TOT</th><th>%</th>
+103                    @endforeach
+104                    <th>TOTAL</th><th>MAX</th><th>%</th>
+105                </tr>
+106            </thead>
+107            <tbody>
+108                @forelse ($branches as $branche)
+109                    <tr>
+110                        <td class="text-left">{{ $branche['intitule'] }}</td>
+111                        @foreach ($periodes as $periode)
+112                            @php($ligne = $branche['periodes'][$periode->id] ?? null)
+113                            <td>{{ $ligne ? $fmt($ligne['tj_max']) : '' }}</td>
+114                            <td>{{ $ligne ? $fmt($ligne['tj']) : '' }}</td>
+115                            <td>{{ $ligne ? $fmt($ligne['examen_max']) : '' }}</td>
+116                            <td>{{ $ligne ? $fmt($ligne['examen']) : '' }}</td>
+117                            <td>{{ $ligne ? $fmt($ligne['total']) : '' }}</td>
+118                            <td>{{ $ligne && $ligne['pourcentage'] !== null ? $fmt($ligne['pourcentage']) : '' }}</td>
+119                        @endforeach
+120                        <td>{{ $fmt($branche['total']) }}</td>
+121                        <td>{{ $fmt($branche['max']) }}</td>
+122                        <td>{{ $branche['pourcentage'] === null ? '' : $fmt($branche['pourcentage']) }}</td>
+123                    </tr>
+124                @empty
+125                    <tr><td colspan="{{ 6 * $periodes->count() + 4 }}" class="text-center">Aucune branche affectée à cette classe.</td></tr>
+126                @endforelse
+127    
+128                @if ($branches)
+129                    <tr style="font-weight:bold; background-color:#e0e0e0;">
+130                        <td class="text-left">MAXIMA / TOTAUX GÉNÉRAUX</td>
+131                        @foreach ($periodes as $periode)
+132                            <
+```
+
+### Tool result
+```
+Error: ripgrep (rg) is not available, so the grep tool cannot run. Use the bash tool with grep/find instead. environment: native Windows. Install ripgrep with 'winget install BurntSushi.ripgrep.MSVC' (or 'choco install ripgrep'). If wmark came from the official Windows binary, the bundled vendor\windows\rg.exe is missing — reinstall wmark.
+```
+
+### Tool result
+```
+Error: ripgrep (rg) is not available, so the grep tool cannot run. Use the bash tool with grep/find instead. environment: native Windows. Install ripgrep with 'winget install BurntSushi.ripgrep.MSVC' (or 'choco install ripgrep'). If wmark came from the official Windows binary, the bundled vendor\windows\rg.exe is missing — reinstall wmark.
+```
+
+### Tool call — bash
+```
+{"command":"$root='C:\\Users\\danie\\AppData\\Roaming\\Composer\\vendor\\bin\\ecole'\nWrite-Output '=== ponderation ==='\nGet-ChildItem -Recurse -Include *.php,*.blade.php $root\\app,$root\\resources -File | Select-String -Pattern 'ponderation' | ForEach-Object { \"$($_.Path -replace [regex]::Escape($root+'\\'),''):$($_.LineNumber): $($_.Line.Trim())\" }\nWrite-Output '=== routes bulletins/notes/eval ==='\nSelect-String -Path $root\\routes\\*.php -Pattern 'bulletin|notes|evaluation|module|prefecture|titulaire' | ForEach-Object { \"$($_.Filename):$($_.LineNumber): $($_.Line.Trim())\" }","description":"Search ponderation and routes"}
+```
+
+### Tool result
+```
+Output saved to C:\Users\danie\.wmark\tool-outputs\144c63540b62-sub-0\20261007-174927-bash-call_01a117455793773282ccfed4.txt (1,390 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+[powershell — Windows side]
+=== ponderation ===
+app\Http\Controllers\CoursController.php:16: 'ponderation' => ['required', 'integer', 'min:1', 'max:20'],
+app\Http\Controllers\CoursController.php:23: 'ponderation.required' => 'La pond�ration est obligatoire.',
+app\Http\Controllers\CoursController.php:31: 'ponderation' => $data['ponderation'],
+app\Models\Cours.php:11: protected $fillable = ['code', 'intitule', 'ponderation', 'max_travaux_journaliers', 'max_examen', 'statut'];
+resources\views\admin
+
+... 3,091 chars truncated ...
+
+'index'])->middleware('role:titulaire')->name('titulaire.dashboard');
+web.php:232: // l'admin pour pr�visualisation) quand le module est actif.
+web.php:241: Route::get('/professeur/evaluations', [ProfesseurEvaluationController::class, 'index'])->middleware('role:professeur')->name('professeur.evaluations');
+web.php:242: Route::post('/professeur/evaluations', [ProfesseurEvaluationController::class, 'store'])->middleware('role:professeur')->name('professeur.evaluations.store');
+web.php:243: Route::get('/professeur/evaluations/{evaluation}/notes', [ProfesseurEvaluationController::class, 'notes'])->middleware('role:professeur')->name('professeur.notes');
+web.php:244: Route::post('/professeur/evaluations/{evaluation}/notes', [ProfesseurEvaluationController::class, 'storeNotes'])->middleware('role:professeur')->name('professeur.notes.store');
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed<
+```
+
+### Tool call — read_file
+```
+{"path":"C:\\Users\\danie\\.wmark\\tool-outputs\\144c63540b62-sub-0\\20261007-174927-bash-call_01a117455793773282ccfed4.txt"}
+```
+
+### Tool result
+```
+1      [powershell — Windows side]
+2      === ponderation ===
+3      app\Http\Controllers\CoursController.php:16: 'ponderation' => ['required', 'integer', 'min:1', 'max:20'],
+4      app\Http\Controllers\CoursController.php:23: 'ponderation.required' => 'La pond�ration est obligatoire.',
+5      app\Http\Controllers\CoursController.php:31: 'ponderation' => $data['ponderation'],
+6      app\Models\Cours.php:11: protected $fillable = ['code', 'intitule', 'ponderation', 'max_travaux_journaliers', 'max_examen', 'statut'];
+7      resources\views\admin\affectations\index.blade.php:53: <div class="col-md-4 form-group"><label class="form-label">Pond�ration *</label><input class="form-control" type="number" name="ponderation" value="{{ old('ponderation', 1) }}" min="1" max="20" required></div>
+8      resources\views\admin\affectations\index.blade.php:63: <span><strong>{{ $coursItem->code }}</strong> - {{ $coursItem->intitule }} <small class="text-muted">(pond�ration {{ $coursItem->ponderation }}@if ($coursItem->maximumParPeriode() !== null) � max/p�riode {{ $coursItem->maximumParPeriode() }}@endif)</small></span>
+9      === routes bulletins/notes/eval ===
+10     web.php:14: use App\Http\Controllers\ProfesseurEvaluationController;
+11     web.php:23: use App\Http\Controllers\EvaluationController;
+12     web.php:24: use App\Http\Controllers\BulletinController;
+13     web.php:33: use App\Http\Controllers\ModuleSwitchController;
+14     web.php:34: use App\Http\Controllers\NotesController;
+15     web.php:45: use App\Http\Controllers\TitulaireDashboardController;
+16     web.php:47: use App\Http\Controllers\PrefectureDashboardController;
+17     web.php:93: Route::get('/admin/evaluations', [EvaluationController::class, 'index'])->middleware('role:admin')->name('admin.evaluations.index');
+18     web.php:94: Route::post('/admin/evaluations', [EvaluationController::class, 'store'])->middleware('role:admin')->name('admin.evaluations.store');
+19     web.php:95: Route::get('/admin/evaluations
+```
+
+### Tool call — read_file
+```
+{"path":"app/Models/DemandeInscription.php"}
+```
+
+### Tool call — read_file
+```
+{"limit":99,"path":"resources/views/admin/bulletins/document.blade.php"}
+```
+
+### Tool call — bash
+```
+{"command":"$root='C:\\Users\\danie\\AppData\\Roaming\\Composer\\vendor\\bin\\ecole'\nWrite-Output '=== ordre/niveau/rang/suivante ==='\nGet-ChildItem -Recurse -Include *.php $root\\app,$root\\database -File | Select-String -Pattern \"ordre|niveau|'rang'|rang_|suivante|next_class|classe_suivante\" | ForEach-Object { \"$($_.Path -replace [regex]::Escape($root+'\\'),''):$($_.LineNumber): $($_.Line.Trim())\" }\nWrite-Output '=== ClasseController ==='\nGet-Content \"$root\\app\\Http\\Controllers\\ClasseController.php\" | Select-Object -First 60 | ForEach-Object -Begin {$i=0} -Process {$i++; \"$i`: $_\"}","description":"Search ordering columns and read ClasseController"}
+```
+
+### Tool result
+```
+1      <?php
+2      
+3      namespace App\Models;
+4      
+5      use Illuminate\Database\Eloquent\Model;
+6      
+7      class DemandeInscription extends Model
+8      {
+9          protected $table = 'demandes_inscription';
+10     
+11         protected $fillable = [
+12             'nom', 'postnom', 'prenom', 'sexe', 'date_naissance', 'lieu_naissance',
+13             'classe_id', 'annee_scolaire_id', 'nom_mere', 'telephone_mere', 'email_mere',
+14             'adresse_mere', 'nom_pere', 'telephone_pere', 'email_pere', 'statut',
+15             'traite_par', 'traite_le', 'motif_refus',
+16         ];
+17     
+18         protected function casts(): array
+19         {
+20             return [
+21                 'date_naissance' => 'date',
+22                 'traite_le' => 'datetime',
+23             ];
+24         }
+25     
+26         public function classe()
+27         {
+28             return $this->belongsTo(Classe::class);
+29         }
+30     
+31         public function anneeScolaire()
+32         {
+33             return $this->belongsTo(AnneeScolaire::class);
+34         }
+35     
+36         public function traitePar()
+37         {
+38             return $this->belongsTo(User::class, 'traite_par');
+39         }
+40     }
+```
+
+### Tool result
+```
+1      <!DOCTYPE html>
+2      <html lang="fr">
+3      <head>
+4          <meta charset="UTF-8">
+5          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+6          <title>Bulletin — {{ $inscription->eleve?->nom }} {{ $inscription->eleve?->prenom }}</title>
+7          <style>
+8              body { font-family: Arial, Helvetica, sans-serif; font-size: 11px; margin: 10px; color: #000; }
+9              .container { width: 100%; max-width: 1000px; margin: 0 auto; border: 2px solid #000; padding: 10px; box-sizing: border-box; }
+10             .header-table { width: 100%; border-collapse: collapse; margin-bottom: 5px; }
+11             .header-table td { text-align: center; vertical-align: middle; }
+12             .header-title { font-weight: bold; font-size: 13px; text-transform: uppercase; }
+13             .info-table { width: 100%; border-collapse: collapse; margin-bottom: 5px; }
+14             .info-table td { border: 1px solid #000; padding: 2px 4px; font-size: 10px; }
+15             .id-grid { display: inline-block; border: 1px solid #000; width: 15px; height: 15px; text-align: center; line-height: 15px; margin-right: 1px; }
+16             .main-table { width: 100%; border-collapse: collapse; font-size: 10px; text-align: center; }
+17             .main-table th, .main-table td { border: 1px solid #000; padding: 2px 3px; }
+18             .main-table th { background-color: #f2f2f2; font-weight: bold; }
+19             .section-header { background-color: #e0e0e0; font-weight: bold; text-align: center; text-transform: uppercase; }
+20             .text-left { text-align: left; padding-left: 5px !important; }
+21             .bg-black { background-color: #000; }
+22             .footer-section { margin-top: 10px; font-size: 10px; line-height: 1.4; }
+23             .footer-table { width: 100%; margin-top: 15px; border-collapse: collapse; }
+24             .footer-table td { vertical-align: top; }
+25             .toolbar { max-width: 1000px; margin: 0 auto 
+```
+
+### Tool result
+```
+Output saved to C:\Users\danie\.wmark\tool-outputs\144c63540b62-sub-0\20261007-174931-bash-call_01a11745684476fd93847aac.txt (1,259 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+[powershell — Windows side]
+=== ordre/niveau/rang/suivante ===
+app\Http\Controllers\AnnonceController.php:26: 'niveaux' => Annonce::NIVEAUX,
+app\Http\Controllers\AnnonceController.php:39: 'niveau' => ['required', Rule::in(array_keys(Annonce::NIVEAUX))],
+app\Http\Controllers\AnnonceController.php:45: 'niveau.in' => 'Niveau d'annonce inconnu.',
+app\Http\Controllers\ComptableRecouvrementController.php:15: * Recouvrement : niveau d'encaissement global, �volution des paiements
+app\Models\Annonce.php:
+
+... 2,328 chars truncated ...
+
+iption')
+36:             ->get();
+37: 
+38:         return view('admin.classes.students', compact('classe', 'inscriptions'));
+39:     }
+40: 
+41:     public function create(): View
+42:     {
+43:         return view('admin.classes.create', $this->formData());
+44:     }
+45: 
+46:     public function edit(Classe $classe): View
+47:     {
+48:         return view('admin.classes.create', array_merge(['classe' => $classe], $this->formData($classe)));
+49:     }
+50: 
+51:     public function store(Request $request): RedirectResponse
+52:     {
+53:         Classe::create($this->validatedData($request));
+54: 
+55:         return redirect()
+56:             ->route('admin.classes.index')
+57:             ->with('success', 'La classe a ǸtǸ crǸǸe avec succ��s.');
+58:     }
+59: 
+60:     public function update(Request $request, Classe $classe): RedirectResponse
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed<
+```
+
+### Tool call — read_file
+```
+{"path":"C:\\Users\\danie\\.wmark\\tool-outputs\\144c63540b62-sub-0\\20261007-174931-bash-call_01a11745684476fd93847aac.txt"}
+```
+
+### Tool result
+```
+1      [powershell — Windows side]
+2      === ordre/niveau/rang/suivante ===
+3      app\Http\Controllers\AnnonceController.php:26: 'niveaux' => Annonce::NIVEAUX,
+4      app\Http\Controllers\AnnonceController.php:39: 'niveau' => ['required', Rule::in(array_keys(Annonce::NIVEAUX))],
+5      app\Http\Controllers\AnnonceController.php:45: 'niveau.in' => 'Niveau d'annonce inconnu.',
+6      app\Http\Controllers\ComptableRecouvrementController.php:15: * Recouvrement : niveau d'encaissement global, �volution des paiements
+7      app\Models\Annonce.php:12: public const NIVEAUX = [
+8      app\Models\Annonce.php:29: protected $fillable = ['titre', 'message', 'niveau', 'lien', 'cible', 'envoye_par', 'destinataires'];
+9      app\Models\Annonce.php:36: public function libelleNiveau(): string
+10     app\Models\Annonce.php:38: return self::NIVEAUX[$this->niveau] ?? 'Information';
+11     app\Models\User.php:22: * R�les reconnus, dans l'ordre d'affichage : source unique pour les listes
+12     app\Notifications\AnnonceNotification.php:39: 'niveau' => $this->annonce->niveau,
+13     app\Support\Tresorerie.php:13: * ou un niveau de charges trop �lev� par rapport aux recettes.
+14     app\Support\Tresorerie.php:59: * @return array<int, array{niveau: string, message: string}>
+15     app\Support\Tresorerie.php:68: 'niveau' => 'danger',
+16     app\Support\Tresorerie.php:76: 'niveau' => 'warning',
+17     app\Support\Tresorerie.php:92: if ($alerte['niveau'] === 'danger') {
+18     database\migrations\2026_10_03_000000_enforce_single_current_school_year.php:7: * Garantit au niveau de la base qu'au plus une ann�e scolaire est � en cours �.
+19     database\migrations\2026_10_13_000000_create_annonces_and_notifications_tables.php:17: $table->string('niveau', 20)->default('info'); // info | success | warning | danger
+20     === ClasseController ===
+21     1: <?php
+22     2: 
+23     3: namespace App\Http\Controllers;
+24     4: 
+25     5: use App\Models\Classe;
+26     6: use App\Models\Cycle;
+27     7: 
+```
+
+## Assistant
+# Cartographie du module « DÉLIBÉRATION » — projet `ecole`
+
+Tout est vérifié sur le code. Aucun module de délibération/passage n'existe aujourd'hui ; la logique de décision est embryonnaire et **non persistée**, cachée dans `BulletinRdc`.
+
+## 1) NOTES — modèles, tables, saisie
+
+**Modèles** :
+- `app/Models/Note.php:11` — `fillable = ['evaluation_id','eleve_id','note_obtenue','observation','statut']`, cast `note_obtenue` decimal:2. FK : `evaluation_id` (→Evaluation) et **`eleve_id` (→Eleve)**. **Pas d'`inscription_id`**, pas d'`affectation` directe.
+- `app/Models/Evaluation.php:11` — `fillable = ['affectation_id','periode_id','titre','type_evaluation','max_note','date_evaluation','statut']`. FK `affectation_id` (→AffectationCours), `periode_id`. Cast `max_note` decimal:2. `type_evaluation ∈ {interro,devoir,examen,autre}` (`EvaluationController.php:43`).
+- `app/Models/Periode.php:14` — `['annee_scolaire_id','nom','statut']` + trait `BelongsToAnneeScolaire`.
+- `app/Models/Cours.php:11` — `['code','intitule','ponderation','max_travaux_journaliers','max_examen','statut']` + `maximumParPeriode()` (l.16).
+- `app/Models/AffectationCours.php:14` — `['professeur_id','cours_id','classe_id','annee_scolaire_id','statut']` → **le lien classe↔cours↔professeur**. `evaluations()` l.36.
+
+**Tables** (`database/migrations/2026_09_21_020000_create_school_management_tables.php`) :
+- `notes` l.26 : `id, evaluation_id FK→evaluations cascadeOnDelete, eleve_id FK→eleves, note_obtenue decimal(5,2), observation nullable, statut, timestamps`.
+- `evaluations` l.25 : `affectation_id FK, periode_id FK, titre, type_evaluation, max_note decimal(5,2) default 20, date_evaluation, statut`.
+- `cours` l.14 : `code unique, intitule, ponderation unsignedInteger default 1, statut` + `max_travaux_journaliers` et `max_examen` ajoutés par `2026_10_04_010000_add_maxima_to_cours_table.php:11-21` (**nullable**).
+- `periodes` l.16, `affectations_cours` l.22.
+
+**Saisie des notes** — deux points d'entrée :
+- `NotesController` (grille classe × évaluations) : `app/Http/Controllers/NotesController.php` — `index()` l.24, `store()` l.83. Rejette si `saisie_notes_active=false` (l.85), valide `0 ≤ valeur ≤ evaluation->max_note` (l.141), `updateOrCreate(['evaluation_id','eleve_id'], …)` l.147.
+- `EvaluationController` (saisie par évaluation) : `app/Http/Controllers/EvaluationController.php` — `store()` l.48, `notes()` l.77, `storeNotes()` l.97 → `updateOrCreate` l.132. Inscriptions actives uniquement (l.116).
+
+**Important** : `Cours.ponderation` (coefficient) **n'est jamais utilisée dans le calcul** (cf. §2). Les colonnes « poids/coefficient » sur les notes n'existent pas : seul le `max_note` de chaque évaluation sert de barème.
+
+## 2) BULLETIN — calcul de la moyenne
+
+Le vrai moteur est **`app/Support/BulletinRdc.php`** (norme RDC/CTEB). Le `Bulletin` n'est qu'un cache de ligne.
+
+- `app/Http/Controllers/BulletinController.php` :
+  - `index()` l.21, `document()` l.53 (affiche + **rang en live** l.60-77), `generate()` l.80 → **stocke en base** via `Bulletin::updateOrCreate(['inscription_id','periode_id'], …)` l.105.
+  - `computeForClasse()` l.131 : calcule par élève `total = Σ note_obtenue`, `max = Σ evaluation->max_note`, `pourcentage = total/max*100` (l.157-159), **rang** par tri décroissant (l.171-176), **mention** l.181.
+- `app/Models/Bulletin.php:11` — `fillable = ['inscription_id','periode_id','total_points','max_possible','pourcentage','place_classe','mention','application','conduite','chemin_pdf','statut']`. Table `bulletins` l.27 : `inscription_id FK, periode_id FK, total_points decimal(7,2), max_possible, pourcentage decimal(5,2), place_classe nullable, mention nullable, application, conduite, chemin_pdf, statut`.
+
+**Formule exacte (par branche/période et générale) — `BulletinRdc::build()` l.49-144** :
+- Par branche × période : `tj` = Σ notes `type_evaluation ≠ 'examen'` ; `examen` = Σ notes `type_evaluation = 'examen'` (`agrege()` l.154-162).
+  - `maxTj = cours.max_travaux_journaliers ?? Σ(max_note) des évals TJ` (l.94), idem `maxEx` (l.95) → **le barème saisi sur la branche prime sur le calcul des évaluations**.
+  - `total = tj + examen` ; `max = maxTj + maxEx` ; `% = total/max*100` (l.97-107).
+- Branche : `total_branche = Σ totaux périodes`, `% = total/max*100` (l.118-120).
+- **Général** : `pourcentage_general = Σ(total_branches) / Σ(max_branches) * 100` (l.123-127) — **somme des totaux / somme des maxima**, ce n'est PAS la moyenne des pourcentages, et **la pondération n'intervient pas**.
+- **Seuil** : `const SEUIL_REUSSITE = 50.0` (l.26). **Décision** l.141 : `'Passe' si % ≥ 50 sinon 'Double'`. **Repêchage** l.129-132 : branches `max>0 && %<50`.
+- **Mentions** (dans `BulletinController::mention()` l.181-190, pas dans BulletinRdc) : ≥80 Distinction, ≥70 Satisfaction, ≥60 Passable, ≥50 Faible, sinon Insuffisant.
+- **Stockage** : le `%` par période est stocké dans `bulletins` (par inscription+période, `BulletinController::generate` l.105). **MAIS** le pourcentage **général annuel, le rang et la décision sont recalculés à chaque affichage** par `BulletinRdc` (`document()` l.57-77) et **ne sont pas persistés**. Le PDF/render est `resources/views/admin/bulletins/document.blade.php` (décision affichée l.151-157, repêchage l.177-178 ; `application`/`conduite` sont des cases vides l.158-167).
+
+## 3) CLASSES / PASSAGE
+
+- `app/Models/Classe.php:9` — `fillable = ['cycle_id','salle_id','nom','section_id','option_id','statut']`. **Aucun champ `ordre`/`niveau`/`rang`**. Table `classes` l.17 : `cycle_id FK, salle_id nullable, nom, section_id string nullable, option_id string nullable, statut`.
+- `Cycle.php:9` — `['nom','statut']` seulement (**pas d'ordre**). `Section.php:11` / `Option.php:12` — nom seulement.
+- `Inscription.php` — **statuts** : `STATUT_EN_ATTENTE='en_attente'` (l.12), `STATUT_ACTIF='actif'` (l.14) ; `valider()` l.22. Table `inscriptions` (l.21) + migration `2026_10_07_000000_widen_statut_on_inscriptions_table.php:17` qui élargit l'enum à `('actif','inactif','en_attente')`. **Pas de statut de redoublement/admission/promotion.**
+- `Eleve.php` — stats élève `actif|inactif|suspendu|exclu` (l.19 migration), non lié au passage.
+- `AnneeScolaire.php:38` `enCours()`, colonne `is_encours` (migration `2026_10_03_000000_enforce_single_current_school_year.php`). `Inscription` créée dans `EleveInscriptionController::store()` l.59-69 (insert direct avec `statut = en_attente`).
+
+**Conclusion passage** : **aucune notion de classe suivante / ordre de progression / redoublement / admission n'existe**. Il faut la déduire (ex. table de correspondance, ou ajouter une colonne `ordre`/`classe_suivante_id`). Le nom de classe (`classes.nom`) est la seule clé d'ordre, non structurée.
+
+## 4) PARAMÈTRES
+
+- `app/Models/ParametreSysteme.php:11` — `fillable = ['nom_etablissement','nom_court','telephone','email','adresse','saisie_notes_active','portail_parents_actif']`, casts bool. `current()` l.24, `defaults()` l.29.
+- Table `parametres_systeme` : créée `2026_09_29_010000_create_parametres_systeme_table.php:12-20` (identité de l'école), colonnes de modules ajoutées par `2026_10_04_000000_add_module_switches_to_parametres_systeme_table.php:11-21` → **`saisie_notes_active` (bool default true)** et **`portail_parents_actif` (bool default false)**.
+- **Aucun seuil** (pas de seuil de réussite en base : le 50 % est codé en dur dans `BulletinRdc::SEUIL_REUSSITE`). **Aucun paramètre lié à la délibération.**
+- Le toggle « modules » est géré par `app/Http/Controllers/ModuleSwitchController.php` (l.19-35) — c'est là qu'on brancherait un futur `deliberation_active`.
+
+## 5) Existe-t-il « deliberation / decision / admission / promotion / passage » ?
+
+Recherche sur `app/`, `routes/`, `database/`, `resources/` :
+- **`deliberation`, `délibér` : AUCUNE occurrence.** Le module n'existe pas.
+- **`promotion`, `redouble`, `passage` : AUCUNE occurrence** en tant que concept/logique (seulement du texte français).
+- `decision` : uniquement `BulletinRdc.php:45,141` (clé `'decision' => 'Passe'/'Double'`) et le rendu `document.blade.php:151-155`. **Non persisté.**
+- `admission` : uniquement les vues de **demande d'inscription** (`AdminRegistrationRequestController.php:139`, `student-requests/student-history/student-request.blade.php`) — c'est la validation de dossier d'inscription (→ crée l'élève + inscription en_attente), **sans rapport avec le passage de classe**.
+- Route : rien de `deliberation` dans `routes/web.php` (bulletins l.100-102, notes l.98-99, modules l.139-140).
+
+---
+
+## Résumé
+
+**(a) Formule de moyenne à réutiliser telle quelle :** appeler `BulletinRdc::for($inscription)->build()` (`app/Support/BulletinRdc.php`) et prendre `$data['pourcentage_general']`, `$data['branches']`, `$data['branches_repechage']` et `$data['decision']`. Formule : `% = Σ(totaux de toutes les branches) / Σ(maxima de toutes les branches) × 100`, où par branche×période `total = Σ(TJ)+Σ(Examen)` et `max = (cours.max_travaux_journaliers ?? Σ) + (cours.max_examen ?? Σ)` ; seuil `SEUIL_REUSSITE = 50.0`. **La `ponderation` de `Cours` n'est pas utilisée** — ne pas l'introduire sans décider explicitement de changer la norme.
+
+**(b) Déterminer la classe suivante :** impossible en l'état — **il n'existe aucun ordre de classe**. Il faut l'ajouter (colonne `ordre` (int) ou `classe_suivante_id` sur `classes`, éventuellement un `ordre` sur `cycles`) ou une table de progression `cycle_id → niveau → classe suivante`. Le nom (`classes.nom`) est aujourd'hui la seule information et n'est pas fiable comme ordre.
+
+**(c) Où brancher la délibération sans casser le bulletin :**
+1. Un nouveau `DeliberationController` + modèle/table `deliberations` (`inscription_id` FK, `annee_scolaire_id`, `pourcentage_general`, `decision` (`passe`/`double`/`repechage`), `classe_suivante_id`, `statut`, `decide_par`, `decide_le`) — **la décision est aujourd'hui éphémère**, donc la persister est additif, sans toucher `bulletins`.
+2. **Consommer `BulletinRdc` en lecture** (ne pas réécrire la formule) comme le fait déjà `BulletinController::document()` l.57-77.
+3. Ajouter le toggle dans `ParametreSysteme` + `ModuleSwitchController` (`deliberation_active`), sur le même modèle que `saisie_notes_active`.
+4. Routes sous `admin/deliberations` (mirroir de `web.php:100-102`), middleware `role:admin`.
+5. Pour matérialiser le passage : créer les `Inscription` de l'année N+1 (`EleveInscriptionController.php:65` est le pattern d'insert existant) avec un statut/une référence vers la délibération — **sans modifier** `bulletins`, `notes` ni `BulletinRdc`.
+
+Éléments explicitement **inexistants** : ordre/niveau de classe, notion de redoublement/promotion/admission liée au passage, statuts d'inscription de passage, table `deliberations`, seuil de réussite paramétrable, et toute persistance de la décision/rang général.

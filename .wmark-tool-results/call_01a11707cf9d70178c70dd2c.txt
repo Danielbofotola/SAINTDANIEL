@@ -1,0 +1,7 @@
+1      @php
+2          $nomUtilisateur = trim(($user->nom ?? '').' '.($user->postnom ?? '').' '.($user->prenom ?? '')) ?: $user->username;
+3          $initiales = mb_strtoupper(mb_substr($user->prenom ?: $user->username, 0, 1));
+4      
+5          $correspondantDe = fn ($conversation) => $conversation->participants->firstWhere('id', '!=', $user->id);
+
+[showing lines 1-5 of 703; read again with offset=6 for more]

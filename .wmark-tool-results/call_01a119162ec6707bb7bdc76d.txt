@@ -1,0 +1,12 @@
+24         @include('partials.impersonation-banner')
+25         <main class="container py-4 profile-content">
+26             <div class="app-title">
+27                 <div><h1><i class="fa fa-user"></i> Mon profil</h1><p>Vos informations personnelles et vos coordonnées.</p></div>
+28                 <a class="btn btn-primary" href="{{ route('profile.edit') }}"><i class="fa fa-pencil"></i> Modifier mon profil</a>
+29             </div>
+30             @if (session('success'))<div class="alert alert-success">{{ session('success') }}</div>@endif
+31             <section class="tile">
+32                 <div class="d-flex align-items-center mb-4">
+33                     @if ($user->photo)
+
+[showing lines 24-33 of 52; read again with offset=34 for more]

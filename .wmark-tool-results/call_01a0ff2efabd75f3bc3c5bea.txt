@@ -1,0 +1,11 @@
+Applied patch: 1 file changed (1 updated)
+Updated app/Models/AnneeScolaire.php (1 hunk applied)
+Landed at lines 42-49 (the file's new text; no re-read needed):
+42     
+43         /**
+44          * Les inscriptions rattachées à cette année scolaire.
+45          */
+46         public function inscriptions()
+47         {
+48             return $this->hasMany(Inscription::class);
+49         }

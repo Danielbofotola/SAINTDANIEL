@@ -1,0 +1,21 @@
+app/Http/Controllers/ (20 lines, newest first):
+  AdminRegistrationRequestController.php
+  EleveController.php
+  PrefectureDashboardController.php
+  HomeController.php
+  UserProfileController.php
+  AuthController.php
+  SectionOptionController.php
+  TitulaireDashboardController.php
+  ComptableDashboardController.php
+  AdminDashboardController.php
+  AnneeScolaireController.php
+  ClasseController.php
+  EleveInscriptionController.php
+  RegistrationRequestController.php
+  ParametreSystemeController.php
+  ProfesseurDashboardController.php
+  ProfesseurController.php
+  SalleController.php
+  ProfesseursController.php
+  Controller.php

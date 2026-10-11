@@ -1,0 +1,32 @@
+70                 'classeId' => $classeId,
+71                 'classes' => Classe::where('statut', 'actif')->orderBy('nom')->get(),
+72                 'inscriptions' => $inscriptions,
+73                 'tarifs' => $tarifs,
+74                 'soldePaye' => $soldePaye,
+75                 'montantsFrais' => $tarifs->pluck('montant_exige', 'id'),
+76                 'paiements' => $paiements,
+77                 'modes' => self::MODES,
+78                 'encaisse' => $annee
+79                     ? (float) Paiement::query()->where('statut', 'actif')
+80                         ->whereHas('inscription', fn ($query) => $query->where('annee_scolaire_id', $annee->id))
+81                         ->sum('montant_paye')
+82                     : 0.0,
+83             ]);
+84         }
+85     
+86         public function store(Request $request): RedirectResponse
+87         {
+88             $annee = AnneeScolaire::enCours();
+89     
+90             if (! $annee) {
+91                 return back()->withInput()->with('error', 'Aucune année scolaire en cours : impossible d’encaisser un paiement.');
+92             }
+93     
+94             $data = $request->validate([
+95                 'inscription_id' => ['required', Rule::exists('inscriptions', 'id')->where('annee_scolaire_id', $annee->id)->where('statut', 'actif')],
+96                 'frais_scolaire_id' => ['required', Rule::exists('frais_scolaires', 'id')->where('annee_scolaire_id', $annee->id)->where('statut', 'actif')],
+97                 'montant_paye' => ['required', 'numeric', 'min:0.01'],
+98                 'mode_paiement' => ['required', Rule::in(array_keys(self::MODES))],
+99                 'reference_transaction' => ['nullable', 'string', 'max:100'],
+
+[showing lines 70-99 of 119; read again with offset=100 for more]

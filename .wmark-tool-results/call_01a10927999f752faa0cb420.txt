@@ -1,0 +1,7 @@
+Applied patch: 1 file changed (1 updated)
+Updated resources/views/professeur/layout.blade.php (2 hunks applied)
+Landed at lines 96-96 (the file's new text; no re-read needed):
+96         @stack('styles')
+Landed at lines 148-149 (the file's new text; no re-read needed):
+148                <li><a class="app-menu__item {{ request()->routeIs('professeur.profil') ? 'active' : '' }}" href="{{ route('professeur.profil') }}"><i class="app-menu__icon fa fa-user"></i><span class="app-menu__label">Mon profil</span></a></li>
+149                <li><a class="app-menu__item" href="{{ route('profile.show') }}"><i class="app-menu__icon fa fa-cog"></i><span class="app-menu__label">Compte &amp; sécurité</span></a></li>

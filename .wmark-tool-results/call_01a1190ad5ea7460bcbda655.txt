@@ -1,0 +1,23 @@
+372        $periode = App\Models\Periode::find(1);
+373        $this->actingAs($prefet)->patch(route('prefecture.periodes.toggle', $periode))->assertRedirect();
+374        expect($periode->fresh()->statut)->toBe('inactif');
+375        $this->actingAs($prefet)->patch(route('prefecture.periodes.toggle', $periode))->assertRedirect();
+376        expect($periode->fresh()->statut)->toBe('actif');
+377    
+378        // 4. Approbation d'un bulletin.
+379        $bulletin = App\Models\Bulletin::create([
+380            'inscription_id' => 1, 'periode_id' => 1, 'total_points' => 45, 'max_possible' => 50,
+381            'pourcentage' => 90, 'place_classe' => 1, 'mention' => 'Grande distinction', 'statut' => 'actif',
+382        ]);
+383        $this->actingAs($prefet)->post(route('prefecture.bulletins.approuver', $bulletin))->assertRedirect();
+384        expect($bulletin->fresh()->approuve_at)->not->toBeNull()
+385            ->and((int) $bulletin->fresh()->approuve_par)->toBe($prefet->id);
+386    });
+387    
+388    test('les pages périodes et bulletins sont accessibles au préfet', function () {
+389        $prefet = User::where('role', 'prefetture')->first();
+390    
+391        $this->actingAs($prefet)->get(route('prefecture.periodes'))->assertOk()
+392            ->assertSee('1er trimestre')->assertSee('Ouverte')->assertSee('Fermer');
+
+[showing lines 372-393 of 401; read again with offset=394 for more]

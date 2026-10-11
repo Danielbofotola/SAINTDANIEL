@@ -1,0 +1,82 @@
+615                        modal.find('#studentDetailsPlaceholder').show();
+616                    }
+617    
+618                    modal.find('#studentDetailsEditProfile').attr('href', button.data('studentEditUrl'));
+619                    modal.find('#studentDetailsFullProfile').attr('href', button.data('studentUrl'));
+620                });
+621    
+622                // DATA TABLES
+623                if ($.fn.DataTable) {
+624                    $('#elevesTable').DataTable({
+625                        language: {
+626                            search: "Rechercher :",
+627                            lengthMenu: "Afficher _MENU_ éléments",
+628                            info: "Affichage de _START_ à _END_ sur _TOTAL_ élèves",
+629                            infoEmpty: "Aucun élément disponible",
+630                            infoFiltered: "(filtré de _MAX_ éléments au total)",
+631                            zeroRecords: "Aucun élève trouvé",
+632                            paginate: {
+633                                first: "Premier",
+634                                previous: "Précédent",
+635                                next: "Suivant",
+636                                last: "Dernier"
+637                            }
+638                        },
+639                        columnDefs: [{ orderable: false, targets: [0, 7] }],
+640                        pageLength: 10,
+641                        order: [[1, 'asc']]
+642                    });
+643                }
+644    
+645                // CHARTS
+646                const occupationLabels = @json($occupationSalles->map(fn ($classe) => $classe->nom . ($classe->salle ? ' - ' . $classe->salle->nom : '')));
+647                const occupationData = @json($occupationSalles->pluck('eleves_count'));
+648                const cycleLabels = @json($repartitionCycles->pluck('nom'));
+649                const cycleData = @json($repartitionCycles->pluck('total'));
+650    
+651    const hasData = (arr) => Object.values(arr).some(v => Number(v) > 0);
+652    
+653                if (typeof Chart !== 'undefined') {
+654                    Chart.defaults.font.family = "'Public Sans', sans-serif";
+655                    Chart.defaults.color = '#64748b';
+656    
+657                    // Occupation : colonnes parallèles, une couleur par classe
+658                    const ctxBar = document.getElementById('occupationChart');
+659                    if (ctxBar && hasData(occupationData)) {
+660                        const base = [[255,99,132],[255,159,64],[255,205,86],[75,192,192],[54,162,235],[153,102,255],[201,203,207]];
+661                        const n = Object.keys(occupationData).length;
+662                        const fills = Array.from({ length: n }, (_, i) => `rgba(${base[i % base.length].join(',')}, 0.2)`);
+663                        const borders = Array.from({ length: n }, (_, i) => `rgb(${base[i % base.length].join(',')})`);
+664    
+665                        // Beaucoup de classes : le graphique s'élargit et défile horizontalement
+666                        ctxBar.parentElement.style.minWidth = (n * 40) + 'px';
+667                        ctxBar.parentElement.parentElement.style.overflowX = 'auto';
+668    
+669                        new Chart(ctxBar, {
+670                            type: 'bar',
+671                            data: {
+672                                labels: occupationLabels,
+673                                datasets: [{
+674                                    data: occupationData,
+675                                    backgroundColor: fills,
+676                                    borderColor: borders,
+677                                    borderWidth: 1,
+678                                    borderRadius: 4
+679                                }]
+680                            },
+681                            options: {
+682                                responsive: true,
+683                                maintainAspectRatio: false,
+684                                plugins: {
+685                                    legend: { display: false },
+686                                    tooltip: { callbacks: { label: c => c.parsed.y + (c.parsed.y > 1 ? ' élèves' : ' élève') } }
+687                                },
+688                                scales: {
+689                                    x: { grid: { display: false }, ticks: { display: false } }, // libellés du bas masqués (nom de la classe visible au survol)
+690                                    y: { beginAtZero: true, ticks: { precision: 0 }, grid: { color: '#f1f5f9' } }
+691                                }
+692                            }
+693                        });
+694                    } else {
+
+[showing lines 615-694 of 734; read again with offset=695 for more]

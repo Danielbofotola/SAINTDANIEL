@@ -1,0 +1,71 @@
+108                @forelse ($branches as $branche)
+109                    <tr>
+110                        <td class="text-left">{{ $branche['intitule'] }}</td>
+111                        @foreach ($periodes as $periode)
+112                            @php($ligne = $branche['periodes'][$periode->id] ?? null)
+113                            <td>{{ $ligne ? $fmt($ligne['tj']) : '' }}</td>
+114                            <td>{{ $ligne ? $fmt($ligne['examen']) : '' }}</td>
+115                            <td>{{ $ligne ? $fmt($ligne['total']) : '' }}</td>
+116                            <td>{{ $ligne ? $fmt($ligne['max']) : '' }}</td>
+117                        @endforeach
+118                        <td>{{ $fmt($branche['total']) }}</td>
+119                        <td>{{ $fmt($branche['max']) }}</td>
+120                        <td>{{ $branche['pourcentage'] === null ? '' : $fmt($branche['pourcentage']) }}</td>
+121                    </tr>
+122                @empty
+123                    <tr><td colspan="{{ 4 * $periodes->count() + 4 }}" class="text-center">Aucune branche affectée à cette classe.</td></tr>
+124                @endforelse
+125    
+126                @if ($branches)
+127                    <tr style="font-weight:bold; background-color:#e0e0e0;">
+128                        <td class="text-left">MAXIMA / TOTAUX GÉNÉRAUX</td>
+129                        @foreach ($periodes as $periode)
+130                            <td colspan="4"></td>
+131                        @endforeach
+132                        <td>{{ $fmt($total_general) }}</td>
+133                        <td>{{ $fmt($max_general) }}</td>
+134                        <td>{{ $fmt($pourcentage_general) }}</td>
+135                    </tr>
+136                @endif
+137    
+138                <tr>
+139                    <td class="text-left"><b>POURCENTAGE GÉNÉRAL</b></td>
+140                    <td colspan="{{ 4 * $periodes->count() }}" class="bg-black"></td>
+141                    <td class="bg-black" colspan="3" style="color:#fff; font-weight:bold;">{{ $fmt($pourcentage_general) }} %</td>
+142                </tr>
+143                <tr>
+144                    <td class="text-left"><b>PLACE / NBRE D'ÉLÈVES</b></td>
+145                    <td colspan="{{ 4 * $periodes->count() }}"></td>
+146                    <td colspan="3">{{ $place ?? '—' }} / {{ $nombre_eleves }}</td>
+147                </tr>
+148                <tr>
+149                    <td class="text-left"><b>DÉCISION</b></td>
+150                    <td colspan="{{ 4 * $periodes->count() }}"></td>
+151                    <td colspan="3" style="font-weight:bold;">
+152                        <label><input type="checkbox" disabled @checked($decision === 'Passe')> *PASSE (1)</label><br>
+153                        <label><input type="checkbox" disabled @checked($decision === 'Double')> *DOUBLE (1)</label>
+154                    </td>
+155                </tr>
+156                <tr>
+157                    <td class="text-left"><b>APPLICATION</b></td>
+158                    <td colspan="{{ 4 * $periodes->count() }}"></td>
+159                    <td colspan="3"></td>
+160                </tr>
+161                <tr>
+162                    <td class="text-left"><b>CONDUITE</b></td>
+163                    <td colspan="{{ 4 * $periodes->count() }}"></td>
+164                    <td colspan="3"></td>
+165                </tr>
+166                <tr>
+167                    <td class="text-left"><b>SIGNATURE</b></td>
+168                    <td colspan="{{ 4 * $periodes->count() }}"></td>
+169                    <td colspan="3"></td>
+170                </tr>
+171            </tbody>
+172        </table>
+173    
+174        <div class="footer-section">
+175            <p>- L'élève ne pourra passer dans la classe supérieure s'il n'a subi avec succès un examen de repêchage en :
+176                {{ $branches_repechage ? implode(', ', $branches_repechage) : '____________________________' }} (1)</p>
+
+[showing lines 108-177 of 208; read again with offset=178 for more]

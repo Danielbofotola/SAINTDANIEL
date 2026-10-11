@@ -1,0 +1,47 @@
+1      <?php
+2      
+3      use App\Models\Classe;
+4      use App\Models\Cycle;
+5      use App\Models\Eleve;
+6      use App\Models\Inscription;
+7      use App\Models\User;
+8      use Illuminate\Database\Schema\Blueprint;
+9      use Illuminate\Support\Facades\DB;
+10     use Illuminate\Support\Facades\Schema;
+11     
+12     beforeEach(function () {
+13         Schema::dropIfExists('users');
+14         Schema::create('users', function (Blueprint $table) {
+15             $table->id();
+16             $table->foreignId('professeur_id')->nullable();
+17             $table->string('nom', 50)->nullable();
+18             $table->string('postnom', 50)->nullable();
+19             $table->string('prenom', 50)->nullable();
+20             $table->date('date_naissance')->nullable();
+21             $table->string('username', 50)->unique();
+22             $table->string('email', 100)->unique();
+23             $table->string('telephone', 20)->nullable();
+24             $table->text('adresse')->nullable();
+25             $table->string('photo')->nullable();
+26             $table->string('password');
+27             $table->string('pin_code')->nullable();
+28             $table->string('role');
+29             $table->string('statut');
+30             $table->dateTime('last_login')->nullable();
+31             $table->rememberToken();
+32             $table->timestamps();
+33         });
+34     });
+35     
+36     test('admin can temporarily access an active user account and return to their own session', function () {
+37         $admin = User::factory()->create(['role' => 'admin']);
+38         $user = User::factory()->create(['role' => 'comptable']);
+39     
+40         $this->actingAs($admin)
+41             ->get(route('admin.profile.accounts'))
+42             ->assertOk()
+43             ->assertSee('Accéder au compte');
+44     
+45         $this->post(route('admin.profile.accounts.impersonate', $user))
+
+[showing lines 1-45 of 483; read again with offset=46 for more]

@@ -1,0 +1,12 @@
+315                    <div class="info-row"><i class="fa-solid fa-envelope"></i> <span>{{ $user->email }}</span></div>
+316                    <div class="info-row"><i class="fa-solid fa-phone"></i> <span>{{ $user->telephone ?: '—' }}</span></div>
+317                    <div class="info-row"><i class="fa-solid fa-location-dot"></i> <span>{{ $user->adresse ?: '—' }}</span></div>
+318                    <div class="info-row"><i class="fa-solid fa-building"></i> <span>{{ $parametres->nom_etablissement }}</span></div>
+319                    <div class="mt-3 d-flex flex-wrap gap-2">
+320                        <a class="btn-ghost" href="{{ route('profile.edit') }}"><i class="fa-solid fa-pen"></i> Modifier mon profil</a>
+321                        <a class="btn-ghost" href="{{ route('messagerie.index') }}"><i class="fa-solid fa-comments"></i> Messagerie interne</a>
+322                        <a class="btn-ghost" href="{{ route('notifications.index') }}"><i class="fa-solid fa-bell"></i> Notifications</a>
+323                    </div>
+324                </div>
+
+[showing lines 315-324 of 338; read again with offset=325 for more]

@@ -1,0 +1,46 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\e1ce9c26600a\20261004-210041-bash-call_01a10881499475a7bcdcd5aa.txt (709 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+[powershell — Windows side]
+<div class="request-top">\n
+                    <div>\n
+                        <h2 class="request-name">Refusee  Cas</h2>\n
+                        <div class="request-meta">Demande #2 · traitée le 04/10/2026 20:00 · par connie47</div>\n
+                    </div>\n
+                    <span class="badge badge-danger">Refusée</span>\n
+                </div>\n
+                <div class="request-details">\n
+                    <div><span class="detail-label">Naissance
+
+... 385 chars truncated ...
+
+pan class="detail-value">3e A</span></div>\n
+                    <div><span class="detail-label">Année scolaire</span><span class="detail-value">2026-2027</span></div>\n
+                    <div><span class="detail-label">Déposée le</span><span class="detail-value">04/10/2026 20:00</span></div>\n
+                </div>\n
+                                    <div class="reject-reason"><strong>Motif du refus :</strong> Dossier incomplet</div>\n
+                            </article>\n
+        \n
+            </main>\n
+</body>\n
+</html>\n
+
+
+  To contain: Acceptee Cas
+
+  at tests\Feature\ElevesPagesTest.php:223
+    219▕     $this->actingAs($admin)
+    220▕         ->get(route('admin.registration.students.history'))
+    221▕         ->assertOk()
+    222▕         ->assertSee("Historique d'inscription", false)
+  ➜ 223▕         ->assertSee('Acceptee Cas')
+    224▕         ->assertSee('Refusee Cas')
+    225▕         ->assertSee('Dossier incomplet')
+    226▕         ->assertDontSee('EnAttente Cas');
+    227▕
+
+
+  Tests:    2 failed, 2 passed (14 assertions)
+  Duration: 0.45s
+
+==exit 1==
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

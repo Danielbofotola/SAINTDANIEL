@@ -1,0 +1,109 @@
+1      <?php
+2      
+3      namespace App\Http\Controllers;
+4      
+5      use App\Models\AnneeScolaire;
+6      use App\Models\Classe;
+7      use App\Models\DemandeCompte;
+8      use App\Models\DemandeInscription;
+9      use Illuminate\Http\RedirectResponse;
+10     use Illuminate\Http\Request;
+11     use Illuminate\Support\Facades\Hash;
+12     use Illuminate\Validation\Rule;
+13     use Illuminate\View\View;
+14     
+15     class RegistrationRequestController extends Controller
+16     {
+17         public function createStudentRequest(): View
+18         {
+19             return view('registration.student-request', [
+20                 'classes' => Classe::query()
+21                     ->where('statut', 'actif')
+22                     ->whereHas('cycle', fn ($query) => $query->where('statut', 'actif'))
+23                     ->orderBy('nom')
+24                     ->get(),
+25                 'schoolYears' => AnneeScolaire::query()
+26                     ->where('statut', 'actif')
+27                     ->orderByDesc('is_encours')
+28                     ->orderByDesc('date_debut')
+29                     ->get(),
+30             ]);
+31         }
+32     
+33         public function storeStudentRequest(Request $request): RedirectResponse
+34         {
+35             $data = $request->validate([
+36                 'nom' => ['required', 'string', 'max:50'],
+37                 'postnom' => ['nullable', 'string', 'max:50'],
+38                 'prenom' => ['required', 'string', 'max:50'],
+39                 'sexe' => ['required', 'in:M,F'],
+40                 'date_naissance' => ['required', 'date', 'before:today'],
+41                 'lieu_naissance' => ['nullable', 'string', 'max:100'],
+42                 'classe_id' => ['required', Rule::exists('classes', 'id')->where('statut', 'actif')],
+43                 'nom_mere' => ['required', 'string', 'max:100'],
+44                 'telephone_mere' => ['required', 'string', 'max:20'],
+45                 'email_mere' => ['nullable', 'email', 'max:100'],
+46                 'adresse_mere' => ['nullable', 'string', 'max:1000'],
+47                 'nom_pere' => ['nullable', 'string', 'max:100'],
+48                 'telephone_pere' => ['nullable', 'string', 'max:20'],
+49                 'email_pere' => ['nullable', 'email', 'max:100'],
+50             ], [
+51                 'date_naissance.before' => 'La date de naissance doit être antérieure à aujourd’hui.',
+52                 'classe_id.exists' => 'La classe sélectionnée n’est plus disponible.',
+53             ]);
+54             // L'année de la demande est imposée par le serveur : l'année en cours.
+55             $anneeEnCours = AnneeScolaire::enCours();
+56     
+57             if (! $anneeEnCours) {
+58                 return back()->withInput()->withErrors([
+59                     'annee_scolaire_id' => "Aucune année scolaire n'est en cours. L'administration doit d'abord ouvrir une année.",
+60                 ]);
+61             }
+62     
+63             $data['annee_scolaire_id'] = $anneeEnCours->id;
+64     
+65             DemandeInscription::create($data);
+66     
+67             return redirect()->route('registration.student.create')
+68                 ->with('success', 'Votre demande a été transmise. Elle sera examinée par l’administration avant toute inscription définitive.');
+69         }
+70     
+71         public function createAccountRequest(): View
+72         {
+73             return view('registration.account-request');
+74         }
+75     
+76         public function storeAccountRequest(Request $request): RedirectResponse
+77         {
+78             $data = $request->validate([
+79                 'nom' => ['required', 'string', 'max:50'],
+80                 'postnom' => ['nullable', 'string', 'max:50'],
+81                 'prenom' => ['required', 'string', 'max:50'],
+82                 'username' => [
+83                     'required', 'string', 'max:50',
+84                     Rule::unique('users', 'username'),
+85                     Rule::unique('demandes_comptes', 'username')->where('statut', 'en_attente'),
+86                 ],
+87                 'email' => [
+88                     'required', 'email', 'max:100',
+89                     Rule::unique('users', 'email'),
+90                     Rule::unique('demandes_comptes', 'email')->where('statut', 'en_attente'),
+91                 ],
+92                 'telephone' => ['nullable', 'string', 'max:20'],
+93                 'role_souhaite' => ['required', 'in:prefetture,titulaire,professeur,comptable'],
+94                 'mot_de_passe' => ['required', 'string', 'min:8', 'confirmed'],
+95             ], [
+96                 'username.unique' => 'Ce nom d’utilisateur est déjà utilisé ou fait l’objet d’une demande en attente.',
+97                 'email.unique' => 'Cette adresse e-mail est déjà utilisée ou fait l’objet d’une demande en attente.',
+98                 'role_souhaite.in' => 'Le rôle demandé n’est pas disponible.',
+99                 'mot_de_passe.min' => 'Le mot de passe doit contenir au moins 8 caractères.',
+100                'mot_de_passe.confirmed' => 'La confirmation du mot de passe ne correspond pas.',
+101            ]);
+102    
+103            $data['mot_de_passe'] = Hash::make($data['mot_de_passe']);
+104            DemandeCompte::create($data);
+105    
+106            return redirect()->route('registration.account.create')
+107                ->with('success', 'Votre demande de compte a été transmise. Vous pourrez vous connecter après son approbation par l’administration.');
+108        }
+109    }

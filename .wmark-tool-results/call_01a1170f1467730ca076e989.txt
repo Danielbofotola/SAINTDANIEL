@@ -1,0 +1,16 @@
+148                'messages' => $messages->map(fn ($message) => [
+149                    'id' => $message->id,
+150                    'html' => view('messagerie._bulle', [
+151                        'message' => $message, 'user' => $request->user(), 'active' => $conversation,
+152                    ])->render(),
+153                ])->values(),
+154                'dernier_id' => (int) ($messages->last()->id ?? $apres),
+155                'non_lus' => Messagerie::nonLus($request->user()),
+156            ]);
+157        }
+158    
+159        private function autoriser(Conversation $conversation, Request $request): void
+160        {
+161            abort_unless(
+
+[showing lines 148-161 of 183; read again with offset=162 for more]

@@ -1,0 +1,24 @@
+Applied patch: 1 file changed (1 updated)
+Updated resources/views/comptable/paiements.blade.php (2 hunks applied)
+Landed at lines 155-198 (the file's new text; no re-read needed):
+155            // Reconstruit la liste des tarifs : ne garde QUE ceux de la classe de
+156            // l'élève sélectionné (les tarifs des autres classes sont retirés du DOM,
+157            // et non simplement masqués).
+158            function rendreTarifs() {
+159                if (!fraisSelect) { return; }
+160    
+161                var inscription = inscriptionSelect ? inscriptionSelect.value : '';
+162                var classe = inscription ? String(classesParInscription[inscription] || '') : '';
+      … 28 lines omitted …
+191                if (encoreValide) {
+192                    fraisSelect.value = courant;
+193                } else if (disponibles.length === 1) {
+194                    fraisSelect.value = disponibles[0].id;
+195                }
+196    
+197                majSolde();
+198            }
+Landed at lines 201-201 (the file's new text; no re-read needed):
+201            if (inscriptionSelect) { inscriptionSelect.addEventListener('change', rendreTarifs); }
+Landed at lines 203-203 (the file's new text; no re-read needed):
+203            rendreTarifs();

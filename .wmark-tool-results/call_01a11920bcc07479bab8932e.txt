@@ -1,0 +1,31 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/DeliberationTest.php (2 hunks applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 2: context matched at lines 345-345 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 352-377:
+352    test('la décision de fin d’année est notifiée aux comptes parents', function () {
+353        $s = scenarioDeliberation();
+354        $inscriptionA = Inscription::where('eleve_id', $s['eleves']['A']->id)->firstOrFail();
+355    
+356        $parent = User::factory()->create(['role' => 'parent', 'nom' => 'Mukendi', 'prenom' => 'Sarah']);
+357        $s['eleves']['A']->parents()->sync([$parent->id]);
+358    
+359        $this->actingAs($s['alice'])
+      … 10 lines omitted …
+370            ->and($notification->data['decision'])->toBe('admis')
+371            ->and($notification->data['niveau'])->toBe('success')
+372            ->and($notification->data['titre'])->toContain("fin d'année")
+373            ->and($notification->data['message'])->toContain('classe supérieure')
+374            ->and($notification->data['lien'])->toContain('/espace-parent/enfants');
+375    });
+376    
+377    test('l’application en masse promeut les admis et maintient les autres', function () {
+Landed at lines 193-200 (the file's new text; no re-read needed):
+193        Schema::create('eleve_user', function (Blueprint $table) {
+194            $table->id();
+195            $table->unsignedBigInteger('eleve_id');
+196            $table->unsignedBigInteger('user_id');
+197            $table->timestamps();
+198        });
+199    
+200        Schema::create('notifications', function (Blueprint $table) {

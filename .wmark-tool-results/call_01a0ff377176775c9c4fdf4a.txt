@@ -1,0 +1,112 @@
+1      <style>
+2              :root {
+3                  --ink: #193c39;
+4                  --ink-deep: #12312f;
+5                  --ink-soft: #315653;
+6                  --paper: #f3f6f2;
+7                  --white: #fff;
+8                  --line: #e2e9e2;
+9                  --muted: #71817d;
+10                 --lime: #c8ef74;
+11                 --lime-deep: #aacd57;
+12                 --coral: #d8735a;
+13                 --blue: #648fc6;
+14                 --shadow: 0 12px 30px rgba(20, 57, 53, .055);
+15             }
+16             * { box-sizing: border-box; }
+17             body { margin: 0; color: #233b38; background: var(--paper); font-family: 'DM Sans', sans-serif; font-size: 14px; }
+18             a { color: inherit; text-decoration: none; }
+19             button, a { -webkit-tap-highlight-color: transparent; }
+20             .teacher-shell { min-height: 100vh; }
+21             .teacher-sidebar { position: fixed; inset: 0 auto 0 0; z-index: 10; display: flex; width: 254px; flex-direction: column; padding: 27px 18px 20px; color: #eff7ec; background: var(--ink); }
+22             .brand { display: flex; align-items: center; gap: 11px; padding: 0 10px 31px; }
+23             .brand-mark { display: grid; width: 38px; height: 38px; place-items: center; color: var(--ink); background: var(--lime); border-radius: 12px 12px 12px 4px; font-family: 'Manrope', sans-serif; font-size: 16px; font-weight: 800; }
+24             .brand-name { font-family: Arial, sans-serif; font-size: 16px; font-weight: 800; letter-spacing: .3px; }
+25             .school-brand { font-family: Arial, sans-serif; }
+26             .brand-caption { display: block; margin-top: 2px; color: #a7bfba; font-size: 10px; font-weight: 600; letter-spacing: 1.1px; text-transform: uppercase; }
+27             .nav-caption { padding: 0 12px 10px; color: #88a7a1; font-size: 10px; font-weight: 700; letter-spacing: 1.25px; text-transform: uppercase; }
+28             .teacher-nav { display: grid; gap: 6px; }
+29             .teacher-nav a { display: flex; min-height: 44px; align-items: center; gap: 13px; padding: 0 13px; color: #c2d4d0; border-radius: 9px; font-size: 13px; font-weight: 600; transition: background .18s ease, color .18s ease; }
+30             .teacher-nav a i { width: 17px; text-align: center; font-size: 15px; }
+31             .teacher-nav a:hover, .teacher-nav a.active { color: #f5f9f3; background: #2a514d; }
+32             .teacher-nav a.active { box-shadow: inset 3px 0 var(--lime); }
+33             .sidebar-bottom { margin-top: auto; }
+34             .profile-shortcut { display: flex; align-items: center; gap: 11px; padding: 13px 9px; border-top: 1px solid rgba(218, 239, 231, .15); }
+35             .avatar { display: grid; width: 38px; height: 38px; flex: 0 0 38px; place-items: center; overflow: hidden; color: var(--ink); background: var(--lime); border-radius: 50%; font-family: 'Manrope', sans-serif; font-size: 14px; font-weight: 800; }
+36             .avatar img { width: 100%; height: 100%; object-fit: cover; }
+37             .profile-name { overflow: hidden; color: #f4f8f2; font-size: 12px; font-weight: 700; text-overflow: ellipsis; white-space: nowrap; }
+38             .profile-role { margin-top: 3px; color: #9cb6b0; font-size: 11px; }
+39             .sidebar-logout { width: 100%; padding: 10px 12px; color: #bed0cc; background: transparent; border: 0; border-radius: 8px; cursor: pointer; font: inherit; text-align: left; }
+40             .sidebar-logout i { margin-right: 10px; }
+41             .sidebar-logout:hover { color: #fff; background: #2a514d; }
+42             .teacher-main { min-height: 100vh; margin-left: 254px; padding: 0 38px 44px; }
+43             .topbar { display: flex; min-height: 76px; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--line); }
+44             .breadcrumb { color: var(--muted); font-size: 12px; }
+45             .breadcrumb strong { color: var(--ink); font-weight: 700; }
+46             .topbar-actions { display: flex; align-items: center; gap: 10px; }
+47             .icon-link { display: grid; width: 38px; height: 38px; place-items: center; color: var(--ink-soft); background: #fff; border: 1px solid var(--line); border-radius: 50%; }
+48             .icon-link:hover { color: var(--ink); border-color: var(--lime-deep); }
+49             .top-avatar { display: flex; align-items: center; gap: 9px; margin-left: 6px; }
+50             .top-avatar .avatar { width: 34px; height: 34px; flex-basis: 34px; font-size: 12px; }
+51             .top-avatar-name { color: var(--ink); font-size: 12px; font-weight: 700; }
+52             .top-avatar-role { margin-top: 2px; color: var(--muted); font-size: 10px; }
+53             .dashboard-content { width: min(100%, 1390px); margin: 0 auto; }
+54             .page-intro { display: flex; align-items: flex-end; justify-content: space-between; gap: 18px; padding: 30px 0 22px; }
+55             .eyebrow { margin: 0 0 7px; color: #718981; font-size: 10px; font-weight: 700; letter-spacing: 1.4px; text-transform: uppercase; }
+56             h1, h2, h3, p { margin-top: 0; }
+57             h1 { margin-bottom: 5px; color: var(--ink-deep); font-family: 'Manrope', sans-serif; font-size: 28px; font-weight: 800; letter-spacing: 0; line-height: 1.2; }
+58             .intro-subtitle { margin: 0; color: var(--muted); font-size: 13px; }
+59             .date-stamp { color: var(--ink-soft); font-size: 12px; font-weight: 700; white-space: nowrap; }
+60             .welcome-banner { position: relative; display: flex; min-height: 176px; align-items: center; justify-content: space-between; overflow: hidden; padding: 27px 33px; color: #f5f9f3; background: var(--ink); border-radius: 13px; }
+61             .welcome-banner::before, .welcome-banner::after { position: absolute; content: ''; border: 1px solid rgba(200, 239, 116, .16); border-radius: 50%; pointer-events: none; }
+62             .welcome-banner::before { top: -138px; right: 75px; width: 330px; height: 330px; }
+63             .welcome-banner::after { top: -104px; right: 109px; width: 262px; height: 262px; }
+64             .welcome-copy { position: relative; z-index: 1; max-width: 620px; }
+65             .welcome-tag { display: inline-flex; align-items: center; gap: 7px; margin-bottom: 13px; padding: 6px 9px; color: var(--lime); background: rgba(200, 239, 116, .1); border: 1px solid rgba(200, 239, 116, .18); border-radius: 5px; font-size: 10px; font-weight: 700; letter-spacing: .7px; text-transform: uppercase; }
+66             .welcome-tag i { font-size: 9px; }
+67             .welcome-banner h2 { margin: 0 0 7px; color: #fff; font-family: 'Manrope', sans-serif; font-size: 24px; font-weight: 800; line-height: 1.25; }
+68             .welcome-banner p { margin: 0; color: #bdd0cb; font-size: 12px; }
+69             .banner-action { position: relative; z-index: 1; display: inline-flex; min-height: 40px; align-items: center; gap: 10px; padding: 0 15px; color: var(--ink); background: var(--lime); border-radius: 7px; font-size: 12px; font-weight: 700; white-space: nowrap; transition: background .18s ease, transform .18s ease; }
+70             .banner-action:hover { color: var(--ink); background: #d7f593; transform: translateY(-1px); }
+71             .banner-art { position: absolute; top: 50%; right: 11%; display: grid; width: 84px; height: 84px; place-items: center; color: var(--ink); background: var(--lime); border-radius: 25px 25px 25px 7px; box-shadow: 18px 16px 0 rgba(255,255,255,.06); font-size: 31px; transform: translateY(-50%) rotate(-7deg); }
+72             .stat-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 13px; margin: 17px 0 25px; }
+73             .stat-card { display: flex; min-height: 105px; align-items: center; gap: 13px; padding: 17px; background: var(--white); border: 1px solid var(--line); border-radius: 10px; box-shadow: var(--shadow); }
+74             .stat-icon { display: grid; width: 42px; height: 42px; flex: 0 0 42px; place-items: center; color: var(--ink); background: #e8f1df; border-radius: 12px; font-size: 16px; }
+75             .stat-card:nth-child(2) .stat-icon { color: #a45c49; background: #f8e9e4; }
+76             .stat-card:nth-child(3) .stat-icon { color: #4c75a7; background: #e8eef7; }
+77             .stat-card:nth-child(4) .stat-icon { color: #92742c; background: #f6f0d9; }
+78             .stat-value { color: var(--ink-deep); font-family: 'Manrope', sans-serif; font-size: 24px; font-weight: 800; line-height: 1; }
+79             .stat-label { margin-top: 6px; color: var(--muted); font-size: 11px; font-weight: 600; }
+80             .dashboard-grid { display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(280px, .85fr); gap: 22px; align-items: start; }
+81             .content-section { min-width: 0; margin-bottom: 24px; }
+82             .section-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 10px; margin-bottom: 12px; }
+83             .section-heading h2 { margin: 0; color: var(--ink-deep); font-family: 'Manrope', sans-serif; font-size: 16px; font-weight: 800; }
+84             .section-heading p { margin: 4px 0 0; color: var(--muted); font-size: 11px; }
+85             .section-link { color: #48736e; font-size: 11px; font-weight: 700; white-space: nowrap; }
+86             .section-link:hover { color: var(--coral); }
+87             .schedule-panel, .evaluation-panel { overflow: hidden; background: #fff; border: 1px solid var(--line); border-radius: 10px; box-shadow: var(--shadow); }
+88             .schedule-day { padding: 12px 16px; color: var(--ink-soft); background: #f8faf7; border-bottom: 1px solid var(--line); font-size: 10px; font-weight: 700; letter-spacing: .9px; text-transform: uppercase; }
+89             .schedule-item { display: grid; grid-template-columns: 64px 3px minmax(0, 1fr) auto; align-items: center; gap: 13px; min-height: 76px; padding: 12px 16px; border-bottom: 1px solid #edf1ed; }
+90             .schedule-item:last-child { border-bottom: 0; }
+91             .schedule-time { color: var(--ink); font-size: 12px; font-weight: 700; white-space: nowrap; }
+92             .schedule-time small { display: block; margin-top: 3px; color: #91a09b; font-size: 10px; font-weight: 500; }
+93             .schedule-marker { width: 3px; height: 34px; background: var(--lime-deep); border-radius: 2px; }
+94             .schedule-item:nth-child(3n) .schedule-marker { background: var(--coral); }
+95             .schedule-item:nth-child(4n) .schedule-marker { background: var(--blue); }
+96             .schedule-course { min-width: 0; color: var(--ink-deep); font-size: 12px; font-weight: 700; }
+97             .schedule-meta { overflow: hidden; margin-top: 4px; color: var(--muted); font-size: 10px; text-overflow: ellipsis; white-space: nowrap; }
+98             .room-chip { padding: 5px 8px; color: #61746f; background: #f2f5f1; border-radius: 5px; font-size: 10px; white-space: nowrap; }
+99             .empty-state { display: grid; min-height: 146px; place-items: center; padding: 22px; color: var(--muted); text-align: center; }
+100            .empty-state i { display: grid; width: 38px; height: 38px; margin: 0 auto 9px; place-items: center; color: #81938c; background: #f0f4ef; border-radius: 50%; font-size: 15px; }
+101            .empty-state strong { display: block; margin-bottom: 4px; color: var(--ink-soft); font-size: 12px; }
+102            .empty-state span { display: block; max-width: 300px; font-size: 11px; line-height: 1.5; }
+103            .course-list { display: grid; gap: 9px; }
+104            .course-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 69px; padding: 12px 14px; background: #fff; border: 1px solid var(--line); border-radius: 9px; }
+105            .course-row:hover { border-color: #b8caac; }
+106            .course-title { color: var(--ink-deep); font-size: 12px; font-weight: 700; }
+107            .course-details { margin-top: 4px; color: var(--muted); font-size: 10px; }
+108            .course-code { flex: 0 0 auto; padding: 5px 7px; color: #53716c; background: #edf3e9; border-radius: 4px; font-size: 9px; font-weight: 700; letter-spacing: .45px; }
+109            .evaluation-item { display: flex; align-items: center; gap: 11px; padding: 13px 15px; border-bottom: 1px solid #edf1ed; }
+110            .evaluation-item:last-child { border-bottom: 0; }
+
+[lines 1-178 of 178 exceed the 4000-token delivery ceiling; showing lines 1-110. Continue with offset=111 — each windowed read arrives in full]

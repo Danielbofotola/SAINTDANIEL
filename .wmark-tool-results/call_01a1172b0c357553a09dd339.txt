@@ -1,0 +1,16 @@
+342            ->toContain('only-mobile');
+343    
+344        // Barre figée en bas + flèche « revenir au message du moment ».
+345        expect($html)
+346            ->toContain('position: sticky; bottom: 0;')
+347            ->toContain('id="btnBas"')
+348            ->toContain('onclick="allerEnBas()"')
+349            ->toContain('window.allerEnBas')
+350            ->toContain('majBtnBas');
+351    });
+352    
+353    test('la barre d’écriture reste disponible même sans discussion ouverte', function () {
+354        $alice = User::factory()->create(['role' => 'admin', 'nom' => 'Mwamba', 'prenom' => 'Alice']);
+355        User::factory()->create(['role' => 'professeur', 'nom' => 'Kabila', 'prenom' => 'Bruno']);
+
+[showing lines 342-355 of 452; read again with offset=356 for more]

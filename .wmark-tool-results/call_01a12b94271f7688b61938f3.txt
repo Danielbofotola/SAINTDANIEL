@@ -1,0 +1,56 @@
+1      <?php
+2      
+3      namespace App\Support;
+4      
+5      use App\Models\AnneeScolaire;
+6      use App\Models\FraisScolaire;
+7      use App\Models\Inscription;
+8      use App\Models\Paiement;
+9      use RuntimeException;
+10     
+11     /**
+12      * Encaissement d'un paiement : vérifie la cohérence tarif/classe de l'élève,
+13      * génère un numéro de reçu unique puis enregistre le paiement.
+14      */
+15     class Caisse
+16     {
+17         /**
+18          * @param  array{inscription_id: int|string, frais_scolaire_id: int|string, montant_paye: float|string, mode_paiement: string, periode_id?: int|string|null, reference_transaction?: string|null, date_paiement?: string|null}  $data
+19          *
+20          * @throws RuntimeException lorsque le tarif ne correspond pas à la classe de l'élève.
+21          */
+22         public static function enregistrer(AnneeScolaire $annee, array $data): Paiement
+23         {
+24             $inscription = Inscription::findOrFail($data['inscription_id']);
+25             $frais = FraisScolaire::findOrFail($data['frais_scolaire_id']);
+26     
+27             if ((int) $frais->classe_id !== (int) $inscription->classe_id) {
+28                 throw new RuntimeException('tarif_classe');
+29             }
+30     
+31             $prefix = 'REC-'.$annee->libelle.'-';
+32             $numero = Paiement::where('num_recu', 'like', $prefix.'%')->count() + 1;
+33             do {
+34                 $numRecu = $prefix.str_pad((string) $numero++, 4, '0', STR_PAD_LEFT);
+35             } while (Paiement::where('num_recu', $numRecu)->exists());
+36     
+37             $paiement = Paiement::create([
+38                 'num_recu' => $numRecu,
+39                 'inscription_id' => $data['inscription_id'],
+40                 'frais_scolaire_id' => $data['frais_scolaire_id'],
+41                 'periode_id' => $data['periode_id'] ?? null,
+42                 'montant_paye' => $data['montant_paye'],
+43                 'mode_paiement' => $data['mode_paiement'],
+44                 'reference_transaction' => $data['reference_transaction'] ?? null,
+45                 'date_paiement' => $data['date_paiement'] ?? now(),
+46                 'statut' => 'actif',
+47             ]);
+48     
+49             // Le règlement du frais d'inscription valide automatiquement l'inscription.
+50             if ($frais->typeFrais?->estFraisInscription()) {
+51                 $inscription->valider();
+52             }
+53     
+54             return $paiement;
+55         }
+56     }

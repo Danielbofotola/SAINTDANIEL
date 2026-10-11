@@ -1,0 +1,24 @@
+224                                     <input class="form-control" type="email" name="email" value="{{ old('email', $user->email) }}" required maxlength="100">
+225                                  </div>
+226                                  <div class="col-md-4 form-group">
+227                                     <label>Rôle <span class="text-danger">*</span></label>
+228                                     <select class="form-control" name="role" required>
+229                                        @foreach(['admin'=>'Administrateur','prefetture'=>'Préfecture','titulaire'=>'Titulaire','professeur'=>'Professeur','comptable'=>'Comptable'] as $value=>$label)
+230                                           <option value="{{ $value }}" @selected(old('role', $user->role) === $value)>{{ $label }}</option>
+231                                        @endforeach
+232                                     </select>
+233                                  </div>
+234                                  <div class="col-md-4 form-group">
+235                                     <label for="professeur_id">Professeur lié</label>
+236                                     <select class="form-control" id="professeur_id" name="professeur_id">
+237                                        <option value="">Sélectionner un professeur</option>
+238                                        @foreach ($professeurs as $professeur)
+239                                           <option value="{{ $professeur->id }}" @selected(old('professeur_id', $user->professeur_id) == $professeur->id)>
+240                                              {{ $professeur->nom }} {{ $professeur->postnom }} {{ $professeur->prenom }} - {{ $professeur->matricule }}
+241                                           </option>
+242                                        @endforeach
+243                                     </select>
+244                                     <small class="text-muted d-block mt-1">Obligatoire pour le rôle Professeur.</small>
+245                                     @error('professeur_id')
+
+[showing lines 224-245 of 306; read again with offset=246 for more]

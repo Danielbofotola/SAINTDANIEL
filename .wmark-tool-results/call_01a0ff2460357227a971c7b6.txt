@@ -1,0 +1,42 @@
+168            'statut' => 'actif',
+169        ]);
+170    }
+171    
+172    function validStudentRequest(): array
+173    {
+174        return [
+175            'nom' => 'Mwamba',
+176            'postnom' => 'Kabila',
+177            'prenom' => 'Aline',
+178            'sexe' => 'F',
+179            'date_naissance' => '2014-05-12',
+180            'lieu_naissance' => 'Kinshasa',
+181            'classe_id' => 1,
+182            'annee_scolaire_id' => 1,
+183            'nom_mere' => 'Marie Kabila',
+184            'telephone_mere' => '0990000000',
+185            'email_mere' => 'marie@example.test',
+186        ];
+187    }
+188    
+189    test('a public student application remains pending until an admin approves enrollment', function () {
+190        $this->post(route('registration.student.store'), validStudentRequest())
+191            ->assertRedirect(route('registration.student.create'))
+192            ->assertSessionHas('success');
+193    
+194        expect(DB::table('demandes_inscription')->where('statut', 'en_attente')->count())->toBe(1)
+195            ->and(DB::table('eleves')->count())->toBe(0)
+196            ->and(DB::table('inscriptions')->count())->toBe(0);
+197    
+198        $admin = makeAdminForRegistrationRequests();
+199        $applicationId = DB::table('demandes_inscription')->value('id');
+200    
+201        $this->actingAs($admin)
+202            ->get(route('admin.registration.students'))
+203            ->assertOk()
+204            ->assertSee('Mwamba Kabila Aline');
+205    
+206        $this->post(route('admin.registration.students.approve', $applicationId), [
+207            'classe_id' => 1,
+
+[showing lines 168-207 of 294; read again with offset=208 for more]

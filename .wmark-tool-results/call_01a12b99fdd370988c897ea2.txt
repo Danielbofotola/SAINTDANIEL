@@ -1,0 +1,11 @@
+[powershell — Windows side]
+No syntax errors detected in app/Support/Monnaie.php
+No syntax errors detected in app/Support/Caisse.php
+No syntax errors detected in app/Models/Paiement.php
+No syntax errors detected in app/Models/ParametreSysteme.php
+No syntax errors detected in app/Models/FraisScolaire.php
+No syntax errors detected in app/Http/Controllers/ComptablePaiementController.php
+No syntax errors detected in app/Http/Controllers/PaiementController.php
+No syntax errors detected in app/Http/Controllers/FraisController.php
+No syntax errors detected in app/Http/Controllers/ParametreSystemeController.php
+No syntax errors detected in database/migrations/2026_10_25_000000_add_devises_et_taux_de_change.php

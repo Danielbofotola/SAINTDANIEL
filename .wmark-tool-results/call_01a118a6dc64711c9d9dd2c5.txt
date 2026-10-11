@@ -1,0 +1,23 @@
+1      <?php
+2      
+3      use Illuminate\Foundation\Application;
+4      use Illuminate\Foundation\Configuration\Exceptions;
+5      use Illuminate\Foundation\Configuration\Middleware;
+6      
+7      return Application::configure(basePath: dirname(__DIR__))
+8          ->withRouting(
+9              web: __DIR__.'/../routes/web.php',
+10             commands: __DIR__.'/../routes/console.php',
+11             health: '/up',
+12         )
+13         ->withMiddleware(function (Middleware $middleware): void {
+14             $middleware->alias([
+15                 'role' => \App\Http\Middleware\EnsureUserHasRole::class,
+16             ]);
+17             $middleware->appendToGroup('web', \App\Http\Middleware\EnsureUserIsActive::class);
+18             $middleware->appendToGroup('web', \App\Http\Middleware\FlashGlobal::class);
+19             $middleware->appendToGroup('web', \App\Http\Middleware\AccessMessagerie::class);
+20         })
+21         ->withExceptions(function (Exceptions $exceptions): void {
+22             //
+23         })->create();

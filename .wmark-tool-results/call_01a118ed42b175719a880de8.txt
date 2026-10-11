@@ -1,0 +1,8 @@
+8      beforeEach(function () {
+9          foreach (['inscriptions', 'eleves', 'classes', 'cycles', 'sections', 'options', 'salles', 'professeurs', 'annees_scolaires', 'users'] as $table) {
+10             Schema::dropIfExists($table);
+11         }
+12     
+13         Schema::create('users', function (Blueprint $table) {
+
+[showing lines 8-13 of 164; read again with offset=14 for more]

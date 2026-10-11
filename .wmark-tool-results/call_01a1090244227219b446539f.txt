@@ -1,0 +1,8 @@
+163            $table->enum('statut', ['actif', 'inactif'])->default('actif');
+164            $table->timestamps();
+165        });
+166        Schema::create('affectations_cours', function (Blueprint $table) {
+167            $table->id();
+168            $table->unsignedBigInteger('professeur_id');
+
+[showing lines 163-168 of 511; read again with offset=169 for more]

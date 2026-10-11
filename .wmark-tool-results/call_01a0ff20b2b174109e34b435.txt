@@ -1,0 +1,5 @@
+23             <div class="col-md-6 mb-3"><label class="form-label">Classe demandée *</label><select class="form-control" name="classe_id" required><option value="">Sélectionner une classe</option>@foreach($classes->groupBy(fn($classe) => $classe->cycle->nom) as $cycle => $classesCycle)<optgroup label="{{ $cycle }}">@foreach($classesCycle as $classe)<option value="{{ $classe->id }}" @selected(old('classe_id') == $classe->id)>{{ $classe->nom }}</option>@endforeach</optgroup>@endforeach</select>@error('classe_id')<div class="error">{{ $message }}</div>@enderror</div>
+24             <div class="col-md-6 mb-3"><label class="form-label">Année scolaire *</label><select class="form-control" name="annee_scolaire_id" required><option value="">Sélectionner une année scolaire</option>@foreach($annees as $annee)<option value="{{ $annee->id }}" @selected(old('annee_scolaire_id', $annees->first()?->id) == $annee->id)>{{ $annee->libelle }}</option>@endforeach</select>@error('annee_scolaire_id')<div class="error">{{ $message }}</div>@enderror</div>
+25         </div></div>
+
+[showing lines 23-25 of 36; read again with offset=26 for more]

@@ -1,0 +1,32 @@
+58                             @forelse ($eleves as $eleve)
+59                                 @php($inscription = $eleve->inscriptions->first())
+60                                 <tr>
+61                                     <td>{{ $eleves->firstItem() + $loop->index }}</td>
+62                                     <td class="text-center">@if ($eleve->photo)<img src="{{ asset('storage/'.$eleve->photo) }}" alt="Photo" width="40" height="40" class="rounded-circle" style="object-fit:cover">@else<i class="fa fa-user-circle fa-2x text-secondary"></i>@endif</td>
+63                                     <td>{{ $eleve->matricule ?? '—' }}</td>
+64                                     <td>{{ $eleve->nom }} {{ $eleve->postnom }} {{ $eleve->prenom }}</td>
+65                                     <td>{{ $eleve->sexe === 'M' ? 'Garçon' : 'Fille' }}</td>
+66                                     <td>{{ $eleve->date_naissance?->format('d/m/Y') ?? 'Non renseignée' }}</td>
+67                                     <td>{{ $inscription?->classe?->nom ?? 'Non inscrit' }}@if ($inscription && $inscription->statut === 'en_attente') <span class="badge badge-warning" title="En attente du frais d’inscription">Inscription en attente</span>@endif</td>
+68                                     <td><span class="badge badge-{{ ['actif' => 'success', 'inactif' => 'secondary', 'suspendu' => 'warning', 'exclu' => 'danger'][$eleve->statut] ?? 'secondary' }}">{{ ucfirst($eleve->statut) }}</span></td>
+69                                     <td class="text-nowrap">
+70                                         <a href="{{ route('admin.eleves.show', $eleve) }}" class="btn btn-sm btn-info" title="Voir le dossier"><i class="fa fa-folder-open"></i></a>
+71                                         <a href="{{ route('admin.eleves.edit', $eleve) }}" class="btn btn-sm btn-primary" title="Modifier"><i class="fa fa-pencil"></i></a>
+72                                         {{-- Activer / désactiver : un élève inactif disparaît des listes. --}}
+73                                         <form class="d-inline" method="POST" action="{{ route('admin.eleves.toggle', $eleve) }}">
+74                                             @csrf
+75                                             @method('PATCH')
+76                                             <button class="btn btn-sm btn-{{ $eleve->statut === 'actif' ? 'warning' : 'success' }}" type="submit"
+77                                                     title="{{ $eleve->statut === 'actif' ? "Désactiver (l'élève disparaît des listes et des effectifs)" : "Activer (l'élève redevient visible)" }}">
+78                                                 <i class="fa fa-power-off"></i>
+79                                             </button>
+80                                         </form>
+81                                     </td>
+82                                 </tr>
+83                             @empty
+84                                 <tr><td colspan="9" class="text-center text-muted">Aucun élève ne correspond à cette recherche.</td></tr>
+85                             @endforelse
+86                         </tbody>
+87                     </table>
+
+[showing lines 58-87 of 96; read again with offset=88 for more]

@@ -1,0 +1,41 @@
+119    test('un parent accède à son espace quand le module est ouvert', function () {
+120        reglerPortailParents(true);
+121    
+122        $parent = User::factory()->create(['role' => 'parent', 'nom' => 'Bofotola', 'prenom' => 'Daniel']);
+123        $prof = User::factory()->create(['role' => 'professeur', 'nom' => 'Mapika', 'prenom' => 'Joseph']);
+124        $prefet = User::factory()->create(['role' => 'prefetture', 'nom' => 'Kalala', 'prenom' => 'Pierre']);
+125    
+126        Messagerie::creer($prof, [$parent->id], 'Bienvenue', 'Bonjour, bienvenue sur le portail.');
+127    
+128        $this->actingAs($parent)
+129            ->get(route('parent.dashboard'))
+130            ->assertOk()
+131            ->assertSee('Espace Parent')
+132            ->assertSee('bienvenue sur le portail')
+133            ->assertSee('Mapika')
+134            // L'interface partagée est bien câblée pour ce rôle.
+135            ->assertSee('id="msgShell"', false)
+136            ->assertSee('id="voiceBtn"', false)
+137            ->assertSee('id="sendBtn"', false)
+138            ->assertSee('id="stickerPicker"', false)
+139            ->assertSee('onclick="ouvrirCompose()"', false)
+140            ->assertSee('onclick="toggleStickers()"', false)
+141            ->assertSee('onclick="toggleVoice()"', false)
+142            ->assertSee('onclick="envoyerTexte()"', false)
+143            // Liste des correspondants actifs + action « écrire ».
+144            ->assertSee('id="contactsContainer"', false)
+145            ->assertSee('onclick="ouvrirDiscussion(', false)
+146            // Les parents n'ont pas le trombone ni la diffusion « tous ».
+147            ->assertDontSee('id="fileAttachment"', false)
+148            ->assertDontSee('value="tous"', false);
+149    });
+150    
+151    test('l’espace parent répond 404 quand le module est fermé', function () {
+152        reglerPortailParents(false);
+153    
+154        $parent = User::factory()->create(['role' => 'parent']);
+155    
+156        $this->actingAs($parent)->get(route('parent.dashboard'))->assertNotFound();
+157    });
+
+[showing lines 119-158 of 319; read again with offset=159 for more]

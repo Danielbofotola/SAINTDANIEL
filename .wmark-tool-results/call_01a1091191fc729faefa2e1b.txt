@@ -1,0 +1,8 @@
+347    
+348        // Compte libre : suppression acceptée.
+349        $this->actingAs($admin)
+350            ->delete(route('admin.comptabilite.plan.destroy', idCompte('616')))
+351            ->assertRedirect();
+352    
+353        expect(DB::table('comptes_comptables')->where('numero', '616')->count())->toBe(0);
+354    });

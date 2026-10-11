@@ -1,0 +1,372 @@
+1      <?php
+2      
+3      namespace App\Http\Controllers;
+4      
+5      use App\Models\Classe;
+6      use App\Models\Eleve;
+7      use App\Models\Professeurs;
+8      use App\Models\Salle;
+9      use App\Models\User;
+10     use App\Support\PresenceUtilisateurs;
+11     use Illuminate\Http\RedirectResponse;
+12     use Illuminate\Http\JsonResponse;
+13     use Illuminate\Http\Request;
+14     use Illuminate\Support\Facades\Hash;
+15     use Illuminate\Support\Facades\DB;
+16     use Illuminate\Support\Facades\Log;
+17     use Illuminate\Support\Facades\Schema;
+18     use Illuminate\Support\Facades\Storage;
+19     use Illuminate\Validation\Rule;
+20     use Illuminate\View\View;
+21     
+22     class UserProfileController extends Controller
+23     {
+24         /**
+25          * Aperçu d'un utilisateur depuis la messagerie : fiche minimale
+26          * (nom complet, rôle, coordonnées) pour le profil du correspondant.
+27          */
+28         public function apercu(Request $request, User $user): JsonResponse
+29         {
+30             abort_unless($user->statut === 'actif', 404);
+31     
+32             return response()->json([
+33                 'id' => $user->id,
+34                 'nom' => trim(implode(' ', array_filter([$user->nom, $user->postnom, $user->prenom]))) ?: $user->username,
+35                 'role' => User::libelleRole($user->role),
+36                 'photo' => $user->photo ? asset('storage/'.$user->photo) : null,
+37                 'initiales' => mb_strtoupper(mb_substr($user->prenom ?: $user->username, 0, 1)),
+38                 'telephone' => $user->telephone,
+39                 'email' => $user->email,
+40                 'soi_meme' => $user->id === $request->user()->id,
+41             ]);
+42         }
+43     
+44         public function createAccount(): View
+45         {
+46             return view('admin.profile.account-create', [
+47                 'professeurs' => Professeurs::where('statut', 'actif')->orderBy('nom')->orderBy('prenom')->get(),
+48             ]);
+49         }
+50     
+51         public function storeAccount(Request $request): RedirectResponse
+52         {
+53             $data = $request->validate([
+54                 'nom' => ['nullable', 'string', 'max:50'],
+55                 'postnom' => ['nullable', 'string', 'max:50'],
+56                 'prenom' => ['nullable', 'string', 'max:50'],
+57                 'username' => ['required', 'string', 'max:50', 'unique:users,username'],
+58                 'email' => ['required', 'email', 'max:100', 'unique:users,email'],
+59                 'telephone' => ['nullable', 'string', 'max:20'],
+60                 'professeur_id' => [
+61                     'nullable',
+62                     'exists:professeurs,id',
+63                     Rule::unique('users', 'professeur_id'),
+64                     Rule::requiredIf(fn () => $request->input('role') === 'professeur'),
+65                 ],
+66                 'role' => ['required', Rule::in(User::ROLES)],
+67                 'statut' => ['required', 'in:actif,inactif'],
+68                 'password' => ['required', 'string', 'min:8', 'confirmed'],
+69                 'pin_code' => ['nullable', 'digits:4'],
+70             ], [
+71                 'username.unique' => "Ce nom d'utilisateur est déjà utilisé.",
+72                 'email.unique' => "Cette adresse e-mail est déjà utilisée.",
+73                 'password.min' => 'Le mot de passe doit contenir au moins 8 caractères.',
+74                 'password.confirmed' => 'La confirmation du mot de passe ne correspond pas.',
+75                 'pin_code.digits' => 'Le code PIN doit contenir exactement 4 chiffres.',
+76                 'professeur_id.required' => 'Un professeur doit être lié à un compte ayant le rôle professeur.',
+77                 'professeur_id.unique' => 'Ce professeur est déjà lié à un autre compte utilisateur.',
+78             ]);
+79     
+80             $data['pin_code'] = filled($data['pin_code'] ?? null) ? Hash::make($data['pin_code']) : null;
+81     
+82             User::create($data);
+83     
+84             return redirect()->route('admin.profile.accounts')->with('success', 'Le compte utilisateur a été créé.');
+85         }
+86     
+87         public function accounts(): View
+88         {
+89             return view('admin.profile.accounts', [
+90                 'users' => User::orderByRaw("CASE WHEN role = 'admin' THEN 0 ELSE 1 END")
+91                     ->orderBy('username')
+92                     ->get(),
+93             ]);
+94         }
+95     
+96         public function editAccount(User $user): View|RedirectResponse
+97         {
+98             if ($user->is(auth()->user())) {
+99                 return redirect()->route('admin.profile.edit');
+100            }
+101    
+102            return view('admin.profile.account-edit', [
+103                'user' => $user,
+104                'professeurs' => Professeurs::query()
+105                    ->where(function ($query) use ($user) {
+106                        $query->where('statut', 'actif')
+107                            ->when($user->professeur_id, fn ($query) => $query->orWhere('id', $user->professeur_id));
+108                    })
+109                    ->orderBy('nom')
+110                    ->orderBy('prenom')
+111                    ->get(),
+112                // Rattachement « compte parent ↔ enfants » (uniquement pour un parent).
+113                'eleves' => $user->role === 'parent'
+114                    ? Eleve::query()->orderBy('nom')->orderBy('prenom')->get(['id', 'nom', 'postnom', 'prenom', 'matricule'])
+115                    : collect(),
+116                'enfantsSelectionnes' => $user->role === 'parent' ? $user->eleves()->pluck('eleves.id')->all() : [],
+117            ]);
+118        }
+119    
+120        public function updateAccount(Request $request, User $user): RedirectResponse
+121        {
+122            if ($user->is($request->user())) {
+123                return redirect()->route('admin.profile.edit');
+124            }
+125    
+126            $data = $request->validate([
+127                'nom' => ['nullable', 'string', 'max:50'],
+128                'postnom' => ['nullable', 'string', 'max:50'],
+129                'prenom' => ['nullable', 'string', 'max:50'],
+130                'date_naissance' => ['nullable', 'date', 'before:today'],
+131                'username' => ['required', 'string', 'max:50', Rule::unique('users', 'username')->ignore($user->id)],
+132                'email' => ['required', 'email', 'max:100', Rule::unique('users', 'email')->ignore($user->id)],
+133                'telephone' => ['nullable', 'string', 'max:20'],
+134                'adresse' => ['nullable', 'string', 'max:500'],
+135                'photo' => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:2048'],
+136                'role' => ['required', Rule::in(User::ROLES)],
+137                'statut' => ['required', 'in:actif,inactif'],
+138                'professeur_id' => [
+139                    'nullable',
+140                    'exists:professeurs,id',
+141                    Rule::unique('users', 'professeur_id')->ignore($user->id),
+142                    Rule::requiredIf(fn () => $request->input('role') === 'professeur'),
+143                ],
+144                'enfants' => ['nullable', 'array'],
+145                'enfants.*' => ['integer', 'exists:eleves,id'],
+146            ]);
+147    
+148            if ($request->hasFile('photo')) {
+149                if ($user->photo) {
+150                    Storage::disk('public')->delete($user->photo);
+151                }
+152    
+153                $data['photo'] = $request->file('photo')->store('users/photos', 'public');
+154            }
+155    
+156            $etaitParent = $user->role === 'parent';
+157    
+158            $user->update($data);
+159    
+160            // Seul un compte parent porte des enfants ; un ancien compte parent en est
+161            // détaché lorsqu'il change de rôle.
+162            if ($data['role'] === 'parent') {
+163                $user->eleves()->sync($data['enfants'] ?? []);
+164            } elseif ($etaitParent) {
+165                $user->eleves()->sync([]);
+166            }
+167    
+168            return redirect()->route('admin.profile.accounts')->with('success', 'Le profil utilisateur a été mis à jour.');
+169        }
+170    
+171        /**
+172         * Page dédiée à la réinitialisation des identifiants d'un compte.
+173         */
+174        public function editAccountPassword(User $user): View|RedirectResponse
+175        {
+176            if ($user->is(auth()->user())) {
+177                return redirect()->route('admin.profile.edit')
+178                    ->with('error', 'Utilisez votre profil pour modifier votre propre mot de passe.');
+179            }
+180    
+181            return view('admin.profile.account-password', ['user' => $user]);
+182        }
+183    
+184        /**
+185         * Réinitialise le mot de passe (et le code PIN) d'un autre compte.
+186         */
+187        public function updateAccountPassword(Request $request, User $user): RedirectResponse
+188        {
+189            if ($user->is($request->user())) {
+190                return redirect()->route('admin.profile.edit');
+191            }
+192    
+193            $data = $request->validate([
+194                'password' => ['required', 'string', 'min:8', 'confirmed'],
+195                'pin_code' => ['nullable', 'digits:4'],
+196                'remove_pin' => ['nullable', 'boolean'],
+197            ], [
+198                'password.required' => 'Le nouveau mot de passe est obligatoire.',
+199                'password.min' => 'Le mot de passe doit contenir au moins 8 caractères.',
+200                'password.confirmed' => 'La confirmation du mot de passe ne correspond pas.',
+201                'pin_code.digits' => 'Le code PIN doit contenir exactement 4 chiffres.',
+202            ]);
+203    
+204            unset($data['remove_pin']);
+205    
+206            // Le cast « hashed » du modèle hache le mot de passe.
+207            if (filled($data['pin_code'] ?? null)) {
+208                $data['pin_code'] = Hash::make($data['pin_code']);
+209            } elseif ($request->boolean('remove_pin')) {
+210                $data['pin_code'] = null;
+211            } else {
+212                unset($data['pin_code']);
+213            }
+214    
+215            $user->update($data);
+216    
+217            Log::notice('Admin reset an account password', [
+218                'admin_id' => $request->user()->id,
+219                'user_id' => $user->id,
+220                'pin_changed' => array_key_exists('pin_code', $data),
+221            ]);
+222    
+223            return redirect()
+224                ->route('admin.profile.accounts')
+225                ->with('success', "Les identifiants de {$user->username} ont été réinitialisés.");
+226        }
+227    
+228        public function impersonate(Request $request, User $user): RedirectResponse
+229        {
+230            if ($request->session()->has('impersonating_admin_id')) {
+231                return back()->with('error', 'Une session de consultation est déjà en cours.');
+232            }
+233    
+234            if ($user->is($request->user()) || $user->role === 'admin' || $user->statut !== 'actif') {
+235                return back()->with('error', 'Seuls les autres comptes actifs non administrateurs peuvent être ouverts.');
+236            }
+237    
+238            $admin = $request->user();
+239            $request->session()->put('impersonating_admin_id', $admin->id);
+240            auth()->login($user);
+241            $request->session()->regenerate();
+242    
+243            Log::notice('Admin started account impersonation', [
+244                'admin_id' => $admin->id,
+245                'user_id' => $user->id,
+246            ]);
+247    
+248            return redirect()->route($user->dashboardRouteName());
+249        }
+250    
+251        public function stopImpersonation(Request $request): RedirectResponse
+252        {
+253            $admin = User::query()
+254                ->whereKey($request->session()->get('impersonating_admin_id'))
+255                ->where('role', 'admin')
+256                ->where('statut', 'actif')
+257                ->first();
+258    
+259            if (! $admin) {
+260                auth()->logout();
+261                $request->session()->invalidate();
+262                $request->session()->regenerateToken();
+263    
+264                return redirect()->route('login')->with('error', 'La session administrateur d’origine n’est plus disponible.');
+265            }
+266    
+267            Log::notice('Admin stopped account impersonation', [
+268                'admin_id' => $admin->id,
+269                'user_id' => $request->user()->id,
+270            ]);
+271    
+272            auth()->login($admin);
+273            $request->session()->forget('impersonating_admin_id');
+274            $request->session()->regenerate();
+275    
+276            return redirect()->route('admin.dashboard')->with('success', 'Vous êtes de retour sur votre compte administrateur.');
+277        }
+278    
+279        public function show(Request $request): View
+280        {
+281            return view('admin.profile.show', [
+282                'user' => $request->user(),
+283                'users' => User::with('professeur')
+284                    ->orderByRaw("CASE WHEN role = 'admin' THEN 0 ELSE 1 END")
+285                    ->orderBy('username')
+286                    ->limit(5)
+287                    ->get(),
+288            ]);
+289        }
+290    
+291        public function statistics(Request $request): View
+292        {
+293            return view('admin.profile.statistics', [
+294                'user' => $request->user(),
+295                'administrationStats' => $this->administrationStats(),
+296            ]);
+297        }
+298    
+299        /**
+300         * Utilisateurs actuellement en ligne (sessions actives).
+301         */
+302        public function online(Request $request): View
+303        {
+304            $sessions = PresenceUtilisateurs::enLigne();
+305            $connectes = $sessions->where('est_connecte', true);
+306    
+307            return view('admin.profile.online', [
+308                'user' => $request->user(),
+309                'sessions' => $sessions,
+310                'connectes' => $connectes,
+311                'fenetre' => PresenceUtilisateurs::FENETRE_MINUTES,
+312            ]);
+313        }
+314    
+315        private function administrationStats(): array
+316        {
+317            $roleCounts = User::query()->selectRaw('role, COUNT(*) as total')->groupBy('role')->pluck('total', 'role');
+318    
+319            return [
+320                'labels' => ['Administrateurs', 'Préfecture', 'Titulaires', 'Professeurs', 'Comptables'],
+321                'roles' => [
+322                    $roleCounts->get('admin', 0),
+323                    $roleCounts->get('prefetture', 0),
+324                    $roleCounts->get('titulaire', 0),
+325                    $roleCounts->get('professeur', 0),
+326                    $roleCounts->get('comptable', 0),
+327                ],
+328                'modules' => [
+329                    Eleve::where('statut', 'actif')->count(),
+330                    Classe::where('statut', 'actif')->count(),
+331                    Professeurs::where('statut', 'actif')->count(),
+332                    Salle::where('statut', 'actif')->count(),
+333                ],
+334            ];
+335        }
+336    
+337        public function showPersonalProfile(Request $request): View
+338        {
+339            return view('profile.show', ['user' => $request->user()]);
+340        }
+341    
+342        public function editPersonalProfile(Request $request): View
+343        {
+344            return view('profile.edit', ['user' => $request->user()]);
+345        }
+346    
+347        public function edit(Request $request): View
+348        {
+349            return view('admin.profile.edit', ['user' => $request->user()]);
+350        }
+351    
+352        public function update(Request $request): RedirectResponse
+353        {
+354            $user = $request->user();
+355    
+356            $data = $request->validate([
+357                'nom' => ['nullable', 'string', 'max:50'],
+358                'postnom' => ['nullable', 'string', 'max:50'],
+359                'prenom' => ['nullable', 'string', 'max:50'],
+360                'date_naissance' => ['nullable', 'date', 'before:today'],
+361                'username' => ['required', 'string', 'max:50', Rule::unique('users', 'username')->ignore($user->id)],
+362                'email' => ['required', 'email', 'max:100', Rule::unique('users', 'email')->ignore($user->id)],
+363                'telephone' => ['nullable', 'string', 'max:20'],
+364                'adresse' => ['nullable', 'string', 'max:500'],
+365                'photo' => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:2048'],
+366            ], [
+367                'username.required' => "Le nom d'utilisateur est obligatoire.",
+368                'username.unique' => "Ce nom d'utilisateur est déjà utilisé.",
+369                'email.required' => "L'adresse e-mail est obligatoire.",
+370                'email.email' => "L'adresse e-mail n'est pas valide.",
+
+[lines 1-454 of 454 exceed the 4000-token delivery ceiling; showing lines 1-370. Continue with offset=371 — each windowed read arrives in full]

@@ -1,0 +1,1 @@
+Wrote resources/views/admin/eleves/index.blade.php (80 lines)

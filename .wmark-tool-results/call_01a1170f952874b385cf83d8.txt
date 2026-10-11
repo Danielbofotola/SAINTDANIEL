@@ -1,0 +1,37 @@
+286    });
+287    
+288    test('la page de messagerie du personnel expose le modèle partagé (vocaux, stickers, pièces jointes, diffusion)', function () {
+289        $alice = User::factory()->create(['role' => 'admin', 'nom' => 'Mwamba', 'prenom' => 'Alice']);
+290        $bruno = User::factory()->create(['role' => 'professeur', 'nom' => 'Kabila', 'prenom' => 'Bruno']);
+291        Messagerie::creer($alice, [$bruno->id], 'Sujet', 'Bonjour.');
+292    
+293        $html = $this->actingAs($alice)
+294            ->get(route('messagerie.index'))
+295            ->assertOk()
+296            ->assertSee('Messagerie interne')
+297            ->assertSee('Nouveau message')
+298            ->getContent();
+299    
+300        expect($html)
+301            ->toContain('id="msgShell"')
+302            ->toContain('id="voiceBtn"')
+303            ->toContain('id="sendBtn"')
+304            ->toContain('id="stickerPicker"')
+305            ->toContain('onclick="envoyerTexte()"')
+306            ->toContain('onclick="ouvrirCompose()"')
+307            // Le personnel dispose des pièces jointes et de la diffusion « tous ».
+308            ->toContain('id="fileAttachment"')
+309            ->toContain('value="tous"')
+310            ->toContain('msg-avatar')
+311            // La page porte ses propres liens : pas d'injection du bouton flottant.
+312            ->not->toContain('<a class="messagerie-flottante');
+313    });
+314    
+315    /**
+316     * Petite image PNG valide, pour tester les pièces jointes sans dépendre de
+317     * l'extension GD (absente sur ce poste).
+318     */
+319    function imagePngDeTest(string $nom = 'image.png'): \Illuminate\Http\UploadedFile
+320    {
+
+[showing lines 286-320 of 327; read again with offset=321 for more]

@@ -1,0 +1,114 @@
+1      <?php
+2      
+3      namespace App\Http\Controllers;
+4      
+5      use App\Models\User;
+6      use Illuminate\Http\RedirectResponse;
+7      use Illuminate\Http\Request;
+8      use Illuminate\Http\JsonResponse;
+9      use Illuminate\Support\Facades\Auth;
+10     use Illuminate\Support\Facades\Hash;
+11     use Illuminate\View\View;
+12     
+13     class AuthController extends Controller
+14     {
+15         public function showLoginForm(): View
+16         {
+17             return view('projet.page-connexion.page-login-password');
+18         }
+19     
+20         public function showPinForm(): View
+21         {
+22             return view('projet.page-connexion.connexion-pin');
+23         }
+24     
+25         public function login(Request $request): RedirectResponse
+26         {
+27             $validated = $request->validate([
+28                 'login' => ['required', 'string'],
+29                 'password' => ['required', 'string'],
+30             ], [
+31                 'login.required' => 'Veuillez saisir votre identifiant ou votre adresse e-mail.',
+32                 'password.required' => 'Le mot de passe est obligatoire.',
+33             ]);
+34     
+35             $field = filter_var($validated['login'], FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
+36     
+37             if (! Auth::attempt([
+38                 $field => $validated['login'],
+39                 'password' => $validated['password'],
+40                 'statut' => 'actif',
+41             ], $request->boolean('remember'))) {
+42                 return back()->withErrors([
+43                     'login' => 'Les identifiants sont incorrects ou votre compte est inactif.',
+44                 ])->onlyInput('login');
+45             }
+46     
+47             $request->session()->regenerate();
+48     
+49             /** @var User $user */
+50             $user = Auth::user();
+51             $user->update(['last_login' => now()]);
+52     
+53             return $this->redirectBasedOnRole($user->role);
+54         }
+55     
+56         public function loginWithPin(Request $request): RedirectResponse|JsonResponse
+57         {
+58             $validated = $request->validate([
+59                 'pin_code' => ['required', 'string', 'digits:4'],
+60             ], [
+61                 'pin_code.required' => 'Le code PIN est obligatoire.',
+62                 'pin_code.digits' => 'Le code PIN doit contenir exactement 4 chiffres.',
+63             ]);
+64     
+65             $matchingUsers = User::where('statut', 'actif')
+66                 ->whereNotNull('pin_code')
+67                 ->get()
+68                 ->filter(fn (User $user) => Hash::check($validated['pin_code'], $user->pin_code));
+69     
+70             if ($matchingUsers->count() !== 1) {
+71                 $message = $matchingUsers->isEmpty()
+72                     ? 'Code PIN invalide.'
+73                     : 'Ce code PIN est associé à plusieurs comptes. Contactez un administrateur.';
+74     
+75                 if ($request->expectsJson()) {
+76                     return response()->json(['message' => $message], 422);
+77                 }
+78     
+79                 return back()->withErrors(['pin_code' => $message]);
+80             }
+81     
+82             /** @var User $user */
+83             $user = $matchingUsers->first();
+84     
+85             Auth::login($user, $request->boolean('remember'));
+86             $request->session()->regenerate();
+87             $user->update(['last_login' => now()]);
+88     
+89             if ($request->expectsJson()) {
+90                 return response()->json(['redirect' => route($this->dashboardRouteForRole($user->role))]);
+91             }
+92     
+93             return $this->redirectBasedOnRole($user->role);
+94         }
+95     
+96         public function logout(Request $request): RedirectResponse
+97         {
+98             Auth::logout();
+99             $request->session()->invalidate();
+100            $request->session()->regenerateToken();
+101    
+102            return redirect()->route('login')->with('success', 'Vous êtes déconnecté.');
+103        }
+104    
+105        protected function redirectBasedOnRole(string $role): RedirectResponse
+106        {
+107            return redirect()->intended(route($this->dashboardRouteForRole($role)));
+108        }
+109    
+110        protected function dashboardRouteForRole(string $role): string
+111        {
+112            return User::dashboardRouteNameFor($role);
+113        }
+114    }

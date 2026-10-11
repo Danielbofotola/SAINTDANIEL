@@ -1,0 +1,21 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/ComptableCaisseTest.php (1 hunk applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 314-319 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 320-335:
+320    
+321    test('la période et la référence sont automatiques au paiement', function () {
+322        $comptable = User::factory()->create(['role' => 'comptable']);
+323    
+324        // Ni période ni référence fournies : le système les détermine.
+325        $this->actingAs($comptable)
+326            ->post(route('comptable.paiements.store'), [
+327                'inscription_id' => 1, 'frais_scolaire_id' => 1,
+328                'montant_paye' => 30, 'mode_paiement' => 'especes',
+329            ])->assertRedirect();
+330    
+331        $paiement = DB::table('paiements')->first();
+332    
+333        expect((int) $paiement->periode_id)->toBe(1)                              // période en cours
+334            ->and($paiement->reference_transaction)->toBe('REC-2026-2027-0001'); // référence = n° de reçu
+335    });

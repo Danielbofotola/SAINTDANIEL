@@ -1,0 +1,8 @@
+46     
+47     Route::post('/deconnexion', [AuthController::class, 'logout'])->middleware('auth')->name('logout');
+48     
+49     Route::middleware('auth')->group(function () {
+50         Route::get('/accueil', [HomeController::class, 'index'])->name('home');
+51         Route::get('/mon-profil', [UserProfileController::class, 'showPersonalProfile'])->name('profile.show');
+
+[showing lines 46-51 of 167; read again with offset=52 for more]

@@ -1,0 +1,60 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\aba9102c187c\20261011-155110-bash-call_01a12b723b60737f9fdc224c.txt (1,209 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Structured view (text):
+[powershell — Windows side]
+app\Http\Controllers\AdminDashboardController.php
+app\Http\Controllers\AdminMessageContactController.php
+app\Http\Controllers\AdminMessagerieController.php
+app\Http\Controllers\AdminRegistrationRequestController.php
+app\Http\Controllers\AffectationCoursController.php
+app\Http\Controllers\AnneeScolaireController.php
+app\Http\Controllers\AnnonceController.php
+app\Http\Controllers\AppelController.php
+app\Http\Controllers\ArchiveAnneeController.php
+app\Http\Controllers\AuthController.php
+app\Http\Controllers\BulletinController.php
+app\Http\Controllers\ClasseController.php
+app\Http\Controllers\ComptabiliteController.php
+app\Http\Controllers\ComptableDashboardController.php
+app\Http\Controllers\ComptableDepenseController.php
+app\Http\Controllers\ComptablePaiementController.php
+app\Http\Controllers\ComptableRecouvrementController.php
+app\Http\Controllers\Controller.php
+app\Http\Controllers\CoursController.php
+app\Http\Controllers\CycleController.php
+app\Http\Controllers\DeliberationController.php
+app\Http\Controllers\DepenseController.php
+app\Http\Controllers\EleveController.php
+app\Http\Controllers\EleveInscriptionController.php
+app\Http\Controllers\EmploiDuTempsController.php
+app\Http\Controllers\EvaluationController.php
+app\Http\Controllers\FraisController.php
+app\Http\Controllers\HomeController.php
+app\Http\Controllers\MessagerieController.php
+app\Http\Controllers\ModuleSwitchController.php
+app\Http\Controllers\NotesController.php
+app\Http\Controllers
+… 537 chars elided …
+ers\ProfesseurPresenceController.php
+app\Http\Controllers\ProfesseursController.php
+app\Http\Controllers\PublicSiteController.php
+app\Http\Controllers\RecuController.php
+app\Http\Controllers\RegistrationRequestController.php
+app\Http\Controllers\SalleController.php
+app\Http\Controllers\SectionOptionController.php
+app\Http\Controllers\StatistiquesController.php
+app\Http\Controllers\TitulaireDashboardController.php
+app\Http\Controllers\UserProfileController.php
+app\Http\Middleware\AccessMessagerie.php
+app\Http\Middleware\EnsureUserHasRole.php
+app\Http\Middleware\EnsureUserIsActive.php
+app\Http\Middleware\FlashGlobal.php
+app\Models\Concerns\BelongsToAnneeScolaire.php
+app\Models\AffectationCours.php
+app\Models\AnneeScolaire.php
+app\Models\Annonce.php
+app\Models\Appel.php
+app\Models\ArchiveAnne
+… 1,337 chars elided …
+rt\SituationEleve.php
+app\Support\Tresorerie.php
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

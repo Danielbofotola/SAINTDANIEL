@@ -1,0 +1,17 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\b493c9bc81dc\20261008-013640-bash-call_01a118f1157c776f87e17455.txt (524 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+[powershell — Windows side]
+=== tests utilisant le temps ===
+tests\Feature\AdminUserManagementTest.php:292: 'jour' => ['lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'][min(now()->addDay()->dayOfWeekIso, 6) - 1],
+tests\Feature\AdminUserManagementTest.php:301: 'date_evaluation' => now()->addDays(2)->toDateString(),
+tests\Feature\AdminUserManagementTest.php:459: 'date_naissance' => now()->subYears(12),
+tests\Feature\AppelsTest.php:238: $trace->appel->forceFill(['created_at' => now()->subMinutes(2)])->save();
+tests\Feature\AppelsTest.php:262: Appel::find($id)->forceFill(['repond_le' => now()->subSeconds(90)])->save();
+tests\Feature\UtilisateursEnLigneTest.php:69: 'last_activity' => now()->subMinutes($minutesAgo)->getTimestamp(),
+=== phpunit DB ===
+<env name="APP_ENV" value="testing"/>
+<env name="CACHE_STORE" value="array"/>
+<env name="DB_CONNECTION" value="sqlite"/>
+<env name="DB_DATABASE" value=":memory:"/>
+<env name="DB_URL" value=""/>
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

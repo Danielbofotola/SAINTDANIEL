@@ -1,0 +1,52 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\144c63540b62\20261007-163703-apply_patch-call_01a11702f97574f0929fb503.txt (612 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+Applied patch: 7 files changed (2 created, 5 updated)
+Created database/migrations/2026_10_16_000000_add_parent_role_to_users_table.php (41 lines)
+Created app/Http/Controllers/PortailParentController.php (62 lines)
+Updated app/Models/User.php (1 hunk applied)
+Updated app/Models/Message.php (1 hunk applied)
+Updated app/Models/Annonce.php (1 hunk applied)
+Updated app/Support/Raccourcis.php (1 hunk applied)
+Updated app/Http/Controllers/UserProfileController.php (1 hunk applied)
+Landed at lines 22-44
+
+... 269 chars truncated ...
+
+ ROLES = ['admin', 'prefetture', 'titulaire', 'professeur', 'comptable', 'parent'];
+28     
+29         /** Libellé lisible d'un rôle. */
+      … 7 lines omitted …
+37         ];
+38     
+39         public static function libelleRole(?string $role): string
+40         {
+41             return self::ROLE_LABELS[$role] ?? ucfirst((string) $role);
+42         }
+43     
+44         /**
+Landed at lines 58-58 (the file's new text; no re-read needed):
+58                 'parent' => 'parent.dashboard',
+Landed at lines 57-88 (the file's new text; no re-read needed):
+57         /** Vrai si la pièce jointe est un message vocal (lue par un lecteur audio). */
+58         public function estAudio(): bool
+59         {
+60             if (! $this->piece_jointe) {
+61                 return false;
+62             }
+63     
+64             return in_array(
+      … 16 lines omitted …
+81             }
+82     
+83             return (bool) preg_match(
+84                 '/^[\p{So}\p{Sk}\x{1F000}-\x{1FAFF}\x{2600}-\x{27BF}\x{FE0F}\x{200D}\x{1F3FB}-\x{1F3FF}\s]+$/u',
+85                 $corps
+86             );
+87         }
+88     
+Landed at lines 26-26 (the file's new text; no re-read needed):
+26             'parent' => 'Parents',
+Landed at lines 56-59 (the file's new text; no re-read needed):
+56                 'parent' => [
+57                     'direct' => ['libelle' => 'Espace Parent', 'icone' => 'fa-users', 'url' => route('parent.dashboard')],
+58                     'rapports' => [],
+59                 ],

@@ -1,0 +1,2 @@
+bloc remplace: 32 lignes -> 6
+nouveau total: 307 lignes

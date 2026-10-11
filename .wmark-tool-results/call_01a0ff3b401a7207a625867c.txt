@@ -1,0 +1,290 @@
+1      <!DOCTYPE html>
+2      <html lang="fr">
+3      
+4      <head>
+5         <title>Gestion Scolaire - Modifier mon profil</title>
+6         <meta charset="utf-8">
+7         <meta http-equiv="X-UA-Compatible" content="IE=edge">
+8         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+9         
+10        <!-- Favicon icon -->
+11        <link rel="shortcut icon" href="{{ asset('assets/images/favicon.png') }}" type="image/x-icon">
+12        <link rel="icon" href="{{ asset('assets/images/favicon.ico') }}" type="image/x-icon">
+13     
+14        <!-- Google font-->
+15        <link href="https://fonts.googleapis.com/css?family=Ubuntu:400,500,700" rel="stylesheet">
+16     
+17        <!-- Icons -->
+18        <link rel="stylesheet" type="text/css" href="{{ asset('assets/icon/themify-icons/themify-icons.css') }}">
+19        <link rel="stylesheet" type="text/css" href="{{ asset('assets/icon/icofont/css/icofont.css') }}">
+20        <link rel="stylesheet" type="text/css" href="{{ asset('assets/icon/simple-line-icons/css/simple-line-icons.css') }}">
+21        <link rel="stylesheet" type="text/css" href="{{ asset('boostrap/css/font-awesome/css/fontawesome.css') }}">
+22        <link rel="stylesheet" type="text/css" href="{{ asset('boostrap/css/font-awesome/css/fa-solid.css') }}">
+23     
+24        <!-- Required Framework -->
+25        <link rel="stylesheet" type="text/css" href="{{ asset('assets/plugins/bootstrap/css/bootstrap.min.css') }}">
+26     
+27        <!-- Style.css -->
+28        <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/main.css') }}">
+29        <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/responsive.css') }}">
+30     
+31        <style>
+32           .avatar { width:82px; height:82px; border-radius:50%; background:#795548; color:#fff; display:inline-flex; align-items:center; justify-content:center; font-size:30px; font-weight:600; object-fit:cover; }
+33           .mini-avatar { width:38px; height:38px; border-radius:50%; background:#795548; color:#fff; display:inline-flex; align-items:center; justify-content:center; font-weight:600; object-fit:cover; }
+34           .profile-actions-bar { background: #1b8bf9; padding: 10px 15px; border-radius: 4px; margin-bottom: 20px; }
+35           .profile-actions-bar a { color: #fff; margin-right: 15px; font-size: 13px; font-weight: 500; text-decoration: none; }
+36           .profile-actions-bar a:hover { text-decoration: underline; }
+37        </style>
+38     </head>
+39     
+40     <body class="sidebar-mini fixed">
+41        <div class="loader-bg">
+42           <div class="loader-bar"></div>
+43        </div>
+44        <div class="wrapper">
+45           
+46           <!-- Navbar Top -->
+47           <header class="main-header-top hidden-print">
+48              <a href="{{ route('admin.dashboard') }}" class="logo">
+49                 <img class="img-fluid able-logo" src="{{ asset('assets/images/logo.png') }}" alt="Logo École">
+50              </a>
+51              <nav class="navbar navbar-static-top">
+52                 <a href="#!" data-toggle="offcanvas" class="sidebar-toggle"></a>
+53                 
+54                 <ul class="top-nav lft-nav">
+55                    <li>
+56                       <a href="#!" class="drop icon-circle txt-white">
+57                          <i class="ti-file"></i><span> Documents Administratifs</span>
+58                       </a>
+59                    </li>               
+60                    <li class="dropdown">
+61                       <a href="#!" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle drop icon-circle drop-image">
+62                          <span>Rapports </span><i class="icofont icofont-simple-down"></i>
+63                       </a>
+64                       <ul class="dropdown-menu settings-menu">
+65                          <li><a href="#">Rapports Journaliers</a></li>
+66                          <li><a href="#">Cahiers de texte</a></li>
+67                          <li><a href="#">Absences Enseignants</a></li>
+68                          <li><a href="#">Évaluations & Examens</a></li>
+69                       </ul>
+70                    </li>
+71                 </ul>
+72     
+73                 <!-- Navbar Right Menu-->
+74                 <div class="navbar-custom-menu f-right">
+75                    <ul class="top-nav">
+76                       <li class="dropdown">
+77                          <a href="#!" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle drop icon-circle drop-image">
+78                             <span>
+79                                @if ($user->photo)
+80                                   <img class="img-circle" src="{{ asset('storage/'.$user->photo) }}" style="width:40px; height:40px; object-fit:cover;" alt="Photo">
+81                                @else
+82                                   <span class="mini-avatar">{{ strtoupper(substr($user->prenom ?: $user->username, 0, 1)) }}</span>
+83                                @endif
+84                             </span>
+85                             <span>{{ strtoupper(trim($user->prenom ?: $user->username)) }} <i class="icofont icofont-simple-down"></i></span>
+86                          </a>
+87                          <ul class="dropdown-menu settings-menu">
+88                             <li><a href="{{ route('admin.profile.settings') }}"><i class="icon-settings"></i> Paramètres</a></li>
+89                             <li><a href="{{ route('admin.profile.show') }}"><i class="icon-user"></i> Mon Profil</a></li>
+90                             <li>
+91                                <a href="#!" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+92                                   <i class="icon-logout"></i> Déconnexion
+93                                </a>
+94                                <form id="logout-form" method="POST" action="{{ route('logout') }}" style="display: none;">@csrf</form>
+95                             </li>
+96                          </ul>
+97                       </li>
+98                    </ul>
+99                 </div>
+100             </nav>
+101          </header>
+102    
+103          <!-- Side-Nav Navigation Menu -->
+104          <aside class="main-sidebar hidden-print">
+105             <section class="sidebar" id="sidebar-scroll">
+106                <ul class="sidebar-menu">
+107                    <li class="nav-level">--- Général</li>
+108                    <li class="treeview">
+109                        <a class="waves-effect waves-dark" href="{{ route('admin.dashboard') }}">
+110                            <i class="icon-speedometer"></i><span> Tableau de bord</span>
+111                        </a>                
+112                    </li>
+113    
+114                    <li class="nav-level">--- Profil & Configuration</li>
+115                    <li class="active treeview">
+116                        <a class="waves-effect waves-dark" href="{{ route('admin.profile.show') }}">
+117                            <i class="icon-user"></i><span> Mon Profil</span>
+118                        </a>
+119                    </li>
+120                    <li class="treeview">
+121                        <a class="waves-effect waves-dark" href="{{ route('admin.profile.accounts') }}">
+122                            <i class="icon-people"></i><span> Tous les comptes</span>
+123                        </a>
+124                    </li>
+125                    <li class="treeview">
+126                        <a class="waves-effect waves-dark" href="{{ route('admin.profile.statistics') }}">
+127                            <i class="icon-chart"></i><span> Statistiques</span>
+128                        </a>
+129                    </li>
+130                    <li class="treeview">
+131                        <a class="waves-effect waves-dark" href="{{ route('admin.profile.settings') }}">
+132                            <i class="icon-settings"></i><span> Paramètres Établissement</span>
+133                        </a>
+134                    </li>
+135    
+136                    <li class="nav-level">--- Gestion Administrative</li>
+137                    <li class="treeview">
+138                        <a class="waves-effect waves-dark" href="#!">
+139                            <i class="icon-people"></i><span> Personnel & Comptes</span><i class="icon-arrow-down"></i>
+140                        </a>
+141                        <ul class="treeview-menu">
+142                            <li><a class="waves-effect waves-dark" href="{{ route('admin.classes.index') }}"><i class="icon-arrow-right"></i> Classes et élèves</a></li>
+143                            <li><a class="waves-effect waves-dark" href="{{ route('admin.salles.index') }}"><i class="icon-arrow-right"></i> Salles</a></li>
+144                        </ul>
+145                    </li>
+146                </ul>
+147             </section>
+148          </aside>
+149    
+150          <!-- Main Content -->
+151          <div class="content-wrapper">
+152             <div class="container-fluid">
+153                
+154                <div class="row">
+155                   <div class="main-header d-flex justify-content-between align-items-center">
+156                      <div>
+157                         <h4><i class="icofont icofont-user-alt-3 text-primary"></i> Modifier mon profil</h4>
+158                         <p class="text-muted">Mettez à jour vos données personnelles, photo et identifiants de connexion.</p>
+159                      </div>
+160                      <a href="{{ route('admin.profile.show') }}" class="btn btn-secondary waves-effect">
+161                         <i class="icofont icofont-reply"></i> Retour
+162                      </a>
+163                   </div>
+164                </div>
+165    
+166                <!-- Profile Action Quick Bar -->
+167                <div class="row">
+168                   <div class="col-12">
+169                      <div class="profile-actions-bar d-flex flex-wrap align-items-center">
+170                         <a href="{{ route('admin.profile.show') }}"><i class="fa fa-user"></i> Mon profil</a>
+171                         <a href="{{ route('admin.profile.edit') }}"><i class="fa fa-pencil"></i> Modifier mon profil</a>
+172                         <a href="{{ route('admin.profile.accounts') }}"><i class="fa fa-users"></i> Tous les comptes</a>
+173                         <a href="{{ route('admin.dashboard') }}"><i class="fa fa-tachometer"></i> Tableau de bord</a>
+174                      </div>
+175                   </div>
+176                </div>
+177    
+178                @if ($errors->any())
+179                   <div class="alert alert-danger border-0">
+180                      <ul class="mb-0 pl-3">
+181                         @foreach ($errors->all() as $error)
+182                            <li>{{ $error }}</li>
+183                         @endforeach
+184                      </ul>
+185                   </div>
+186                @endif
+187    
+188                <div class="row">
+189                   <div class="col-lg-12">
+190                      <div class="card p-20">
+191                         <div class="card-header border-0 p-0 mb-4">
+192                            <h5 class="card-header-text"><i class="icofont icofont-edit"></i> Informations du profil</h5>
+193                         </div>
+194                         <div class="card-block p-0">
+195                            <form method="POST" action="{{ route('admin.profile.update') }}" enctype="multipart/form-data">
+196                               @csrf
+197                               @method('PUT')
+198    
+199                               <h6 class="text-primary font-weight-bold mb-3"><i class="icofont icofont-image"></i> Photo de profil</h6>
+200                               <div class="row align-items-center mb-4">
+201                                  <div class="col-md-2 text-center">
+202                                     @if ($user->photo)
+203                                        <img id="preview" class="avatar" src="{{ asset('storage/'.$user->photo) }}" alt="Photo de profil">
+204                                     @else
+205                                        <span id="placeholder" class="avatar">{{ strtoupper(substr($user->prenom ?: $user->username, 0, 1)) }}</span>
+206                                        <img id="preview" class="avatar d-none" alt="Aperçu de la photo">
+207                                     @endif
+208                                  </div>
+209                                  <div class="col-md-10">
+210                                     <label for="photo">Sélectionner une nouvelle photo</label>
+211                                     <input class="form-control" id="photo" type="file" name="photo" accept=".jpg,.jpeg,.png">
+212                                     <small class="text-muted d-block mt-1">Formats autorisés : JPG ou PNG. Taille max : 2 Mo.</small>
+213                                  </div>
+214                               </div>
+215    
+216                               <hr>
+217                               <h6 class="text-primary font-weight-bold mb-3"><i class="icofont icofont-id-card"></i> Informations personnelles</h6>
+218                               <div class="row">
+219                                  @foreach(['nom'=>'Nom','postnom'=>'Post-nom','prenom'=>'Prénom'] as $field=>$label)
+220                                     <div class="col-md-4 form-group">
+221                                        <label>{{ $label }}</label>
+222                                        <input class="form-control" name="{{ $field }}" value="{{ old($field, $user->$field) }}" maxlength="50">
+223                                     </div>
+224                                  @endforeach
+225                                  
+226                                  <div class="col-md-4 form-group">
+227                                     <label>Date de naissance</label>
+228                                     <input class="form-control" type="date" name="date_naissance" value="{{ old('date_naissance', $user->date_naissance?->format('Y-m-d')) }}">
+229                                  </div>
+230                                  <div class="col-md-4 form-group">
+231                                     <label>Téléphone</label>
+232                                     <input class="form-control" name="telephone" value="{{ old('telephone', $user->telephone) }}" maxlength="20">
+233                                  </div>
+234                                  <div class="col-md-8 form-group">
+235                                     <label>Adresse</label>
+236                                     <textarea class="form-control" name="adresse" rows="2">{{ old('adresse', $user->adresse) }}</textarea>
+237                                  </div>
+238                               </div>
+239    
+240                               <hr>
+241                               <h6 class="text-primary font-weight-bold mb-3"><i class="icofont icofont-key"></i> Informations de connexion</h6>
+242                               <div class="row">
+243                                  <div class="col-md-6 form-group">
+244                                     <label>Nom d'utilisateur <span class="text-danger">*</span></label>
+245                                     <input class="form-control" name="username" value="{{ old('username', $user->username) }}" required maxlength="50">
+246                                  </div>
+247                                  <div class="col-md-6 form-group">
+248                                     <label>Adresse e-mail <span class="text-danger">*</span></label>
+249                                     <input class="form-control" type="email" name="email" value="{{ old('email', $user->email) }}" required maxlength="100">
+250                                  </div>
+251                               </div>
+252    
+253                               <div class="mt-3">
+254                                  <button class="btn btn-primary waves-effect waves-light" type="submit">
+255                                     <i class="icofont icofont-save"></i> Enregistrer les modifications
+256                                  </button>
+257                               </div>
+258                            </form>
+259                         </div>
+260                      </div>
+261                   </div>
+262                </div>
+263    
+264             </div>
+265          </div>
+266       </div>
+267    
+268       <!-- Required Scripts -->
+269       <script src="{{ asset('assets/plugins/Jquery/dist/jquery.min.js') }}"></script>
+270       <script src="{{ asset('assets/plugins/jquery-ui/jquery-ui.min.js') }}"></script>
+271       <script src="{{ asset('assets/plugins/tether/dist/js/tether.min.js') }}"></script>
+272       <script src="{{ asset('assets/plugins/bootstrap/js/bootstrap.min.js') }}"></script>
+273       <script src="{{ asset('assets/plugins/jquery-slimscroll/jquery.slimscroll.js') }}"></script>
+274    
+275       <!-- Custom Scripts -->
+276       <script type="text/javascript" src="{{ asset('assets/js/main.min.js') }}"></script>
+277       <script src="{{ asset('assets/js/menu.min.js') }}"></script>
+278    
+279       <script>
+280          document.getElementById('photo').addEventListener('change', function (event) { 
+281              const file = event.target.files[0]; 
+282              if (!file) return; 
+283              const preview = document.getElementById('preview'); 
+284              preview.src = URL.createObjectURL(file); 
+285              preview.classList.remove('d-none'); 
+286              document.getElementById('placeholder')?.classList.add('d-none'); 
+287          });
+288       </script>
+289    </body>
+290    </html>

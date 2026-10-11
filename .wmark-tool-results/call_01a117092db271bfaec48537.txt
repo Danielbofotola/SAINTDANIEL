@@ -1,0 +1,36 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\144c63540b62\20261007-164345-apply_patch-call_01a117092db271bfaec48537.txt (503 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+Applied patch: 2 files changed (2 updated)
+Updated tests/Feature/PortailParentTest.php (1 hunk applied)
+Updated tests/Feature/MessagerieTest.php (1 hunk applied)
+Landed at lines 129-141 (the file's new text; no re-read needed):
+129            ->assertSee('Mapika')
+130            // L'interface partagée est bien câblée pour ce rôle.
+131            ->assertSee('id="msgShell"', false)
+132            ->assertSee('id="voiceBtn"', false)
+133            ->assertSee('id="sendBtn"', false)
+134            ->assertSee('id="stickerPicker"', false)
+135            ->assertSee('onclick="ouvrirCompose()"', false)
+136            ->assertSee('onclick="toggleStickers()"', false)
+137            ->assertSee('onclick="toggleVoice()"', false)
+138            ->assertSee('onclick="envoyerTexte()"', false)
+139            // Les parents n'ont pas le trombone ni la diffusion « tous ».
+140            ->assertDontSee('id="fileAttachment"', false)
+141            ->assertDontSee('value="tous"', false);
+Landed at lines 288-318 (the file's new text; no re-read needed):
+288    test('la page de messagerie du personnel expose le modèle partagé (vocaux, stickers, pièces jointes, diffusion)', function () {
+289        $alice = User::factory()->create(['role' => 'admin', 'nom' => 'Mwamba', 'prenom' => 'Alice']);
+290        $bruno = User::factory()->create(['role' => 'professeur', 'nom' => 'Kabila', 'prenom' => 'Bruno']);
+291        Messagerie::creer($alice, [$bruno->id], 'Sujet', 'Bonjour.');
+292    
+293        $html = $this->actingAs($alice)
+294            ->get(route('messagerie.index'))
+295            ->assertOk()
+      … 15 lines omitted …
+311            // La page porte ses propres liens : pas d'injection du bouton flottant.
+312            ->not->toContain('<a class="messagerie-flottante');
+313    });
+314    
+315    /**
+316     * Petite image PNG valide, pour tester les pièces jointes sans dépendre de
+317     * l'extension GD (absente sur ce poste).
+318     */

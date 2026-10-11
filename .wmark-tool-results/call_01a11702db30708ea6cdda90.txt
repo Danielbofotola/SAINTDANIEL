@@ -1,0 +1,1 @@
+Error: invalid patch — line 236: '*** Move to:' must be the FIRST line under '*** Update File: app/Http/Controllers/UserProfileController.php', before any hunk

@@ -1,0 +1,5 @@
+Recorded verification for 'edit-del': Controller edit/update/destroy + vue edit.blade.php + 3 routes PUT/DELETE/GET. Garde isUtilisee() via introspection des 6 tables FK. Tests: update OK, delete non-utilisée OK, delete référencée refusée (session error, ligne conservée). php artisan test tests/Feature/AnneeScolaireTest.php -> 10/10.
+Task 'edit-del': pending → verified
+Recorded verification for 'current-year': AnneeScolaire::enCours() + partage global via View::composer (AppServiceProvider, garde Schema::hasTable). Pré-sélection année en cours dans admin/eleves/create et registration/student-request. Badge dashboard rendu vérifié: 'Année en cours : X' (positif) et 'Aucune année en cours' (vide) via smoke-render tinker (60746 octets).
+Task 'current-year': pending → verified
+Progress: 2/2 done; all tasks complete

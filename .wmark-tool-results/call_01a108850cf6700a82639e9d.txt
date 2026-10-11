@@ -1,0 +1,22 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\e1ce9c26600a\20261004-210445-apply_patch-call_01a108850cf6700a82639e9d.txt (528 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+Applied patch: 1 file changed (1 updated)
+Updated routes/web.php (2 hunks applied)
+Landed at lines 13-15 (the file's new text; no re-read needed):
+13     use App\Http\Controllers\AffectationCoursController;
+14     use App\Http\Controllers\CoursController;
+15     use App\Http\Controllers\EmploiDuTempsController;
+Landed at lines 48-58 (the file's new text; no re-read needed):
+48         Route::get('/admin/professeurs', [ProfesseurController::class, 'index'])->middleware('role:admin')->name('admin.
+
+... 105 chars truncated ...
+
+s, 'show'])->middleware('role:admin')->name('admin.professeurs.show');
+50         Route::patch('/admin/professeurs/{professeur}/statut', [ProfesseurController::class, 'toggleStatus'])->middleware('role:admin')->name('admin.professeurs.toggle-status');
+51         Route::get('/admin/cours-affectations', [AffectationCoursController::class, 'index'])->middleware('role:admin')->name('admin.affectations.index');
+52         Route::post('/admin/affectations', [AffectationCoursController::class, 'store'])->middleware('role:admin')->name('admin.affectations.store');
+53         Route::delete('/admin/affectations/{affectation}', [AffectationCoursController::class, 'destroy'])->middleware('role:admin')->name('admin.affectations.destroy');
+54         Route::post('/admin/cours', [CoursController::class, 'store'])->middleware('role:admin')->name('admin.cours.store');
+55         Route::delete('/admin/cours/{cours}', [CoursController::class, 'destroy'])->middleware('role:admin')->name('admin.cours.destroy');
+56         Route::get('/admin/emplois-du-temps', [EmploiDuTempsController::class, 'index'])->middleware('role:admin')->name('admin.emplois-du-temps.index');
+57         Route::post('/admin/emplois-du-temps', [EmploiDuTempsController::class, 'store'])->middleware('role:admin')->name('admin.emplois-du-temps.store');
+58         Route::delete('/admin/emplois-du-temps/{emploiDuTemps}', [EmploiDuTempsController::class, 'destroy'])->middleware('role:admin')->name('admin.emplois-du-temps.destroy');

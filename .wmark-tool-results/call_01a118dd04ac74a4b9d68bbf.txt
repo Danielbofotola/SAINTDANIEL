@@ -1,0 +1,12 @@
+[powershell — Windows side]
+PASS  Tests\Feature\ParentEnfantsTest
+  ✓ l’administrateur rattache un ou plusieurs enfants à un compte parent                                         0.22s  
+  ✓ les enfants ne restent pas rattachés à un compte qui n’est pas parent                                        0.03s  
+  ✓ le portail du parent affiche ses enfants                                                                     0.03s  
+  ✓ un parent sans enfant rattaché voit un message d’information                                                 0.03s  
+
+  Tests:    4 passed (14 assertions)
+  Duration: 0.48s
+
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

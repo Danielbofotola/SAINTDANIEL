@@ -1,0 +1,14 @@
+72                 'classes' => Classe::where('statut', 'actif')->orderBy('nom')->get(),
+73                 'inscriptions' => $inscriptions,
+74                 'tarifs' => $tarifs,
+75                 'soldePaye' => $soldePaye,
+76                 'montantsFrais' => $tarifs->pluck('montant_exige', 'id'),
+77                 'paiements' => $paiements,
+78                 'modes' => self::MODES,
+79                 'periodes' => Periode::anneeEnCours()->orderBy('id')->get(),
+80                 'encaisse' => $annee
+81                     ? (float) Paiement::query()->where('statut', 'actif')
+82                         ->whereHas('inscription', fn ($query) => $query->where('annee_scolaire_id', $annee->id))
+83                         ->sum('montant_paye')
+
+[showing lines 72-83 of 128; read again with offset=84 for more]

@@ -1,0 +1,22 @@
+226                                     <input class="form-control" type="email" name="email" value="{{ old('email') }}" required maxlength="100">
+227                                  </div>
+228                                  <div class="col-md-4 form-group">
+229                                     <label>Rôle <span class="text-danger">*</span></label>
+230                                     <select class="form-control" id="role" name="role" required>
+231                                        @foreach(['admin'=>'Administrateur','prefetture'=>'Préfecture','titulaire'=>'Titulaire','professeur'=>'Professeur','comptable'=>'Comptable'] as $value=>$label)
+232                                           <option value="{{ $value }}" @selected(old('role', 'professeur') === $value)>{{ $label }}</option>
+233                                        @endforeach
+234                                     </select>
+235                                  </div>
+236                                  <div class="col-md-8 form-group">
+237                                     <label for="professeur_id">Professeur lié <span id="professeurRequired" class="text-danger">*</span></label>
+238                                     <select class="form-control" id="professeur_id" name="professeur_id">
+239                                        <option value="">Sélectionner un professeur</option>
+240                                        @foreach($professeurs as $professeur)
+241                                           <option value="{{ $professeur->id }}" @selected(old('professeur_id') == $professeur->id)>
+242                                              {{ $professeur->nom }} {{ $professeur->postnom }} {{ $professeur->prenom }} - {{ $professeur->matricule }}
+243                                           </option>
+244                                        @endforeach
+245                                     </select>
+
+[showing lines 226-245 of 313; read again with offset=246 for more]

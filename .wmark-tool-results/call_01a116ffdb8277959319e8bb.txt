@@ -1,0 +1,52 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\144c63540b62\20261007-163333-bash-call_01a116ffdb8277959319e8bb.txt (4,192 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Structured view (text):
+[powershell — Windows side]
+Mode   Name               
+----   ----               
+d----- .wmark-tool-results
+d----- app                
+d----- bootstrap          
+d----- config             
+d----- database           
+d----- node_modules       
+d----- public             
+d----- resources          
+d----- routes             
+d----- storage            
+d----- tests              
+d----- vendor             
+-a---- .editorconfig      
+-a---- .env               
+-a---- .env.example       
+-a---- .gitattributes     
+-a---- .gitignore         
+-a---- .wmark-tasks.json  
+-a---- artisan            
+-a---- composer.json      
+-a---- composer.lock      
+-a---- package-lock.json  
+-a---- package.json       
+-a---- phpunit.xml        
+-a---- README.md          
+-a---- vite.config.js     
+
+
+=== app ===
+
+=== routes ===
+=== public ===
+FullName                                                                                                            
+--------                                                                                                            
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Http\Controllers\AdminDashboardController.php          
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Http\Controllers\AdminRegistrationRequestController.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Http\Controllers\AffectationCoursController.php        
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Http\Controllers\AnneeSco
+… 6,359 chars elided …
+anie\AppData\Roaming\Composer\vendor\bin\ecole\app\Models\Conversation.php                                
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Models\Cours.php                                       
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Models\Cycle.php                                       
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Models\DemandeCompte.php                               
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Models\DemandeInscription.php                          
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Models\Depense.php                                     
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Models\DocumentEleve.php                       
+… 7,159 chars elided …
+readId">16</U32></Props></Obj><Obj S="information" RefId="8"><TNRef RefId="1" /><ToString>=== public ===</ToString><Props><Obj N="MessageData" RefId="9"><TNRef RefId="2" /><ToString>=== public ===</ToString><Props><S N="Message">=== public ===</S><B N="NoNewLine">false</B><S N="ForegroundColor">Gray</S><S N="BackgroundColor">Black</S></Props></Obj><S N="Source">Write-Host</S><DT N="TimeGenerated">2026-10-07T16:33:33.4281812+01:00</DT><Obj N="Tags" RefId="10"><TNRef RefId="3" /><LST><S>PSHOST</S></LST></Obj><S N="User">DANIELBOFOTOLA\danie</S><S N="Computer">DanielBofotola</S><U32 N="ProcessId">22056</U32><U32 N="NativeThreadId">7964</U32><U32 N="ManagedThreadId">16</U32></Props></Obj></Objs>

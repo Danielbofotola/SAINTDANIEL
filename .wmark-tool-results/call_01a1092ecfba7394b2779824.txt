@@ -1,0 +1,1 @@
+Wrote app/Models/Annonce.php (44 lines)

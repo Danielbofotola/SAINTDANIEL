@@ -1,0 +1,49 @@
+1      <?php
+2      
+3      use Tests\TestCase;
+4      
+5      /*
+6      |--------------------------------------------------------------------------
+7      | Test Case
+8      |--------------------------------------------------------------------------
+9      |
+10     | The closure you provide to your test functions is always bound to a specific PHPUnit test
+11     | case class. By default, that class is "PHPUnit\Framework\TestCase". Of course, you may
+12     | need to change it using the "pest()" function to bind a different classes or traits.
+13     |
+14     */
+15     
+16     pest()->extend(TestCase::class)
+17      // ->use(Illuminate\Foundation\Testing\RefreshDatabase::class)
+18         ->in('Feature');
+19     
+20     /*
+21     |--------------------------------------------------------------------------
+22     | Expectations
+23     |--------------------------------------------------------------------------
+24     |
+25     | When you're writing tests, you often need to check that values meet certain conditions. The
+26     | "expect()" function gives you access to a set of "expectations" methods that you can use
+27     | to assert different things. Of course, you may extend the Expectation API at any time.
+28     |
+29     */
+30     
+31     expect()->extend('toBeOne', function () {
+32         return $this->toBe(1);
+33     });
+34     
+35     /*
+36     |--------------------------------------------------------------------------
+37     | Functions
+38     |--------------------------------------------------------------------------
+39     |
+40     | While Pest is very powerful out-of-the-box, you may have some testing code specific to your
+41     | project that you don't want to repeat in every file. Here you can also expose helpers as
+42     | global functions to help you to reduce the number of lines of code in your test files.
+43     |
+44     */
+45     
+46     function something()
+47     {
+48         // ..
+49     }

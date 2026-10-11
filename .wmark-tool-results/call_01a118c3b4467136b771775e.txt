@@ -1,0 +1,5 @@
+1      @extends('errors.layout')
+2      
+3      @section('code', '403')
+4      @section('titre', 'Accès refusé')
+5      @section('message', "Vous n’avez pas les droits nécessaires pour accéder à cette page.")

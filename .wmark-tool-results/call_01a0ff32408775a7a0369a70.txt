@@ -1,0 +1,13 @@
+[powershell — Windows side]
+resources\views\admin\dashboard.blade.php:619:            const occupationLabels = @json($occupationSalles->map(fn ($classe) => $classe->nom . ($classe->salle ? ' - ' . $classe->salle->nom : '')));
+  resources\views\admin\dashboard.blade.php:620:            const occupationData = @json($occupationSalles->pluck('eleves_count'));
+> resources\views\admin\dashboard.blade.php:621:            const cycleLabels = @json($repartitionCycles->pluck('nom'));
+> resources\views\admin\dashboard.blade.php:622:            const cycleData = @json($repartitionCycles->pluck('total'));
+  resources\views\admin\dashboard.blade.php:623:
+  resources\views\admin\dashboard.blade.php:624:const hasData = (arr) => Object.values(arr).some(v => Number(v) > 0);
+  resources\views\admin\dashboard.blade.php:625:
+
+
+
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

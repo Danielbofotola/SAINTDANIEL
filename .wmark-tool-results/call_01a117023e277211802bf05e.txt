@@ -1,0 +1,224 @@
+1      <?php
+2      
+3      namespace App\Http\Controllers;
+4      
+5      use App\Models\AnneeScolaire;
+6      use App\Models\Classe;
+7      use App\Models\DemandeCompte;
+8      use App\Models\DemandeInscription;
+9      use App\Models\Eleve;
+10     use App\Models\Inscription;
+11     use App\Models\Professeurs;
+12     use App\Models\Tuteur;
+13     use App\Models\User;
+14     use Illuminate\Http\RedirectResponse;
+15     use Illuminate\Http\Request;
+16     use Illuminate\Support\Facades\DB;
+17     use Illuminate\Support\Str;
+18     use Illuminate\Validation\Rule;
+19     use Illuminate\View\View;
+20     
+21     class AdminRegistrationRequestController extends Controller
+22     {
+23         public function studentRequests(): View
+24         {
+25             return view('admin.registration.student-requests', [
+26                 'requests' => DemandeInscription::with(['classe', 'anneeScolaire'])
+27                     ->where('statut', 'en_attente')
+28                     ->oldest()
+29                     ->get(),
+30                 'classes' => Classe::where('statut', 'actif')->orderBy('nom')->get(),
+31                 'schoolYears' => AnneeScolaire::where('statut', 'actif')->orderByDesc('is_encours')->orderByDesc('date_debut')->get(),
+32             ]);
+33         }
+34     
+35         public function studentHistory(Request $request): View
+36         {
+37             $statut = (string) $request->query('statut', '');
+38     
+39             return view('admin.registration.student-history', [
+40                 'requests' => DemandeInscription::with(['classe', 'anneeScolaire', 'traitePar'])
+41                     ->whereIn('statut', ['acceptee', 'refusee'])
+42                     ->when(in_array($statut, ['acceptee', 'refusee'], true), fn ($query) => $query->where('statut', $statut))
+43                     ->latest('traite_le')
+44                     ->paginate(25)
+45                     ->withQueryString(),
+46                 'statut' => $statut,
+47                 'counts' => [
+48                     'acceptee' => DemandeInscription::where('statut', 'acceptee')->count(),
+49                     'refusee' => DemandeInscription::where('statut', 'refusee')->count(),
+50                 ],
+51             ]);
+52         }
+53     
+54         public function approveStudent(Request $request, DemandeInscription $demandeInscription): RedirectResponse
+55         {
+56             $data = $request->validate([
+57                 'classe_id' => ['required', Rule::exists('classes', 'id')->where('statut', 'actif')],
+58                 'annee_scolaire_id' => ['required', Rule::exists('annees_scolaires', 'id')->where('statut', 'actif')],
+59             ], [
+60                 'classe_id.required' => 'Choisissez une classe pour valider l’inscription.',
+61                 'annee_scolaire_id.required' => 'Choisissez une année scolaire pour valider l’inscription.',
+62             ]);
+63     
+64             $result = DB::transaction(function () use ($request, $demandeInscription, $data) {
+65                 $application = DemandeInscription::query()->lockForUpdate()->findOrFail($demandeInscription->id);
+66                 if ($application->statut !== 'en_attente') {
+67                     return false;
+68                 }
+69     
+70                 $guardian = Tuteur::create([
+71                     'nom_mere' => $application->nom_mere,
+72                     'telephone_mere' => $application->telephone_mere,
+73                     'email_mere' => $application->email_mere,
+74                     'adresse_mere' => $application->adresse_mere,
+75                     'nom_pere' => $application->nom_pere,
+76                     'telephone_pere' => $application->telephone_pere,
+77                     'email_pere' => $application->email_pere,
+78                     'statut' => 'actif',
+79                 ]);
+80     
+81                 $schoolYear = AnneeScolaire::findOrFail($data['annee_scolaire_id']);
+82                 $matriculePrefix = 'ELV-'.Str::before($schoolYear->libelle, '-').'-';
+83                 $sequence = Eleve::query()->where('matricule', 'like', $matriculePrefix.'%')->count() + 1;
+84                 do {
+85                     $matricule = $matriculePrefix.str_pad((string) $sequence++, 4, '0', STR_PAD_LEFT);
+86                 } while (Eleve::where('matricule', $matricule)->exists());
+87     
+88                 $student = Eleve::create([
+89                     'nom' => $application->nom,
+90                     'postnom' => $application->postnom,
+91                     'prenom' => $application->prenom,
+92                     'sexe' => $application->sexe,
+93                     'date_naissance' => $application->date_naissance,
+94                     'lieu_naissance' => $application->lieu_naissance,
+95                     'tuteur_id' => $guardian->id,
+96                     'matricule' => $matricule,
+97                     'statut' => 'actif',
+98                 ]);
+99     
+100                DB::table('inscriptions')->insert([
+101                    'eleve_id' => $student->id,
+102                    'classe_id' => $data['classe_id'],
+103                    'annee_scolaire_id' => $data['annee_scolaire_id'],
+104                    'date_inscription' => now()->toDateString(),
+105                    'statut' => Inscription::STATUT_EN_ATTENTE,
+106                    'created_at' => now(),
+107                    'updated_at' => now(),
+108                ]);
+109    
+110                $application->update([
+111                    'classe_id' => $data['classe_id'],
+112                    'annee_scolaire_id' => $data['annee_scolaire_id'],
+113                    'statut' => 'acceptee',
+114                    'traite_par' => $request->user()->id,
+115                    'traite_le' => now(),
+116                ]);
+117    
+118                return true;
+119            });
+120    
+121            return redirect()->route('admin.registration.students')
+122                ->with($result ? 'success' : 'error', $result ? 'La demande a été acceptée : l’inscription est en attente de validation, elle sera activée automatiquement à l’encaissement du frais d’inscription.' : 'Cette demande a déjà été traitée.');
+123        }
+124    
+125        public function rejectStudent(Request $request, DemandeInscription $demandeInscription): RedirectResponse
+126        {
+127            $data = $request->validate(['motif_refus' => ['nullable', 'string', 'max:1000']]);
+128            $updated = DemandeInscription::query()
+129                ->whereKey($demandeInscription->id)
+130                ->where('statut', 'en_attente')
+131                ->update([
+132                    'statut' => 'refusee',
+133                    'traite_par' => $request->user()->id,
+134                    'traite_le' => now(),
+135                    'motif_refus' => $data['motif_refus'] ?? null,
+136                    'updated_at' => now(),
+137                ]);
+138    
+139            return back()->with($updated ? 'success' : 'error', $updated ? 'La demande d’admission a été refusée.' : 'Cette demande a déjà été traitée.');
+140        }
+141    
+142        public function accountRequests(): View
+143        {
+144            return view('admin.registration.account-requests', [
+145                'requests' => DemandeCompte::where('statut', 'en_attente')->oldest()->get(),
+146                'professors' => Professeurs::query()
+147                    ->where('statut', 'actif')
+148                    ->whereNotIn('id', User::query()->whereNotNull('professeur_id')->select('professeur_id'))
+149                    ->orderBy('nom')
+150                    ->orderBy('prenom')
+151                    ->get(),
+152            ]);
+153        }
+154    
+155        public function approveAccount(Request $request, DemandeCompte $demandeCompte): RedirectResponse
+156        {
+157            if ($demandeCompte->refresh()->statut !== 'en_attente') {
+158                return back()->with('error', 'Cette demande de compte a déjà été traitée.');
+159            }
+160    
+161            $data = $request->validate([
+162                'role' => ['required', 'in:prefetture,titulaire,professeur,comptable'],
+163                'professeur_id' => [
+164                    'nullable',
+165                    Rule::exists('professeurs', 'id')->where('statut', 'actif'),
+166                    Rule::unique('users', 'professeur_id'),
+167                    Rule::requiredIf(fn () => $request->input('role') === 'professeur'),
+168                ],
+169            ], [
+170                'professeur_id.required' => 'Sélectionnez une fiche professeur à associer au compte.',
+171                'professeur_id.unique' => 'Cette fiche professeur est déjà associée à un autre compte.',
+172            ]);
+173    
+174            $result = DB::transaction(function () use ($request, $demandeCompte, $data) {
+175                $application = DemandeCompte::query()->lockForUpdate()->findOrFail($demandeCompte->id);
+176                if ($application->statut !== 'en_attente') {
+177                    return false;
+178                }
+179    
+180                User::create([
+181                    'nom' => $application->nom,
+182                    'postnom' => $application->postnom,
+183                    'prenom' => $application->prenom,
+184                    'username' => $application->username,
+185                    'email' => $application->email,
+186                    'telephone' => $application->telephone,
+187                    'professeur_id' => $data['role'] === 'professeur' ? $data['professeur_id'] : null,
+188                    'password' => $application->mot_de_passe,
+189                    'role' => $data['role'],
+190                    'statut' => 'actif',
+191                ]);
+192    
+193                $application->update([
+194                    'statut' => 'acceptee',
+195                    'traite_par' => $request->user()->id,
+196                    'traite_le' => now(),
+197                    'mot_de_passe' => null,
+198                ]);
+199    
+200                return true;
+201            });
+202    
+203            return redirect()->route('admin.registration.accounts')
+204                ->with($result ? 'success' : 'error', $result ? 'Le compte a été créé et activé.' : 'Cette demande a déjà été traitée.');
+205        }
+206    
+207        public function rejectAccount(Request $request, DemandeCompte $demandeCompte): RedirectResponse
+208        {
+209            $data = $request->validate(['motif_refus' => ['nullable', 'string', 'max:1000']]);
+210            $updated = DemandeCompte::query()
+211                ->whereKey($demandeCompte->id)
+212                ->where('statut', 'en_attente')
+213                ->update([
+214                    'statut' => 'refusee',
+215                    'traite_par' => $request->user()->id,
+216                    'traite_le' => now(),
+217                    'motif_refus' => $data['motif_refus'] ?? null,
+218                    'mot_de_passe' => null,
+219                    'updated_at' => now(),
+220                ]);
+221    
+222            return back()->with($updated ? 'success' : 'error', $updated ? 'La demande de compte a été refusée.' : 'Cette demande a déjà été traitée.');
+223        }
+224    }

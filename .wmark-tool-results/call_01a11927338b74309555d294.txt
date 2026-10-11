@@ -1,0 +1,19 @@
+Applied patch: 1 file changed (1 updated)
+Updated app/Http/Controllers/PortailParentController.php (1 hunk applied)
+Landed at lines 127-142 (the file's new text; no re-read needed):
+127        /**
+128         * Détail d'une notification : message complet, auteur, date et action associée.
+129         * Ouvrir le détail vaut lecture (le compteur de non-lues diminue).
+130         */
+131        public function notification(Request $request, string $notification): View
+132        {
+133            $base = $this->donneesDeBase();
+134    
+135            // Un parent ne peut ouvrir que SES notifications.
+136            $modele = $base['user']->notifications()->whereKey($notification)->firstOrFail();
+137            $modele->markAsRead();
+138    
+139            return view('parent.notification', $base + ['notification' => $modele]);
+140        }
+141    
+142        /** Fiche du compte parent. */

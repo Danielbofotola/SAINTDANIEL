@@ -1,0 +1,16 @@
+1      <?php
+2      
+3      use App\Models\Conversation;
+4      use App\Models\User;
+5      use App\Support\Messagerie;
+6      use Illuminate\Database\Schema\Blueprint;
+7      use Illuminate\Support\Facades\DB;
+8      use Illuminate\Support\Facades\Schema;
+9      
+10     beforeEach(function () {
+11         Schema::disableForeignKeyConstraints();
+12         foreach (['messages', 'conversation_user', 'conversations', 'professeurs', 'parametres_systeme', 'users'] as $table) {
+13             Schema::dropIfExists($table);
+14         }
+
+[showing lines 1-14 of 544; read again with offset=15 for more]

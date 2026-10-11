@@ -1,0 +1,11 @@
+Recorded verification for 'role': User::ROLES + libelleRole, enum migration mysql-safe, listes de validation (UserProfile, Registration, AdminRegistration), sélecteurs de rôle (account-create/edit, account-request), Annonce::CIBLES, Raccourcis : php -l OK, suite complète verte.
+Task 'role': pending → verified
+Recorded verification for 'controller': php artisan route:list --path=espace-parent -> GET espace-parent parent.dashboard PortailParentController@index, middleware role:parent,admin ; tests 404 module fermé / 403 autres rôles OK.
+Task 'controller': pending → verified
+Recorded verification for 'view': resources/views/parent/portail.blade.php (703 l.) rendue par le test (assertOk + assertSee conversation/message), réutilise _bulle et les endpoints messagerie.store/repondre/messages.
+Task 'view': pending → verified
+Recorded verification for 'audio': Message::estAudio() ; _bulle rend <audio class=bulle__audio> ; mimes audio ajoutés (store + repondre). Test vocal WAV réel : estAudio true + html contient bulle__audio. Stickers : estSticker() + bulle--sticker.
+Task 'audio': pending → verified
+Recorded verification for 'verify': tests/Feature/PortailParentTest.php (6 tests) + suite complète : 197 passed, 1156 assertions, 8.5s.
+Task 'verify': pending → verified
+Progress: 5/5 done; all tasks complete

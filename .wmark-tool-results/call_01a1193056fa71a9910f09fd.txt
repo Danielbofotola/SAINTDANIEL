@@ -1,0 +1,24 @@
+Applied patch: 2 files changed (2 updated)
+Updated routes/web.php (1 hunk applied)
+Updated app/Http/Controllers/EleveController.php (1 hunk applied)
+Landed at lines 213-213 (the file's new text; no re-read needed):
+213        Route::patch('/admin/eleves/{eleve}/statut', [EleveController::class, 'toggleStatut'])->middleware('role:admin')->name('admin.eleves.toggle');
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 12-14 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 14-29:
+14         /**
+15          * Active ou désactive un élève : « inactif » le fait disparaître des
+16          * listes, des effectifs et des écrans de suivi (sa fiche reste
+17          * consultable par son URL directe).
+18          */
+19         public function toggleStatut(Request $request, Eleve $eleve): RedirectResponse
+20         {
+21             $eleve->update(['statut' => $eleve->statut === 'actif' ? 'inactif' : 'actif']);
+22     
+23             $nom = trim($eleve->nom.' '.$eleve->prenom);
+24     
+25             return back()->with('success', $eleve->statut === 'actif'
+26                 ? $nom.' est activé : il est de nouveau visible dans l\'application.'
+27                 : $nom.' est désactivé : il n\'apparaît plus dans les listes ni les effectifs.');
+28         }
+29

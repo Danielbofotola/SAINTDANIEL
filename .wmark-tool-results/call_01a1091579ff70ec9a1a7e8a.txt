@@ -1,0 +1,6 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/ComptableDepenseTest.php (1 hunk applied)
+Landed at lines 10-12 (the file's new text; no re-read needed):
+10         // La page des dépenses calcule aussi le signal de charge : il lui faut les
+11         // paiements (recettes) et les paies (salaires), en plus des dépenses.
+12         foreach (['paies', 'salaires', 'professeurs', 'paiements', 'frais_scolaires', 'types_frais', 'inscriptions', 'eleves', 'tuteurs', 'classes', 'cycles', 'depenses', 'categories_depenses', 'annees_scolaires', 'users'] as $table) {

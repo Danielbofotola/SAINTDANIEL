@@ -1,0 +1,30 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\aba9102c187c\20261011-161736-bash-call_01a12b8a689574168249cd24.txt (1,530 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Structured view (text):
+[powershell — Windows side]
+Path                                                                                                     LineNumber Lin
+                                                                                                                    e  
+----                                                                                                     ---------- ---
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\resources\views\admin\paiements\index.blade.php         44    
+                                                                                                                       
+                                                                                                                       
+                                                                                                                       
+                                                                                                                       
+                                                                                                                       
+                                                                                                                       
+                                                                                                                       
+                                                                                                                    <di
+                                
+… 14,220 chars elided …
+                           
+                                                                                                                     $(
+                                                                                                                    '#e
+                                                                                                                    lev
+                                                                                                                    esT
+                                                                                                                    abl
+                                                                                                                    e')
+                                                    
+… 15,021 chars elided …
+                                           s">
+
+
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

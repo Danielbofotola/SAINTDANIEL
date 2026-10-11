@@ -1,0 +1,7 @@
+362            ->assertOk()
+363            ->assertSee('Emploi du temps hebdomadaire')
+364            ->assertSee('Mathématiques 6')
+365            ->assertSee('3e A')
+366            ->assertSee('Salle 1')
+367            ->assertSee('08:00');
+368    });

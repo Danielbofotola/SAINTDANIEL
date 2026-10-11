@@ -1,0 +1,1 @@
+Updated tests/Feature/BulletinDocumentTest.php: replaced 1 lines with 1 lines (5 occurrences)

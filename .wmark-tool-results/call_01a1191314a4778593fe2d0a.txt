@@ -1,0 +1,36 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\b493c9bc81dc\20261008-021351-apply_patch-call_01a1191314a4778593fe2d0a.txt (555 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+Applied patch: 1 file changed (1 updated)
+Updated resources/views/parent/portail.blade.php (1 hunk applied)
+Landed at lines 204-223 (the file's new text; no re-read needed):
+204                            <a href="{{ route('parent.dashboard', ['enfant' => $enfant->id]) }}#enfants" style="text-decoration:none;color:inherit">
+205                                <div class="d-flex align-items-center gap-2">
+206                                    <span class="portail-avatar" style="width:40px;height:
+
+... 574 chars truncated ...
+
+>classe->nom }}@endif
+217                                        </div>
+218                                    </div>
+219                                    <span class="fs-7" style="color:var(--blue)">
+220                                        @if ($enfantActif && $enfantActif->id === $enfant->id) Notes affichées @else Notes &amp; travaux › @endif
+221                                    </span>
+222                                </div>
+223                            </a>
+Landed at lines 229-295 (the file's new text; no re-read needed):
+229    
+230                @if ($enfantActif)
+231                    @php($totalObtenu = $notes->sum(fn ($note) => (float) $note->note_obtenue))
+232                    @php($totalMax = $notes->sum(fn ($note) => (float) ($note->evaluation?->max_note ?? 0)))
+233    
+234                    <div class="portail-card" style="margin-top:14px">
+235                        <h2><i class="fa-solid fa-clipboard-list text-warning"></i> Notes de {{ $enfantActif->prenom }}</h2>
+236                        <p class="fs-7 text-muted-2">
+      … 51 lines omitted …
+288                                    @empty
+289                                        <tr><td colspan="5" class="text-center text-muted-2 fs-7">Aucun travail programmé.</td></tr>
+290                                    @endforelse
+291                                </tbody>
+292                            </table>
+293                        </div>
+294                    </div>
+295                @endif

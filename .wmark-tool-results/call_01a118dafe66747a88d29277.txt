@@ -1,0 +1,51 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\b493c9bc81dc\20261008-011234-bash-call_01a118dafe66747a88d29277.txt (530 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+[powershell — Windows side]
+Concerns
+AffectationCours.php
+AnneeScolaire.php
+Annonce.php
+Appel.php
+ArchiveAnnee.php
+Bulletin.php
+CategorieDepense.php
+Classe.php
+CompteComptable.php
+Conversation.php
+Cours.php
+Cycle.php
+Deliberation.php
+DemandeCompte.php
+DemandeInscription.php
+Depense.php
+DocumentEleve.php
+DocumentProfesseur.php
+Ecriture.php
+Eleve.php
+EleveSante.php
+EmploiDuTemps.php
+Evaluation.php
+FraisScolaire.php
+Inscription.php
+LigneEcriture.php
+Message.php
+Note.php
+Option.php
+Paie.php
+Paiement.php
+ParametreSysteme.php
+Periode.php
+Presence.php
+Professeurs.php
+Salaire.php
+Salle.php
+Section.php
+Tuteur.php
+TypeFrais.php
+User.php
+=== migrations mentionnant parent/eleve ===
+database\migrations\2026_09_21_020000_create_school_management_tables.php
+database\migrations\2026_10_04_000000_add_module_switches_to_parametres_systeme_table.php
+database\migrations\2026_10_11_000000_create_comptabilite_tables.php
+database\migrations\2026_10_16_000000_add_parent_role_to_users_table.php
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

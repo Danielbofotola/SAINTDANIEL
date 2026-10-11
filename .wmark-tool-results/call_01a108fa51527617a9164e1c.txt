@@ -1,0 +1,12 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/FinancesPagesTest.php (2 hunks applied)
+Landed at lines 11-12 (the file's new text; no re-read needed):
+11             'archives_annees', 'bulletins', 'notes', 'evaluations', 'affectations_cours',
+12             'depenses', 'categories_depenses', 'paiements', 'frais_scolaires',
+Landed at lines 173-178 (the file's new text; no re-read needed):
+173            $table->decimal('total_attendu', 12, 2)->default(0);
+174            $table->decimal('total_impayes', 12, 2)->default(0);
+175            $table->unsignedInteger('eleves_garcons')->default(0);
+176            $table->unsignedInteger('eleves_filles')->default(0);
+177            $table->unsignedInteger('total_bulletins')->default(0);
+178            $table->unsignedInteger('total_notes')->default(0);

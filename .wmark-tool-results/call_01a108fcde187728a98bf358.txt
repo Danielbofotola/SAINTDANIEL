@@ -1,0 +1,1 @@
+Wrote database/migrations/2026_10_09_000000_create_salaires_and_paies_tables.php (53 lines)

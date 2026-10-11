@@ -1,0 +1,12 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/AdminUserManagementTest.php (1 hunk applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 364-376 only after blank-line normalization (the model's blank-line layout differed from the file's; the file's own text was kept). Verify the result.
+Auto-corrected hunk landed at lines 365-371:
+365        // Schéma réel de `sections` : la migration align_sections_options_schema a
+366        // retiré les colonnes code/description/statut.
+367        Schema::create('sections', function (Blueprint $table) {
+368            $table->id();
+369            $table->string('nom', 100)->unique();
+370            $table->timestamps();
+371        });

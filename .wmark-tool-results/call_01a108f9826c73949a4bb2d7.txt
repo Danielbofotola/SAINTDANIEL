@@ -1,0 +1,32 @@
+114        public function store(Request $request): RedirectResponse
+115        {
+116            $data = $request->validate([
+117                'annee_scolaire_id' => ['required', Rule::exists('annees_scolaires', 'id'), 'unique:archives_annees,annee_scolaire_id'],
+118                'remarques' => ['nullable', 'string', 'max:2000'],
+119            ], [
+120                'annee_scolaire_id.required' => 'Sélectionnez une année scolaire.',
+121                'annee_scolaire_id.unique' => 'Cette année scolaire est déjà clôturée.',
+122            ]);
+123    
+124            $anneeId = (int) $data['annee_scolaire_id'];
+125    
+126            $recettes = (float) Paiement::query()
+127                ->where('statut', 'actif')
+128                ->whereHas('inscription', fn ($query) => $query->where('annee_scolaire_id', $anneeId))
+129                ->sum('montant_paye');
+130    
+131            $depenses = (float) Depense::query()
+132                ->where('annee_scolaire_id', $anneeId)
+133                ->where('statut', 'actif')
+134                ->sum('montant');
+135    
+136            DB::transaction(function () use ($anneeId, $data, $recettes, $depenses) {
+137                ArchiveAnnee::create([
+138                    'annee_scolaire_id' => $anneeId,
+139                    'total_eleves_inscrits' => Inscription::query()->where('annee_scolaire_id', $anneeId)->where('statut', 'actif')->count(),
+140                    'total_recettes' => $recettes,
+141                    'total_depenses' => $depenses,
+142                    'solde_final' => $recettes - $depenses,
+143                    'date_cloture' => now(),
+
+[showing lines 114-143 of 157; read again with offset=144 for more]

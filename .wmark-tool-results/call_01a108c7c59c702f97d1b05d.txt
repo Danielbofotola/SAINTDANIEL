@@ -1,0 +1,14 @@
+424        $this->actingAs($admin)
+425            ->get(route('admin.archives.index'))
+426            ->assertOk()
+427            ->assertSee(route('admin.archives.show', $archiveId), false);
+428    
+429        $this->actingAs($admin)
+430            ->get(route('admin.archives.show', $archiveId))
+431            ->assertOk()
+432            ->assertSee('Année clôturée')
+433            ->assertSee('Mwamba')
+434            ->assertSee('3e A')
+435            ->assertSee('90,00')
+
+[showing lines 424-435 of 437; read again with offset=436 for more]

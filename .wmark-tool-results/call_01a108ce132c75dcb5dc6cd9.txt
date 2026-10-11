@@ -1,0 +1,28 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\e1ce9c26600a\20261004-222431-bash-call_01a108ce132c75dcb5dc6cd9.txt (1,195 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Structured view (text):
+[powershell — Windows side]
+39: <div class="col-md-3 form-group mb-md-0"><select class="form-control" name="statut">
+40: <option value="">Tous les statuts</option>
+42: <option value="{{ $value }}" @selected($statut === $value)>{{ $label }}</option>
+49: <thead><tr><th>#</th><th>Photo</th><th>Matricule</th><th>Nom complet</th><th>Sexe</th><th>Naissance</th><th>Classe @if($anneeEnCours)<small>{{ $anneeEnCours->libelle }}</small>@endif</th><th>Statut</th><th>Actions</th></tr></thead>
+52: @php($inscription = $eleve->inscriptions->first())
+60: <td>{{ $inscription?->classe?->nom ?? 'Non inscrit' }}</td>
+61: <td><span class="badge badge-{{ ['actif' => 'success', 'inactif' => 'secondary', 'suspendu' => 'warning', 'exclu' => 'danger'][$eleve->statut] ?? 'secondary' }}">{{ ucfirst($eleve->statut) }}</span></td>
+==== frais index: type form ====
+36: <form method="POST" action="{{ route('admin.frais.types.store') }}">
+38: <div class="form-group"><label class="form-label">Nom *</label><input class="form-control" name="nom" value="{{ old('nom') }}" maxlength="100" required placeholder="Ex. Frais scolaires, Tenue, Cantine."></div>
+39: <div class="form-group"><label class="form-label">Description</label><textarea class="form-control" name="description" rows="2" maxlength="1000">{{ old('description') }}</textarea></div>
+41: </form>
+50: <form method="POST" action="{{ route('admin.frais.tarifs.store') }}">
+53: <div class="col-md-6 form-group"><label class="form-label">Type de frais *</label><sele
+… 19 chars elided …
+rol" name="type_frais_id" required><option value="">Choisir</option>@foreach ($typesActifs as $type)<option value="{{ $type->id }}" @selected(old('type_frais_id') == $type->id)>{{ $type->nom }}</option>@endforeach</select></div>
+54: <div class="col-md-6 form-group"><label class="form-label">Classe *</label><select class="form-control" name="classe_id" required><option value="">Choisir</option>@foreach ($classes as $classe)<option value="{{ $classe->id }}" @selected(old('classe_id') == $classe->id)>{{ $classe->nom }}</option>@endforeach</select></div>
+55: <div class="col-md-6 form-group"><label class="form-label">Montant exig� *</label><input class="form-control" type="number" step="0.01" min="0" name="montant_exige" value="{{ old('montant_exige') }}" required></div>
+56: <div class="col-md-
+… 820 chars elided …
+umber_format((float) $tarif->montant_exige, 2, ',', ' ') }}</td>
+111: <td>{{ $tarif->date_echeance?->format('d/m/Y') }}</td>
+114: <form class="d-inline" method="POST" action="{{ route('admin.frais.tarifs.destroy', $tarif) }}" onsubmit="return confirm('Supprimer ce tarif ?');">
+118: </form>
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

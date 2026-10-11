@@ -1,0 +1,10 @@
+Applied patch: 1 file changed (1 updated)
+Updated app/Models/Paiement.php (2 hunks applied)
+Landed at lines 12-12 (the file's new text; no re-read needed):
+12             'num_recu', 'inscription_id', 'frais_scolaire_id', 'periode_id', 'montant_paye',
+Landed at lines 33-37 (the file's new text; no re-read needed):
+33     
+34         public function periode()
+35         {
+36             return $this->belongsTo(Periode::class);
+37         }

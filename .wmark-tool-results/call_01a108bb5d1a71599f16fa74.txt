@@ -1,0 +1,20 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/FinancesPagesTest.php (1 hunk applied)
+Landed at lines 395-429 (the file's new text; no re-read needed):
+395    
+396    test('a closed school year can be browsed in read-only', function () {
+397        $inscriptionId = seedInscription();
+398        $fraisId = seedFrais('150.00');
+399        DB::table('paiements')->insert([
+400            'num_recu' => 'REC-2026-2027-0001', 'inscription_id' => $inscriptionId, 'frais_scolaire_id' => $fraisId,
+401            'montant_paye' => 90, 'date_paiement' => now(), 'mode_paiement' => 'especes', 'statut' => 'actif',
+402            'created_at' => now(), 'updated_at' => now(),
+      … 19 lines omitted …
+422            ->get(route('admin.archives.show', $archiveId))
+423            ->assertOk()
+424            ->assertSee('Année clôturée')
+425            ->assertSee('Mwamba')
+426            ->assertSee('3e A')
+427            ->assertSee('90,00')
+428            ->assertSee('Entretien');
+429    });

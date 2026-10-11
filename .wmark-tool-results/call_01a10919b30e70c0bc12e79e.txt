@@ -1,0 +1,62 @@
+1      <!DOCTYPE html>
+2      <html lang="fr">
+3      <head>
+4          <meta charset="utf-8">
+5          <meta name="viewport" content="width=device-width, initial-scale=1">
+6          <title>Espace enseignant | {{ $systemSettings->nom_court }}</title>
+7      
+8          <!-- Google font -->
+9          <link rel="preconnect" href="https://fonts.googleapis.com">
+10         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+11         <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+12     
+13         <!-- Icons FontAwesome & Themify -->
+14         <link rel="stylesheet" href="{{ asset('boostrap/css/font-awesome/css/fontawesome.css') }}">
+15         <link rel="stylesheet" href="{{ asset('boostrap/css/font-awesome/css/fa-solid.css') }}">
+16         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+17     
+18         <!-- DataTables Bootstrap 4 -->
+19         <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap4.min.css">
+20     
+21         <!-- Able Pro / Main Styling -->
+22         <link rel="stylesheet" href="{{ asset('boostrap/css/css/main.css') }}">
+23     
+24         <!-- Chart.js -->
+25     
+26         <style>
+27             :root {
+28                 --able-primary: #4680ff;
+29                 --able-primary-dark: #2f63d4;
+30                 --able-bg: #f8fafc;
+31                 --able-card-bg: #ffffff;
+32                 --able-text-main: #1e293b;
+33                 --able-text-muted: #64748b;
+34                 --able-border: #e2e8f0;
+35             }
+36     
+37             body {
+38                 font-family: 'Public Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+39                 background-color: var(--able-bg);
+40                 color: var(--able-text-main);
+41             }
+42     
+43             /* --- HEADER MODERNE & AVATAR --- */
+44             .app-header {
+45                 background: #0f172a !important;
+46                 box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+47                 border-bottom: 1px solid rgba(255,255,255,0.05);
+48             }
+49     
+50             .app-header__logo {
+51                 background-color: #020617 !important;
+52                 font-weight: 700;
+53                 letter-spacing: 0.5px;
+54                 font-size: 18px;
+55             }
+56     
+57             .app-header__user-avatar {
+58                 width: 35px;
+59                 height: 35px;
+60                 border-radius: 50%;
+
+[showing lines 1-60 of 419; read again with offset=61 for more]

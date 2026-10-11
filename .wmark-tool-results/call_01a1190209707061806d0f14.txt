@@ -1,0 +1,15 @@
+Applied patch: 1 file changed (1 updated)
+Updated app/Http/Controllers/PrefectureDashboardController.php (2 hunks applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 275-280 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 280-280:
+280                ->withCount('documents')
+Landed at lines 299-299 (the file's new text; no re-read needed):
+299            $eleve->load(['tuteur', 'sante', 'parents', 'documents', 'inscriptions.classe']);
+Landed at lines 305-310 (the file's new text; no re-read needed):
+305                'documentLabels' => [
+306                    'acte_naissance' => 'Acte de naissance',
+307                    'bulletin' => 'Bulletin',
+308                    'certificat_medical' => 'Certificat médical',
+309                    'autre' => 'Autre document',
+310                ],

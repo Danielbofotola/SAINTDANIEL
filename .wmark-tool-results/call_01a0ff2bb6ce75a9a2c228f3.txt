@@ -1,0 +1,36 @@
+Applied patch: 2 files changed (2 updated)
+Updated app/Models/Inscription.php (2 hunks applied)
+Updated app/Models/Eleve.php (2 hunks applied)
+Landed at lines 5-5 (the file's new text; no re-read needed):
+5      use Illuminate\Database\Eloquent\Builder;
+Landed at lines 26-43 (the file's new text; no re-read needed):
+26     
+27         public function anneeScolaire()
+28         {
+29             return $this->belongsTo(AnneeScolaire::class);
+30         }
+31     
+32         /**
+33          * Limite la requête aux inscriptions de l'année scolaire en cours.
+      … 2 lines omitted …
+36         public function scopeAnneeEnCours(Builder $query): Builder
+37         {
+38             $anneeId = AnneeScolaire::enCours()?->id;
+39     
+40             return $anneeId
+41                 ? $query->where('annee_scolaire_id', $anneeId)
+42                 : $query->whereRaw('1 = 0');
+43         }
+Landed at lines 5-5 (the file's new text; no re-read needed):
+5      use Illuminate\Database\Eloquent\Builder;
+Landed at lines 35-44 (the file's new text; no re-read needed):
+35     
+36         /**
+37          * Limite la requête aux élèves inscrits (inscription active) pour l'année en cours.
+38          */
+39         public function scopeInscritAnneeEnCours(Builder $query): Builder
+40         {
+41             return $query->whereHas('inscriptions', fn (Builder $inscription) => $inscription
+42                 ->anneeEnCours()
+43                 ->where('statut', 'actif'));
+44         }

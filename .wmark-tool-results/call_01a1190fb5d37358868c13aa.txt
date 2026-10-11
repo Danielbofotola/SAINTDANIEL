@@ -1,0 +1,15 @@
+[powershell — Windows side]
+app\Http\Controllers\EvaluationController.php:138: Note::updateOrCreate(
+app\Http\Controllers\EvaluationController.php:141: 'note_obtenue' => $value,
+app\Http\Controllers\NotesController.php:147: Note::updateOrCreate(
+app\Http\Controllers\NotesController.php:149: ['note_obtenue' => $valeur, 'statut' => 'actif']
+app\Http\Controllers\ProfesseurEvaluationController.php:144: Note::updateOrCreate(
+app\Http\Controllers\ProfesseurEvaluationController.php:146: ['note_obtenue' => $valeur, 'observation' => $observation, 'statut' => 'actif']
+app\Models\Note.php:15: return ['note_obtenue' => 'decimal:2'];
+=== controller professeur : methodes ===
+21: public function index(Request $request): View
+53: public function store(Request $request): RedirectResponse
+86: public function notes(Request $request, Evaluation $evaluation): View
+113: public function storeNotes(Request $request, Evaluation $evaluation): RedirectResponse
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

@@ -1,0 +1,12 @@
+69         Route::post('/admin/eleves/inscription', [EleveInscriptionController::class, 'store'])->middleware('role:admin')->name('admin.eleves.store');
+70         Route::get('/admin/salles', [SalleController::class, 'index'])->middleware('role:admin')->name('admin.salles.index');
+71         Route::get('/admin/annees', [AnneeScolaireController::class, 'index'])->middleware('role:admin')->name('admin.annees.index');
+72         Route::post('/admin/annees', [AnneeScolaireController::class, 'store'])->middleware('role:admin')->name('admin.annees.store');
+73         Route::patch('/admin/annees/{annee}/statut', [AnneeScolaireController::class, 'toggle'])->middleware('role:admin')->name('admin.annees.toggle');
+74         Route::get('/admin/salles/nouvelle', [SalleController::class, 'create'])->middleware('role:admin')->name('admin.salles.create');
+75         Route::post('/admin/salles', [SalleController::class, 'store'])->middleware('role:admin')->name('admin.salles.store');
+76         Route::get('/admin/classes/nouvelle', [ClasseController::class, 'create'])->middleware('role:admin')->name('admin.classes.create');
+77         Route::post('/admin/classes', [ClasseController::class, 'store'])->middleware('role:admin')->name('admin.classes.store');
+78         Route::get('/admin/sections/nouvelle', [SectionOptionController::class, 'createSection'])->middleware('role:admin')->name('admin.sections.create');
+
+[showing lines 69-78 of 96; read again with offset=79 for more]

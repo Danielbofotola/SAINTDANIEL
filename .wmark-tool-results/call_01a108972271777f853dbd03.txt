@@ -1,0 +1,6 @@
+336                <li class="menu-section">Organisation</li>
+337                <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-graduation-cap"></i><span class="app-menu__label">Classes et salles</span><i class="treeview-indicator fa fa-angle-right"></i></a>
+338                    <ul class="treeview-menu">
+339                        <li><a class="treeview-item" href="#"><i class="icon fa fa-circle-o"></i> Cycles</a></li>
+
+[showing lines 336-339 of 722; read again with offset=340 for more]

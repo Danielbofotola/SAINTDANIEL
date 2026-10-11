@@ -1,0 +1,18 @@
+324                'affectation_id' => $affectationId, 'jour' => 'mardi',
+325                'heure_debut' => '10:00', 'heure_fin' => '09:00',
+326            ])
+327            ->assertSessionHasErrors('heure_fin');
+328    
+329        expect(DB::table('emplois_du_temps')->count())->toBe(0);
+330    });
+331    
+332    test('the professor menu links point to the new modules', function () {
+333        $admin = User::factory()->create(['role' => 'admin']);
+334    
+335        $this->actingAs($admin)
+336            ->get(route('admin.dashboard'))
+337            ->assertOk()
+338            ->assertSee(route('admin.professeurs.index'), false)
+339            ->assertSee(route('admin.affectations.index'), false)
+
+[showing lines 324-339 of 341; read again with offset=340 for more]

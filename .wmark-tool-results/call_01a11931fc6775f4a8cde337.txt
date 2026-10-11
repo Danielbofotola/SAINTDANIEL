@@ -1,0 +1,22 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/ElevesPagesTest.php (2 hunks applied)
+Landed at lines 11-11 (the file's new text; no re-read needed):
+11             'documents_eleves', 'eleve_sante', 'demandes_inscription', 'inscriptions', 'eleves', 'tuteurs', 'classes',
+Landed at lines 29-47 (the file's new text; no re-read needed):
+29         Schema::create('eleve_sante', function (Blueprint $table) {
+30             $table->id();
+31             $table->unsignedBigInteger('eleve_id');
+32             $table->string('groupe_sanguin')->nullable();
+33             $table->text('allergies_pathologies')->nullable();
+34             $table->text('traitements_urgences')->nullable();
+35             $table->string('medecin_referent')->nullable();
+36             $table->timestamps();
+      … 3 lines omitted …
+40             $table->unsignedBigInteger('eleve_id');
+41             $table->string('type_document');
+42             $table->string('chemin_fichier');
+43             $table->string('statut')->default('actif');
+44             $table->timestamp('created_at')->nullable();
+45         });
+46     
+47         Schema::create('annees_scolaires', function (Blueprint $table) {

@@ -1,0 +1,10 @@
+Applied patch: 1 file changed (1 updated)
+Updated resources/views/admin/profile/show.blade.php (1 hunk applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 163-175 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 164-164:
+164                        <a class="waves-effect waves-dark" href="{{ route('admin.professeurs.index') }}">
+Auto-corrected hunk landed at lines 169-169:
+169                        <a class="waves-effect waves-dark" href="{{ route('admin.emplois-du-temps.index') }}">
+Auto-corrected hunk landed at lines 174-174:
+174                        <a class="waves-effect waves-dark" href="{{ route('admin.bulletins.index') }}">

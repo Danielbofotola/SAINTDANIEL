@@ -1,0 +1,22 @@
+1      <?php
+2      
+3      namespace App\Models;
+4      
+5      use Illuminate\Database\Eloquent\Model;
+6      
+7      class EmploiDuTemps extends Model
+8      {
+9          protected $table = 'emplois_du_temps';
+10     
+11         protected $fillable = ['affectation_id', 'salle_id', 'jour', 'heure_debut', 'heure_fin', 'statut'];
+12     
+13         public function affectation()
+14         {
+15             return $this->belongsTo(AffectationCours::class, 'affectation_id');
+16         }
+17     
+18         public function salle()
+19         {
+20             return $this->belongsTo(Salle::class);
+21         }
+22     }

@@ -1,0 +1,6 @@
+Applied patch: 1 file changed (1 updated)
+Updated resources/views/admin/archives/index.blade.php (1 hunk applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 64-65 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 65-65:
+65                                         <a href="{{ route('admin.archives.show', $archive) }}" class="btn btn-sm btn-info" title="Consulter l'année clôturée"><i class="fa fa-folder-open"></i> Consulter</a>

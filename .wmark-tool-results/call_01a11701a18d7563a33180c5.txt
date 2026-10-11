@@ -1,0 +1,41 @@
+1      <ul class="raccourcis-nav {{ ($variante ?? 'sombre') === 'clair' ? 'raccourcis-nav--clair' : '' }}">
+2          <li>
+3              <a class="raccourcis-nav__item" href="{{ $raccourcis['direct']['url'] }}">
+4                  <i class="fa {{ $raccourcis['direct']['icone'] }}"></i>
+5                  <span class="d-none d-lg-inline ml-1">{{ $raccourcis['direct']['libelle'] }}</span>
+6              </a>
+7          </li>
+8          <li class="dropdown">
+9              <a class="raccourcis-nav__item" href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" aria-label="Rapports">
+10                 <i class="fa fa-folder-open-o"></i>
+11                 <span class="d-none d-lg-inline ml-1">Rapports</span>
+12                 <i class="fa fa-angle-down ml-1"></i>
+13             </a>
+14             <ul class="dropdown-menu settings-menu border-0 shadow-lg">
+15                 @foreach ($raccourcis['rapports'] as $rapport)
+16                     <li>
+17                         <a class="dropdown-item" href="{{ $rapport[2] }}">
+18                             <i class="fa {{ $rapport[1] }} mr-2"></i> {{ $rapport[0] }}
+19                         </a>
+20                     </li>
+21                 @endforeach
+22                 <li><hr class="dropdown-divider"></li>
+23                 <li><a class="dropdown-item" href="{{ route('messagerie.index') }}"><i class="fa fa-comments mr-2"></i> Messagerie</a></li>
+24                 <li><a class="dropdown-item" href="{{ route('notifications.index') }}"><i class="fa fa-bell-o mr-2"></i> Mes notifications</a></li>
+25             </ul>
+26         </li>
+27     </ul>
+28     
+29     <style>
+30         .raccourcis-nav { float: left; display: flex; align-items: center; height: 100%; margin: 0 0 0 8px; padding: 0; list-style: none; }
+31         .raccourcis-nav__item { display: inline-flex; align-items: center; height: 50px; padding: 0 14px; color: rgba(255,255,255,.82);
+32             font-size: 13px; font-weight: 500; text-decoration: none; white-space: nowrap; }
+33         .raccourcis-nav__item:hover, .raccourcis-nav__item:focus { color: #fff; background: rgba(255,255,255,.08); text-decoration: none; }
+34         /* Variante claire : pastilles lisibles sur un en-tête clair comme sombre. */
+35         .raccourcis-nav--clair { float: none; display: inline-flex; height: auto; margin: 0; align-items: center; }
+36         .raccourcis-nav--clair .raccourcis-nav__item { height: 34px; padding: 0 12px; margin-right: 6px; border-radius: 999px;
+37             background: #f1f5f9; color: #1e293b; }
+38         .raccourcis-nav--clair .raccourcis-nav__item:hover,
+39         .raccourcis-nav--clair .raccourcis-nav__item:focus { background: #e2e8f0; color: #0f172a; }
+40         @media (max-width: 575px) { .raccourcis-nav { margin-left: 0 } .raccourcis-nav__item { padding: 0 8px } }
+41     </style>

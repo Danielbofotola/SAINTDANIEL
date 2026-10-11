@@ -1,0 +1,95 @@
+1      <?php
+2      
+3      namespace App\Http\Controllers;
+4      
+5      use App\Models\AffectationCours;
+6      use App\Models\AnneeScolaire;
+7      use App\Models\Classe;
+8      use App\Models\Cours;
+9      use App\Models\Professeurs;
+10     use Illuminate\Http\RedirectResponse;
+11     use Illuminate\Http\Request;
+12     use Illuminate\Validation\Rule;
+13     use Illuminate\View\View;
+14     
+15     class AffectationCoursController extends Controller
+16     {
+17         public function index(Request $request): View
+18         {
+19             $search = trim((string) $request->query('q', ''));
+20             $classeId = $request->query('classe_id');
+21     
+22             $affectations = AffectationCours::query()
+23                 ->with(['professeur', 'cours', 'classe'])
+24                 ->anneeEnCours()
+25                 ->when($search !== '', fn ($query) => $query->where(function ($query) use ($search) {
+26                     $query->whereHas('professeur', fn ($professeur) => $professeur
+27                         ->where('nom', 'like', "%{$search}%")
+28                         ->orWhere('postnom', 'like', "%{$search}%")
+29                         ->orWhere('prenom', 'like', "%{$search}%"))
+30                         ->orWhereHas('cours', fn ($cours) => $cours
+31                             ->where('intitule', 'like', "%{$search}%")
+32                             ->orWhere('code', 'like', "%{$search}%"))
+33                         ->orWhereHas('classe', fn ($classe) => $classe->where('nom', 'like', "%{$search}%"));
+34                 }))
+35                 ->when($classeId, fn ($query) => $query->where('classe_id', $classeId))
+36                 ->latest('id')
+37                 ->paginate(25)
+38                 ->withQueryString();
+39     
+40             return view('admin.affectations.index', [
+41                 'affectations' => $affectations,
+42                 'annee' => AnneeScolaire::enCours(),
+43                 'search' => $search,
+44                 'classeId' => $classeId,
+45                 'professeurs' => Professeurs::where('statut', 'actif')->orderBy('nom')->orderBy('prenom')->get(),
+46                 'cours' => Cours::where('statut', 'actif')->orderBy('intitule')->get(),
+47                 'classes' => Classe::where('statut', 'actif')->orderBy('nom')->get(),
+48             ]);
+49         }
+50     
+51         public function store(Request $request): RedirectResponse
+52         {
+53             $annee = AnneeScolaire::enCours();
+54     
+55             if (! $annee) {
+56                 return back()->withInput()->with('error', 'Aucune année scolaire en cours : impossible de créer une affectation.');
+57             }
+58     
+59             $data = $request->validate([
+60                 'professeur_id' => ['required', Rule::exists('professeurs', 'id')->where('statut', 'actif')],
+61                 'cours_id' => ['required', Rule::exists('cours', 'id')->where('statut', 'actif')],
+62                 'classe_id' => ['required', Rule::exists('classes', 'id')->where('statut', 'actif')],
+63             ], [
+64                 'professeur_id.required' => 'Sélectionnez un professeur.',
+65                 'cours_id.required' => 'Sélectionnez un cours.',
+66                 'classe_id.required' => 'Sélectionnez une classe.',
+67             ]);
+68     
+69             $exists = AffectationCours::query()
+70                 ->where('professeur_id', $data['professeur_id'])
+71                 ->where('cours_id', $data['cours_id'])
+72                 ->where('classe_id', $data['classe_id'])
+73                 ->where('annee_scolaire_id', $annee->id)
+74                 ->exists();
+75     
+76             if ($exists) {
+77                 return back()->withInput()->with('error', 'Cette affectation existe déjà pour l’année en cours.');
+78             }
+79     
+80             AffectationCours::create($data + ['annee_scolaire_id' => $annee->id, 'statut' => 'actif']);
+81     
+82             return redirect()->route('admin.affectations.index')->with('success', 'L’affectation a été enregistrée.');
+83         }
+84     
+85         public function destroy(AffectationCours $affectation): RedirectResponse
+86         {
+87             if ($affectation->emploisDuTemps()->exists() || $affectation->evaluations()->exists()) {
+88                 return back()->with('error', 'Cette affectation est liée à un emploi du temps ou à des évaluations : supprimez-les d’abord.');
+89             }
+90     
+91             $affectation->delete();
+92     
+93             return redirect()->route('admin.affectations.index')->with('success', 'L’affectation a été supprimée.');
+94         }
+95     }

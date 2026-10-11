@@ -1,0 +1,27 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\e1ce9c26600a\20261004-221728-bash-call_01a108c79e02747a82a48755.txt (514 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+[powershell — Windows side]
+10: foreach ([
+11: 'archives_annees', 'depenses', 'categories_depenses', 'paiements', 'frais_scolaires',
+15: Schema::dropIfExists($table);
+19: Schema::create('users', function (Blueprint $table) {
+31: Schema::create('professeurs', function (Blueprint $table) {
+44: Schema::create('annees_scolaires', function (Blueprint $table) {
+53: Schema::create('cycles', function (Blueprint $table) {
+59: Schema::create('salles', function (Blueprint $table) {
+65: Schema::create('classes', function (Blueprint $table) {
+75: Schema::create('tuteurs', function (Blueprint $table) {
+87: Schema::create('eleves', function (Blueprint $table) {
+101: Schema::create('inscriptions', function (Blueprint $table) {
+110: Schema::create('types_frais', function (Blueprint $table) {
+117: Schema::create('frais_scolaires', function (Blueprint $table) {
+127: Schema::create('paiements', function (Blueprint $table) {
+139: Schema::create('categories_depenses', function (Blueprint $table) {
+145: Schema::create('depenses', function (Blueprint $table) {
+156: Schema::create('archives_annees', function (Blueprint $table) {
+257: $paiement = DB::table('paiements')->first();
+277: expect(DB::table('paiements')->count())->toBe(1);
+309: DB::table('paiements')->insert([
+351: DB::table('paiements')->insert([
+399: DB::table('paiements')->insert([
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

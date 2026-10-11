@@ -1,0 +1,7 @@
+Applied patch: 6 files changed (6 created)
+Created resources/views/errors/403.blade.php (5 lines)
+Created resources/views/errors/404.blade.php (5 lines)
+Created resources/views/errors/419.blade.php (5 lines)
+Created resources/views/errors/429.blade.php (5 lines)
+Created resources/views/errors/500.blade.php (6 lines)
+Created resources/views/errors/503.blade.php (5 lines)

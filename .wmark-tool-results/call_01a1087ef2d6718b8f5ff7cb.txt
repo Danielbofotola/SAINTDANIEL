@@ -1,0 +1,37 @@
+resources/views/admin/profile/ (8 lines, newest first):
+  show.blade.php
+resources/views/admin/dashboard.blade.php
+resources/views/admin/profile/ (8 lines, newest first):
+  accounts.blade.php
+  account-edit.blade.php
+  account-password.blade.php
+resources/views/admin/options/index.blade.php
+resources/views/admin/sections/index.blade.php
+resources/views/admin/options/create.blade.php
+resources/views/admin/sections/create.blade.php
+resources/views/admin/classes/ (3 lines, newest first):
+  create.blade.php
+resources/views/admin/eleves/ (3 lines, newest first):
+  show.blade.php
+resources/views/admin/classes/ (3 lines, newest first):
+  index.blade.php
+  students.blade.php
+resources/views/admin/eleves/ (3 lines, newest first):
+  create.blade.php
+resources/views/admin/annees/edit.blade.php
+resources/views/admin/annees/index.blade.php
+resources/views/admin/profile/ (8 lines, newest first):
+  edit.blade.php
+  account-create.blade.php
+resources/views/admin/registration/account-requests.blade.php
+resources/views/admin/registration/student-requests.blade.php
+resources/views/admin/profile/ (8 lines, newest first):
+  statistics.blade.php
+  settings.blade.php
+resources/views/admin/eleves/ (3 lines, newest first):
+  edit.blade.php
+resources/views/admin/professeurs/create.blade.php
+resources/views/admin/salles/ (3 lines, newest first):
+  index.blade.php
+  create.blade.php
+  edit.blade.php

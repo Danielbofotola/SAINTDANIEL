@@ -1,0 +1,24 @@
+300            ->getContent();
+301    
+302        expect($html)
+303            ->toContain('id="msgShell"')
+304            ->toContain('id="voiceBtn"')
+305            ->toContain('id="sendBtn"')
+306            ->toContain('id="stickerPicker"')
+307            ->toContain('onclick="envoyerTexte()"')
+308            ->toContain('onclick="ouvrirCompose()"')
+309            // Le personnel dispose des pièces jointes et de la diffusion « tous ».
+310            ->toContain('id="fileAttachment"')
+311            ->toContain('value="tous"')
+312            ->toContain('msg-avatar')
+313            // Liste des correspondants actifs + action « écrire ».
+314            ->toContain('id="contactsContainer"')
+315            ->toContain('onclick="ouvrirDiscussion(')
+316            // La page porte ses propres liens : pas d'injection du bouton flottant.
+317            ->not->toContain('<a class="messagerie-flottante');
+318    });
+319    
+320    test('la barre d’écriture reste disponible même sans discussion ouverte', function () {
+321        $alice = User::factory()->create(['role' => 'admin', 'nom' => 'Mwamba', 'prenom' => 'Alice']);
+
+[showing lines 300-321 of 419; read again with offset=322 for more]

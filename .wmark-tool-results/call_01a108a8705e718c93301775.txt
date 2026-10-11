@@ -1,0 +1,10 @@
+53         public function generate(Request $request): RedirectResponse
+54         {
+55             $data = $request->validate([
+56                 'periode_id' => ['required', Rule::exists('periodes', 'id')],
+57                 'classe_id' => ['required', Rule::exists('classes', 'id')],
+58             ], [
+59                 'periode_id.required' => 'Choisissez une période.',
+60                 'classe_id.required' => 'Choisissez une classe.',
+
+[showing lines 53-60 of 164; read again with offset=61 for more]

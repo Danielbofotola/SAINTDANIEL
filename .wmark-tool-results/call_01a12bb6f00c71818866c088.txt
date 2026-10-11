@@ -1,0 +1,25 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\aba9102c187c\20261011-170612-bash-call_01a12bb6f00c71818866c088.txt (511 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+[powershell — Windows side]
+resources\views\admin\annees\edit.blade.php
+resources\views\admin\annees\index.blade.php
+resources\views\admin\comptabilite\index.blade.php
+resources\views\admin\depenses\index.blade.php
+resources\views\admin\eleves\create.blade.php
+resources\views\admin\eleves\edit.blade.php
+resources\views\admin\evaluations\index.blade.php
+resources\views\admin\frais\index.blade.php
+resources\views\admin\paiements\index.blade.php
+resources\views\admin\paies\index.blade.php
+resources\views\admin\periodes\index.blade.php
+resources\views\admin\profile\account-edit.blade.php
+resources\views\admin\profile\edit.blade.php
+resources\views\comptable\depenses.blade.php
+resources\views\comptable\paiements.blade.php
+resources\views\comptable\paies.blade.php
+resources\views\prefecture\presences.blade.php
+resources\views\professeur\evaluations.blade.php
+resources\views\professeur\presences.blade.php
+resources\views\profile\edit.blade.php
+resources\views\registration\student-request.blade.php
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

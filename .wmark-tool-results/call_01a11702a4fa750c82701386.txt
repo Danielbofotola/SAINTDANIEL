@@ -1,0 +1,71 @@
+1      <!DOCTYPE html>
+2      <html lang="fr">
+3      <head>
+4          <meta charset="utf-8">
+5          <meta name="viewport" content="width=device-width, initial-scale=1">
+6          <title>Mes notifications | {{ $systemSettings?->nom_court ?? 'Établissement' }}</title>
+7          <link rel="stylesheet" href="{{ asset('boostrap/css/css/main.css') }}">
+8          <link rel="stylesheet" href="{{ asset('boostrap/css/font-awesome/css/fa-regular.min.css') }}">
+9          <link rel="stylesheet" href="{{ asset('boostrap/css/font-awesome/css/fontawesome.css') }}">
+10         <link rel="stylesheet" href="{{ asset('boostrap/css/font-awesome/css/fa-solid.css') }}">
+11         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+12     </head>
+13     <body class="app">
+14         <main class="app-content" style="margin-left:0">
+15             <div class="app-title">
+16                 <div>
+17                     <h1><i class="fa fa-bell-o"></i> Mes notifications</h1>
+18                     <p>{{ $notifications->total() }} notification(s) · {{ $nonLues }} non lue(s).</p>
+19                 </div>
+20                 <div>
+21                     <a class="btn btn-secondary" href="{{ route($user->dashboardRouteName()) }}"><i class="fa fa-dashboard"></i> Mon tableau de bord</a>
+22                     <form class="d-inline" method="POST" action="{{ route('notifications.readall') }}">
+23                         @csrf
+24                         @method('PATCH')
+25                         <button class="btn btn-primary" type="submit" @disabled($nonLues === 0)><i class="fa fa-check"></i> Tout marquer comme lu</button>
+26                     </form>
+27                 </div>
+28             </div>
+29     
+30             @if (session('success'))<div class="alert alert-success">{{ session('success') }}</div>@endif
+31             @if (session('error'))<div class="alert alert-danger">{{ session('error') }}</div>@endif
+32     
+33             <div class="tile">
+34                 <h4 class="tile-title">Boîte de réception</h4>
+35                 @forelse ($notifications as $notification)
+36                     @php($donnees = $notification->data)
+37                     @php($niveau = $donnees['niveau'] ?? 'info')
+38                     <div class="border-bottom py-3 {{ $notification->read_at ? '' : 'bg-light' }}">
+39                         <div class="d-flex justify-content-between align-items-start">
+40                             <div>
+41                                 <span class="badge badge-{{ ['info' => 'info', 'success' => 'success', 'warning' => 'warning', 'danger' => 'danger'][$niveau] ?? 'info' }}">
+42                                     {{ \App\Models\Annonce::NIVEAUX[$niveau] ?? 'Information' }}
+43                                 </span>
+44                                 @unless ($notification->read_at)
+45                                     <span class="badge badge-primary">Nouveau</span>
+46                                 @endunless
+47                                 <strong class="ml-1">{{ $donnees['titre'] ?? 'Notification' }}</strong>
+48                                 <div class="mt-1">{{ $donnees['message'] ?? '' }}</div>
+49                                 <div class="text-muted" style="font-size:13px">
+50                                     De {{ $donnees['auteur'] ?? 'administration' }} · {{ $notification->created_at?->format('d/m/Y H:i') }}
+51                                     @if (! empty($donnees['lien'])) · <i class="fa fa-link"></i> {{ $donnees['lien'] }}@endif
+52                                 </div>
+53                             </div>
+54                             <form method="POST" action="{{ route('notifications.read', $notification->id) }}">
+55                                 @csrf
+56                                 @method('PATCH')
+57                                 <button class="btn btn-sm {{ $notification->read_at ? 'btn-outline-secondary' : 'btn-primary' }}" type="submit">
+58                                     <i class="fa {{ $notification->read_at ? 'fa-eye' : 'fa-check' }}"></i>
+59                                     {{ $notification->read_at ? 'Ouvrir' : 'Marquer comme lue' }}
+60                                 </button>
+61                             </form>
+62                         </div>
+63                     </div>
+64                 @empty
+65                     <p class="text-muted mb-0">Aucune notification pour l’instant.</p>
+66                 @endforelse
+67                 <div class="mt-3">{{ $notifications->links() }}</div>
+68             </div>
+69         </main>
+70     </body>
+71     </html>

@@ -1,0 +1,22 @@
+157            </section>
+158    
+159            {{-- ============ MESSAGES ============ --}}
+160            <section id="tab-messages" class="portail-panel">
+161                @include('messagerie._espace', [
+162                    'user' => $user,
+163                    'conversations' => $conversations,
+164                    'active' => $active,
+165                    'messages' => $messages,
+166                    'destinataires' => $destinataires,
+167                    'nonLus' => $nonLus,
+168                    'espaceUrl' => route('parent.dashboard'),
+169                    'avecFichier' => false,
+170                    'composeMultiple' => false,
+171                ])
+172            </section>
+173    
+174            {{-- ============ PROFIL ============ --}}
+175            <section id="tab-profil" class="portail-panel">
+176                <div class="portail-card text-center">
+
+[showing lines 157-176 of 214; read again with offset=177 for more]

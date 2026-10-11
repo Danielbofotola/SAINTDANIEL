@@ -1,0 +1,6 @@
+291        Route::post('/comptable/paiements', [ComptablePaiementController::class, 'store'])->middleware('role:comptable')->name('comptable.paiements.store');
+292        Route::get('/comptable/paiements/{paiement}/recu', [RecuController::class, 'show'])->middleware('role:comptable')->name('comptable.paiements.recu');
+293        Route::get('/comptable/recouvrement', [ComptableRecouvrementController::class, 'index'])->middleware('role:comptable')->name('comptable.recouvrement.index');
+294        Route::get('/comptable/depenses', [ComptableDepenseController::class, 'index'])->middleware('role:comptable')->name('comptable.depenses.index');
+
+[showing lines 291-294 of 301; read again with offset=295 for more]

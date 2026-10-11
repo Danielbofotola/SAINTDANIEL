@@ -1,0 +1,28 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\e1ce9c26600a\20261004-232205-bash-call_01a10902c3c87002818eb35f.txt (1,330 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Structured view (text):
+[powershell — Windows side]
+FAIL  Tests\Feature\FinancesPagesTest
+  ⨯ closing a school year computes the summary and can be reopened                                               1.07s  
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\FinancesPagesTest > closing a school year computes the summary and can be reopened             
+  Expected response status code [201, 301, 302, 303, 307, 308] but received 500.
+Failed asserting that false is true.
+
+The following exception occurred during the last request:
+
+PDOException: SQLSTATE[HY000]: General error: 1 table archives_annees has no column named total_salaires in C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\vendor\laravel\framework\src\Illuminate\Database\Connection.php:578
+Stack trace:
+#0 C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\vendor\laravel\framework\src\Illuminate\Database\Connection.php(578): PDO->prepare('insert into "ar...')
+#1 C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\vendor\laravel\framework\src\Illuminate\Database\Connection.php(827): Illuminate\Database\Connection->Illuminate\Database\{closure}('insert into "ar...', Array)
+#2 C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\vendor\laravel\framework\src\Illuminate\Database\Connection.php(794): Illuminate\Database\Connection->runQueryCallback('insert into "ar...', Array, Object(Closure))
+#3 C:\Users\danie\AppData\Roaming\Co
+… 643 chars elided …
+\ecole\vendor\laravel\framework\src\Illuminate\Database\Query\Builder.php(4170): Illuminate\Database\Query\Processors\Processor->processInsertGetId(Object(Illuminate\Database\Query\Builder), 'insert into "ar...', Array, 'id')
+#7 C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Builder.php(2237): Illuminate\Database\Query\Builder->insertGetId(Array, 'id')
+#8 C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php(1436): Illuminate\Database\Eloquent\Builder->__call('insertGetId', Array)
+#9 C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php(1401): Illuminate\Database\Eloquent\Model->inse
+… 1,444 chars elided …
+te\Database\Eloquent\Model.php(2560): Illuminate\Database\Eloquent\Model->__call('create', Array)
+#17 C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Http\Controllers\ArchiveAnneeController.php(171): Illuminate\Database\Eloquent\Model::__callStatic('create', Array)
+==exit -1==
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

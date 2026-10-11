@@ -1,0 +1,1 @@
+Error: memory writes are dormant in this context (a subagent or a non-interactive caller).

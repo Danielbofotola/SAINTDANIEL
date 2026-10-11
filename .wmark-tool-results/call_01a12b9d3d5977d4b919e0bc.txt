@@ -1,0 +1,31 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\aba9102c187c\20261011-163811-bash-call_01a12b9d3d5977d4b919e0bc.txt (2,830 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Structured view (text):
+[powershell — Windows side]
+FAIL  Tests\Feature\ModuleSwitchTest
+  ⨯ the module switch page renders and persists the flags                                                        1.06s  
+  ✓ disabling the notes module blocks the notes entry and the capture                                            0.04s  
+  ✓ the admin profile sidebar links to the module switch page                                                    0.02s  
+
+   PASS  Tests\Feature\SystemSettingsTest
+  ✓ admin can update persistent school identity and contact settings                                             0.04s  
+  ✓ non-admin users cannot change establishment settings                                                         0.02s  
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\ModuleSwitchTest > the module switch page renders and persists the flags                       
+  Expected response status code [201, 301, 302, 303, 307, 308] but received 500.
+Failed asserting that false is true.
+
+The following exception occurred during the last request:
+
+PDOException: SQLSTATE[HY000]: General error: 1 table parametres_systeme has no column named devise in C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\vendor\laravel\framework\src\Illuminate\Database\Connection.php:578
+Stack trace:
+#0 C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\vendor\laravel\framework\src\Illuminate\Database\Connection.php(57
+… 3,601 chars elided …
+eSwitchController.php(28): Illuminate\Database\Eloquent\Model::__callStatic('create', Array)
+#18 C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\vendor\laravel\framework\src\Illuminate\Routing\ControllerDispatcher.php(46): App\Http\Controllers\ModuleSwitchController->update(Object(Illuminate\Http\Request))
+#19 C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\vendor\laravel\framework\src\Illuminate\Routing\Route.php(265): Illuminate\Routing\ControllerDispatcher->dispatch(Object(Illuminate\Routing\Route), Object(App\Http\Controllers\ModuleSwitchController), 'update')
+#20 C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\vendor\laravel\framework\src\Illuminate\Routing\Route.php(211): Illuminate\Routing\Route->runController()
+#21 C:\Users\danie\AppData\Roaming\Composer\
+… 4,402 chars elided …
+Request), Object(Illuminate\Session\Store), Object(Closure))
+#41 C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Session\Middleware\StartSession->handle(Object(Illuminate\Http\Request), Object(Closure))
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

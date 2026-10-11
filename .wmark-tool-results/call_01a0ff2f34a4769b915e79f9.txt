@@ -1,0 +1,22 @@
+80         /**
+81          * Active / désactive une année scolaire.
+82          *
+83          * Une seule année peut être « en cours » à la fois : activer une année
+84          * désactive automatiquement les autres.
+85          */
+86         public function toggle(AnneeScolaire $annee): RedirectResponse
+87         {
+88             $activation = ! $annee->is_encours;
+89     
+90             DB::transaction(function () use ($annee, $activation) {
+91                 AnneeScolaire::query()->update(['is_encours' => false]);
+92                 $annee->update(['is_encours' => $activation]);
+93             });
+94     
+95             return back()->with(
+96                 'success',
+97                 $activation
+98                     ? "L'année « {$annee->libelle} » est désormais l'année en cours."
+99                     : "L'année « {$annee->libelle} » n'est plus l'année en cours."
+
+[showing lines 80-99 of 114; read again with offset=100 for more]

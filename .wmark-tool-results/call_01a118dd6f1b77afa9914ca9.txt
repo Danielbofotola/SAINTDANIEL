@@ -1,0 +1,33 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\b493c9bc81dc\20261008-011538-bash-call_01a118dd6f1b77afa9914ca9.txt (750 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+[powershell — Windows side]
+⨯ the profile update no longer touches the password or the PIN                                                 1.26s 
+ 
+  ⨯ the account edit page links to the dedicated credentials page                                                0.79s 
+ 
+  ⨯ admin can edit user profile without changing password or pin                                                 0.76s 
+ 
+  ⨯ admin can edit a user while keeping their linked inactive professor selectable                          
+
+... 1,259 chars truncated ...
+
+s page   
+ 
+Failed asserting that 500 is identical to 200.
+   FAILED  Tests\Feature\AdminUserManagementTest > admin can edit user profile without changing password or pin        
+ 
+Failed asserting that false is true.
+   FAILED  Tests\Feature\AdminUserManagementTest > admin can edit a user while keeping their linked inactive profess…  
+ 
+Failed asserting that 500 is identical to 200.
+   FAILED  Tests\Feature\MessagerieSuppressionTest > le parent retire sa discussion sans que le préfet perde les mes…  
+ 
+Failed asserting that 500 is identical to 200.
+   FAILED  Tests\Feature\PortailParentTest > un parent accède à son espace quand le module est ouvert                  
+ 
+Failed asserting that 500 is identical to 200.
+   FAILED  Tests\Feature\PortailParentTest > un administrateur connecté peut ouvrir le portail parent                  
+ 
+
+
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">2</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

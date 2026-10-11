@@ -1,0 +1,35 @@
+33         public function storeStudentRequest(Request $request): RedirectResponse
+34         {
+35             $data = $request->validate([
+36                 'nom' => ['required', 'string', 'max:50'],
+37                 'postnom' => ['nullable', 'string', 'max:50'],
+38                 'prenom' => ['required', 'string', 'max:50'],
+39                 'sexe' => ['required', 'in:M,F'],
+40                 'date_naissance' => ['required', 'date', 'before:today'],
+41                 'lieu_naissance' => ['nullable', 'string', 'max:100'],
+42                 'classe_id' => ['required', Rule::exists('classes', 'id')->where('statut', 'actif')],
+43                 'annee_scolaire_id' => ['nullable', Rule::exists('annees_scolaires', 'id')->where('statut', 'actif')],
+44                 'nom_mere' => ['required', 'string', 'max:100'],
+45                 'telephone_mere' => ['required', 'string', 'max:20'],
+46                 'email_mere' => ['nullable', 'email', 'max:100'],
+47                 'adresse_mere' => ['nullable', 'string', 'max:1000'],
+48                 'nom_pere' => ['nullable', 'string', 'max:100'],
+49                 'telephone_pere' => ['nullable', 'string', 'max:20'],
+50                 'email_pere' => ['nullable', 'email', 'max:100'],
+51             ], [
+52                 'date_naissance.before' => 'La date de naissance doit être antérieure à aujourd’hui.',
+53                 'classe_id.exists' => 'La classe sélectionnée n’est plus disponible.',
+54                 'annee_scolaire_id.exists' => 'L’année scolaire sélectionnée n’est plus disponible.',
+55             ]);
+56     
+57             $data['annee_scolaire_id'] = $data['annee_scolaire_id'] ?? AnneeScolaire::enCours()?->id;
+58     
+59             if (! $data['annee_scolaire_id']) {
+60                 return back()->withInput()->withErrors([
+61                     'annee_scolaire_id' => "Aucune année scolaire n'est en cours. L'administration doit d'abord ouvrir une année.",
+62                 ]);
+63             }
+64     
+65             DemandeInscription::create($data);
+
+[showing lines 33-65 of 109; read again with offset=66 for more]

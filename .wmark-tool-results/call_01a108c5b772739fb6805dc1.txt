@@ -1,0 +1,164 @@
+1      <!DOCTYPE html>
+2      <html lang="fr">
+3      <head>
+4          <meta charset="utf-8">
+5          <meta name="viewport" content="width=device-width, initial-scale=1">
+6          <title>Paiements</title>
+7          <link rel="stylesheet" href="{{ asset('boostrap/css/css/main.css') }}">
+8          <link rel="stylesheet" href="{{ asset('boostrap/css/font-awesome/css/fa-regular.min.css') }}">
+9          <link rel="stylesheet" href="{{ asset('boostrap/css/font-awesome/css/fontawesome.css') }}">
+10         <link rel="stylesheet" href="{{ asset('boostrap/css/font-awesome/css/fa-solid.css') }}">
+11         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+12         <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap4.min.css">
+13     </head>
+14     <body class="app">
+15         <main class="app-content" style="margin-left:0">
+16             <div class="app-title">
+17                 <div>
+18                     <h1><i class="fa fa-credit-card"></i> Paiements</h1>
+19                     <p>Enregistrez les règlements et suivez les recettes @if($annee) — année <strong>{{ $annee->libelle }}</strong>@endif.</p>
+20                 </div>
+21                 <div>
+22                     <a href="{{ route('admin.frais.index') }}" class="btn btn-secondary">Types de frais</a>
+23                     <a href="{{ route('admin.depenses.index') }}" class="btn btn-primary"><i class="fa fa-shopping-cart"></i> Dépenses</a>
+24                 </div>
+25             </div>
+26     
+27             @if (session('success'))<div class="alert alert-success">{{ session('success') }}</div>@endif
+28             @if (session('error'))<div class="alert alert-danger">{{ session('error') }}</div>@endif
+29             @if ($errors->any())<div class="alert alert-danger"><ul class="mb-0">@foreach ($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul></div>@endif
+30     
+31             <div class="row">
+32                 <div class="col-md-4"><div class="widget-small primary coloured-icon"><i class="icon fa fa-money fa-3x"></i><div class="info"><h4>Total encaissé</h4><p><b>{{ number_format($totalEncaisse, 2, ',', ' ') }}</b></p></div></div></div>
+33                 <div class="col-md-4"><div class="widget-small info coloured-icon"><i class="icon fa fa-list fa-3x"></i><div class="info"><h4>Paiements</h4><p><b>{{ $paiements->total() }}</b></p></div></div></div>
+34             </div>
+35     
+36             <div class="tile mb-4">
+37                 <h4 class="tile-title"><i class="fa fa-plus"></i> Nouveau paiement</h4>
+38                 @if ($inscriptions->isEmpty() || $tarifs->isEmpty())
+39                     <p class="text-muted mb-0">Il faut au moins un élève inscrit et un tarif pour l'année en cours. Créez d'abord les tarifs dans « Types de frais ».</p>
+40                 @else
+41                     <form method="POST" action="{{ route('admin.paiements.store') }}">
+42                         @csrf
+43                         <div class="row">
+44                             <div class="col-md-4 form-group"><label class="form-label">Rechercher l'élève</label><input class="form-control" type="text" id="eleveSearch" placeholder="Tapez un nom pour filtrer la liste…" autocomplete="off"></div>
+45                             <div class="col-md-4 form-group"><label class="form-label">Élève inscrit *</label><select class="form-control" id="inscriptionSelect" name="inscription_id" required><option value="">Choisir un élève</option>@foreach ($inscriptions as $inscription)<option value="{{ $inscription->id }}" @selected(old('inscription_id') == $inscription->id)>{{ $inscription->eleve?->nom }} {{ $inscription->eleve?->postnom }} {{ $inscription->eleve?->prenom }} — {{ $inscription->classe?->nom }}</option>@endforeach</select></div>
+46                             <div class="col-md-4 form-group"><label class="form-label">Tarif *</label><select class="form-control" id="fraisSelect" name="frais_scolaire_id" required><option value="">Choisir un tarif</option>@foreach ($tarifs as $tarif)<option value="{{ $tarif->id }}" @selected(old('frais_scolaire_id') == $tarif->id)>{{ $tarif->typeFrais?->nom }} — {{ $tarif->classe?->nom }} ({{ number_format((float) $tarif->montant_exige, 2, ',', ' ') }})</option>@endforeach</select></div>
+47                             <div class="col-md-12"><div class="alert alert-info d-none" id="soldeInfo"></div></div>
+48                             <div class="col-md-3 form-group"><label class="form-label">Montant *</label><input class="form-control" type="number" step="0.01" min="0.01" name="montant_paye" value="{{ old('montant_paye') }}" required></div>
+49                             <div class="col-md-3 form-group"><label class="form-label">Date</label><input class="form-control" type="date" name="date_paiement" value="{{ old('date_paiement', now()->toDateString()) }}"></div>
+50                             <div class="col-md-3 form-group"><label class="form-label">Mode *</label><select class="form-control" name="mode_paiement" required>@foreach ($modes as $value => $label)<option value="{{ $value }}" @selected(old('mode_paiement', 'especes') === $value)>{{ $label }}</option>@endforeach</select></div>
+51                             <div class="col-md-3 form-group"><label class="form-label">Référence</label><input class="form-control" name="reference_transaction" value="{{ old('reference_transaction') }}" maxlength="100" placeholder="N° transaction (facultatif)"></div>
+52                             <div class="col-md-12 form-group"><button class="btn btn-primary" type="submit"><i class="fa fa-save"></i> Enregistrer le paiement</button></div>
+53                         </div>
+54                     </form>
+55                 @endif
+56             </div>
+57     
+58             <div class="tile">
+59                 <h4 class="tile-title"><i class="fa fa-list"></i> Paiements enregistrés</h4>
+60                 <form class="row mb-3" method="GET" action="{{ route('admin.paiements.index') }}">
+61                     <div class="col-md-7 form-group mb-md-0"><input class="form-control" type="search" name="q" value="{{ $search }}" placeholder="Rechercher par reçu, nom ou matricule…"></div>
+62                     <div class="col-md-3 form-group mb-md-0"><select class="form-control" name="classe_id"><option value="">Toutes les classes</option>@foreach ($classes as $classe)<option value="{{ $classe->id }}" @selected((string) $classeId === (string) $classe->id)>{{ $classe->nom }}</option>@endforeach</select></div>
+63                     <div class="col-md-2"><button class="btn btn-info btn-block" type="submit"><i class="fa fa-filter"></i> Filtrer</button></div>
+64                 </form>
+65                 <div class="table-responsive">
+66                     <table class="table table-hover table-bordered">
+67                         <thead><tr><th>Reçu</th><th>Date</th><th>Élève</th><th>Classe</th><th>Type de frais</th><th>Montant exigé</th><th>Payé</th><th>Reste à payer</th><th>Mode</th><th>Référence</th><th>Actions</th></tr></thead>
+68                         <tbody>
+69                             @forelse ($paiements as $paiement)
+70                                 @php($cle = $paiement->inscription_id.'-'.$paiement->frais_scolaire_id)
+71                                 @php($exige = (float) ($paiement->fraisScolaire?->montant_exige ?? 0))
+72                                 @php($paye = (float) ($soldePaye[$cle] ?? 0))
+73                                 @php($reste = max($exige - $paye, 0))
+74                                 <tr>
+75                                     <td><strong>{{ $paiement->num_recu }}</strong></td>
+76                                     <td>{{ $paiement->date_paiement?->format('d/m/Y H:i') }}</td>
+77                                     <td>{{ $paiement->inscription?->eleve?->nom }} {{ $paiement->inscription?->eleve?->prenom }}<br><small class="text-muted">{{ $paiement->inscription?->eleve?->matricule }}</small></td>
+78                                     <td>{{ $paiement->inscription?->classe?->nom }}</td>
+79                                     <td>{{ $paiement->fraisScolaire?->typeFrais?->nom }}</td>
+80                                     <td>{{ number_format($exige, 2, ',', ' ') }}</td>
+81                                     <td>{{ number_format((float) $paiement->montant_paye, 2, ',', ' ') }}</td>
+82                                     <td>
+83                                         @if ($reste <= 0)
+84                                             <span class="badge badge-success"><i class="fa fa-check"></i> Soldé</span>
+85                                         @else
+86                                             <span class="badge badge-warning">{{ number_format($reste, 2, ',', ' ') }}</span>
+87                                         @endif
+88                                     </td>
+89                                     <td>{{ $modes[$paiement->mode_paiement] ?? $paiement->mode_paiement }}</td>
+90                                     <td>{{ $paiement->reference_transaction ?: '—' }}</td>
+91                                     <td>
+92                                         <form class="d-inline" method="POST" action="{{ route('admin.paiements.destroy', $paiement) }}" onsubmit="return confirm('Supprimer ce paiement ?');">
+93                                             @csrf
+94                                             @method('DELETE')
+95                                             <button class="btn btn-sm btn-danger" type="submit" title="Supprimer"><i class="fa fa-trash"></i></button>
+96                                         </form>
+97                                     </td>
+98                                 </tr>
+99                             @empty
+100                                <tr><td colspan="11" class="text-center text-muted">Aucun paiement pour cette sélection.</td></tr>
+101                            @endforelse
+102                        </tbody>
+103                    </table>
+104                </div>
+105                <div class="d-flex justify-content-between align-items-center flex-wrap">
+106                    <small class="text-muted">{{ $paiements->total() }} paiement(s) — page {{ $paiements->currentPage() }} / {{ $paiements->lastPage() }}</small>
+107                    {{ $paiements->links('pagination::bootstrap-4') }}
+108                </div>
+109            </div>
+110        </main>
+111    
+112        <script>
+113            (function () {
+114                var payeParPaire = @json($soldePaye);
+115                var montantsFrais = @json($montantsFrais);
+116                var recherche = document.getElementById('eleveSearch');
+117                var inscriptionSelect = document.getElementById('inscriptionSelect');
+118                var fraisSelect = document.getElementById('fraisSelect');
+119                var soldeInfo = document.getElementById('soldeInfo');
+120    
+121                function filtrerEleves() {
+122                    if (!recherche || !inscriptionSelect) {
+123                        return;
+124                    }
+125                    var terme = recherche.value.trim().toLowerCase();
+126                    Array.prototype.forEach.call(inscriptionSelect.options, function (option) {
+127                        if (!option.value) {
+128                            option.hidden = false;
+129                            return;
+130                        }
+131                        option.hidden = terme !== '' && option.text.toLowerCase().indexOf(terme) === -1;
+132                    });
+133                }
+134    
+135                function majSolde() {
+136                    if (!inscriptionSelect || !fraisSelect || !soldeInfo) {
+137                        return;
+138                    }
+139                    var inscription = inscriptionSelect.value;
+140                    var frais = fraisSelect.value;
+141                    if (!inscription || !frais) {
+142                        soldeInfo.classList.add('d-none');
+143                        return;
+144                    }
+145                    var exige = Number(montantsFrais[frais] || 0);
+146                    var paye = Number(payeParPaire[inscription + '-' + frais] || 0);
+147                    var reste = Math.max(exige - paye, 0);
+148                    soldeInfo.classList.remove('d-none');
+149                    soldeInfo.innerHTML = 'Montant exigé : <b>' + exige.toFixed(2) + '</b> · Déjà payé : <b>' + paye.toFixed(2) + '</b> · Reste à payer : <b>' + reste.toFixed(2) + '</b>';
+150                }
+151    
+152                if (recherche) {
+153                    recherche.addEventListener('input', filtrerEleves);
+154                }
+155                if (inscriptionSelect) {
+156                    inscriptionSelect.addEventListener('change', majSolde);
+157                }
+158                if (fraisSelect) {
+159                    fraisSelect.addEventListener('change', majSolde);
+160                }
+161            })();
+162        </script>
+163    </body>
+164    </html>

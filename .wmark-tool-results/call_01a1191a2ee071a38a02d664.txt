@@ -1,0 +1,22 @@
+163    test('un parent accède à son espace quand le module est ouvert', function () {
+164        reglerPortailParents(true);
+165    
+166        $parent = User::factory()->create(['role' => 'parent', 'nom' => 'Bofotola', 'prenom' => 'Daniel']);
+167        User::factory()->create(['role' => 'professeur', 'nom' => 'Mapika', 'prenom' => 'Joseph']);
+168        $prefet = User::factory()->create(['role' => 'prefetture', 'nom' => 'Kalala', 'prenom' => 'Pierre']);
+169    
+170        Messagerie::creer($prefet, [$parent->id], 'Bienvenue', 'Bonjour, bienvenue sur le portail.');
+171    
+172        $this->actingAs($parent)
+173            ->get(route('parent.dashboard'))
+174            ->assertOk()
+175            ->assertSee('Espace Parent')
+176            ->assertSee('bienvenue sur le portail')
+177            ->assertSee('Kalala')
+178            // Les autres services (ici le professeur) restent invisibles.
+179            ->assertDontSee('Mapika')
+180            // L'interface partagée est bien câblée pour ce rôle.
+181            ->assertSee('id="msgShell"', false)
+182            ->assertSee('id="voiceBtn"', false)
+
+[showing lines 163-182 of 414; read again with offset=183 for more]

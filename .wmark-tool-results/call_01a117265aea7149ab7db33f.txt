@@ -1,0 +1,17 @@
+283                </div>
+284    
+285                <div class="msg-thread__body" id="messagesContainer" data-flux="{{ route('messagerie.messages', $active) }}">
+286                    @foreach ($messages as $message)
+287                        @include('messagerie._bulle', ['message' => $message, 'active' => $active])
+288                    @endforeach
+289                </div>
+290    
+291                <div class="reply-bar" id="replyBar" style="display:none">
+292                    <div style="min-width:0">
+293                        <div class="reply-bar__label"><i class="fa-solid fa-reply"></i> Réponse à</div>
+294                        <div class="reply-bar__extrait" id="replyExtrait"></div>
+295                    </div>
+296                    <button type="button" class="reply-bar__close" onclick="annulerReponse()"><i class="fa-solid fa-xmark"></i></button>
+297                </div>
+
+[showing lines 283-298 of 776; read again with offset=299 for more]

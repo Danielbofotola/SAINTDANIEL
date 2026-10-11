@@ -1,0 +1,11 @@
+104                                        <td class="text-right">{{ $ligne->retards }}</td>
+105                                        <td class="text-right"><a class="btn btn-sm btn-outline-primary" href="{{ route('professeur.presences', ['affectation' => $affectation->id, 'date' => $ligne->date_seance]) }}"><i class="fa fa-eye"></i></a></td>
+106                                    </tr>
+107                                @endforeach
+108                            </tbody>
+109                        </table>
+110                    </div>
+111                </div>
+112            @endif
+113        @endif
+114    @endsection

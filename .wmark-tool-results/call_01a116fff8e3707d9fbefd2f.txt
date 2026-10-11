@@ -1,0 +1,183 @@
+1      <?php
+2      
+3      namespace App\Http\Controllers;
+4      
+5      use App\Models\Conversation;
+6      use App\Models\User;
+7      use App\Support\Messagerie;
+8      use Illuminate\Http\JsonResponse;
+9      use Illuminate\Http\RedirectResponse;
+10     use Illuminate\Http\Request;
+11     use Illuminate\View\View;
+12     
+13     /**
+14      * Messagerie interne, ouverte à tous les rôles : discussion directe avec un ou
+15      * plusieurs collègues, ou diffusion à tous les utilisateurs.
+16      */
+17     class MessagerieController extends Controller
+18     {
+19         public function index(Request $request): View
+20         {
+21             $utilisateur = $request->user();
+22             $conversations = Messagerie::conversationsDe($utilisateur);
+23     
+24             $active = $request->query('conversation')
+25                 ? $conversations->firstWhere('id', (int) $request->query('conversation'))
+26                 : $conversations->first();
+27     
+28             if ($active) {
+29                 Messagerie::marquerLu($active, $utilisateur);
+30                 $active->setAttribute('non_lus', 0);
+31             }
+32     
+33             return view('messagerie.index', [
+34                 'user' => $utilisateur,
+35                 'conversations' => $conversations,
+36                 'active' => $active,
+37                 'messages' => $active ? $active->messages()->with('auteur')->get() : collect(),
+38                 'destinataires' => User::query()
+39                     ->where('statut', 'actif')
+40                     ->where('id', '!=', $utilisateur->id)
+41                     ->orderBy('nom')
+42                     ->orderBy('prenom')
+43                     ->get(),
+44                 'totalUtilisateurs' => User::where('statut', 'actif')->count(),
+45                 'nonLus' => (int) $conversations->sum('non_lus'),
+46             ]);
+47         }
+48     
+49         public function store(Request $request): RedirectResponse|JsonResponse
+50         {
+51             $data = $request->validate([
+52                 'sujet' => ['required', 'string', 'max:150'],
+53                 'corps' => ['nullable', 'string', 'max:2000', 'required_without:piece_jointe'],
+54                 'piece_jointe' => ['nullable', 'file', 'max:5120', 'mimes:jpg,jpeg,png,gif,webp,bmp,svg,pdf,doc,docx,xls,xlsx,ppt,pptx,txt,csv,zip', 'required_without:corps'],
+55                 'destinataires' => ['required', 'array', 'min:1'],
+56             ], [
+57                 'sujet.required' => 'Indiquez l’objet du message.',
+58                 'corps.required' => 'Écrivez votre message.',
+59                 'destinataires.required' => 'Choisissez au moins un destinataire.',
+60             ]);
+61     
+62             $choix = (array) $data['destinataires'];
+63     
+64             $ids = in_array('tous', $choix, true)
+65                 ? User::query()->where('statut', 'actif')->where('id', '!=', $request->user()->id)->pluck('id')->all()
+66                 : User::query()
+67                     ->whereIn('id', array_values(array_filter($choix, fn ($valeur) => ctype_digit((string) $valeur))))
+68                     ->pluck('id')
+69                     ->all();
+70     
+71             if ($ids === []) {
+72                 return back()->withInput()->with('error', 'Aucun destinataire valide : vérifiez votre sélection.');
+73             }
+74     
+75             [$cheminJoint, $nomJoint] = $this->stockerPieceJointe($request);
+76     
+77             $conversation = Messagerie::creer($request->user(), $ids, $data['sujet'], (string) ($data['corps'] ?? ''), $cheminJoint, $nomJoint);
+78     
+79             if ($request->wantsJson()) {
+80                 return response()->json([
+81                     'conversation_id' => $conversation->id,
+82                     'url' => route('messagerie.index', ['conversation' => $conversation->id]),
+83                     'non_lus' => Messagerie::nonLus($request->user()),
+84                 ]);
+85             }
+86     
+87             return redirect()
+88                 ->route('messagerie.index', ['conversation' => $conversation->id])
+89                 ->with('success', 'Message envoyé à '.count($ids).' destinataire(s).');
+90         }
+91     
+92         public function repondre(Request $request, Conversation $conversation): RedirectResponse|JsonResponse
+93         {
+94             $this->autoriser($conversation, $request);
+95     
+96             $data = $request->validate([
+97                 'corps' => ['nullable', 'string', 'max:2000', 'required_without:piece_jointe'],
+98                 'piece_jointe' => ['nullable', 'file', 'max:5120', 'mimes:jpg,jpeg,png,gif,webp,bmp,svg,pdf,doc,docx,xls,xlsx,ppt,pptx,txt,csv,zip', 'required_without:corps'],
+99             ], [
+100                'corps.required' => 'Écrivez votre message.',
+101                'piece_jointe.max' => 'La pièce jointe ne doit pas dépasser 5 Mo.',
+102                'piece_jointe.mimes' => 'Format de pièce jointe non autorisé (images, PDF, documents Office, zip).',
+103            ]);
+104    
+105            [$cheminJoint, $nomJoint] = $this->stockerPieceJointe($request);
+106    
+107            Messagerie::envoyer($conversation, $request->user(), (string) ($data['corps'] ?? ''), $cheminJoint, $nomJoint);
+108    
+109            if ($request->wantsJson()) {
+110                $message = $conversation->messages()->with('auteur')->latest('id')->first();
+111    
+112                return response()->json([
+113                    'message' => [
+114                        'id' => $message->id,
+115                        'html' => view('messagerie._bulle', [
+116                            'message' => $message, 'user' => $request->user(), 'active' => $conversation,
+117                        ])->render(),
+118                    ],
+119                    'non_lus' => Messagerie::nonLus($request->user()),
+120                ]);
+121            }
+122    
+123            return redirect()
+124                ->route('messagerie.index', ['conversation' => $conversation->id])
+125                ->with('success', 'Message envoyé.');
+126        }
+127    
+128        /**
+129         * Nouveaux messages d'une conversation, en JSON : permet au fil de se
+130         * rafraîchir tout seul, sans recharger la page.
+131         */
+132        public function messages(Request $request, Conversation $conversation): JsonResponse
+133        {
+134            $this->autoriser($conversation, $request);
+135    
+136            $apres = (int) $request->query('apres', 0);
+137    
+138            $messages = $conversation->messages()
+139                ->with('auteur')
+140                ->when($apres > 0, fn ($requete) => $requete->where('id', '>', $apres))
+141                ->orderBy('id')
+142                ->get();
+143    
+144            // Consulter le fil vaut lecture : les compteurs se mettent à jour.
+145            Messagerie::marquerLu($conversation, $request->user());
+146    
+147            return response()->json([
+148                'messages' => $messages->map(fn ($message) => [
+149                    'id' => $message->id,
+150                    'html' => view('messagerie._bulle', [
+151                        'message' => $message, 'user' => $request->user(), 'active' => $conversation,
+152                    ])->render(),
+153                ])->values(),
+154                'dernier_id' => (int) ($messages->last()->id ?? $apres),
+155                'non_lus' => Messagerie::nonLus($request->user()),
+156            ]);
+157        }
+158    
+159        private function autoriser(Conversation $conversation, Request $request): void
+160        {
+161            abort_unless(
+162                $conversation->participants()->where('user_id', $request->user()->id)->exists(),
+163                403,
+164                'Cette conversation ne vous concerne pas.'
+165            );
+166        }
+167    
+168        /**
+169         * Enregistre la pièce jointe éventuelle sur le disque « public ».
+170         *
+171         * @return array{0: ?string, 1: ?string} chemin stocké et nom d'origine
+172         */
+173        private function stockerPieceJointe(Request $request): array
+174        {
+175            if (! $request->hasFile('piece_jointe')) {
+176                return [null, null];
+177            }
+178    
+179            $fichier = $request->file('piece_jointe');
+180    
+181            return [$fichier->store('messages', 'public'), $fichier->getClientOriginalName()];
+182        }
+183    }

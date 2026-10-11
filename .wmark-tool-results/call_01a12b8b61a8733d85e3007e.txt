@@ -1,0 +1,4 @@
+Updated resources/views/admin/dashboard.blade.php: replaced 1 lines with 2 lines (fuzzy match: indent-shift)
+Auto-corrected edit landed at lines 633-634:
+633                            zeroRecords: "Aucun élève trouvé",
+634                            emptyTable: "Aucun élève inscrit pour le moment.",

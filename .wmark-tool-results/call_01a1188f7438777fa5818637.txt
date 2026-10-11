@@ -1,0 +1,6 @@
+68 https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css
+10 https://fontawesome.com
+10 https://fontawesome.com/license
+6 https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css
+1 http://fontawesome.io
+1 http://fontawesome.io/license

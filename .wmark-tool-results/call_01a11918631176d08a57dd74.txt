@@ -1,0 +1,1 @@
+Wrote resources/views/parent/layout.blade.php (131 lines)

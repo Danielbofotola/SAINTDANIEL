@@ -1,0 +1,22 @@
+Applied patch: 3 files changed (1 created, 2 updated)
+Created database/migrations/2026_10_21_000000_create_eleve_user_table.php (31 lines)
+Updated app/Models/User.php (1 hunk applied)
+Updated app/Models/Eleve.php (1 hunk applied)
+Landed at lines 20-27 (the file's new text; no re-read needed):
+20     
+21         /**
+22          * Enfants rattachés à ce compte (utile pour un compte parent).
+23          */
+24         public function eleves()
+25         {
+26             return $this->belongsToMany(Eleve::class, 'eleve_user')->withTimestamps();
+27         }
+Landed at lines 35-42 (the file's new text; no re-read needed):
+35     
+36         /**
+37          * Comptes parents rattachés à cet élève.
+38          */
+39         public function parents()
+40         {
+41             return $this->belongsToMany(User::class, 'eleve_user')->withTimestamps();
+42         }

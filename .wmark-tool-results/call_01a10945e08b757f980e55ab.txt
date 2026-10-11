@@ -1,0 +1,47 @@
+18             $role = $utilisateur?->role ?? 'invite';
+19     
+20             return match ($role) {
+21                 'admin' => [
+22                     'direct' => ['libelle' => 'Documents', 'icone' => 'fa-file-text-o', 'url' => route('admin.eleves.index')],
+23                     'rapports' => [
+24                         ['Rapports journaliers', 'fa-line-chart', route('admin.statistiques.index')],
+25                         ['Comptabilité OHADA', 'fa-calculator', route('admin.comptabilite.index')],
+26                         ['Évaluations & examens', 'fa-pencil-square-o', route('admin.evaluations.index')],
+27                         ['Paie & salaires', 'fa-money', route('admin.paies.index')],
+28                     ],
+29                 ],
+30                 'professeur' => [
+31                     'direct' => ['libelle' => 'Mes élèves', 'icone' => 'fa-users', 'url' => route('professeur.eleves')],
+32                     'rapports' => [
+33                         ['Mon planning', 'fa-calendar-o', route('professeur.planning')],
+34                         ['Mes cours', 'fa-book', route('professeur.cours')],
+35                         ['Évaluations & notes', 'fa-pencil-square-o', route('professeur.evaluations')],
+36                         ['Feuilles de présence', 'fa-check-square-o', route('professeur.presences')],
+37                     ],
+38                 ],
+39                 'titulaire' => [
+40                 'prefetture' => [
+41                     'direct' => ['libelle' => 'Mon espace', 'icone' => 'fa-dashboard', 'url' => route('prefecture.dashboard')],
+42                     'rapports' => [],
+43                 ],
+44                 'titulaire' => [
+45                     'direct' => ['libelle' => 'Mon espace', 'icone' => 'fa-dashboard', 'url' => route('titulaire.dashboard')],
+46                     'rapports' => [
+47                         ['Mon tableau de bord', 'fa-dashboard', route('titulaire.dashboard')],
+48                     ],
+49                 ],
+50                 'comptable' => [
+51                     'direct' => ['libelle' => 'Paiements', 'icone' => 'fa-money', 'url' => route('comptable.paiements.index')],
+52                     'rapports' => [
+53                         ['Dépenses & natures', 'fa-shopping-cart', route('comptable.depenses.index')],
+54                         ['Paie & salaires', 'fa-money', route('comptable.paies.index')],
+55                     ],
+56                 ],
+57                 default => [
+58                     'direct' => ['libelle' => 'Tableau de bord', 'icone' => 'fa-dashboard', 'url' => route('login')],
+59                     'rapports' => [],
+60                 ],
+61             };
+62         }
+
+[showing lines 18-62 of 63; read again with offset=63 for more]

@@ -1,0 +1,80 @@
+1      <?php
+2      
+3      namespace App\Http\Controllers;
+4      
+5      use App\Models\Annonce;
+6      use App\Models\User;
+7      use App\Notifications\AnnonceNotification;
+8      use Illuminate\Http\RedirectResponse;
+9      use Illuminate\Http\Request;
+10     use Illuminate\Support\Facades\DB;
+11     use Illuminate\Support\Facades\Notification;
+12     use Illuminate\Validation\Rule;
+13     use Illuminate\View\View;
+14     
+15     /**
+16      * Annonces : l'administrateur lance une notification vers tout ou partie
+17      * des utilisateurs (cloche + page « Mes notifications »).
+18      */
+19     class AnnonceController extends Controller
+20     {
+21         public function index(Request $request): View
+22         {
+23             return view('admin.annonces', [
+24                 'user' => $request->user(),
+25                 'annonces' => Annonce::with('auteur')->latest()->paginate(15),
+26                 'niveaux' => Annonce::NIVEAUX,
+27                 'cibles' => Annonce::CIBLES,
+28                 'totalComptes' => User::count(),
+29                 'comptesParRole' => User::query()->selectRaw('role, COUNT(*) as total')->groupBy('role')->pluck('total', 'role'),
+30                 'notificationsEnvoyees' => DB::table('notifications')->count(),
+31             ]);
+32         }
+33     
+34         public function store(Request $request): RedirectResponse
+35         {
+36             $data = $request->validate([
+37                 'titre' => ['required', 'string', 'max:150'],
+38                 'message' => ['required', 'string', 'max:1000'],
+39                 'niveau' => ['required', Rule::in(array_keys(Annonce::NIVEAUX))],
+40                 'cible' => ['required', Rule::in(array_keys(Annonce::CIBLES))],
+41                 'lien' => ['nullable', 'string', 'max:255'],
+42             ], [
+43                 'titre.required' => 'Le titre de l’annonce est obligatoire.',
+44                 'message.required' => 'Le message de l’annonce est obligatoire.',
+45                 'niveau.in' => 'Niveau d’annonce inconnu.',
+46                 'cible.in' => 'Destinataires inconnus.',
+47             ]);
+48     
+49             $destinataires = User::query()
+50                 ->when($data['cible'] !== 'tous', fn ($query) => $query->where('role', $data['cible']))
+51                 ->get();
+52     
+53             if ($destinataires->isEmpty()) {
+54                 return back()->withInput()->with('error', 'Aucun utilisateur ne correspond à ces destinataires.');
+55             }
+56     
+57             $annonce = Annonce::create($data + [
+58                 'envoye_par' => $request->user()->id,
+59                 'destinataires' => $destinataires->count(),
+60             ]);
+61     
+62             $annonce->loadMissing('auteur');
+63     
+64             Notification::send($destinataires, new AnnonceNotification($annonce));
+65     
+66             return back()->with('success', 'Annonce « '.$annonce->titre.' » envoyée à '
+67                 .$destinataires->count().' utilisateur(s).');
+68         }
+69     
+70         public function destroy(Annonce $annonce): RedirectResponse
+71         {
+72             // Les notifications déjà déposées pour cette annonce sont retirées.
+73             $retirees = DB::table('notifications')->where('data->annonce_id', $annonce->id)->delete();
+74     
+75             $annonce->delete();
+76     
+77             return back()->with('success', 'Annonce supprimée.'
+78                 .($retirees > 0 ? ' '.$retirees.' notification(s) retirée(s) de la cloche.' : ''));
+79         }
+80     }

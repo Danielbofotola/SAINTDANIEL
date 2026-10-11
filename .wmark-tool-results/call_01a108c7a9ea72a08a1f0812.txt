@@ -1,0 +1,16 @@
+127        Schema::create('paiements', function (Blueprint $table) {
+128            $table->id();
+129            $table->string('num_recu', 50)->unique();
+130            $table->unsignedBigInteger('inscription_id');
+131            $table->unsignedBigInteger('frais_scolaire_id');
+132            $table->decimal('montant_paye', 10, 2);
+133            $table->dateTime('date_paiement')->nullable();
+134            $table->enum('mode_paiement', ['especes', 'banque', 'mobile_money'])->default('especes');
+135            $table->string('reference_transaction', 100)->nullable();
+136            $table->enum('statut', ['actif', 'inactif'])->default('actif');
+137            $table->timestamps();
+138        });
+139        Schema::create('categories_depenses', function (Blueprint $table) {
+140            $table->id();
+
+[showing lines 127-140 of 429; read again with offset=141 for more]

@@ -1,0 +1,14 @@
+394            ->assertSee('Créer une option')
+395            ->assertSee('Scientifique');
+396    
+397        $this->post(route('admin.options.store'), [
+398            'section_id' => 1,
+399            'nom' => 'Mathématiques - Physique',
+400        ])->assertRedirect(route('admin.classes.create', ['section_id' => 1, 'option_id' => 1]));
+401    
+402        expect(DB::table('sections')->where('id', 1)->value('code'))->toBe('SCIENTIFIQUE')
+403            ->and(DB::table('options')->where('id', 1)->value('code'))->toBe('MATHEMATIQUES-PHYSIQUE');
+404    
+405        foreach (['classes', 'salles', 'cycles'] as $tableName) {
+
+[showing lines 394-405 of 479; read again with offset=406 for more]

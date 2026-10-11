@@ -1,0 +1,76 @@
+1      <?php
+2      
+3      namespace App\Http\Controllers;
+4      
+5      use App\Models\Salle;
+6      use Illuminate\Http\RedirectResponse;
+7      use Illuminate\Http\Request;
+8      use Illuminate\View\View;
+9      
+10     class SalleController extends Controller
+11     {
+12         public function index(): View
+13         {
+14             return view('admin.salles.index', [
+15                 'salles' => Salle::orderBy('nom')->get(),
+16             ]);
+17         }
+18     
+19         public function create(): View
+20         {
+21             return view('admin.salles.create');
+22         }
+23     
+24         public function store(Request $request): RedirectResponse
+25         {
+26             $data = $request->validate([
+27                 'nom' => ['required', 'string', 'max:50', 'unique:salles,nom'],
+28                 'capacite' => ['nullable', 'integer', 'min:1'],
+29                 'statut' => ['required', 'in:actif,inactif'],
+30             ]);
+31     
+32             Salle::create($data);
+33     
+34             return redirect()
+35                 ->route('admin.salles.index')
+36                 ->with('success', 'La salle a été créée avec succès.');
+37         }
+38     
+39         public function edit(Salle $salle): View
+40         {
+41             return view('admin.salles.edit', compact('salle'));
+42         }
+43     
+44         public function update(Request $request, Salle $salle): RedirectResponse
+45         {
+46             $data = $request->validate([
+47                 'nom' => ['required', 'string', 'max:50', 'unique:salles,nom,' . $salle->id],
+48                 'capacite' => ['nullable', 'integer', 'min:1'],
+49                 'statut' => ['required', 'in:actif,inactif'],
+50             ]);
+51     
+52             $salle->update($data);
+53     
+54             return redirect()
+55                 ->route('admin.salles.index')
+56                 ->with('success', 'La salle a été modifiée avec succès.');
+57         }
+58     
+59         public function toggleStatus(Salle $salle): RedirectResponse
+60         {
+61             $salle->update([
+62                 'statut' => $salle->statut === 'actif' ? 'inactif' : 'actif',
+63             ]);
+64     
+65             return back()->with('success', 'Le statut de la salle a été mis à jour.');
+66         }
+67     
+68         public function destroy(Salle $salle): RedirectResponse
+69         {
+70             $salle->delete();
+71     
+72             return redirect()
+73                 ->route('admin.salles.index')
+74                 ->with('success', 'La salle a été supprimée.');
+75         }
+76     }

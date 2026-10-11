@@ -1,0 +1,238 @@
+1      <?php
+2      
+3      namespace App\Http\Controllers;
+4      
+5      use App\Models\AnneeScolaire;
+6      use App\Models\Classe;
+7      use App\Models\Deliberation;
+8      use App\Models\Inscription;
+9      use App\Models\ParametreSysteme;
+10     use App\Support\Jury;
+11     use Illuminate\Http\RedirectResponse;
+12     use Illuminate\Http\Request;
+13     use Illuminate\Support\Facades\DB;
+14     use App\Notifications\DecisionAnnuelleNotification;
+15     use Illuminate\Support\Facades\Notification;
+16     use Illuminate\View\View;
+17     
+18     /**
+19      * Délibération de fin d'année : le jury applique les critères de
+20      * l'établissement à la moyenne du bulletin, décide pour chaque élève, puis
+21      * matérialise le passage en créant les inscriptions de l'année suivante.
+22      *
+23      * Aucune moyenne n'est recalculée ici : tout vient de `BulletinRdc`.
+24      */
+25     class DeliberationController extends Controller
+26     {
+27         public function index(Request $request): View
+28         {
+29             $annee = AnneeScolaire::enCours();
+30             $classes = Classe::query()
+31                 ->where('statut', 'actif')
+32                 ->orderByRaw('ordre is null')
+33                 ->orderBy('ordre')
+34                 ->orderBy('nom')
+35                 ->get();
+36     
+37             $classe = $request->query('classe')
+38                 ? $classes->firstWhere('id', (int) $request->query('classe'))
+39                 : $classes->first();
+40     
+41             $jury = Jury::regles();
+42             $lignes = collect();
+43     
+44             if ($annee && $classe) {
+45                 $inscriptions = Inscription::query()
+46                     ->with('eleve')
+47                     ->where('annee_scolaire_id', $annee->id)
+48                     ->where('classe_id', $classe->id)
+49                     ->where('statut', Inscription::STATUT_ACTIF)
+50                     ->get();
+51     
+52                 $enregistrees = Deliberation::query()
+53                     ->where('annee_scolaire_id', $annee->id)
+54                     ->whereIn('inscription_id', $inscriptions->pluck('id'))
+55                     ->get()
+56                     ->keyBy('inscription_id');
+57     
+58                 foreach ($inscriptions as $inscription) {
+59                     $analyse = $jury->analyser($inscription);
+60                     $enregistree = $enregistrees->get($inscription->id);
+61     
+62                     $lignes->push([
+63                         'inscription' => $inscription,
+64                         'eleve' => $inscription->eleve,
+65                         'analyse' => $analyse,
+66                         'enregistree' => $enregistree,
+67                         'decision' => $enregistree?->decision ?? $analyse['decision_proposee'],
+68                     ]);
+69                 }
+70             }
+71     
+72             return view('admin.deliberations.index', [
+73                 'parametres' => ParametreSysteme::current(),
+74                 'annee' => $annee,
+75                 'classes' => $classes,
+76                 'classe' => $classe,
+77                 'lignes' => $lignes,
+78                 'decisions' => Deliberation::DECISIONS,
+79                 'annees' => AnneeScolaire::query()->orderByDesc('date_debut')->get(),
+80                 'classeSuivante' => $classe?->suivante(),
+81                 'regles' => $jury->critere(),
+82             ]);
+83         }
+84     
+85         /** Enregistre les critères de délibération (seuils et plafond). */
+86         public function criteres(Request $request): RedirectResponse
+87         {
+88             $data = $request->validate([
+89                 'deliberation_seuil_admission' => ['required', 'numeric', 'min:0', 'max:100'],
+90                 'deliberation_seuil_repechage' => ['required', 'numeric', 'min:0', 'max:100'],
+91                 'deliberation_max_cours_echoues' => ['nullable', 'integer', 'min:0', 'max:50'],
+92                 'deliberation_note_min_cours' => ['nullable', 'numeric', 'min:0', 'max:100'],
+93             ], [
+94                 'deliberation_seuil_admission.required' => 'Indiquez le seuil d’admission.',
+95                 'deliberation_seuil_repechage.required' => 'Indiquez le seuil de repêchage.',
+96             ]);
+97     
+98             if ((float) $data['deliberation_seuil_repechage'] > (float) $data['deliberation_seuil_admission']) {
+99                 return back()->withInput()->with('error', 'Le seuil de repêchage ne peut pas dépasser le seuil d’admission.');
+100            }
+101    
+102            $parametres = ParametreSysteme::query()->first()
+103                ?? ParametreSysteme::create(ParametreSysteme::defaults()->getAttributes());
+104    
+105            $parametres->update([
+106                'deliberation_active' => $request->boolean('deliberation_active'),
+107                'deliberation_seuil_admission' => $data['deliberation_seuil_admission'],
+108                'deliberation_seuil_repechage' => $data['deliberation_seuil_repechage'],
+109                'deliberation_max_cours_echoues' => $data['deliberation_max_cours_echoues'] ?? null,
+110                'deliberation_note_min_cours' => $data['deliberation_note_min_cours'] ?? null,
+111            ]);
+112    
+113            return back()->with('success', 'Critères de délibération enregistrés.');
+114        }
+115    
+116        /** Enregistre en masse les décisions d'un effectif (proposées ou forcées). */
+117        public function enregistrer(Request $request): RedirectResponse
+118        {
+119            $data = $request->validate([
+120                'annee_scolaire_id' => ['required', 'exists:annees_scolaires,id'],
+121                'decisions' => ['required', 'array'],
+122                'decisions.*' => ['required', 'in:admis,ajourne,redouble'],
+123            ], [
+124                'decisions.required' => 'Aucune décision à enregistrer.',
+125            ]);
+126    
+127            $jury = Jury::regles();
+128            $critere = $jury->critere();
+129            $total = 0;
+130            $notifies = 0;
+131    
+132            DB::transaction(function () use ($data, $request, $jury, $critere, &$total, &$notifies): void {
+133                $inscriptions = Inscription::query()
+134                    ->with(['classe', 'eleve.parents'])
+135                    ->whereIn('id', array_keys($data['decisions']))
+136                    ->where('annee_scolaire_id', $data['annee_scolaire_id'])
+137                    ->get();
+138    
+139                foreach ($inscriptions as $inscription) {
+140                    $analyse = $jury->analyser($inscription);
+141                    $choix = $data['decisions'][$inscription->id];
+142    
+143                    $deliberation = Deliberation::updateOrCreate(
+144                        ['inscription_id' => $inscription->id, 'annee_scolaire_id' => $data['annee_scolaire_id']],
+145                        [
+146                            'pourcentage_general' => $analyse['pourcentage'],
+147                            'cours_echoues' => $analyse['cours_echoues'],
+148                            'decision' => $choix,
+149                            'critere' => json_encode($critere),
+150                            'manuelle' => $choix !== $analyse['decision_proposee'],
+151                            'classe_suivante_id' => $choix === 'admis' ? $inscription->classe?->suivante()?->id : null,
+152                            'decide_par' => $request->user()->id,
+153                            'decide_le' => now(),
+154                        ]
+155                    );
+156                    $total++;
+157    
+158                    // Le verdict de fin d'année est notifié à chaque compte parent
+159                    // rattaché à l'élève (cloche + « Mes notifications » du portail).
+160                    $parents = $inscription->eleve?->parents ?? collect();
+161    
+162                    if ($parents->isNotEmpty()) {
+163                        Notification::send($parents, new DecisionAnnuelleNotification($deliberation));
+164                        $notifies += $parents->count();
+165                    }
+166                }
+167            });
+168    
+169            return back()->with('success', $total.' décision(s) enregistrée(s) — '.$notifies.' notification(s) envoyée(s) aux comptes parents.');
+170        }
+171    
+172        /**
+173         * Applique en masse le passage : les admis montent dans la classe d'ordre
+174         * supérieur, les ajournés et redoublants restent dans la même classe, en
+175         * créant les inscriptions de l'année cible.
+176         */
+177        public function appliquer(Request $request): RedirectResponse
+178        {
+179            $data = $request->validate([
+180                'annee_scolaire_id' => ['required', 'exists:annees_scolaires,id'],
+181                'annee_cible_id' => ['required', 'exists:annees_scolaires,id', 'different:annee_scolaire_id'],
+182            ], [
+183                'annee_cible_id.different' => 'L’année cible doit être différente de l’année délibérée.',
+184            ]);
+185    
+186            $promus = 0;
+187            $maintenus = 0;
+188            $ignores = 0;
+189    
+190            DB::transaction(function () use ($data, &$promus, &$maintenus, &$ignores): void {
+191                $decisions = Deliberation::query()
+192                    ->with('inscription.classe')
+193                    ->where('annee_scolaire_id', $data['annee_scolaire_id'])
+194                    ->get();
+195    
+196                foreach ($decisions as $decision) {
+197                    $inscription = $decision->inscription;
+198                    if (! $inscription) {
+199                        $ignores++;
+200                        continue;
+201                    }
+202    
+203                    // Admis → classe d'ordre supérieur ; ajourné / redoublant → même classe.
+204                    $classeCible = $decision->decision === 'admis'
+205                        ? $inscription->classe?->suivante()
+206                        : $inscription->classe;
+207    
+208                    if (! $classeCible) {
+209                        $ignores++;   // plus de classe supérieure, ou classe d'origine absente
+210                        continue;
+211                    }
+212    
+213                    $dejaInscrit = Inscription::query()
+214                        ->where('eleve_id', $inscription->eleve_id)
+215                        ->where('annee_scolaire_id', $data['annee_cible_id'])
+216                        ->exists();
+217    
+218                    if ($dejaInscrit) {
+219                        $ignores++;
+220                        continue;
+221                    }
+222    
+223                    Inscription::create([
+224                        'eleve_id' => $inscription->eleve_id,
+225                        'classe_id' => $classeCible->id,
+226                        'annee_scolaire_id' => $data['annee_cible_id'],
+227                        'date_inscription' => now()->toDateString(),
+228                        'statut' => Inscription::STATUT_EN_ATTENTE,
+229                    ]);
+230    
+231                    $decision->update(['classe_suivante_id' => $classeCible->id]);
+232                    $decision->decision === 'admis' ? $promus++ : $maintenus++;
+233                }
+234            });
+235    
+236            return back()->with('success', $promus.' élève(s) promu(s), '.$maintenus.' maintenu(s), '.$ignores.' ignoré(s).');
+237        }
+238    }

@@ -1,0 +1,6 @@
+remaining remote FA .css refs (kinds): 0
+local files:
+   True public\assets\css\font-awesome.min.css
+   True public\assets\font-awesome-6.5.1\css\all.min.css
+   True public\assets\fonts\fontawesome-webfont.woff2
+   True public\assets\font-awesome-6.5.1\webfonts\fa-solid-900.woff2

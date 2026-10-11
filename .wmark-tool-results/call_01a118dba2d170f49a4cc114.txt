@@ -1,0 +1,16 @@
+14         use HasFactory, Notifiable;
+15     
+16         public function professeur()
+17         {
+18             return $this->belongsTo(Professeurs::class, 'professeur_id');
+19         }
+20     
+21         /**
+22          * Rôles reconnus, dans l'ordre d'affichage : source unique pour les listes
+23          * de validation et les sélecteurs de rôle.
+24          *
+25          * @var list<string>
+26          */
+27         public const ROLES = ['admin', 'prefetture', 'titulaire', 'professeur', 'comptable', 'parent'];
+
+[showing lines 14-27 of 116; read again with offset=28 for more]

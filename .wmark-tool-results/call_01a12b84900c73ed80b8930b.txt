@@ -1,0 +1,13 @@
+560        ]);
+561    
+562        $this->actingAs($s['alice'])
+563            ->get(route('admin.eleves.index', ['annee' => $s['cible']->id]))
+564            ->assertOk()
+565            ->assertSee('2027-2028')
+566            ->assertSee('NomA')          // l'élève promu par la délibération
+567            ->assertSee('Passage')       // sa provenance
+568            ->assertSee('Nouveau Eleve'); // le nouvel inscrit
+569    
+570        // Sans la délibération d'origine, le nouvel inscrit est marqué « Nouveau ».
+571        expect(Inscription::where('annee_scolaire_id', $s['cible']->id)->count())->toBe(2);
+572    });

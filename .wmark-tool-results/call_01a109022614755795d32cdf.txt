@@ -1,0 +1,19 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\e1ce9c26600a\20261004-232123-bash-call_01a109022614755795d32cdf.txt (542 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+[powershell — Windows side]
+> tests\Feature\FinancesPagesTest.php:47:        $table->string('libelle');
+> tests\Feature\FinancesPagesTest.php:48:        $table->date('date_debut');
+> tests\Feature\FinancesPagesTest.php:49:        $table->date('date_fin');
+  tests\Feature\FinancesPagesTest.php:50:        $table->boolean('is_encours')->default(false);
+  tests\Feature\FinancesPagesTest.php:51:        $table->string('statut');
+  tests\Feature\FinancesPagesTest.php:52:        $table->timestamps();
+> tests\Feature\FinancesPagesTest.php:224:    DB::table('annees_scolaires')->insert([
+> tests\Feature\FinancesPagesTest.php:225:        'id' => 1, 'libelle' => '2026-2027', 'date_debut' => '2026-09-01',
+> tests\Feature\FinancesPagesTest.php:226:        'date_fin' => '2027-07-01', 'is_encours' => true, 'statut' => 
+'actif',
+  tests\Feature\FinancesPagesTest.php:227:    ]);
+  tests\Feature\FinancesPagesTest.php:228:});
+  tests\Feature\FinancesPagesTest.php:229:
+
+
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">2</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

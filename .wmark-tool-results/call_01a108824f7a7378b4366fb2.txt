@@ -1,0 +1,5 @@
+Updated resources/views/admin/profile/show.blade.php: replaced 3 lines with 3 lines (fuzzy match: indent-shift)
+Auto-corrected edit landed at lines 332-334:
+332                         <div class="card-header border-0 p-0 mb-3">
+333                            <h5 class="card-header-text"><i class="icofont icofont-key"></i> Sécurité du compte</h5>
+334                         </div>

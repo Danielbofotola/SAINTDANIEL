@@ -1,0 +1,14 @@
+253            ->assertOk()
+254            ->assertSee('Recouvrement')
+255            ->assertSee('Taux de recouvrement')
+256            ->assertSee('100 %')
+257            ->assertSee('3e A')
+258            ->assertSee('id="tableRecouvrement"', false)
+259            ->assertSee('id="tablePaiements"', false)
+260            ->assertSee('dataTables.bootstrap5.min.js', false);
+261    
+262        $this->actingAs($comptable)
+263            ->get(route('comptable.recouvrement.index', ['periode_id' => 1]))
+264            ->assertOk()
+
+[showing lines 253-264 of 266; read again with offset=265 for more]

@@ -1,0 +1,4 @@
+Applied patch: 1 file changed (1 updated)
+Updated app/Http/Controllers/PaiementController.php (1 hunk applied)
+Landed at lines 92-92 (the file's new text; no re-read needed):
+92                 'inscription_id' => ['required', Rule::exists('inscriptions', 'id')->where(fn ($query) => $query->where('annee_scolaire_id', $annee->id)->whereIn('statut', ['actif', 'en_attente']))],

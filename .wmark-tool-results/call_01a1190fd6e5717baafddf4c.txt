@@ -1,0 +1,28 @@
+130                            continue;
+131                        }
+132    
+133                        if ($valeur === null || $valeur === '') {
+134                            Note::where('evaluation_id', $evaluation->id)->where('eleve_id', $eleveId)->delete();
+135    
+136                            continue;
+137                        }
+138    
+139                        $valeur = (float) $valeur;
+140    
+141                        if ($valeur < 0 || $valeur > (float) $evaluation->max_note) {
+142                            $ignorees++;
+143    
+144                            continue;
+145                        }
+146    
+147                        Note::updateOrCreate(
+148                            ['evaluation_id' => $evaluation->id, 'eleve_id' => $eleveId],
+149                            ['note_obtenue' => $valeur, 'statut' => 'actif']
+150                        );
+151    
+152                        $enregistrees++;
+153                    }
+154                }
+155            });
+
+[showing lines 130-155 of 178; read again with offset=156 for more]

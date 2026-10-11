@@ -1,0 +1,7 @@
+96         Route::delete('/admin/depenses/categories/{categorieDepense}', [DepenseController::class, 'destroyCategorie'])->middleware('role:admin')->name('admin.depenses.categories.destroy');
+97         Route::delete('/admin/depenses/{depense}', [DepenseController::class, 'destroy'])->middleware('role:admin')->name('admin.depenses.destroy');
+98         Route::get('/admin/archives', [ArchiveAnneeController::class, 'index'])->middleware('role:admin')->name('admin.archives.index');
+99         Route::post('/admin/archives', [ArchiveAnneeController::class, 'store'])->middleware('role:admin')->name('admin.archives.store');
+100        Route::delete('/admin/archives/{archiveAnnee}', [ArchiveAnneeController::class, 'destroy'])->middleware('role:admin')->name('admin.archives.destroy');
+
+[showing lines 96-100 of 171; read again with offset=101 for more]

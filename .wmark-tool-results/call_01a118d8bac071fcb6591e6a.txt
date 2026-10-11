@@ -1,0 +1,2 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/MessagerieSuppressionTest.php (1 hunk applied)

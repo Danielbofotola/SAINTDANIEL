@@ -1,0 +1,29 @@
+Applied patch: 2 files changed (2 updated)
+Updated tests/Feature/MessagerieTest.php (1 hunk applied)
+Updated tests/Feature/PortailParentTest.php (1 hunk applied)
+Landed at lines 311-313 (the file's new text; no re-read needed):
+311            // Liste des correspondants actifs + action « écrire ».
+312            ->toContain('id="contactsContainer"')
+313            ->toContain('onclick="ouvrirDiscussion(')
+Landed at lines 317-345 (the file's new text; no re-read needed):
+317    
+318    test('écrire à un correspondant ouvre une conversation directe unique (sans doublon)', function () {
+319        $alice = User::factory()->create(['role' => 'admin']);
+320        $bruno = User::factory()->create(['role' => 'professeur']);
+321    
+322        // Première ouverture : une conversation est créée.
+323        $premiere = $this->actingAs($alice)
+324            ->postJson(route('messagerie.demarrer'), ['destinataire' => $bruno->id])
+      … 13 lines omitted …
+338    
+339    test('on ne peut pas démarrer une discussion avec soi-même', function () {
+340        $alice = User::factory()->create(['role' => 'admin']);
+341    
+342        $this->actingAs($alice)
+343            ->postJson(route('messagerie.demarrer'), ['destinataire' => $alice->id])
+344            ->assertNotFound();
+345    });
+Landed at lines 139-141 (the file's new text; no re-read needed):
+139            // Liste des correspondants actifs + action « écrire ».
+140            ->assertSee('id="contactsContainer"', false)
+141            ->assertSee('onclick="ouvrirDiscussion(', false)

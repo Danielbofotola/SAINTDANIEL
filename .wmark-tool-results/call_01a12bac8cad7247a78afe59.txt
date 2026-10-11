@@ -1,0 +1,40 @@
+1      <?php
+2      
+3      namespace App\Models;
+4      
+5      use App\Models\Concerns\BelongsToAnneeScolaire;
+6      use Illuminate\Database\Eloquent\Model;
+7      
+8      class AffectationCours extends Model
+9      {
+10         use BelongsToAnneeScolaire;
+11     
+12         protected $table = 'affectations_cours';
+13     
+14         protected $fillable = ['professeur_id', 'cours_id', 'classe_id', 'annee_scolaire_id', 'statut'];
+15     
+16         public function professeur()
+17         {
+18             return $this->belongsTo(Professeurs::class, 'professeur_id');
+19         }
+20     
+21         public function cours()
+22         {
+23             return $this->belongsTo(Cours::class);
+24         }
+25     
+26         public function classe()
+27         {
+28             return $this->belongsTo(Classe::class);
+29         }
+30     
+31         public function emploisDuTemps()
+32         {
+33             return $this->hasMany(EmploiDuTemps::class, 'affectation_id');
+34         }
+35     
+36         public function evaluations()
+37         {
+38             return $this->hasMany(Evaluation::class, 'affectation_id');
+39         }
+40     }

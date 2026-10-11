@@ -1,0 +1,53 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\aba9102c187c\20261011-170322-apply_patch-call_01a12bb4500574d091413f4a.txt (1,308 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Structured view (text):
+Applied patch: 5 files changed (5 updated)
+Updated app/Models/Cours.php (1 hunk applied)
+Updated app/Http/Controllers/EvaluationController.php (3 hunks applied)
+Updated app/Http/Controllers/ProfesseurEvaluationController.php (2 hunks applied)
+Updated resources/views/admin/evaluations/index.blade.php (1 hunk applied)
+Updated resources/views/professeur/evaluations.blade.php (1 hunk applied)
+Landed at lines 29-42 (the file's new text; no re-read needed):
+29     
+30         /**
+31          * Note maximale conseillée pour une évaluation de ce type, d'après le barème
+32          * de la branche : le maximum d'examen pour un examen, sinon les travaux
+33          * journaliers. Renvoie null si la branche n'a aucun barème défini.
+34          */
+35         public function maxNotePour(string $type): ?float
+36         {
+37             $max = $type === 'examen'
+38                 ? ($this->max_examen ?? $this->max_travaux_journaliers)
+39                 : ($this->max_travaux_journaliers ?? $this->max_examen);
+40     
+41             return $max !== null && (float) $max > 0 ? (float) $max : null;
+42         }
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 61-61 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+  ⚠ hunk 2: context matched at lines 68-72 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+  ⚠ hunk 3: cont
+… 671 chars elided …
+
+81          * Note maximale effective : celle saisie, sinon le barème du cours de
+82          * l'affectation (max examen ou travaux journaliers), sinon 20 par défaut.
+83          *
+84          * @param  array<string, mixed>  $data
+85          */
+86         private function maxNote(array $data): float
+      … 1 lines omitted …
+88             if (! empty($data['max_note'])) {
+89                 return (float) $data['max_note'];
+90             }
+91     
+92             $affectation = AffectationCours::with('cours')->find($data['affectation_id']);
+93     
+94             return $affectation?->cours?->maxNotePour($data['type_evaluation']) ?? 20.0;
+95         }
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 69-69 only after leading-whitespace normalizati
+… 1,472 chars elided …
+max examen / travaux journaliers).</small></div>
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 40-41 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 40-42:
+40                                 <label class="form-label">Note max. <small class="text-muted">(auto)</small></label>
+41                                 <input class="form-control" type="number" step="0.5" min="1" max="1000" name="max_note" value="{{ old('max_note') }}" placeholder="Barème du cours">
+42                                 <small class="text-muted">Vide = barème du cours.</small>

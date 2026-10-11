@@ -1,0 +1,8 @@
+Applied patch: 1 file changed (1 updated)
+Updated resources/views/admin/dashboard.blade.php (1 hunk applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 541-543 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 542-544:
+542                                        {{-- Tableau vide : DataTables affiche son message « emptyTable ».
+543                                             Un <td colspan> dans le corps ferait compter 1 cellule au lieu de 8
+544                                             et déclencherait « Incorrect column count » (tn/18). --}}

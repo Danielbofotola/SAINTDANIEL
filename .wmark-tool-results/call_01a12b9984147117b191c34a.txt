@@ -1,0 +1,131 @@
+1      <!DOCTYPE html>
+2      <html lang="fr">
+3      <head>
+4          <meta charset="utf-8">
+5          <meta name="viewport" content="width=device-width, initial-scale=1">
+6          <title>Types de frais &amp; tarifs</title>
+7          <link rel="stylesheet" href="{{ asset('boostrap/css/css/main.css') }}">
+8          <link rel="stylesheet" href="{{ asset('boostrap/css/font-awesome/css/fa-regular.min.css') }}">
+9          <link rel="stylesheet" href="{{ asset('boostrap/css/font-awesome/css/fontawesome.css') }}">
+10         <link rel="stylesheet" href="{{ asset('boostrap/css/font-awesome/css/fa-solid.css') }}">
+11         <link rel="stylesheet" href="{{ asset('assets/css/font-awesome.min.css') }}">
+12         <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap4.min.css">
+13     </head>
+14     <body class="app">
+15         <main class="app-content" style="margin-left:0">
+16             <div class="app-title">
+17                 <div>
+18                     <h1><i class="fa fa-money"></i> Types de frais &amp; tarifs</h1>
+19                     <p>Définissez les frais scolaires et leurs montants par classe @if($annee) — année <strong>{{ $annee->libelle }}</strong>@endif.</p>
+20                 </div>
+21                 <div>
+22                     <a href="{{ route('admin.dashboard') }}" class="btn btn-secondary">Retour</a>
+23                     <a href="{{ route('admin.paiements.index') }}" class="btn btn-primary"><i class="fa fa-credit-card"></i> Paiements</a>
+24                 </div>
+25             </div>
+26     
+27             @if (session('success'))<div class="alert alert-success">{{ session('success') }}</div>@endif
+28             @if (session('error'))<div class="alert alert-danger">{{ session('error') }}</div>@endif
+29             @if ($errors->any())<div class="alert alert-danger"><ul class="mb-0">@foreach ($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul></div>@endif
+30             @unless ($annee)<div class="alert alert-warning"><i class="fa fa-exclamation-triangle"></i> Aucune année scolaire en cours : les tarifs ne peuvent pas être enregistrés.</div>@endunless
+31     
+32             <div class="row">
+33                 <div class="col-md-6">
+34                     <div class="tile mb-4">
+35                         <h4 class="tile-title"><i class="fa fa-plus"></i> Nouveau type de frais</h4>
+36                         <form method="POST" action="{{ route('admin.frais.types.store') }}">
+37                             @csrf
+38                             <div class="form-group"><label class="form-label">Nom *</label><input class="form-control" name="nom" value="{{ old('nom') }}" maxlength="100" required placeholder="Ex. Frais scolaires, Tenue, Cantine…"></div>
+39                             <div class="form-group"><label class="form-label">Description</label><textarea class="form-control" name="description" rows="2" maxlength="1000">{{ old('description') }}</textarea></div>
+40                             <div class="form-check mb-2"><input class="form-check-input" type="checkbox" name="est_inscription" id="est_inscription" value="1" @checked(old('est_inscription'))><label class="form-check-label" for="est_inscription">Frais d’inscription — son paiement valide automatiquement l’inscription de l’élève</label></div>
+41                             <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i> Créer le type de frais</button>
+42                         </form>
+43                     </div>
+44                 </div>
+45                 <div class="col-md-6">
+46                     <div class="tile mb-4">
+47                         <h4 class="tile-title"><i class="fa fa-tags"></i> Nouveau tarif (par classe)</h4>
+48                         @if ($typesActifs->isEmpty() || $classes->isEmpty())
+49                             <p class="text-muted mb-0">Créez au moins un type de frais et une classe avant d'enregistrer un tarif.</p>
+50                         @else
+51                             <form method="POST" action="{{ route('admin.frais.tarifs.store') }}">
+52                                 @csrf
+53                                 <div class="row">
+54                                     <div class="col-md-6 form-group"><label class="form-label">Type de frais *</label><select class="form-control" name="type_frais_id" required><option value="">Choisir</option>@foreach ($typesActifs as $type)<option value="{{ $type->id }}" @selected(old('type_frais_id') == $type->id)>{{ $type->nom }}</option>@endforeach</select></div>
+55                                     <div class="col-md-6 form-group"><label class="form-label">Classe *</label><select class="form-control" name="classe_id" required><option value="">Choisir</option>@foreach ($classes as $classe)<option value="{{ $classe->id }}" @selected(old('classe_id') == $classe->id)>{{ $classe->nom }}</option>@endforeach</select></div>
+56                                     <div class="col-md-6 form-group"><label class="form-label">Montant exigé *</label><input class="form-control" type="number" step="0.01" min="0" name="montant_exige" value="{{ old('montant_exige') }}" required></div>
+57                                     <div class="col-md-6 form-group"><label class="form-label">Date d'échéance *</label><input class="form-control" type="date" name="date_echeance" value="{{ old('date_echeance', now()->toDateString()) }}" required></div>
+58                                 </div>
+59                                 <button class="btn btn-success" type="submit" @disabled(! $annee)><i class="fa fa-plus"></i> Enregistrer le tarif</button>
+60                             </form>
+61                         @endif
+62                     </div>
+63                 </div>
+64             </div>
+65     
+66             <div class="tile mb-4">
+67                 <h4 class="tile-title"><i class="fa fa-list"></i> Types de frais</h4>
+68                 <div class="table-responsive">
+69                     <table class="table table-hover table-bordered">
+70                         <thead><tr><th>#</th><th>Nom</th><th>Description</th><th>Tarifs</th><th>Statut</th><th>Actions</th></tr></thead>
+71                         <tbody>
+72                             @forelse ($types as $type)
+73                                 <tr>
+74                                     <td>{{ $loop->iteration }}</td>
+75                                     <td><strong>{{ $type->nom }}</strong></td>
+76                                     <td>{{ $type->description ?: '—' }}</td>
+77                                     <td><span class="badge badge-info">{{ $type->frais_scolaires_count }}</span></td>
+78                                     <td><span class="badge badge-{{ $type->statut === 'actif' ? 'success' : 'secondary' }}">{{ ucfirst($type->statut) }}</span></td>
+79                                     <td class="text-nowrap">
+80                                         <form class="d-inline" method="POST" action="{{ route('admin.frais.types.toggle-status', $type) }}">
+81                                             @csrf
+82                                             @method('PATCH')
+83                                             <button class="btn btn-sm btn-{{ $type->statut === 'actif' ? 'warning' : 'success' }}" type="submit" title="{{ $type->statut === 'actif' ? 'Désactiver' : 'Activer' }}"><i class="fa fa-power-off"></i></button>
+84                                         </form>
+85                                         <form class="d-inline" method="POST" action="{{ route('admin.frais.types.destroy', $type) }}" onsubmit="return confirm('Supprimer ce type de frais ?');">
+86                                             @csrf
+87                                             @method('DELETE')
+88                                             <button class="btn btn-sm btn-danger" type="submit" title="Supprimer"><i class="fa fa-trash"></i></button>
+89                                         </form>
+90                                     </td>
+91                                 </tr>
+92                             @empty
+93                                 <tr><td colspan="6" class="text-center text-muted">Aucun type de frais enregistré.</td></tr>
+94                             @endforelse
+95                         </tbody>
+96                     </table>
+97                 </div>
+98             </div>
+99     
+100            <div class="tile">
+101                <h4 class="tile-title"><i class="fa fa-tags"></i> Tarifs @if($annee)<small class="text-muted">{{ $annee->libelle }}</small>@endif</h4>
+102                <div class="table-responsive">
+103                    <table class="table table-hover table-bordered">
+104                        <thead><tr><th>#</th><th>Type de frais</th><th>Classe</th><th>Montant exigé</th><th>Échéance</th><th>Statut</th><th>Actions</th></tr></thead>
+105                        <tbody>
+106                            @forelse ($tarifs as $tarif)
+107                                <tr>
+108                                    <td>{{ $loop->iteration }}</td>
+109                                    <td>{{ $tarif->typeFrais?->nom ?? '—' }}</td>
+110                                    <td>{{ $tarif->classe?->nom ?? '—' }}</td>
+111                                    <td>{{ number_format((float) $tarif->montant_exige, 2, ',', ' ') }}</td>
+112                                    <td>{{ $tarif->date_echeance?->format('d/m/Y') }}</td>
+113                                    <td><span class="badge badge-{{ $tarif->statut === 'actif' ? 'success' : 'secondary' }}">{{ ucfirst($tarif->statut) }}</span></td>
+114                                    <td>
+115                                        <form class="d-inline" method="POST" action="{{ route('admin.frais.tarifs.destroy', $tarif) }}" onsubmit="return confirm('Supprimer ce tarif ?');">
+116                                            @csrf
+117                                            @method('DELETE')
+118                                            <button class="btn btn-sm btn-danger" type="submit" title="Supprimer"><i class="fa fa-trash"></i></button>
+119                                        </form>
+120                                    </td>
+121                                </tr>
+122                            @empty
+123                                <tr><td colspan="7" class="text-center text-muted">Aucun tarif pour l'année en cours.</td></tr>
+124                            @endforelse
+125                        </tbody>
+126                    </table>
+127                </div>
+128            </div>
+129        </main>
+130    </body>
+131    </html>

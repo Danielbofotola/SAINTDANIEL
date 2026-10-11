@@ -1,0 +1,1 @@
+Wrote database/migrations/2026_10_07_000000_widen_statut_on_inscriptions_table.php (27 lines)

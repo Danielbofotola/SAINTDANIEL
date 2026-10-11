@@ -1,0 +1,72 @@
+1      <!DOCTYPE html>
+2      <html lang="fr">
+3      <head>
+4          <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+5          <title>Demandes d’inscription</title>
+6          <link rel="stylesheet" href="{{ asset('boostrap/css/css/main.css') }}">
+7          <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+8          <style>
+9              body { min-height: 100vh; background: #f2f5f2; color: #263a36; }
+10             .page-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 16px 24px; color: #fff; background: #193c39; }
+11             .page-header a { color: #fff; }
+12             .page-brand { font-family: Arial, sans-serif; }
+13             .content { width: min(1080px, calc(100% - 32px)); margin: 28px auto 48px; }
+14             .heading { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 20px; }
+15             .eyebrow { margin-bottom: 6px; color: #71817d; font-size: 10px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; }
+16             h1 { margin: 0; color: #193c39; font-size: 26px; font-weight: 800; }
+17             .heading p { margin: 6px 0 0; color: #71817d; font-size: 12px; }
+18             .request-card { margin-bottom: 13px; padding: 20px; background: #fff; border: 1px solid #e1e8e2; border-radius: 9px; box-shadow: 0 8px 22px rgba(25,60,57,.045); }
+19             .request-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; }
+20             .request-name { margin: 0; color: #193c39; font-size: 16px; font-weight: 800; }
+21             .request-meta { margin-top: 5px; color: #71817d; font-size: 11px; }
+22             .request-details { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 17px 0; padding: 13px 0; border-top: 1px solid #edf1ed; border-bottom: 1px solid #edf1ed; }
+23             .detail-label { display: block; margin-bottom: 3px; color: #85918b; font-size: 9px; font-weight: 700; letter-spacing: .6px; text-transform: uppercase; }
+24             .detail-value { color: #344c47; font-size: 12px; font-weight: 600; }
+25             .review-form { display: grid; grid-template-columns: 1fr 1fr auto; gap: 10px; align-items: end; }
+26             .form-group { margin: 0; }
+27             .form-label { color: #304743; font-size: 11px; font-weight: 700; }
+28             .form-control { min-height: 39px; border-color: #dbe4dc; font-size: 12px; }
+29             .decision-actions { display: flex; gap: 8px; }
+30             .reject-form { display: flex; justify-content: flex-end; align-items: center; gap: 8px; margin-top: 12px; }
+31             .reject-form input { max-width: 320px; }
+32             .empty-state { padding: 48px 20px; color: #71817d; background: #fff; border: 1px solid #e1e8e2; border-radius: 9px; text-align: center; }
+33             .empty-state i { display: block; margin-bottom: 10px; color: #8ca29a; font-size: 24px; }
+34             @media (max-width: 700px) { .page-header { padding: 14px 16px; } .content { width: calc(100% - 24px); margin-top: 20px; } .heading { align-items: flex-start; flex-direction: column; gap: 12px; } .request-details { grid-template-columns: repeat(2, minmax(0,1fr)); } .review-form { grid-template-columns: minmax(0,1fr); } .decision-actions { justify-content: flex-end; } .reject-form { align-items: stretch; flex-direction: column; } .reject-form input { max-width: none; } }
+35         </style>
+36     </head>
+37     <body>
+38         <header class="page-header"><a href="{{ route('admin.dashboard') }}"><i class="fa fa-arrow-left"></i> Tableau de bord</a><span><span class="page-brand">{{ $systemSettings->nom_court }}</span> · Administration</span></header>
+39         <main class="content">
+40             <div class="heading"><div><p class="eyebrow">Admissions</p><h1>Demandes d’inscription</h1><p>Une acceptation crée le dossier élève et son inscription dans la classe choisie.</p></div><span class="badge badge-warning">{{ $requests->count() }} en attente</span></div>
+41             @if (session('success'))<div class="alert alert-success">{{ session('success') }}</div>@endif
+42             @if (session('error'))<div class="alert alert-danger">{{ session('error') }}</div>@endif
+43             @if ($errors->any())<div class="alert alert-danger"><ul class="mb-0">@foreach ($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul></div>@endif
+44             @forelse ($requests as $application)
+45                 <article class="request-card">
+46                     <div class="request-top"><div><h2 class="request-name">{{ $application->nom }} {{ $application->postnom }} {{ $application->prenom }}</h2><div class="request-meta">Demande #{{ $application->id }} · {{ $application->created_at?->format('d/m/Y H:i') }}</div></div><span class="badge badge-warning">En attente</span></div>
+47                     <div class="request-details">
+48                         <div><span class="detail-label">Naissance</span><span class="detail-value">{{ $application->date_naissance?->format('d/m/Y') }} · {{ $application->sexe === 'M' ? 'Garçon' : 'Fille' }}</span></div>
+49                         <div><span class="detail-label">Responsable</span><span class="detail-value">{{ $application->nom_mere }}</span></div>
+50                         <div><span class="detail-label">Téléphone</span><span class="detail-value">{{ $application->telephone_mere }}</span></div>
+51                         <div><span class="detail-label">E-mail</span><span class="detail-value">{{ $application->email_mere ?: 'Non renseigné' }}</span></div>
+52                         <div><span class="detail-label">Classe souhaitée</span><span class="detail-value">{{ $application->classe?->nom ?: 'À choisir' }}</span></div>
+53                         <div><span class="detail-label">Année souhaitée</span><span class="detail-value">{{ $application->anneeScolaire?->libelle ?: 'À choisir' }}</span></div>
+54                     </div>
+55                     <form class="review-form" method="POST" action="{{ route('admin.registration.students.approve', $application) }}">
+56                         @csrf
+57                         <div class="form-group"><label class="form-label" for="class-{{ $application->id }}">Classe à attribuer</label><select class="form-control" id="class-{{ $application->id }}" name="classe_id" required><option value="">Choisir une classe</option>@foreach ($classes as $classe)<option value="{{ $classe->id }}" @selected(old('classe_id', $application->classe_id) == $classe->id)>{{ $classe->nom }}</option>@endforeach</select></div>
+58                         <div class="form-group"><label class="form-label" for="year-{{ $application->id }}">Année scolaire</label><select class="form-control" id="year-{{ $application->id }}" name="annee_scolaire_id" required><option value="">Choisir une année</option>@foreach ($schoolYears as $year)<option value="{{ $year->id }}" @selected(old('annee_scolaire_id', $application->annee_scolaire_id) == $year->id)>{{ $year->libelle }}</option>@endforeach</select></div>
+59                         <div class="decision-actions"><button class="btn btn-success" type="submit" @disabled($classes->isEmpty() || $schoolYears->isEmpty())><i class="fa fa-check"></i> Accepter et inscrire</button></div>
+60                     </form>
+61                     <form class="reject-form" method="POST" action="{{ route('admin.registration.students.reject', $application) }}">
+62                         @csrf
+63                         <input class="form-control" name="motif_refus" maxlength="1000" placeholder="Motif de refus (facultatif)" aria-label="Motif de refus">
+64                         <button class="btn btn-outline-danger" type="submit" onclick="return confirm('Refuser cette demande d’inscription ?')"><i class="fa fa-times"></i> Refuser</button>
+65                     </form>
+66                 </article>
+67             @empty
+68                 <div class="empty-state"><i class="fa fa-inbox"></i>Aucune demande d’inscription en attente.</div>
+69             @endforelse
+70         </main>
+71     </body>
+72     </html>

@@ -1,0 +1,14 @@
+Applied patch: 1 file changed (1 updated)
+Updated resources/views/messagerie/_espace.blade.php (3 hunks applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 3: context matched at lines 903-904 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 908-909:
+908    
+909    @include('messagerie._appels', ['nomCorrespondant' => $active ? $nomConversation($active) : null])
+Landed at lines 86-88 (the file's new text; no re-read needed):
+86         .msg-thread__icones button { background: transparent; border: none; color: var(--chat-blue);
+87             cursor: pointer; font-size: 1.1rem; padding: 0; }
+88         .msg-thread__icones button:hover { color: #fff; }
+Landed at lines 317-318 (the file's new text; no re-read needed):
+317                        <button type="button" onclick="appelDemarrer('audio')" title="Appel vocal"><i class="fa-solid fa-phone"></i></button>
+318                        <button type="button" onclick="appelDemarrer('video')" title="Appel vidéo"><i class="fa-solid fa-video"></i></button>

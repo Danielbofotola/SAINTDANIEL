@@ -1,0 +1,5 @@
+Created 4 tasks:
+  [pending] eleves-index: Module Liste des élèves : route admin.eleves.index, EleveController@index, vue admin/eleves/index.blade.php (2 criteria)
+  [pending] history: Module Historique d'inscription : route admin.registration.students.history, AdminRegistrationRequestController@studentHistory, vue student-history.blade.php (2 criteria)
+  [pending] menu: Brancher les 4 entrées du treeview-menu Élèves sur leurs routes (1 criteria)
+  [pending] verify: Vérifier routes et rendu (2 criteria)

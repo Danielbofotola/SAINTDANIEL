@@ -1,0 +1,11 @@
+[powershell — Windows side]
+Name                     Length
+----                     ------
+fa-brands-400.ttf        207972
+fa-brands-400.woff2      117372
+fa-regular-400.ttf        68004
+fa-regular-400.woff2      25452
+fa-solid-900.ttf         419720
+fa-solid-900.woff2       156496
+fa-v4compatibility.ttf    10832
+fa-v4compatibility.woff2   4792

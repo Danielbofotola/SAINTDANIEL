@@ -1,0 +1,1 @@
+Updated app/Models/DemandeInscription.php: replaced 5 lines with 10 lines

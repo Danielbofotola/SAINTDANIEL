@@ -1,0 +1,34 @@
+276                        @endif
+277                        <div class="info-bloc"><span class="info-bloc__cle">Dette cumulée (toutes années)</span>
+278                            <span class="info-bloc__val {{ $detteTotale > 0 ? 'text-danger' : 'text-success' }}">{{ number_format($detteTotale, 2) }}</span></div>
+279                    </div>
+280                </div>
+281                <div class="col-md-8">
+282                    <div class="dossier-carte">
+283                        <h4 class="dossier-carte__titre">
+284                            <i class="fa fa-list-alt" style="color:var(--dossier)"></i> Suivi des paiements
+285                            <small class="text-muted ml-2">{{ $paiements->count() }} reçu(s)</small>
+286                        </h4>
+287                        <div class="table-responsive">
+288                            <table class="table table-sm">
+289                                <thead>
+290                                    <tr><th>Reçu</th><th>Date</th><th>Nature</th><th>Période</th><th class="text-right">Montant</th><th>État</th></tr>
+291                                </thead>
+292                                <tbody>
+293                                    @forelse ($paiements as $paiement)
+294                                        <tr>
+295                                            <td class="font-weight-bold">{{ $paiement->num_recu ?: '—' }}</td>
+296                                            <td>{{ $paiement->date_paiement?->format('d/m/Y') ?? '—' }}</td>
+297                                            <td>{{ $paiement->fraisScolaire?->typeFrais?->libelle ?? $paiement->fraisScolaire?->typeFrais?->nom ?? 'Frais scolaires' }}</td>
+298                                            <td>{{ $paiement->periode?->nom ?? '—' }}</td>
+299                                            <td class="text-right font-weight-bold">{{ number_format((float) $paiement->montant_paye, 2) }}</td>
+300                                            <td><span class="badge badge-{{ $paiement->statut === 'actif' ? 'success' : 'secondary' }}">{{ $paiement->statut }}</span></td>
+301                                        </tr>
+302                                    @empty
+303                                        <tr><td colspan="6" class="text-center text-muted">Aucun paiement enregistré pour l'année en cours.</td></tr>
+304                                    @endforelse
+305                                </tbody>
+306                            </table>
+307                        </div>
+
+[showing lines 276-307 of 413; read again with offset=308 for more]

@@ -1,0 +1,52 @@
+296        // sous le seuil doit être bloqué : on abaisse sa note d'examen.
+297        $eleveB = $s['eleves']['B'];
+298        DB::table('notes')->where('eleve_id', $eleveB->id)->update(['note_obtenue' => 4]);
+299        $analyse = Jury::regles()->analyser(Inscription::where('eleve_id', $eleveB->id)->firstOrFail());
+300        expect($analyse['cours_echoues'])->toBe(1)
+301            ->and($analyse['decision_proposee'])->not->toBe('admis');
+302    });
+303    
+304    test('l’écran de délibération liste les élèves et leurs propositions', function () {
+305        $s = scenarioDeliberation();
+306    
+307        $this->actingAs($s['alice'])
+308            ->get(route('admin.deliberations.index'))
+309            ->assertOk()
+310            ->assertSee('Délibération')
+311            ->assertSee('3e primaire')
+312            ->assertSee('4e primaire')       // classe suivante annoncée
+313            ->assertSee('NomA')
+314            ->assertSee('Admis');
+315    });
+316    
+317    test('l’enregistrement des décisions est persisté et marqué manuel si forcé', function () {
+318        $s = scenarioDeliberation();
+319        $inscriptionA = Inscription::where('eleve_id', $s['eleves']['A']->id)->firstOrFail();
+320        $inscriptionD = Inscription::where('eleve_id', $s['eleves']['D']->id)->firstOrFail();
+321    
+322        $this->actingAs($s['alice'])
+323            ->post(route('admin.deliberations.enregistrer'), [
+324                'annee_scolaire_id' => $s['annee']->id,
+325                'decisions' => [
+326                    $inscriptionA->id => 'admis',
+327                    $inscriptionD->id => 'ajourne',   // forcé : la proposition était « redouble »
+328                ],
+329            ])
+330            ->assertRedirect()
+331            ->assertSessionHas('success', fn ($m) => str_contains($m, '2 décision'));
+332    
+333        $a = Deliberation::where('inscription_id', $inscriptionA->id)->firstOrFail();
+334        $d = Deliberation::where('inscription_id', $inscriptionD->id)->firstOrFail();
+335    
+336        expect($a->decision)->toBe('admis')
+337            ->and((float) $a->pourcentage_general)->toBe(90.0)
+338            ->and($a->manuelle)->toBeFalse()
+339            ->and($a->classe_suivante_id)->toBe($s['classe2']->id)
+340            ->and($d->decision)->toBe('ajourne')
+341            ->and($d->manuelle)->toBeTrue();       // décision forcée à la main
+342    });
+343    
+344    test('l’application en masse promeut les admis et maintient les autres', function () {
+345        $s = scenarioDeliberation();
+
+[showing lines 296-345 of 433; read again with offset=346 for more]

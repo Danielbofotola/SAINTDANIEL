@@ -1,0 +1,52 @@
+72             Evaluation::create($data + ['statut' => 'actif']);
+73     
+74             return redirect()->route('admin.evaluations.index')->with('success', 'L’évaluation a été créée.');
+75         }
+76     
+77         public function notes(Evaluation $evaluation): View
+78         {
+79             $evaluation->load(['periode', 'affectation.cours', 'affectation.classe', 'affectation.professeur']);
+80     
+81             $classe = $evaluation->affectation?->classe;
+82     
+83             $inscriptions = $classe
+84                 ? $classe->inscriptions()->anneeEnCours()->where('statut', 'actif')->with('eleve')->get()
+85                 : collect();
+86     
+87             $notes = $evaluation->notes()->pluck('note_obtenue', 'eleve_id');
+88             $observations = $evaluation->notes()->pluck('observation', 'eleve_id');
+89     
+90             return view('admin.evaluations.notes', compact('evaluation', 'inscriptions', 'notes', 'observations'));
+91         }
+92     
+93         public function storeNotes(Request $request, Evaluation $evaluation): RedirectResponse
+94         {
+95             $data = $request->validate([
+96                 'notes' => ['array'],
+97                 'notes.*' => ['nullable', 'numeric', 'min:0', 'max:'.$evaluation->max_note],
+98                 'observations' => ['array'],
+99                 'observations.*' => ['nullable', 'string', 'max:255'],
+100            ], [
+101                'notes.*.numeric' => 'Chaque note doit être un nombre.',
+102                'notes.*.min' => 'La note ne peut pas être négative.',
+103                'notes.*.max' => 'La note ne peut pas dépasser la note maximale ('.$evaluation->max_note.').',
+104            ]);
+105    
+106            $classe = $evaluation->affectation?->classe;
+107            $allowed = $classe
+108                ? array_map('intval', $classe->inscriptions()->anneeEnCours()->where('statut', 'actif')->pluck('eleve_id')->all())
+109                : [];
+110    
+111            foreach ($data['notes'] ?? [] as $eleveId => $value) {
+112                $eleveId = (int) $eleveId;
+113    
+114                if (! in_array($eleveId, $allowed, true)) {
+115                    continue;
+116                }
+117    
+118                if ($value === null || $value === '') {
+119                    Note::where('evaluation_id', $evaluation->id)->where('eleve_id', $eleveId)->delete();
+120    
+121                    continue;
+
+[showing lines 72-121 of 147; read again with offset=122 for more]

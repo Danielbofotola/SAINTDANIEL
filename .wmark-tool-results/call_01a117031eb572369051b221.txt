@@ -1,0 +1,1 @@
+Updated app/Http/Controllers/RegistrationRequestController.php: replaced 1 lines with 1 lines

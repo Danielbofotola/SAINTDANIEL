@@ -1,0 +1,54 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\b493c9bc81dc\20261008-011252-bash-call_01a118db4e4570c8af87a9e0.txt (1,154 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Structured view (text):
+[powershell — Windows side]
+96:     public function editAccount(User $user): View|RedirectResponse
+97:     {
+98:         if ($user->is(auth()->user())) {
+99:             return redirect()->route('admin.profile.edit');
+100:         }
+101: 
+102:         return view('admin.profile.account-edit', [
+103:             'user' => $user,
+104:             'professeurs' => Professeurs::query()
+105:                 ->where(function ($query) use ($user) {
+106:                     $query->where('statut', 'actif')
+107:                         ->when($user->professeur_id, fn ($query) => $query->orWhere('id', $user->professeur_id));
+108:                 })
+109:                 ->orderBy('nom')
+110:                 ->orderBy('prenom')
+111:                 ->get(),
+112:         ]);
+113:     }
+114: 
+115:     public function updateAccount(Request $request, User $user): RedirectResponse
+116:     {
+117:         if ($user->is($request->user())) {
+118:             return redirect()->route('admin.profile.edit');
+119:         }
+120: 
+121:         $data = $request->validate([
+122:             'nom' => ['nullable', 'string', 'max:50'],
+123:             'postnom' => ['nullable', 'string', 'max:50'],
+124:             'prenom' => ['nullable', 'string', 'max:50'],
+125:             'date_naissance' => ['nullable', 'date', 'before:today'],
+=== update method ===
+335:     public function update(Request $request): RedirectResponse
+336:     {
+337:         $user = $request->user();
+338: 
+339:         $data = $reques
+… 151 chars elided …
+    'prenom' => ['nullable', 'string', 'max:50'],
+343:             'date_naissance' => ['nullable', 'date', 'before:today'],
+344:             'username' => ['required', 'string', 'max:50', Rule::unique('users', 'username')->ignore($user->id)],
+345:             'email' => ['required', 'email', 'max:100', Rule::unique('users', 'email')->ignore($user->id)],
+346:             'telephone' => ['nullable', 'string', 'max:20'],
+347:             'adresse' => ['nullable', 'string', 'max:500'],
+348:             'photo' => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:2048'],
+349:         ], [
+350:             'username.required' => "Le nom d'utilisateur est obligatoire.",
+351:             'username.unique' => "Ce nom d'utilisateur est dÃ©jÃ  utilisÃ©.",
+352:             'email.required' => "L'adres
+… 952 chars elided …
+=> ['required', 'string', 'min:8', 'confirmed'],
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

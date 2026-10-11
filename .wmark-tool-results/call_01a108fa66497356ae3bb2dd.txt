@@ -1,0 +1,20 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/FinancesPagesTest.php (1 hunk applied)
+Landed at lines 166-202 (the file's new text; no re-read needed):
+166        Schema::create('affectations_cours', function (Blueprint $table) {
+167            $table->id();
+168            $table->unsignedBigInteger('professeur_id');
+169            $table->unsignedBigInteger('cours_id');
+170            $table->unsignedBigInteger('classe_id');
+171            $table->unsignedBigInteger('annee_scolaire_id');
+172            $table->string('statut')->default('actif');
+173            $table->timestamps();
+      … 21 lines omitted …
+195            $table->id();
+196            $table->unsignedBigInteger('inscription_id');
+197            $table->string('periode')->nullable();
+198            $table->decimal('moyenne_generale', 5, 2)->nullable();
+199            $table->string('decision')->nullable();
+200            $table->string('statut')->default('actif');
+201            $table->timestamps();
+202        });

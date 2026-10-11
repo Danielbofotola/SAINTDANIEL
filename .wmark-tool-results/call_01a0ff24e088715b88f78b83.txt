@@ -1,0 +1,47 @@
+86         Schema::create('eleves', function (Blueprint $table) {
+87             $table->id();
+88             $table->string('matricule')->unique();
+89             $table->string('nom');
+90             $table->string('postnom')->nullable();
+91             $table->string('prenom');
+92             $table->string('sexe');
+93             $table->date('date_naissance');
+94             $table->string('lieu_naissance')->nullable();
+95             $table->unsignedBigInteger('tuteur_id');
+96             $table->string('photo')->nullable();
+97             $table->string('statut');
+98             $table->timestamps();
+99         });
+100        Schema::create('inscriptions', function (Blueprint $table) {
+101            $table->id();
+102            $table->unsignedBigInteger('eleve_id');
+103            $table->unsignedBigInteger('classe_id');
+104            $table->unsignedBigInteger('annee_scolaire_id');
+105            $table->date('date_inscription');
+106            $table->string('statut');
+107            $table->timestamps();
+108        });
+109        Schema::create('demandes_inscription', function (Blueprint $table) {
+110            $table->id();
+111            $table->string('nom');
+112            $table->string('postnom')->nullable();
+113            $table->string('prenom');
+114            $table->string('sexe');
+115            $table->date('date_naissance');
+116            $table->string('lieu_naissance')->nullable();
+117            $table->unsignedBigInteger('classe_id')->nullable();
+118            $table->unsignedBigInteger('annee_scolaire_id')->nullable();
+119            $table->string('nom_mere');
+120            $table->string('telephone_mere');
+121            $table->string('email_mere')->nullable();
+122            $table->text('adresse_mere')->nullable();
+123            $table->string('nom_pere')->nullable();
+124            $table->string('telephone_pere')->nullable();
+125            $table->string('email_pere')->nullable();
+126            $table->string('statut')->default('en_attente');
+127            $table->unsignedBigInteger('traite_par')->nullable();
+128            $table->timestamp('traite_le')->nullable();
+129            $table->text('motif_refus')->nullable();
+130            $table->timestamps();
+
+[showing lines 86-130 of 294; read again with offset=131 for more]

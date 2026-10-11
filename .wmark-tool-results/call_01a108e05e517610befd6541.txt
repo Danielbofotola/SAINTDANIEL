@@ -1,0 +1,16 @@
+66                     ->get()
+67                 : collect();
+68     
+69             return view('comptable.paiements', [
+70                 'user' => $request->user(),
+71                 'annee' => $annee,
+72                 'classeId' => $classeId,
+73                 'classes' => Classe::where('statut', 'actif')->orderBy('nom')->get(),
+74                 'inscriptions' => $inscriptions,
+75                 'tarifs' => $tarifs,
+76                 'soldePaye' => $soldePaye,
+77                 'montantsFrais' => $tarifs->pluck('montant_exige', 'id'),
+78                 'classesParInscription' => $inscriptions->pluck('classe_id', 'id'),
+79                 'classesParFrais' => $tarifs->pluck('classe_id', 'id'),
+
+[showing lines 66-79 of 138; read again with offset=80 for more]

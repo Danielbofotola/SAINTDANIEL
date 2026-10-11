@@ -1,0 +1,14 @@
+Applied patch: 2 files changed (2 updated)
+Updated resources/views/prefecture/bulletins.blade.php (1 hunk applied)
+Updated resources/views/admin/bulletins/document.blade.php (1 hunk applied)
+Landed at lines 102-106 (the file's new text; no re-read needed):
+102                                                {{-- Le bulletin est généré à la volée : toujours consultable et imprimable. --}}
+103                                                <a href="{{ route('prefecture.bulletins.document', $bulletin->inscription_id) }}"
+104                                                   class="btn btn-info btn-xs btn-round" target="_blank" rel="noopener">
+105                                                    <i class="fas fa-file-alt"></i> Afficher
+106                                                </a>
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 38-41 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 39-40:
+39         @php($retour = auth()->user()?->role === 'prefetture' ? route('prefecture.bulletins') : route('admin.bulletins.index'))
+40         <a href="{{ $retour }}" style="margin-right:8px;">← Retour</a>

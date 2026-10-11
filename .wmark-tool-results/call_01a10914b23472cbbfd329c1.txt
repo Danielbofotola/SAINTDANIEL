@@ -1,0 +1,13 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\e1ce9c26600a\20261004-234139-bash-call_01a10914b23472cbbfd329c1.txt (503 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+[powershell — Windows side]
+105: Route::get('/admin/depenses', [DepenseController::class, 'index'])->middleware('role:admin')->name('admin.depenses.index');
+106: Route::post('/admin/depenses', [DepenseController::class, 'store'])->middleware('role:admin')->name('admin.depenses.store');
+107: Route::post('/admin/depenses/categories', [DepenseController::class, 'storeCategorie'])->middleware('role:admin')->name('admin.depenses.categories.store');
+108: Route::delete('/admin/depenses/categories/{categorieDepense}', [DepenseController::class, 'destroyCategorie'])->middleware('role:admin')->name('admin.depenses.categories.destroy');
+109: Route::delete('/admin/depenses/{depense}', [DepenseController::class, 'destroy'])->middleware('role:admin')->name('admin.depenses.destroy');
+201: Route::get('/comptable/depenses', [ComptableDepenseController::class, 'index'])->middleware('role:comptable')->name('comptable.depenses.index');
+202: Route::post('/comptable/depenses', [ComptableDepenseController::class, 'store'])->middleware('role:comptable')->name('comptable.depenses.store');
+203: Route::post('/comptable/depenses/natures', [ComptableDepenseController::class, 'storeNature'])->middleware('role:comptable')->name('comptable.depenses.natures.store');
+204: Route::delete('/comptable/depenses/{depense}', [ComptableDepenseController::class, 'destroy'])->middleware('role:comptable')->name('comptable.depenses.destroy');
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

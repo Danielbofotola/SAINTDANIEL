@@ -1,0 +1,76 @@
+1      <?php
+2      
+3      use App\Models\ParametreSysteme;
+4      use App\Models\User;
+5      use Illuminate\Database\Schema\Blueprint;
+6      use Illuminate\Support\Facades\Schema;
+7      
+8      beforeEach(function () {
+9          Schema::dropIfExists('parametres_systeme');
+10         Schema::dropIfExists('users');
+11     
+12         Schema::create('users', function (Blueprint $table) {
+13             $table->id();
+14             $table->string('username')->unique();
+15             $table->string('email')->unique();
+16             $table->string('password');
+17             $table->string('pin_code')->nullable();
+18             $table->string('role');
+19             $table->string('statut');
+20             $table->rememberToken();
+21             $table->timestamps();
+22         });
+23         Schema::create('parametres_systeme', function (Blueprint $table) {
+24             $table->id();
+25             $table->string('nom_etablissement', 150);
+26             $table->string('nom_court', 60);
+27             $table->string('telephone', 30)->nullable();
+28             $table->string('email', 150)->nullable();
+29             $table->text('adresse')->nullable();
+30             $table->timestamps();
+31         });
+32     
+33         ParametreSysteme::create([
+34             'nom_etablissement' => 'COMPLEXE SCOLAIRE BABAZIN',
+35             'nom_court' => 'C.S. Moty',
+36         ]);
+37     });
+38     
+39     test('admin can update persistent school identity and contact settings', function () {
+40         $admin = User::factory()->create(['role' => 'admin']);
+41     
+42         $this->actingAs($admin)
+43             ->get(route('admin.profile.settings'))
+44             ->assertOk()
+45             ->assertSee('COMPLEXE SCOLAIRE BABAZIN')
+46             ->assertSee('C.S. Moty');
+47     
+48         $this->put(route('admin.profile.settings.update'), [
+49             'nom_etablissement' => 'INSTITUT MWANGAZA',
+50             'nom_court' => 'I.M. MWANGAZA',
+51             'telephone' => '+243 900 123 456',
+52             'email' => 'contact@mwangaza.example',
+53             'adresse' => 'Avenue de la Paix, Kinshasa',
+54         ])->assertRedirect(route('admin.profile.settings'));
+55     
+56         $this->get(route('admin.profile.settings'))
+57             ->assertOk()
+58             ->assertSee('INSTITUT MWANGAZA')
+59             ->assertSee('I.M. MWANGAZA')
+60             ->assertSee('+243 900 123 456')
+61             ->assertSee('contact@mwangaza.example')
+62             ->assertSee('Avenue de la Paix, Kinshasa');
+63     
+64         $this->view('projet.page-connexion.page-login-password')
+65             ->assertSee('INSTITUT MWANGAZA')
+66             ->assertSee('I.M. MWANGAZA')
+67             ->assertSee('contact@mwangaza.example');
+68     });
+69     
+70     test('non-admin users cannot change establishment settings', function () {
+71         $professor = User::factory()->create(['role' => 'professeur']);
+72     
+73         $this->actingAs($professor)
+74             ->get(route('admin.profile.settings'))
+75             ->assertForbidden();
+76     });

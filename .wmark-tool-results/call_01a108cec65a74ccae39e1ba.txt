@@ -1,0 +1,16 @@
+51                             @forelse ($eleves as $eleve)
+52                                 @php($inscription = $eleve->inscriptions->first())
+53                                 <tr>
+54                                     <td>{{ $eleves->firstItem() + $loop->index }}</td>
+55                                     <td class="text-center">@if ($eleve->photo)<img src="{{ asset('storage/'.$eleve->photo) }}" alt="Photo" width="40" height="40" class="rounded-circle" style="object-fit:cover">@else<i class="fa fa-user-circle fa-2x text-secondary"></i>@endif</td>
+56                                     <td>{{ $eleve->matricule ?? '—' }}</td>
+57                                     <td>{{ $eleve->nom }} {{ $eleve->postnom }} {{ $eleve->prenom }}</td>
+58                                     <td>{{ $eleve->sexe === 'M' ? 'Garçon' : 'Fille' }}</td>
+59                                     <td>{{ $eleve->date_naissance?->format('d/m/Y') ?? 'Non renseignée' }}</td>
+60                                     <td>{{ $inscription?->classe?->nom ?? 'Non inscrit' }}</td>
+61                                     <td><span class="badge badge-{{ ['actif' => 'success', 'inactif' => 'secondary', 'suspendu' => 'warning', 'exclu' => 'danger'][$eleve->statut] ?? 'secondary' }}">{{ ucfirst($eleve->statut) }}</span></td>
+62                                     <td class="text-nowrap">
+63                                         <a href="{{ route('admin.eleves.show', $eleve) }}" class="btn btn-sm btn-info" title="Voir le dossier"><i class="fa fa-folder-open"></i></a>
+64                                         <a href="{{ route('admin.eleves.edit', $eleve) }}" class="btn btn-sm btn-primary" title="Modifier"><i class="fa fa-pencil"></i></a>
+
+[showing lines 51-64 of 80; read again with offset=65 for more]

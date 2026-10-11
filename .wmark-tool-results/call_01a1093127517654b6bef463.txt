@@ -1,0 +1,2 @@
+Applied patch: 1 file changed (1 updated)
+Updated resources/views/titulaire/dashboard.blade.php (1 hunk applied)

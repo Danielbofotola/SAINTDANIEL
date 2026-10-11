@@ -1,0 +1,53 @@
+1      <?php
+2      
+3      namespace App\Http\Middleware;
+4      
+5      use Closure;
+6      use Illuminate\Http\Request;
+7      use Symfony\Component\HttpFoundation\Response;
+8      
+9      /**
+10      * Garantit l'accès à la messagerie sur TOUTES les pages HTML, pour tous les
+11      * rôles : un bouton flottant est injecté si la page n'offre pas déjà de lien
+12      * vers la messagerie (aucun doublon sur les pages qui l'intègrent déjà).
+13      */
+14     class AccessMessagerie
+15     {
+16         public function handle(Request $request, Closure $next): Response
+17         {
+18             $response = $next($request);
+19     
+20             $contenu = $response->getContent();
+21     
+22             if (! is_string($contenu) || $contenu === '') {
+23                 return $response;
+24             }
+25     
+26             if (! str_contains((string) $response->headers->get('Content-Type'), 'text/html')) {
+27                 return $response;
+28             }
+29     
+30             if (! str_contains($contenu, '</body>') || str_contains($contenu, 'messagerie-flottante')) {
+31                 return $response;
+32             }
+33     
+34             if (! $request->hasSession() || ! $request->user()) {
+35                 return $response;
+36             }
+37     
+38             // La page propose déjà un accès (menu, raccourci ou bouton) : rien à faire.
+39             if (str_contains($contenu, route('messagerie.index'))) {
+40                 return $response;
+41             }
+42     
+43             $bouton = view('partials.messagerie-flottante')->render();
+44     
+45             if (trim($bouton) === '') {
+46                 return $response;
+47             }
+48     
+49             $response->setContent(str_replace('</body>', $bouton.'</body>', $contenu));
+50     
+51             return $response;
+52         }
+53     }

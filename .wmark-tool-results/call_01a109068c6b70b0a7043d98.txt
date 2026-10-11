@@ -1,0 +1,8 @@
+108        Route::get('/admin/paies', [PaieController::class, 'index'])->middleware('role:admin')->name('admin.paies.index');
+109        Route::post('/admin/paies/salaires', [PaieController::class, 'storeSalaire'])->middleware('role:admin')->name('admin.paies.salaires.store');
+110        Route::post('/admin/paies', [PaieController::class, 'storePaie'])->middleware('role:admin')->name('admin.paies.store');
+111        Route::delete('/admin/paies/{paie}', [PaieController::class, 'destroyPaie'])->middleware('role:admin')->name('admin.paies.destroy');
+112        Route::get('/admin/archives', [ArchiveAnneeController::class, 'index'])->middleware('role:admin')->name('admin.archives.index');
+113        Route::get('/admin/archives/{archiveAnnee}', [ArchiveAnneeController::class, 'show'])->middleware('role:admin')->name('admin.archives.show');
+
+[showing lines 108-113 of 197; read again with offset=114 for more]

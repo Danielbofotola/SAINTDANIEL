@@ -1,0 +1,136 @@
+61         @endif
+62         @unless ($annee)
+63             <div class="alerte alerte--ko">Aucune année scolaire n'est en cours : ouvrez une année avant de délibérer.</div>
+64         @endunless
+65     
+66         {{-- Critères --}}
+67         <section class="carte">
+68             <h2><i class="fa-solid fa-sliders"></i> Critères de délibération</h2>
+69             <form method="POST" action="{{ route('admin.deliberations.criteres') }}">
+70                 @csrf @method('PUT')
+71                 <div class="grille">
+72                     <div>
+73                         <label>Seuil d'admission (%) — moyenne générale</label>
+74                         <input type="number" step="0.01" min="0" max="100" name="deliberation_seuil_admission"
+75                                value="{{ old('deliberation_seuil_admission', $regles['seuil_admission']) }}" required>
+76                     </div>
+77                     <div>
+78                         <label>Seuil de repêchage (%)</label>
+79                         <input type="number" step="0.01" min="0" max="100" name="deliberation_seuil_repechage"
+80                                value="{{ old('deliberation_seuil_repechage', $regles['seuil_repechage']) }}" required>
+81                     </div>
+82                     <div>
+83                         <label>Nb max de cours en échec (vide = illimité)</label>
+84                         <input type="number" min="0" max="50" name="deliberation_max_cours_echoues"
+85                                value="{{ old('deliberation_max_cours_echoues', $regles['max_cours_echoues']) }}">
+86                     </div>
+87                     <div>
+88                         <label>Note minimale par cours (%) (indicatif)</label>
+89                         <input type="number" step="0.01" min="0" max="100" name="deliberation_note_min_cours"
+90                                value="{{ old('deliberation_note_min_cours', $regles['note_min_cours']) }}">
+91                     </div>
+92                 </div>
+93                 <div class="rangee" style="margin-top:12px">
+94                     <label style="margin:0"><input type="checkbox" name="deliberation_active" value="1"
+95                         @checked($parametres->deliberation_active)> Module de délibération actif</label>
+96                     <button class="btn" type="submit"><i class="fa-solid fa-save"></i> Enregistrer les critères</button>
+97                 </div>
+98             </form>
+99         </section>
+100    
+101        {{-- Effectif --}}
+102        <section class="carte">
+103            <h2><i class="fa-solid fa-users"></i> Effectif à délibérer</h2>
+104            <form method="GET" action="{{ route('admin.deliberations.index') }}" class="rangee">
+105                <select name="classe" onchange="this.form.submit()" style="max-width:320px">
+106                    @foreach ($classes as $c)
+107                        <option value="{{ $c->id }}" @selected($classe && $classe->id === $c->id)>
+108                            {{ $c->nom }}@if ($c->ordre !== null) · niveau {{ $c->ordre }}@endif
+109                        </option>
+110                    @endforeach
+111                </select>
+112                <span style="color:var(--mut);font-size:.8rem">
+113                    @if ($classeSuivante)
+114                        Passage vers : <strong style="color:#fff">{{ $classeSuivante->nom }}</strong>
+115                    @else
+116                        <em>Aucune classe de niveau supérieur définie pour cette classe.</em>
+117                    @endif
+118                </span>
+119            </form>
+120        </section>
+121    
+122        @if ($classe && $lignes->isNotEmpty())
+123            <form method="POST" action="{{ route('admin.deliberations.enregistrer') }}">
+124                @csrf
+125                <input type="hidden" name="annee_scolaire_id" value="{{ $annee->id }}">
+126                <section class="carte">
+127                    <h2><i class="fa-solid fa-list-check"></i> Décisions — {{ $classe->nom }} ({{ $lignes->count() }} élève(s))</h2>
+128                    <table>
+129                        <thead>
+130                            <tr>
+131                                <th>Élève</th><th>Moyenne générale</th><th>Cours en échec</th>
+132                                <th>Proposition du jury</th><th>Décision</th>
+133                            </tr>
+134                        </thead>
+135                        <tbody>
+136                            @foreach ($lignes as $ligne)
+137                                @php($proposee = $ligne['analyse']['decision_proposee'])
+138                                <tr>
+139                                    <td class="nom">
+140                                        {{ $ligne['eleve']?->nom }} {{ $ligne['eleve']?->postnom }} {{ $ligne['eleve']?->prenom }}
+141                                        <div style="color:var(--mut);font-weight:400;font-size:.74rem">{{ $ligne['eleve']?->matricule }}</div>
+142                                    </td>
+143                                    <td>{{ number_format($ligne['analyse']['pourcentage'], 2, ',', ' ') }} %</td>
+144                                    <td>{{ $ligne['analyse']['cours_echoues'] }}</td>
+145                                    <td><span class="pill pill--{{ $proposee }}">{{ $decisions[$proposee] ?? $proposee }}</span></td>
+146                                    <td>
+147                                        <select name="decisions[{{ $ligne['inscription']->id }}]">
+148                                            @foreach ($decisions as $valeur => $libelle)
+149                                                <option value="{{ $valeur }}" @selected($ligne['decision'] === $valeur)>{{ $libelle }}</option>
+150                                            @endforeach
+151                                        </select>
+152                                    </td>
+153                                </tr>
+154                            @endforeach
+155                        </tbody>
+156                    </table>
+157                    <div class="rangee" style="margin-top:14px">
+158                        <button class="btn" type="submit"><i class="fa-solid fa-check"></i> Enregistrer les décisions</button>
+159                    </div>
+160                </section>
+161            </form>
+162        @elseif ($classe)
+163            <div class="carte vide">Aucun élève actif dans cette classe pour l'année en cours.</div>
+164        @endif
+165    
+166        {{-- Application en masse --}}
+167        @if ($annee)
+168            <form method="POST" action="{{ route('admin.deliberations.appliquer') }}">
+169                @csrf
+170                <input type="hidden" name="annee_scolaire_id" value="{{ $annee->id }}">
+171                <section class="carte">
+172                    <h2><i class="fa-solid fa-arrow-up-right-dots"></i> Appliquer le passage (en masse)</h2>
+173                    <p style="color:var(--mut);font-size:.82rem;margin-top:0">
+174                        Les <strong>admis</strong> sont inscrits dans la classe de niveau supérieur,
+175                        les <strong>ajournés</strong> et <strong>redoublants</strong> restent dans la même classe.
+176                        Les inscriptions sont créées « en attente » (à valider à l'encaissement).
+177                    </p>
+178                    <div class="rangee">
+179                        <div style="min-width:260px">
+180                            <label>Année scolaire cible</label>
+181                            <select name="annee_cible_id" required>
+182                                <option value="">— choisir —</option>
+183                                @foreach ($annees as $a)
+184                                    @continue($a->id === $annee->id)
+185                                    <option value="{{ $a->id }}">{{ $a->libelle }}</option>
+186                                @endforeach
+187                            </select>
+188                        </div>
+189                        <button class="btn" type="submit"><i class="fa-solid fa-rocket"></i> Appliquer les décisions enregistrées</button>
+190                    </div>
+191                </section>
+192            </form>
+193        @endif
+194    </main>
+195    </body>
+196    </html>

@@ -1,0 +1,22 @@
+216        Route::post('/admin/comptes/{user}/impersoner', [UserProfileController::class, 'impersonate'])->middleware('role:admin')->name('admin.profile.accounts.impersonate');
+217        Route::get('/admin/comptes/nouveau', [UserProfileController::class, 'createAccount'])->middleware('role:admin')->name('admin.profile.accounts.create');
+218        Route::post('/admin/comptes', [UserProfileController::class, 'storeAccount'])->middleware('role:admin')->name('admin.profile.accounts.store');
+219        Route::get('/admin/profil/modifier', [UserProfileController::class, 'edit'])->middleware('role:admin')->name('admin.profile.edit');
+220        Route::put('/admin/profil', [UserProfileController::class, 'update'])->middleware('role:admin')->name('admin.profile.update');
+221        Route::patch('/admin/profil/mot-de-passe', [UserProfileController::class, 'updatePassword'])->middleware('role:admin')->name('admin.profile.password');
+222        Route::patch('/admin/profil/desactiver', [UserProfileController::class, 'deactivate'])->middleware('role:admin')->name('admin.profile.deactivate');
+223        Route::patch('/admin/comptes/{user}/statut', [UserProfileController::class, 'toggleAccount'])->middleware('role:admin')->name('admin.profile.accounts.toggle');
+224        Route::get('/admin/comptes/{user}/mot-de-passe', [UserProfileController::class, 'editAccountPassword'])->middleware('role:admin')->name('admin.profile.accounts.password.edit');
+225        Route::patch('/admin/comptes/{user}/mot-de-passe', [UserProfileController::class, 'updateAccountPassword'])->middleware('role:admin')->name('admin.profile.accounts.password.update');
+226        Route::delete('/admin/comptes/{user}', [UserProfileController::class, 'destroyAccount'])->middleware('role:admin')->name('admin.profile.accounts.destroy');
+227        Route::post('/fin-impersonation', [UserProfileController::class, 'stopImpersonation'])->name('admin.impersonation.stop');
+228        Route::get('/admin/eleves', [EleveController::class, 'index'])->middleware('role:admin')->name('admin.eleves.index');
+229        Route::get('/admin/eleves/{eleve}/modifier', [EleveController::class, 'edit'])->middleware('role:admin')->name('admin.eleves.edit');
+230        Route::put('/admin/eleves/{eleve}', [EleveController::class, 'update'])->middleware('role:admin')->name('admin.eleves.update');
+231        Route::patch('/admin/eleves/{eleve}/statut', [EleveController::class, 'toggleStatut'])->middleware('role:admin')->name('admin.eleves.toggle');
+232        Route::post('/admin/eleves/{eleve}/documents', [EleveController::class, 'storeDocument'])->middleware('role:admin')->name('admin.eleves.documents.store');
+233        Route::get('/admin/eleves/{eleve}', [EleveController::class, 'show'])->middleware('role:admin')->name('admin.eleves.show');
+234        Route::get('/admin/eleves/inscription/nouvelle', [EleveInscriptionController::class, 'create'])->middleware('role:admin')->name('admin.eleves.create');
+235        Route::post('/admin/eleves/inscription', [EleveInscriptionController::class, 'store'])->middleware('role:admin')->name('admin.eleves.store');
+
+[showing lines 216-235 of 322; read again with offset=236 for more]

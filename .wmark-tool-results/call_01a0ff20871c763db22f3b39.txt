@@ -1,0 +1,39 @@
+1      <?php
+2      
+3      namespace App\Http\Controllers;
+4      
+5      use App\Models\Eleve;
+6      use App\Models\Classe;
+7      use App\Models\Professeurs;
+8      use App\Models\Cycle;
+9      use Illuminate\Support\Facades\DB;
+10     use Illuminate\View\View;
+11     
+12     class AdminDashboardController extends Controller
+13     {
+14         public function index(): View
+15         {
+16             return view('admin.dashboard', [
+17                 'eleves' => Eleve::with(['inscriptions.classe.cycle'])->latest()->get(),
+18                 'statistiques' => [
+19                     'garcons' => Eleve::where('statut', 'actif')->where('sexe', 'M')->count(),
+20                     'filles' => Eleve::where('statut', 'actif')->where('sexe', 'F')->count(),
+21                     'classes' => Classe::where('statut', 'actif')->count(),
+22                     'professeurs' => Professeurs::where('statut', 'actif')->count(),
+23                 ],
+24                 'occupationSalles' => Classe::with('salle')
+25                     ->withCount(['inscriptions as eleves_count' => fn ($query) => $query->where('statut', 'actif')])
+26                     ->where('statut', 'actif')
+27                     ->orderBy('nom')
+28                     ->get(),
+29                 'repartitionCycles' => DB::table('cycles')
+30                     ->leftJoin('classes', fn ($join) => $join->on('classes.cycle_id', '=', 'cycles.id')->where('classes.statut', 'actif'))
+31                     ->leftJoin('inscriptions', fn ($join) => $join->on('inscriptions.classe_id', '=', 'classes.id')->where('inscriptions.statut', 'actif'))
+32                     ->where('cycles.statut', 'actif')
+33                     ->groupBy('cycles.id', 'cycles.nom')
+34                     ->orderBy('cycles.nom')
+35                     ->selectRaw('cycles.nom, COUNT(inscriptions.id) as total')
+36                     ->get(),
+37             ]);
+38         }
+39     }

@@ -1,0 +1,31 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\e1ce9c26600a\20261004-205810-bash-call_01a1087ef21c73a78ae56fc9.txt (1,956 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Structured view (text):
+[powershell — Windows side]
+LineNumber Line                                                                                                        
+---------- ----                                                                                                        
+       266     @php($totalEleves = $statistiques['garcons'] + $statistiques['filles'])                                 
+       312             <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i               
+           class="app-menu__icon fa fa-users"></i><span class="app-menu__label">�l�ves</span><i                        
+           class="treeview-indicator fa fa-angle-right"></i></a>                                                       
+       313                 <ul class="treeview-menu">                                                                  
+       314                     <li><a class="treeview-item" href="#"><i class="icon fa fa-circle-o"></i> Liste des     
+           �l�ves</a></li>                                                                                             
+       315                     <li><a class="treeview-item" href="{{ route('admin.eleves.create') }}"><i class="icon   
+           fa fa-circle-o"></i> Inscrire un �l�ve</a></li>                                                             
+       316                     <li><a class="treeview-item" href="{{ route('admin.registration.students') }}"><i       
+           class="icon fa fa-inb
+… 3,359 chars elided …
+i> Cr�er une salle</a></li>                                                             
+       337                     <li><a class="treeview-item" href="{{ route('admin.annees.index') }}"><i class="icon fa 
+           fa-calendar"></i> Ann�es scolaires</a></li>                                                                 
+       338                     <li><a class="treeview-item" href="{{ route('admin.sections.index') }}"><i class="icon  
+           fa fa-sitemap"></i> Sections</a></li>                                                                       
+       339                     <li><a class="treeview-item" href="{{ route('admin.options.index') }}"><i class="icon   
+           fa fa-list-ul"></i> Options</a></li>                                                                
+… 4,160 chars elided …
+                                                
+       603                 $('#elevesTable').DataTable({                                                               
+       626             const occupationData = @json($occupationSalles->pluck('eleves_count'));                         
+
+
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

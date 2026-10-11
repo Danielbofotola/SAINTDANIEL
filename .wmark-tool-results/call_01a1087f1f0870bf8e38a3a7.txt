@@ -1,0 +1,58 @@
+1      <!DOCTYPE html>
+2      <html lang="fr">
+3      <head>
+4          <meta charset="utf-8">
+5          <meta name="viewport" content="width=device-width, initial-scale=1">
+6          <title>Élèves de {{ $classe->nom }}</title>
+7          <link rel="stylesheet" href="{{ asset('boostrap/css/css/main.css') }}">
+8          <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+9              <link rel="stylesheet" href="{{ asset('boostrap/css/css/main.css') }}">
+10         <link rel="stylesheet" href="{{ asset('boostrap/css/font-awesome/css/fa-regular.min.css') }}">
+11         <link rel="stylesheet" href="{{ asset('boostrap/css/font-awesome/css/fontawesome.css') }}">
+12         <link rel="stylesheet" href="{{ asset('boostrap/css/font-awesome/css/fa-solid.css') }}">
+13         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+14         <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap4.min.css">
+15         <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+16     </head>
+17     <body class="app">
+18         <main class="app-content" style="margin-left:0">
+19             <div class="app-title">
+20                 <div>
+21                     <h1><i class="fa fa-users"></i> Élèves de la classe {{ $classe->nom }}</h1>
+22                     <p>{{ $classe->cycle?->nom ?? 'Cycle non renseigné' }} · {{ $classe->section?->nom ?? 'Section non renseignée' }} · {{ $classe->option?->nom ?? 'Option non renseignée' }}@if($anneeEnCours) · année <strong>{{ $anneeEnCours->libelle }}</strong>@endif</p>
+23                 </div>
+24                 <div><a href="{{ route('admin.classes.index') }}" class="btn btn-secondary">Retour aux classes</a> <a href="{{ route('admin.eleves.create') }}" class="btn btn-primary"><i class="fa fa-user-plus"></i> Inscrire un élève</a></div>
+25             </div>
+26     
+27             <div class="row">
+28                 <div class="col-md-3"><div class="widget-small primary coloured-icon"><i class="icon fa fa-users fa-3x"></i><div class="info"><h4>Élèves actifs @if($anneeEnCours)<small>{{ $anneeEnCours->libelle }}</small>@endif</h4><p><b>{{ $inscriptions->count() }}</b></p></div></div></div>
+29                 <div class="col-md-3"><div class="widget-small info coloured-icon"><i class="icon fa fa-university fa-3x"></i><div class="info"><h4>Salle</h4><p><b>{{ $classe->salle?->nom ?? 'Non attribuée' }}</b></p></div></div></div>
+30             </div>
+31     
+32             <div class="tile">
+33                 <div class="table-responsive">
+34                     <table class="table table-hover table-bordered">
+35                         <thead><tr><th>#</th><th>Photo</th><th>Matricule</th><th>Nom complet</th><th>Sexe</th><th>Date de naissance</th><th>Date d'inscription</th><th>Actions</th></tr></thead>
+36                         <tbody>
+37                             @forelse ($inscriptions as $inscription)
+38                                 @php($eleve = $inscription->eleve)
+39                                 <tr>
+40                                     <td>{{ $loop->iteration }}</td>
+41                                     <td class="text-center">@if ($eleve?->photo)<img src="{{ asset('storage/'.$eleve->photo) }}" alt="Photo" width="40" height="40" class="rounded-circle" style="object-fit:cover">@else<i class="fa fa-user-circle fa-2x text-secondary"></i>@endif</td>
+42                                     <td>{{ $eleve?->matricule ?? '—' }}</td>
+43                                     <td>{{ $eleve?->nom }} {{ $eleve?->postnom }} {{ $eleve?->prenom }}</td>
+44                                     <td>{{ $eleve?->sexe === 'M' ? 'Garçon' : 'Fille' }}</td>
+45                                     <td>{{ $eleve?->date_naissance?->format('d/m/Y') ?? 'Non renseignée' }}</td>
+46                                     <td>{{ $inscription->date_inscription?->format('d/m/Y') ?? 'Non renseignée' }}</td>
+47                                     <td><a href="{{ $eleve ? route('admin.eleves.show', $eleve) : '#' }}" class="btn btn-sm btn-info" title="Voir le dossier"><i class="fa fa-folder-open"></i></a></td>
+48                                 </tr>
+49                             @empty
+50                                 <tr><td colspan="8" class="text-center text-muted">Aucun élève inscrit dans cette classe.</td></tr>
+51                             @endforelse
+52                         </tbody>
+53                     </table>
+54                 </div>
+55             </div>
+56         </main>
+57     </body>
+58     </html>

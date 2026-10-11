@@ -1,0 +1,46 @@
+1      <!DOCTYPE html>
+2      <html lang="fr">
+3      <head>
+4          <meta charset="utf-8">
+5          <meta name="viewport" content="width=device-width, initial-scale=1">
+6          <link rel="stylesheet" href="{{ asset('boostrap/css/css/main.css') }}">
+7          <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+8          <link rel="stylesheet" href="{{ asset('boostrap/css/css/main.css') }}">
+9          <link rel="stylesheet" href="{{ asset('boostrap/css/font-awesome/css/fa-regular.min.css') }}">
+10         <link rel="stylesheet" href="{{ asset('boostrap/css/font-awesome/css/fontawesome.css') }}">
+11         <link rel="stylesheet" href="{{ asset('boostrap/css/font-awesome/css/fa-solid.css') }}">
+12         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+13         <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap4.min.css">
+14         <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+15         <title>Dossier de {{ $eleve->prenom }} {{ $eleve->nom }}</title>
+16     </head>
+17     <body class="app">
+18         @php
+19             $inscription = $eleve->inscriptions->firstWhere('statut', 'actif') ?? $eleve->inscriptions->first();
+20             $documentLabels = ['acte_naissance' => 'Acte de naissance', 'bulletin' => 'Bulletin scolaire', 'certificat_medical' => 'Certificat médical', 'autre' => 'Autre document'];
+21         @endphp
+22         <main class="app-content" style="margin-left:0">
+23             <div class="app-title"><div><h1><i class="fa fa-folder-open"></i> Dossier de l'élève</h1><p>Informations scolaires, médicales et administratives.</p></div><div><a class="btn btn-info" href="{{ route('admin.eleves.edit', $eleve) }}"><i class="fa fa-pencil"></i> Modifier le profil</a> <a class="btn btn-secondary" href="{{ route('admin.dashboard') }}"><i class="fa fa-arrow-left"></i> Retour</a></div></div>
+24             @if (session('success'))<div class="alert alert-success">{{ session('success') }}</div>@endif
+25             <div class="tile mb-4"><div class="row align-items-center"><div class="col-md-3 text-center">
+26                 @if ($eleve->photo)<img src="{{ asset('storage/'.$eleve->photo) }}" alt="Photo de {{ $eleve->prenom }}" width="150" height="180" style="object-fit:cover;border-radius:8px">@else<i class="fa fa-user-circle fa-5x text-secondary"></i>@endif
+27             </div><div class="col-md-9">
+28                 <h2>{{ $eleve->nom }} {{ $eleve->postnom }} {{ $eleve->prenom }}</h2><p><strong>Matricule :</strong> {{ $eleve->matricule }}</p><span class="badge badge-{{ $eleve->statut === 'actif' ? 'success' : 'secondary' }}">{{ ucfirst($eleve->statut) }}</span>
+29             </div></div></div>
+30             <div class="row"><div class="col-md-6">
+31                 <div class="tile mb-4"><h4 class="tile-title"><i class="fa fa-id-card"></i> Identité</h4><table class="table table-bordered"><tbody>
+32                     <tr><th>Sexe</th><td>{{ $eleve->sexe === 'M' ? 'Garçon' : 'Fille' }}</td></tr>
+33                     <tr><th>Matricule</th><td>{{ $eleve->matricule }}</td></tr>
+34                     <tr><th>Date de naissance</th><td>{{ $eleve->date_naissance?->format('d/m/Y') }}</td></tr>
+35                     <tr><th>Lieu de naissance</th><td>{{ $eleve->lieu_naissance ?: 'Non renseigné' }}</td></tr>
+36                 </tbody></table>
+37                 </div>
+38                 <div class="tile mb-4"><h4 class="tile-title"><i class="fa fa-graduation-cap"></i> Scolarité</h4><table class="table table-bordered"><tbody><tr><th>Classe</th><td>{{ $inscription?->classe?->nom ?? 'Non affecté' }}</td></tr><tr><th>Cycle</th><td>{{ $inscription?->classe?->cycle?->nom ?? 'Non renseigné' }}</td></tr><tr><th>Section</th><td>{{ $inscription?->classe?->section?->nom ?? 'Non renseignée' }}</td></tr><tr><th>Option</th><td>{{ $inscription?->classe?->option?->nom ?? 'Non renseignée' }}</td></tr><tr><th>Inscription</th><td>{{ $inscription?->date_inscription?->format('d/m/Y') ?? 'Non renseignée' }}</td></tr></tbody></table></div>
+39                 <div class="tile mb-4"><h4 class="tile-title"><i class="fa fa-heartbeat"></i> Santé</h4><table class="table table-bordered"><tbody><tr><th>Groupe sanguin</th><td>{{ $eleve->sante?->groupe_sanguin ?: 'Non renseigné' }}</td></tr><tr><th>Allergies/pathologies</th><td>{{ $eleve->sante?->allergies_pathologies ?: 'Aucune information' }}</td></tr><tr><th>Traitements/urgences</th><td>{{ $eleve->sante?->traitements_urgences ?: 'Aucune information' }}</td></tr><tr><th>Médecin référent</th><td>{{ $eleve->sante?->medecin_referent ?: 'Non renseigné' }}</td></tr></tbody></table></div>
+40             </div><div class="col-md-6">
+41                 <div class="tile mb-4"><h4 class="tile-title"><i class="fa fa-users"></i> Responsables légaux</h4><h5>Mère / responsable principal</h5><p>{{ $eleve->tuteur?->nom_mere ?: 'Non renseigné' }}<br>{{ $eleve->tuteur?->telephone_mere ?: 'Téléphone non renseigné' }}<br>{{ $eleve->tuteur?->email_mere ?: 'E-mail non renseigné' }}<br>{{ $eleve->tuteur?->adresse_mere ?: 'Adresse non renseignée' }}</p><h5>Père</h5><p class="mb-0">{{ $eleve->tuteur?->nom_pere ?: 'Non renseigné' }}<br>{{ $eleve->tuteur?->telephone_pere ?: 'Téléphone non renseigné' }}<br>{{ $eleve->tuteur?->email_pere ?: 'E-mail non renseigné' }}<br>{{ $eleve->tuteur?->adresse_pere ?: 'Adresse non renseignée' }}</p></div>
+42                 <div class="tile mb-4"><h4 class="tile-title"><i class="fa fa-files-o"></i> Documents et fichiers attachés</h4>@forelse ($eleve->documents as $document)<div class="border-bottom py-2 d-flex justify-content-between align-items-center"><span><i class="fa fa-file-text-o text-primary"></i> {{ $documentLabels[$document->type_document] ?? ucfirst($document->type_document) }}<br><small class="text-muted">{{ $document->created_at?->format('d/m/Y') }}</small></span><a class="btn btn-sm btn-primary" href="{{ asset('storage/'.$document->chemin_fichier) }}" target="_blank" rel="noopener"><i class="fa fa-eye"></i> Ouvrir</a></div>@empty<p class="text-muted mb-0">Aucun document attaché à ce dossier.</p>@endforelse</div>
+43             </div></div>
+44         </main>
+45     </body>
+46     </html>

@@ -1,0 +1,18 @@
+17                 <div>
+18                     <h1><i class="fa fa-pencil"></i> Évaluations</h1>
+19                     <p>Créez les interrogations, devoirs et examens puis saisissez les notes @if($annee) — année <strong>{{ $annee->libelle }}</strong>@endif.</p>
+20                 </div>
+21                 <div>
+22                     <a href="{{ route('admin.periodes.index') }}" class="btn btn-secondary">Périodes</a>
+23                     <a href="{{ route('admin.bulletins.index') }}" class="btn btn-primary"><i class="fa fa-file-text-o"></i> Bulletins</a>
+24                 </div>
+25             </div>
+26     
+27             @if (session('success'))<div class="alert alert-success">{{ session('success') }}</div>@endif
+28             @if (session('error'))<div class="alert alert-danger">{{ session('error') }}</div>@endif
+29             @if ($errors->any())<div class="alert alert-danger"><ul class="mb-0">@foreach ($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul></div>@endif
+30             @unless ($annee)<div class="alert alert-warning"><i class="fa fa-exclamation-triangle"></i> Aucune année scolaire en cours.</div>@endunless
+31     
+32             <div class="tile mb-4">
+
+[showing lines 17-32 of 97; read again with offset=33 for more]

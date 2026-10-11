@@ -1,0 +1,3 @@
+partial lignes: 178
+professeur: avant 320 lignes -> apres 143 lignes
+bloc style preserve: <style> ... </style>

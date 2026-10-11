@@ -1,0 +1,28 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\e1ce9c26600a\20261005-003334-apply_patch-call_01a1094429ba775180d1a634.txt (663 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+Applied patch: 4 files changed (4 updated)
+Updated resources/views/partials/raccourcis.blade.php (2 hunks applied)
+Updated resources/views/prefecture/dashboard.blade.php (1 hunk applied)
+Updated resources/views/titulaire/dashboard.blade.php (1 hunk applied)
+Updated resources/views/comptable/dashboard.blade.php (1 hunk applied)
+Landed at lines 1-1 (the file's new text; no re-read needed):
+1      <ul class="raccourcis-nav {{ ($variante ?? 'sombre') === 'clair' ? 'raccourcis-nav--clair' : '' }}">
+L
+
+... 338 chars truncated ...
+
+4px; padding: 0 12px; margin-right: 6px; border-radius: 999px;
+37             background: #f1f5f9; color: #1e293b; }
+38         .raccourcis-nav--clair .raccourcis-nav__item:hover,
+39         .raccourcis-nav--clair .raccourcis-nav__item:focus { background: #e2e8f0; color: #0f172a; }
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 47-47 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 48-48:
+48                         @include('partials.raccourcis', ['raccourcis' => \App\Support\Raccourcis::pour($user), 'variante' => 'clair'])
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 46-46 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 47-47:
+47                         @include('partials.raccourcis', ['raccourcis' => \App\Support\Raccourcis::pour($user), 'variante' => 'clair'])
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 268-268 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 269-269:
+269        <div class="d-flex justify-content-end mb-2">@include('partials.raccourcis', ['raccourcis' => \App\Support\Raccourcis::pour($user), 'variante' => 'clair'])</div>

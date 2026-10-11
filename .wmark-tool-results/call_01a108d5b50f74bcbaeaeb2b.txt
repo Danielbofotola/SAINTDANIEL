@@ -1,0 +1,5 @@
+Applied patch: 1 file changed (1 updated)
+Updated resources/views/errors/layout.blade.php (1 hunk applied)
+Landed at lines 1-2 (the file's new text; no re-read needed):
+1      @php($etablissement = rescue(fn () => \App\Models\ParametreSysteme::current()?->nom_etablissement, null) ?: config('app.name', 'Établissement scolaire'))
+2      <!DOCTYPE html>

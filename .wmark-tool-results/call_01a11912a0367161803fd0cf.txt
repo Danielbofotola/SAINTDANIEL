@@ -1,0 +1,26 @@
+38             return view('parent.portail', [
+39                 'user' => $utilisateur,
+40                 'parametres' => $parametres,
+41                 'conversations' => $conversations,
+42                 'active' => $active,
+43                 'messages' => $active ? $active->messages()->with('auteur')->get() : collect(),
+44                 'annonces' => Annonce::query()
+45                     ->where(fn ($query) => $query->where('cible', 'tous')->orWhere('cible', 'parent'))
+46                     ->latest()
+47                     ->limit(10)
+48                     ->get(),
+49                 'notifications' => $utilisateur->notifications()->latest()->limit(15)->get(),
+50                 // Enfants rattachés à ce compte parent (lien posé par l'admin).
+51                 'enfants' => $utilisateur->role === 'parent'
+52                     ? $utilisateur->eleves()
+53                         ->with(['inscriptions' => fn ($query) => $query->anneeEnCours()->with('classe')])
+54                         ->orderBy('nom')
+55                         ->orderBy('prenom')
+56                         ->get()
+57                     : collect(),
+58                 // Correspondants possibles : pour un parent, le préfet (préfecture).
+59                 'destinataires' => Messagerie::correspondantsQuery($utilisateur)->get(),
+60                 'nonLus' => (int) $conversations->sum('non_lus'),
+61             ]);
+62         }
+63     }

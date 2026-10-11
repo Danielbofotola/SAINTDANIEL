@@ -1,0 +1,33 @@
+Applied patch: 2 files changed (2 updated)
+Updated app/Support/Messagerie.php (1 hunk applied)
+Updated app/Http/Controllers/MessagerieController.php (1 hunk applied)
+Landed at lines 147-147 (the file's new text; no re-read needed):
+147            $query = Conversation::query()
+Landed at lines 150-160 (the file's new text; no re-read needed):
+150                ->orderByDesc('derniere_activite_at');
+151    
+152            // Un parent ne dialogue qu'avec le préfet : les échanges avec les autres
+153            // services restent masqués de sa liste de discussions.
+154            if ($utilisateur->role === 'parent') {
+155                $query->whereDoesntHave('participants', fn ($query) => $query
+156                    ->where('user_id', '!=', $utilisateur->id)
+157                    ->where('users.role', '!=', 'prefetture'));
+158            }
+159    
+160            return $query->get()
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 167-172 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 172-184:
+172    
+173            // Un parent ne dialogue qu'avec le préfet : aucun accès aux échanges
+174            // avec les autres services, même en connaissant l'identifiant.
+175            if ($request->user()->role === 'parent') {
+176                abort_if(
+177                    $conversation->participants()
+178                        ->where('user_id', '!=', $request->user()->id)
+179                        ->where('users.role', '!=', 'prefetture')
+180                        ->exists(),
+181                    403,
+182                    'Cette conversation ne vous concerne pas.'
+183                );
+184            }

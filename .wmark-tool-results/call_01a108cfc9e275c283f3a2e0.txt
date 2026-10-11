@@ -1,0 +1,4 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/InscriptionValidationTest.php (1 hunk applied)
+Landed at lines 29-29 (the file's new text; no re-read needed):
+29             $table->string('pin_code')->nullable();

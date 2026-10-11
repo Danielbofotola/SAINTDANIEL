@@ -1,0 +1,55 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\b493c9bc81dc\20261008-012606-bash-call_01a118e765557464b4c85909.txt (520 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+[powershell — Windows side]
+src=C:\Users\danie\AppData\Local\Temp\azzara_src_1511789100
+dest=C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\public\azzara
+=== copié : css ===
+azzara.css
+azzara.css.map
+azzara.min.css
+azzara.min.css.map
+bootstrap.min.css
+bootstrap.min.css.map
+demo.css
+fonts.css
+=== js core ===
+bootstrap.min.js
+jquery.3.2.1.min.js
+popper.min.js
+=== js plugin (dossiers) ===
+bootstrap-notify
+bootstrap-toggle
+chart-circle
+chart.js
+datatables
+dropzone
+gmaps
+jquery-scrollbar
+jquery-ui-1.12.1.custom
+jquery-ui-touch-punch
+jquery.sparkline
+jquery.validate
+jqvmap
+moment
+summernote
+sweetalert
+webfont
+=== img (extraits) ===
+examples
+flags
+arashmil.jpg
+bg-404.jpeg
+blogpost.jpg
+chadengle.jpg
+icon.ico
+icon.png
+icon.svg
+jm_denis.jpg
+logoazzara.svg
+logoazzara2.svg
+logoproduct.svg
+logoproduct2.svg
+logoproduct3.svg
+=== taille totale ===
+13,8 Mo
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

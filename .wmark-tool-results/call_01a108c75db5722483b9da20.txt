@@ -1,0 +1,8 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/ComptableCaisseTest.php (3 hunks applied)
+Landed at lines 11-11 (the file's new text; no re-read needed):
+11             'paiements', 'frais_scolaires', 'types_frais', 'inscriptions', 'periodes', 'eleves', 'tuteurs',
+Landed at lines 117-117 (the file's new text; no re-read needed):
+117            $table->unsignedBigInteger('periode_id')->nullable();
+Landed at lines 131-131 (the file's new text; no re-read needed):
+131        DB::table('periodes')->insert(['id' => 1, 'annee_scolaire_id' => 1, 'nom' => '1ère Période', 'statut' => 'actif', 'created_at' => now(), 'updated_at' => now()]);

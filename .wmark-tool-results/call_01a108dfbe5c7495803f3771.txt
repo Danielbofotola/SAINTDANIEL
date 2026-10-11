@@ -1,0 +1,12 @@
+Applied patch: 1 file changed (1 updated)
+Updated app/Http/Controllers/ComptablePaiementController.php (1 hunk applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 79-79 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 80-86:
+80                 'nomsClasses' => $classes->pluck('nom', 'id'),
+81                 'tarifsDisponibles' => $tarifs->map(fn ($tarif) => [
+82                     'id' => $tarif->id,
+83                     'classe' => $tarif->classe_id,
+84                     'libelle' => ($tarif->typeFrais?->nom ?? 'Tarif').' — '.($tarif->classe?->nom ?? '—')
+85                         .' ('.number_format((float) $tarif->montant_exige, 2, ',', ' ').')',
+86                 ])->values(),

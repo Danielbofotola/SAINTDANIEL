@@ -1,0 +1,18 @@
+294                                        <div class="text-muted">{{ '@'.$user->username }} · Comptable (caisse)</div>
+295                                        @if ($user->email)<div class="text-muted">{{ $user->email }}@if ($user->telephone) · {{ $user->telephone }}@endif</div>@endif
+296                                    </div>
+297                                    <div class="text-end">
+298                                        <span class="badge bg-success"><i class="bi bi-circle-fill me-1" style="font-size:.5rem"></i>En ligne</span>
+299                                        <div class="text-muted mt-1">Connexion : {{ $user->last_login ? \Carbon\Carbon::parse($user->last_login)->format('d/m/Y H:i') : '—' }}</div>
+300                                    </div>
+301                                </div>
+302                                <div class="text-center text-secondary mb-2">{{ $schoolYear ? 'Année scolaire '.$schoolYear->libelle : 'Année scolaire non définie' }}</div>
+303                                <div class="row g-2 align-items-center mb-2">
+304                                    <div class="col-7">
+305                                        <div class="inner-block text-center">
+306                                            <div class="text-muted fw-semibold">Total encaissé</div>
+307                                            <div class="fw-bold fs-3 my-1">
+308                                                @forelse ($encaisseParDevise as $devise => $montant){{ $money($montant, $devise) }}@if (! $loop->last) · @endif @empty {{ $money($encaisse) }} @endforelse
+309                                            </div>
+
+[showing lines 294-309 of 515; read again with offset=310 for more]

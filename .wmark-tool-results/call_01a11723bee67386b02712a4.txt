@@ -1,0 +1,47 @@
+146        .compose__actions { display: flex; justify-content: flex-end; gap: 8px; }
+147        .compose__actions .btn-compose { width: auto; padding: 8px 18px; }
+148        .btn-ghost-2 { background: transparent; border: 1px solid var(--chat-divider); color: var(--chat-muted); border-radius: 8px; padding: 8px 16px; cursor: pointer; }
+149    
+150        /* ===== Mobile : la barre d'écriture reste toujours accessible ===== */
+151        @media (max-width: 820px) {
+152            .msg-shell { grid-template-columns: 1fr; height: auto; min-height: 0; }
+153            .msg-list { border-right: none; height: 58vh; }
+154            /* Aucun fil ouvert : la liste ET la barre d'écriture sont visibles. */
+155            .msg-thread { min-height: 0; }
+156            /* Un fil ouvert : plein écran, la liste s'efface. */
+157            .msg-shell.show-thread .msg-list { display: none; }
+158            .msg-shell.show-thread .msg-thread { min-height: 78vh; }
+159        }
+160    </style>
+161    @endonce
+162    
+163    <div class="msg-shell {{ $active ? 'show-thread' : '' }}" id="msgShell">
+164        <aside class="msg-list">
+165            <div class="msg-list__title">
+166                <h2>Messages</h2>
+167                <span style="color:var(--chat-muted)"><i class="fa-solid fa-magnifying-glass"></i></span>
+168            </div>
+169            <div class="msg-list__head">
+170                <div class="msg-tabs">
+171                    <button type="button" class="msg-tab {{ $vueParDefaut === 'correspondants' ? 'active' : '' }}"
+172                            data-cible="correspondants" onclick="msgTab('correspondants', this)">
+173                        <i class="fa-solid fa-user-group"></i> Correspondants
+174                    </button>
+175                    <button type="button" class="msg-tab {{ $vueParDefaut === 'discussions' ? 'active' : '' }}"
+176                            data-cible="discussions" onclick="msgTab('discussions', this)">
+177                        <i class="fa-solid fa-comments"></i> Discussions
+178                    </button>
+179                </div>
+180                <button class="btn-compose" type="button" onclick="ouvrirCompose()">
+181                    <i class="fa-solid fa-pen-to-square"></i> Nouveau message
+182                </button>
+183                <input type="text" id="convSearch" placeholder="Rechercher…">
+184            </div>
+185    
+186            <div class="conv-scroll" id="convContainer" data-vue="discussions" @if ($vueParDefaut !== 'discussions') style="display:none" @endif>
+187                @forelse ($conversations as $conversation)
+188                    @php($corr = $conversation->participants->firstWhere('id', '!=', $user->id))
+189                    <a class="conv {{ $active && $active->id === $conversation->id ? 'active' : '' }}"
+190                       href="{{ $espaceUrl.'?conversation='.$conversation->id }}"
+
+[showing lines 146-190 of 756; read again with offset=191 for more]

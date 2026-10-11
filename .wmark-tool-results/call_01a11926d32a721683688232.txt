@@ -1,0 +1,8 @@
+157        // Notifications : boîte de réception commune à tous les rôles.
+158        Route::get('/notifications', [NotificationController::class, 'index'])->middleware('auth')->name('notifications.index');
+159        Route::patch('/notifications/toutes-lues', [NotificationController::class, 'readAll'])->middleware('auth')->name('notifications.readall');
+160        Route::patch('/notifications/{notification}/lue', [NotificationController::class, 'read'])->middleware('auth')->name('notifications.read');
+161        // Messagerie interne : discussion directe ou diffusion à tous les utilisateurs.
+162        Route::get('/messagerie', [MessagerieController::class, 'index'])->middleware('auth')->name('messagerie.index');
+
+[showing lines 157-162 of 299; read again with offset=163 for more]

@@ -1,0 +1,27 @@
+[powershell — Windows side]
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\ProfesseursPagesTest > an admin can create a cours and an affectation for the current year     
+  Failed asserting that two strings are equal.
+--- Expected
++++ Actual
+@@ @@
+-'...ecole.loca.lt/admin/cours-affectations'
++'...ecole.loca.lt/admin/cours'
+
+  at tests\Feature\ProfesseursPagesTest.php:250
+    246▕     $admin = User::factory()->create(['role' => 'admin']);
+    247▕ 
+    248▕     $this->actingAs($admin)
+    249▕         ->post(route('admin.cours.store'), ['code' => 'FRAN6', 'intitule' => 'Français 6', 'ponderation' => 3])
+  ➜ 250▕         ->assertRedirect(route('admin.affectations.index'));
+    251▕     $this->assertDatabaseHas('cours', ['code' => 'FRAN6']);
+    252▕ 
+    253▕     $coursId = (int) DB::table('cours')->where('code', 'FRAN6')->value('id');
+    254▕
+
+
+  Tests:    2 failed, 276 passed (1768 assertions)
+  Duration: 12.71s
+
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

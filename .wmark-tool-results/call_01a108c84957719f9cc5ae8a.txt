@@ -1,0 +1,14 @@
+432            ->assertSee('Année clôturée')
+433            ->assertSee('Mwamba')
+434            ->assertSee('3e A')
+435            ->assertSee('90,00')
+436            ->assertSee('Entretien');
+437    
+438    test('an admin can open the receipt of a payment', function () {
+439        $inscriptionId = seedInscription();
+440        $fraisId = seedFrais('150.00');
+441        DB::table('paiements')->insert([
+442            'num_recu' => 'REC-2026-2027-0001', 'inscription_id' => $inscriptionId, 'frais_scolaire_id' => $fraisId,
+443            'montant_paye' => 40, 'date_paiement' => now(), 'mode_paiement' => 'especes', 'statut' => 'actif',
+
+[showing lines 432-443 of 459; read again with offset=444 for more]

@@ -1,0 +1,23 @@
+1      <?php
+2      
+3      namespace App\Http\Middleware;
+4      
+5      use Closure;
+6      use Illuminate\Http\Request;
+7      use Symfony\Component\HttpFoundation\Response;
+8      
+9      class EnsureUserHasRole
+10     {
+11         public function handle(Request $request, Closure $next, string ...$roles): Response
+12         {
+13             if ($request->session()->has('impersonating_admin_id') && in_array('admin', $roles, true)) {
+14                 abort(403, 'Les accès administrateur sont désactivés pendant une session de consultation.');
+15             }
+16     
+17             if (! $request->user() || ! in_array($request->user()->role, $roles, true)) {
+18                 abort(403, 'Vous n’avez pas accès à cette page.');
+19             }
+20     
+21             return $next($request);
+22         }
+23     }

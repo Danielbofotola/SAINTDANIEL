@@ -1,0 +1,293 @@
+1      <?php
+2      
+3      use App\Models\AnneeScolaire;
+4      use App\Models\Classe;
+5      use App\Models\Deliberation;
+6      use App\Models\Eleve;
+7      use App\Models\Inscription;
+8      use App\Models\ParametreSysteme;
+9      use App\Models\User;
+10     use App\Support\Jury;
+11     use Illuminate\Database\Schema\Blueprint;
+12     use Illuminate\Support\Facades\DB;
+13     use Illuminate\Support\Facades\Schema;
+14     
+15     beforeEach(function () {
+16         Schema::disableForeignKeyConstraints();
+17         foreach ([
+18             'deliberations', 'notes', 'evaluations', 'periodes', 'affectations_cours', 'cours',
+19             'inscriptions', 'eleves', 'classes', 'cycles', 'salles', 'annees_scolaires',
+20             'sections', 'options',
+21             'notifications', 'professeurs', 'parametres_systeme', 'users',
+22              'eleve_user',
+23         ] as $table) {
+24             Schema::dropIfExists($table);
+25         }
+26         Schema::enableForeignKeyConstraints();
+27     
+28         Schema::create('users', function (Blueprint $table) {
+29             $table->id();
+30             $table->unsignedBigInteger('professeur_id')->nullable()->unique();
+31             $table->string('nom', 50)->nullable();
+32             $table->string('postnom', 50)->nullable();
+33             $table->string('prenom', 50)->nullable();
+34             $table->string('photo')->nullable();
+35             $table->string('username')->unique();
+36             $table->string('email')->unique();
+37             $table->string('password');
+38             $table->string('pin_code')->nullable();
+39             $table->string('role');
+40             $table->string('statut');
+41             $table->rememberToken();
+42             $table->timestamps();
+43         });
+44         Schema::create('professeurs', function (Blueprint $table) {
+45             $table->id();
+46             $table->string('matricule')->unique();
+47             $table->string('nom');
+48             $table->string('postnom')->nullable();
+49             $table->string('prenom');
+50             $table->string('statut')->default('actif');
+51             $table->timestamps();
+52         });
+53         Schema::create('parametres_systeme', function (Blueprint $table) {
+54             $table->id();
+55             $table->string('nom_etablissement', 150)->default('Etablissement');
+56             $table->string('nom_court', 60)->default('Ecole');
+57             $table->boolean('saisie_notes_active')->default(true);
+58             $table->boolean('portail_parents_actif')->default(false);
+59             $table->boolean('deliberation_active')->default(false);
+60             $table->decimal('deliberation_seuil_admission', 5, 2)->default(50);
+61             $table->decimal('deliberation_seuil_repechage', 5, 2)->default(45);
+62             $table->unsignedInteger('deliberation_max_cours_echoues')->nullable();
+63             $table->decimal('deliberation_note_min_cours', 5, 2)->nullable();
+64             $table->timestamps();
+65         });
+66         DB::table('parametres_systeme')->insert(['nom_court' => 'Ecole Test', 'created_at' => now(), 'updated_at' => now()]);
+67     
+68         Schema::create('annees_scolaires', function (Blueprint $table) {
+69             $table->id();
+70             $table->string('libelle', 20)->unique();
+71             $table->date('date_debut');
+72             $table->date('date_fin');
+73             $table->boolean('is_encours')->default(false);
+74             $table->string('statut')->default('actif');
+75             $table->timestamps();
+76         });
+77         Schema::create('cycles', function (Blueprint $table) {
+78             $table->id();
+79             $table->string('nom');
+80             $table->string('statut')->default('actif');
+81             $table->timestamps();
+82         });
+83         Schema::create('salles', function (Blueprint $table) {
+84             $table->id();
+85             $table->string('nom')->nullable();
+86             $table->timestamps();
+87         });
+88         Schema::create('sections', function (Blueprint $table) {
+89             $table->id();
+90             $table->string('nom');
+91             $table->timestamps();
+92         });
+93         Schema::create('options', function (Blueprint $table) {
+94             $table->id();
+95             $table->unsignedBigInteger('section_id')->nullable();
+96             $table->string('nom');
+97             $table->timestamps();
+98         });
+99         Schema::create('classes', function (Blueprint $table) {
+100            $table->id();
+101            $table->unsignedBigInteger('cycle_id')->nullable();
+102            $table->unsignedBigInteger('salle_id')->nullable();
+103            $table->string('nom');
+104            $table->unsignedInteger('ordre')->nullable();
+105            $table->string('section_id')->nullable();
+106            $table->string('option_id')->nullable();
+107            $table->string('statut')->default('actif');
+108            $table->timestamps();
+109        });
+110        Schema::create('eleves', function (Blueprint $table) {
+111            $table->id();
+112            $table->string('matricule')->unique();
+113            $table->string('nom');
+114            $table->string('postnom')->nullable();
+115            $table->string('prenom');
+116            $table->string('sexe')->nullable();
+117            $table->date('date_naissance')->nullable();
+118            $table->unsignedBigInteger('tuteur_id')->nullable();
+119            $table->string('statut')->default('actif');
+120            $table->timestamps();
+121        });
+122        Schema::create('inscriptions', function (Blueprint $table) {
+123            $table->id();
+124            $table->unsignedBigInteger('eleve_id');
+125            $table->unsignedBigInteger('classe_id');
+126            $table->unsignedBigInteger('annee_scolaire_id');
+127            $table->date('date_inscription');
+128            $table->string('statut')->default('actif');
+129            $table->timestamps();
+130        });
+131        Schema::create('cours', function (Blueprint $table) {
+132            $table->id();
+133            $table->string('code');
+134            $table->string('intitule');
+135            $table->unsignedInteger('ponderation')->default(1);
+136            $table->unsignedInteger('max_travaux_journaliers')->nullable();
+137            $table->unsignedInteger('max_examen')->nullable();
+138            $table->string('statut')->default('actif');
+139            $table->timestamps();
+140        });
+141        Schema::create('affectations_cours', function (Blueprint $table) {
+142            $table->id();
+143            $table->unsignedBigInteger('professeur_id')->nullable();
+144            $table->unsignedBigInteger('cours_id');
+145            $table->unsignedBigInteger('classe_id');
+146            $table->unsignedBigInteger('annee_scolaire_id');
+147            $table->string('statut')->default('actif');
+148            $table->timestamps();
+149        });
+150        Schema::create('periodes', function (Blueprint $table) {
+151            $table->id();
+152            $table->unsignedBigInteger('annee_scolaire_id');
+153            $table->string('nom');
+154            $table->string('statut')->default('actif');
+155            $table->timestamps();
+156        });
+157        Schema::create('evaluations', function (Blueprint $table) {
+158            $table->id();
+159            $table->unsignedBigInteger('affectation_id');
+160            $table->unsignedBigInteger('periode_id');
+161            $table->string('titre');
+162            $table->string('type_evaluation')->default('interro');
+163            $table->decimal('max_note', 5, 2)->default(20);
+164            $table->date('date_evaluation')->nullable();
+165            $table->string('statut')->default('actif');
+166            $table->timestamps();
+167        });
+168        Schema::create('notes', function (Blueprint $table) {
+169            $table->id();
+170            $table->unsignedBigInteger('evaluation_id');
+171            $table->unsignedBigInteger('eleve_id');
+172            $table->decimal('note_obtenue', 5, 2)->nullable();
+173            $table->string('observation')->nullable();
+174            $table->string('statut')->default('actif');
+175            $table->timestamps();
+176        });
+177        Schema::create('deliberations', function (Blueprint $table) {
+178            $table->id();
+179            $table->unsignedBigInteger('inscription_id');
+180            $table->unsignedBigInteger('annee_scolaire_id');
+181            $table->decimal('pourcentage_general', 5, 2)->default(0);
+182            $table->unsignedInteger('cours_echoues')->default(0);
+183            $table->string('decision', 20)->default('redouble');
+184            $table->text('critere')->nullable();
+185            $table->boolean('manuelle')->default(false);
+186            $table->unsignedBigInteger('classe_suivante_id')->nullable();
+187            $table->unsignedBigInteger('decide_par')->nullable();
+188            $table->timestamp('decide_le')->nullable();
+189            $table->text('commentaire')->nullable();
+190            $table->timestamps();
+191            $table->unique(['inscription_id', 'annee_scolaire_id']);
+192        });
+193        Schema::create('eleve_user', function (Blueprint $table) {
+194            $table->id();
+195            $table->unsignedBigInteger('eleve_id');
+196            $table->unsignedBigInteger('user_id');
+197            $table->timestamps();
+198        });
+199    
+200        Schema::create('notifications', function (Blueprint $table) {
+201            $table->uuid('id')->primary();
+202            $table->string('type');
+203            $table->morphs('notifiable');
+204            $table->text('data');
+205            $table->timestamp('read_at')->nullable();
+206            $table->timestamps();
+207        });
+208    });
+209    
+210    /**
+211     * Scénario : deux classes (ordre 1 et 2), une branche notée sur 20+20, quatre
+212     * élèves dont les moyennes tombent dans chaque cas de figure.
+213     *
+214     * @return array{alice: User, classe1: Classe, classe2: Classe, annee: AnneeScolaire, cible: AnneeScolaire, eleves: array<string, Eleve>}
+215     */
+216    function scenarioDeliberation(): array
+217    {
+218        $admin = User::factory()->create(['role' => 'admin', 'nom' => 'Mwamba', 'prenom' => 'Alice']);
+219    
+220        $annee = AnneeScolaire::create(['libelle' => '2026-2027', 'date_debut' => '2026-09-01', 'date_fin' => '2027-07-15', 'is_encours' => true, 'statut' => 'actif']);
+221        $cible = AnneeScolaire::create(['libelle' => '2027-2028', 'date_debut' => '2027-09-01', 'date_fin' => '2028-07-15', 'is_encours' => false, 'statut' => 'actif']);
+222    
+223        $cycle = DB::table('cycles')->insertGetId(['nom' => 'Primaire', 'statut' => 'actif', 'created_at' => now(), 'updated_at' => now()]);
+224    
+225        $classe1 = Classe::create(['cycle_id' => $cycle, 'nom' => '3e primaire', 'ordre' => 1, 'statut' => 'actif']);
+226        $classe2 = Classe::create(['cycle_id' => $cycle, 'nom' => '4e primaire', 'ordre' => 2, 'statut' => 'actif']);
+227    
+228        $cours = DB::table('cours')->insertGetId([
+229            'code' => 'MATH', 'intitule' => 'Mathématiques', 'ponderation' => 1,
+230            'max_travaux_journaliers' => 20, 'max_examen' => 20, 'statut' => 'actif',
+231            'created_at' => now(), 'updated_at' => now(),
+232        ]);
+233        $affectation = DB::table('affectations_cours')->insertGetId([
+234            'cours_id' => $cours, 'classe_id' => $classe1->id, 'annee_scolaire_id' => $annee->id,
+235            'statut' => 'actif', 'created_at' => now(), 'updated_at' => now(),
+236        ]);
+237        $periode = DB::table('periodes')->insertGetId([
+238            'annee_scolaire_id' => $annee->id, 'nom' => '1er trimestre', 'statut' => 'actif',
+239            'created_at' => now(), 'updated_at' => now(),
+240        ]);
+241        $interro = DB::table('evaluations')->insertGetId([
+242            'affectation_id' => $affectation, 'periode_id' => $periode, 'titre' => 'Interro 1',
+243            'type_evaluation' => 'interro', 'max_note' => 20, 'statut' => 'actif',
+244            'created_at' => now(), 'updated_at' => now(),
+245        ]);
+246        $examen = DB::table('evaluations')->insertGetId([
+247            'affectation_id' => $affectation, 'periode_id' => $periode, 'titre' => 'Examen',
+248            'type_evaluation' => 'examen', 'max_note' => 20, 'statut' => 'actif',
+249            'created_at' => now(), 'updated_at' => now(),
+250        ]);
+251    
+252        // 18/20 + 18/20 = 90 % · 10/20 + 10/20 = 50 % · 9,5 + 9,5 = 47,5 % · 8 + 8 = 40 %
+253        $plans = ['A' => 18.0, 'B' => 10.0, 'C' => 9.5, 'D' => 8.0];
+254        $eleves = [];
+255    
+256        foreach ($plans as $cle => $note) {
+257            $eleve = Eleve::create([
+258                'matricule' => 'ELV-'.str_pad($cle, 3, '0', STR_PAD_LEFT),
+259                'nom' => 'Nom'.$cle, 'prenom' => 'Prenom'.$cle, 'sexe' => 'M', 'statut' => 'actif',
+260            ]);
+261            Inscription::create([
+262                'eleve_id' => $eleve->id, 'classe_id' => $classe1->id, 'annee_scolaire_id' => $annee->id,
+263                'date_inscription' => '2026-09-05', 'statut' => Inscription::STATUT_ACTIF,
+264            ]);
+265            foreach ([$interro, $examen] as $evaluation) {
+266                DB::table('notes')->insert([
+267                    'evaluation_id' => $evaluation, 'eleve_id' => $eleve->id, 'note_obtenue' => $note,
+268                    'statut' => 'actif', 'created_at' => now(), 'updated_at' => now(),
+269                ]);
+270            }
+271            $eleves[$cle] = $eleve;
+272        }
+273    
+274        return ['alice' => $admin, 'classe1' => $classe1, 'classe2' => $classe2, 'annee' => $annee, 'cible' => $cible, 'eleves' => $eleves];
+275    }
+276    
+277    test('le jury décide selon les seuils, en réutilisant la moyenne du bulletin', function () {
+278        $s = scenarioDeliberation();
+279        $jury = Jury::regles();
+280    
+281        $analyse = fn (Eleve $eleve) => $jury->analyser(
+282            Inscription::where('eleve_id', $eleve->id)->firstOrFail()
+283        );
+284    
+285        expect($analyse($s['eleves']['A'])['pourcentage'])->toBe(90.0)
+286            ->and($analyse($s['eleves']['A'])['decision_proposee'])->toBe('admis')
+287            ->and($analyse($s['eleves']['B'])['pourcentage'])->toBe(50.0)
+288            ->and($analyse($s['eleves']['B'])['decision_proposee'])->toBe('admis')
+289            ->and($analyse($s['eleves']['C'])['pourcentage'])->toBe(47.5)
+290            ->and($analyse($s['eleves']['C'])['decision_proposee'])->toBe('ajourne')
+291            ->and($analyse($s['eleves']['D'])['pourcentage'])->toBe(40.0)
+
+[lines 1-466 of 466 exceed the 4000-token delivery ceiling; showing lines 1-291. Continue with offset=292 — each windowed read arrives in full]

@@ -1,0 +1,35 @@
+361    test('admin can create a section and option before returning to the class form', function () {
+362        Schema::dropIfExists('options');
+363        Schema::dropIfExists('sections');
+364    
+365        // Schéma réel de `sections` : la migration align_sections_options_schema a
+366        // retiré les colonnes code/description/statut.
+367        Schema::create('sections', function (Blueprint $table) {
+368            $table->id();
+369            $table->string('nom', 100)->unique();
+370            $table->timestamps();
+371        });
+372        Schema::create('options', function (Blueprint $table) {
+373            $table->id();
+374            $table->unsignedBigInteger('section_id');
+375            $table->string('nom', 100);
+376            $table->text('description')->nullable();
+377            $table->string('statut')->default('actif');
+378            $table->timestamps();
+379            $table->unique(['section_id', 'code']);
+380            $table->unique(['section_id', 'nom']);
+381        });
+382    
+383        $admin = User::factory()->create(['role' => 'admin']);
+384    
+385        $this->actingAs($admin)
+386            ->get(route('admin.sections.create'))
+387            ->assertOk()
+388            ->assertSee('Créer une section');
+389    
+390        $this->post(route('admin.sections.store'), [
+391            'nom' => 'Scientifique',
+392            'description' => 'Section scientifique',
+393        ])->assertRedirect(route('admin.classes.create', ['section_id' => 1]));
+
+[showing lines 361-394 of 482; read again with offset=395 for more]

@@ -1,0 +1,14 @@
+76                                         @foreach ($tarifs as $tarif)<option value="{{ $tarif->id }}" @selected(old('frais_scolaire_id') == $tarif->id)>{{ $tarif->typeFrais?->nom }} — {{ $tarif->classe?->nom }} ({{ $money($tarif->montant_exige) }})</option>@endforeach
+77                                     </select>
+78                                 </div>
+79                             </div>
+80                             <div class="alert alert-info d-none py-2 mt-2 mb-2" id="soldeInfo"></div>
+81                             <div class="row g-2">
+82                                 <div class="col-md-3"><label class="form-label mb-1 fw-bold">Montant *</label><input class="form-control form-control-sm" type="number" step="0.01" min="0.01" name="montant_paye" value="{{ old('montant_paye') }}" required></div>
+83                                 <div class="col-md-3"><label class="form-label mb-1 fw-bold">Mode *</label><select class="form-select form-select-sm" name="mode_paiement" required>@foreach ($modes as $value => $label)<option value="{{ $value }}" @selected(old('mode_paiement', 'especes') === $value)>{{ $label }}</option>@endforeach</select></div>
+84                                 <div class="col-md-3"><label class="form-label mb-1 fw-bold">Date</label><input class="form-control form-control-sm" type="date" name="date_paiement" value="{{ old('date_paiement', now()->toDateString()) }}"></div>
+85                                 <div class="col-md-3"><label class="form-label mb-1 fw-bold">Référence</label><input class="form-control form-control-sm" name="reference_transaction" value="{{ old('reference_transaction') }}" maxlength="100" placeholder="N° transaction"></div>
+86                             </div>
+87                             <button class="btn btn-success mt-3 w-100 fw-bold" type="submit" style="--green-btn:#107c41;background:var(--green-btn);" @disabled(! $annee)><i class="bi bi-check2-circle me-1"></i> Encaisser le paiement</button>
+
+[showing lines 76-87 of 153; read again with offset=88 for more]

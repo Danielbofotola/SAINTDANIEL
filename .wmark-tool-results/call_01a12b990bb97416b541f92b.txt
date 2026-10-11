@@ -1,0 +1,29 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\aba9102c187c\20261011-163341-apply_patch-call_01a12b990bb97416b541f92b.txt (508 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+Applied patch: 1 file changed (1 updated)
+Updated resources/views/comptable/paiements.blade.php (2 hunks applied)
+Landed at lines 146-198 (the file's new text; no re-read needed):
+146            var deviseSelect = document.getElementById('deviseSelect');
+147            var tauxInput = document.getElementById('tauxInput');
+148            var montantRecu = document.getElementById('montantRecu');
+149            var equivalence = document.getElementById('equivalence');
+150            var TAUX_DEFAUT = @json($tauxParDefaut);
+151    
+152            function deviseDeFrais(id) {
+153                var tarif = tarifsDisponibles.filter(function (t) { return String(t.id) === String(id); })[0];
+      … 37 lines omitted …
+191                var dTarif = deviseDeFrais(frais);
+192                var dRecue = deviseSelect ? deviseSelect.value : dTarif;
+193                var taux = Number(tauxInput && tauxInput.value ? tauxInput.value : TAUX_DEFAUT) || TAUX_DEFAUT;
+194                var m = Number(montantRecu && montantRecu.value ? montantRecu.value : 0);
+195                var ref = convertir(m, dRecue, dTarif, taux);
+196                equivalence.textContent = 'Tarif en ' + dTarif + ' · ' + fmt(m, dRecue) + ' → ' + fmt(ref, dTarif)
+197                    + (dRecue !== dTarif ? ' (taux ' + taux + ')' : '');
+198            }
+Landed at lines 245-251 (the file's new text; no re-read needed):
+245            if (recherche) { recherche.addEventListener('input', filtrerEleves); }
+246            if (inscriptionSelect) { inscriptionSelect.addEventListener('change', rendreTarifs); }
+247            if (fraisSelect) { fraisSelect.addEventListener('change', majSolde); }
+248            if (deviseSelect) { deviseSelect.addEventListener('change', majEquivalence); }
+249            if (tauxInput) { tauxInput.addEventListener('input', majEquivalence); }
+250            if (montantRecu) { montantRecu.addEventListener('input', majEquivalence); }
+251            rendreTarifs();

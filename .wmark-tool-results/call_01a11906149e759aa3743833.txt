@@ -1,0 +1,17 @@
+Applied patch: 1 file changed (1 updated)
+Updated resources/views/prefecture/layout.blade.php (1 hunk applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 192-197 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 197-208:
+197                        <li class="nav-item {{ request()->routeIs('prefecture.bulletins*') ? 'active' : '' }}">
+198                            <a href="{{ route('prefecture.bulletins') }}">
+199                                <i class="fas fa-file-alt"></i>
+200                                <p>Résultats &amp; bulletins</p>
+201                            </a>
+202                        </li>
+203                        <li class="nav-item {{ request()->routeIs('prefecture.periodes*') ? 'active' : '' }}">
+204                            <a href="{{ route('prefecture.periodes') }}">
+205                                <i class="far fa-calendar-check"></i>
+206                                <p>Périodes</p>
+207                            </a>
+208                        </li>

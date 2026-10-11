@@ -1,0 +1,22 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\b493c9bc81dc\20261008-011014-bash-call_01a118d8e3af7738839c783d.txt (502 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+[powershell — Windows side]
+2026_10_09_000000_create_salaires_and_paies_tables ........................................................ [18] Ran  
+  2026_10_10_000000_add_salaires_to_archives_annees_table ................................................... [19] Ran  
+  2026_10_11_000000_create_comptabilite_tables .............................................................. [20] Ran  
+  2026_10_12_000000_create_presences_table .................................................................. [
+
+... 130 chars truncated ...
+
+
+  2026_10_14_000000_create_messagerie_tables ................................................................ [23] Ran  
+  2026_10_14_010000_add_dernier_message_id_to_conversation_user_table ....................................... [24] Ran  
+  2026_10_15_000000_add_piece_jointe_to_messages_table ...................................................... [25] Ran  
+  2026_10_15_000000_add_supprime_at_to_conversation_user_table ............................................... Pending  
+  2026_10_16_000000_add_parent_role_to_users_table .......................................................... [26] Ran  
+  2026_10_17_000000_add_reponse_et_reaction_to_messages_table ............................................... [26] Ran  
+  2026_10_18_000000_create_appels_table ..................................................................... [27] Ran  
+  2026_10_19_000000_add_appels_events ....................................................................... [28] Ran  
+  2026_10_20_000000_create_deliberations_module ............................................................. [29] Ran  
+
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

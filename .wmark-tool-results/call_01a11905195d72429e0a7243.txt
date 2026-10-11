@@ -1,0 +1,11 @@
+Applied patch: 1 file changed (1 updated)
+Updated routes/web.php (1 hunk applied)
+Landed at lines 254-261 (the file's new text; no re-read needed):
+254        // Privilèges de supervision : statut disciplinaire, validation, approbation, périodes.
+255        Route::patch('/prefecture/eleves/{eleve}/statut', [PrefectureDashboardController::class, 'modifierStatutEleve'])->middleware('role:prefetture')->name('prefecture.eleves.statut');
+256        Route::post('/prefecture/evaluations/{evaluation}/valider', [PrefectureDashboardController::class, 'validerEvaluation'])->middleware('role:prefetture')->name('prefecture.evaluations.valider');
+257        Route::get('/prefecture/periodes', [PrefectureDashboardController::class, 'periodes'])->middleware('role:prefetture')->name('prefecture.periodes');
+258        Route::patch('/prefecture/periodes/{periode}/statut', [PrefectureDashboardController::class, 'togglePeriode'])->middleware('role:prefetture')->name('prefecture.periodes.toggle');
+259        Route::get('/prefecture/bulletins', [PrefectureDashboardController::class, 'bulletins'])->middleware('role:prefetture')->name('prefecture.bulletins');
+260        Route::post('/prefecture/bulletins/{bulletin}/approuver', [PrefectureDashboardController::class, 'approuverBulletin'])->middleware('role:prefetture')->name('prefecture.bulletins.approuver');
+261        Route::get('/prefecture/bulletins/{inscription}/document', [\App\Http\Controllers\BulletinController::class, 'document'])->middleware('role:prefetture')->name('prefecture.bulletins.document');

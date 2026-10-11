@@ -1,0 +1,74 @@
+421        {{-- ==================== DÉTAIL DES FRAIS ==================== --}}
+422        @if ($courant && $courant['frais']['totaux']['exige'] > 0)
+423            <div class="row">
+424                <div class="col-12">
+425                    <div class="card">
+426                        <div class="card-header">
+427                            <div class="card-head-row">
+428                                <div class="card-title section-titre">
+429                                    <i class="fas fa-list-check text-success"></i> Détail des frais —
+430                                    {{ $courant['inscription']->anneeScolaire?->libelle ?? 'année de référence' }}
+431                                </div>
+432                                <div class="card-category">{{ $courant['frais']['lignes']->count() }} ligne(s) de frais</div>
+433                            </div>
+434                        </div>
+435                        <div class="card-body">
+436                            <table class="table table-hover">
+437                                <thead>
+438                                    <tr>
+439                                        <th>Nature du frais</th><th>Échéance</th><th class="text-right">Exigible</th>
+440                                        <th class="text-right">Payé</th><th class="text-right">Reste à payer</th><th>État</th>
+441                                    </tr>
+442                                </thead>
+443                                <tbody>
+444                                    @foreach ($courant['frais']['lignes'] as $ligne)
+445                                        <tr>
+446                                            <td class="fw-bold">
+447                                                {{ $ligne['frais']->typeFrais?->libelle ?? $ligne['frais']->typeFrais?->nom ?? 'Frais scolaires' }}
+448                                            </td>
+449                                            <td>{{ $ligne['frais']->date_echeance?->format('d/m/Y') ?? '—' }}</td>
+450                                            <td class="text-right">{{ number_format($ligne['exige'], 2) }}</td>
+451                                            <td class="text-right text-success">{{ number_format($ligne['paye'], 2) }}</td>
+452                                            <td class="text-right {{ $ligne['reste'] > 0 ? 'text-danger fw-bold' : 'text-muted' }}">
+453                                                {{ number_format($ligne['reste'], 2) }}
+454                                            </td>
+455                                            <td>
+456                                                @if ($ligne['reste'] <= 0)
+457                                                    <span class="badge badge-success">Soldé</span>
+458                                                @elseif ($ligne['paye'] > 0)
+459                                                    <span class="badge badge-warning">Partiel</span>
+460                                                @else
+461                                                    <span class="badge badge-danger">Non payé</span>
+462                                                @endif
+463                                            </td>
+464                                        </tr>
+465                                    @endforeach
+466                                    <tr class="fw-bold" style="background:#f8f9fa">
+467                                        <td colspan="2">Total de l'année</td>
+468                                        <td class="text-right">{{ number_format($courant['frais']['totaux']['exige'], 2) }}</td>
+469                                        <td class="text-right text-success">{{ number_format($courant['frais']['totaux']['paye'], 2) }}</td>
+470                                        <td class="text-right {{ $courant['frais']['totaux']['reste'] > 0 ? 'text-danger' : 'text-success' }}">
+471                                            {{ number_format($courant['frais']['totaux']['reste'], 2) }}
+472                                        </td>
+473                                        <td></td>
+474                                    </tr>
+475                                </tbody>
+476                            </table>
+477                            @if ($courant['frais']['non_affectes'] > 0)
+478                                <p class="fs-7 text-muted mb-0">
+479                                    <i class="fas fa-circle-info"></i>
+480                                    {{ number_format($courant['frais']['non_affectes'], 2) }} encaissé(s) sans affectation à une ligne de frais
+481                                    (déjà compté(s) dans le total payé).
+482                                </p>
+483                            @endif
+484                        </div>
+485                    </div>
+486                </div>
+487            </div>
+488        @endif
+489    
+490        {{-- ==================== ASSIDUITÉ ==================== --}}
+491        <div class="row">
+492            <div class="col-12">
+
+[showing lines 421-492 of 571; read again with offset=493 for more]

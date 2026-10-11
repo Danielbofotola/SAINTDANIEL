@@ -1,0 +1,20 @@
+275            'username' => 'jean.mwamba',
+276            'email' => 'jean.mwamba@example.test',
+277            'role_souhaite' => 'comptable',
+278            'mot_de_passe' => 'secret1234',
+279            'mot_de_passe_confirmation' => 'secret1234',
+280        ]);
+281        $accountRequestId = DB::table('demandes_comptes')->value('id');
+282    
+283        $admin = makeAdminForRegistrationRequests();
+284        $this->actingAs($admin)
+285            ->post(route('admin.registration.students.reject', $studentRequestId), ['motif_refus' => 'Dossier incomplet'])
+286            ->assertRedirect();
+287        $this->post(route('admin.registration.accounts.reject', $accountRequestId), ['motif_refus' => 'Rôle non confirmé'])
+288            ->assertRedirect();
+289    
+290        expect(DB::table('demandes_inscription')->where('id', $studentRequestId)->value('statut'))->toBe('refusee')
+291            ->and(DB::table('demandes_comptes')->where('id', $accountRequestId)->value('statut'))->toBe('refusee')
+292            ->and(DB::table('eleves')->count())->toBe(0)
+293            ->and(DB::table('users')->where('role', '!=', 'admin')->count())->toBe(0);
+294    });

@@ -1,0 +1,20 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/FinancesPagesTest.php (1 hunk applied)
+Landed at lines 437-458 (the file's new text; no re-read needed):
+437    
+438    test('an admin can open the receipt of a payment', function () {
+439        $inscriptionId = seedInscription();
+440        $fraisId = seedFrais('150.00');
+441        DB::table('paiements')->insert([
+442            'num_recu' => 'REC-2026-2027-0001', 'inscription_id' => $inscriptionId, 'frais_scolaire_id' => $fraisId,
+443            'montant_paye' => 40, 'date_paiement' => now(), 'mode_paiement' => 'especes', 'statut' => 'actif',
+444            'created_at' => now(), 'updated_at' => now(),
+      … 6 lines omitted …
+451            ->assertOk()
+452            ->assertSee(route('admin.paiements.recu', $paiementId), false);
+453    
+454        $this->actingAs($admin)
+455            ->get(route('admin.paiements.recu', $paiementId))
+456            ->assertOk()
+457            ->assertSee('REC-2026-2027-0001')
+458            ->assertSee('Généré automatiquement');

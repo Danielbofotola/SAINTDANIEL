@@ -1,0 +1,24 @@
+Applied patch: 1 file changed (1 updated)
+Updated app/Support/SituationEleve.php (1 hunk applied)
+Landed at lines 45-45 (the file's new text; no re-read needed):
+45          * @return Collection<int, array{inscription: Inscription, finances: array{attendu: float, paye: float, reste: float}, frais: array}>
+Landed at lines 57-57 (the file's new text; no re-read needed):
+57                     'frais' => self::frais($inscription),
+Landed at lines 60-113 (the file's new text; no re-read needed):
+60     
+61         /**
+62          * Détail des frais exigés d'une inscription : chaque ligne de frais, ce qui a
+63          * été encaissé dessus et le reste à payer. Les paiements non rattachés à une
+64          * ligne sont comptés à part, pour que le détail rejoigne le total de l'année.
+65          *
+66          * @return array{lignes: Collection<int, array{frais: FraisScolaire, exige: float, paye: float, reste: float}>, non_affectes: float, totaux: array{exige: float, paye: float, reste: float}}
+67          */
+      … 38 lines omitted …
+106                'non_affectes' => round($payeTotal - (float) $detail->sum('paye'), 2),
+107                'totaux' => [
+108                    'exige' => $exigeTotal,
+109                    'paye' => $payeTotal,
+110                    'reste' => round($exigeTotal - $payeTotal, 2),
+111                ],
+112            ];
+113        }

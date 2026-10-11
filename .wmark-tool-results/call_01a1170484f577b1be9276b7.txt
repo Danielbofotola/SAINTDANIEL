@@ -1,0 +1,44 @@
+1      <?php
+2      
+3      use Illuminate\Database\Migrations\Migration;
+4      use Illuminate\Database\Schema\Blueprint;
+5      use Illuminate\Support\Facades\Schema;
+6      
+7      return new class extends Migration
+8      {
+9          public function up(): void
+10         {
+11             // Journal des annonces lancées par l'administration.
+12             if (! Schema::hasTable('annonces')) {
+13                 Schema::create('annonces', function (Blueprint $table) {
+14                     $table->id();
+15                     $table->string('titre', 150);
+16                     $table->text('message');
+17                     $table->string('niveau', 20)->default('info'); // info | success | warning | danger
+18                     $table->string('lien', 255)->nullable();
+19                     $table->string('cible', 30)->default('tous');   // tous | admin | prefetture | titulaire | professeur | comptable
+20                     $table->foreignId('envoye_par')->nullable()->constrained('users')->nullOnDelete();
+21                     $table->unsignedInteger('destinataires')->default(0);
+22                     $table->timestamps();
+23                 });
+24             }
+25     
+26             // Notifications Laravel (canal « database »), une ligne par destinataire.
+27             if (! Schema::hasTable('notifications')) {
+28                 Schema::create('notifications', function (Blueprint $table) {
+29                     $table->uuid('id')->primary();
+30                     $table->string('type');
+31                     $table->morphs('notifiable');
+32                     $table->text('data');
+33                     $table->timestamp('read_at')->nullable();
+34                     $table->timestamps();
+35                 });
+36             }
+37         }
+38     
+39         public function down(): void
+40         {
+41             Schema::dropIfExists('notifications');
+42             Schema::dropIfExists('annonces');
+43         }
+44     };

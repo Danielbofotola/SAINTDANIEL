@@ -1,0 +1,10 @@
+320                                <div class="inner-block text-center py-2">
+321                                    <span class="fw-bold">Reste à percevoir :</span> {{ $money($reste) }}
+322                                </div>
+323                                 <div class="mt-2">
+324                                     <a href="{{ route('comptable.paiements.index') }}" class="btn btn-success fw-bold w-100"><i class="bi bi-cash-coin me-1"></i> Encaisser un paiement</a>
+325                                 </div>
+326                            </div>
+327                        </div>
+
+[showing lines 320-327 of 502; read again with offset=328 for more]

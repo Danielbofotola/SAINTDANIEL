@@ -1,0 +1,57 @@
+1      <?php
+2      
+3      namespace App\Models;
+4      
+5      use Illuminate\Database\Eloquent\Model;
+6      use Illuminate\Support\Facades\DB;
+7      use Illuminate\Support\Facades\Schema;
+8      
+9      class AnneeScolaire extends Model
+10     {
+11         /**
+12          * Tables portant une clé étrangère vers annees_scolaires.
+13          */
+14         private const TABLES_LIEES = [
+15             'inscriptions',
+16             'periodes',
+17             'affectations_cours',
+18             'frais_scolaires',
+19             'depenses',
+20             'demandes_inscriptions',
+21         ];
+22     
+23         protected $table = 'annees_scolaires';
+24         protected $fillable = ['libelle', 'date_debut', 'date_fin', 'is_encours', 'statut'];
+25     
+26         protected function casts(): array
+27         {
+28             return [
+29                 'date_debut' => 'date',
+30                 'date_fin' => 'date',
+31                 'is_encours' => 'boolean',
+32             ];
+33         }
+34     
+35         /**
+36          * L'année scolaire « en cours » (unique), ou null si aucune n'est définie.
+37          */
+38         public static function enCours(): ?self
+39         {
+40             return static::where('is_encours', true)->first();
+41         }
+42     
+43         /**
+44          * Indique si l'année est référencée par des données métier
+45          * (inscriptions, périodes, finances…), ce qui interdit sa suppression.
+46          */
+47         public function isUtilisee(): bool
+48         {
+49             foreach (self::TABLES_LIEES as $table) {
+50                 if (Schema::hasTable($table) && DB::table($table)->where('annee_scolaire_id', $this->id)->exists()) {
+51                     return true;
+52                 }
+53             }
+54     
+55             return false;
+56         }
+57     }

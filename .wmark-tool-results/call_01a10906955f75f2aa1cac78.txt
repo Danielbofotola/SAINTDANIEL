@@ -1,0 +1,13 @@
+Applied patch: 1 file changed (1 updated)
+Updated routes/web.php (2 hunks applied)
+Landed at lines 23-23 (the file's new text; no re-read needed):
+23     use App\Http\Controllers\ComptabiliteController;
+Landed at lines 113-120 (the file's new text; no re-read needed):
+113        Route::get('/admin/comptabilite', [ComptabiliteController::class, 'index'])->middleware('role:admin')->name('admin.comptabilite.index');
+114        Route::post('/admin/comptabilite/synchroniser', [ComptabiliteController::class, 'synchroniser'])->middleware('role:admin')->name('admin.comptabilite.synchroniser');
+115        Route::post('/admin/comptabilite/ecritures', [ComptabiliteController::class, 'storeEcriture'])->middleware('role:admin')->name('admin.comptabilite.ecritures.store');
+116        Route::delete('/admin/comptabilite/ecritures/{ecriture}', [ComptabiliteController::class, 'destroyEcriture'])->middleware('role:admin')->name('admin.comptabilite.ecritures.destroy');
+117        Route::get('/admin/comptabilite/plan', [ComptabiliteController::class, 'plan'])->middleware('role:admin')->name('admin.comptabilite.plan');
+118        Route::post('/admin/comptabilite/plan', [ComptabiliteController::class, 'storeCompte'])->middleware('role:admin')->name('admin.comptabilite.plan.store');
+119        Route::delete('/admin/comptabilite/plan/{compte}', [ComptabiliteController::class, 'destroyCompte'])->middleware('role:admin')->name('admin.comptabilite.plan.destroy');
+120        Route::get('/admin/comptabilite/balance', [ComptabiliteController::class, 'balance'])->middleware('role:admin')->name('admin.comptabilite.balance');

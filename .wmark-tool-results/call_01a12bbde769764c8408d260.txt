@@ -1,0 +1,82 @@
+30     @php
+31         $fmt = fn ($v) => $v === null ? '' : rtrim(rtrim(number_format((float) $v, 2, '.', ''), '0'), '.');
+32         $eleve = $inscription->eleve;
+33         $classe = $inscription->classe;
+34         $matricule = (string) ($eleve?->matricule ?? '');
+35         $digits = preg_replace('/\D/', '', $matricule);
+36     
+37         // Éléments du bulletin réglés dans Paramètres (Administration → Profil → Paramètres).
+38         $bulletinPays = $systemSettings->bulletin_pays ?: 'République Démocratique du Congo';
+39         $bulletinMinistere = $systemSettings->bulletin_ministere ?: "Ministère de l'Enseignement Primaire, Secondaire et Professionnel";
+40         $bulletinTitre = $systemSettings->bulletin_titre ?: 'Bulletin annuel — Cycle terminal de l’éducation de base (CTEB)';
+41         $bulletinReference = $systemSettings->bulletin_reference ?: 'EBE/P.S./010';
+42         $bulletinSignataire = $systemSettings->bulletin_signataire ?: 'Le Chef d’Établissement';
+43         $bulletinLieuSignature = $systemSettings->bulletin_lieu_signature ?: '__________________________';
+44         $afficherPlace = $systemSettings->bulletin_afficher_place ?? true;
+45         $afficherConduite = $systemSettings->bulletin_afficher_conduite ?? true;
+46         $ouLigne = fn ($valeur) => filled($valeur) ? $valeur : '______________________';
+47     @endphp
+48     
+49     <div class="toolbar">
+50         @php($retour = auth()->user()?->role === 'prefetture' ? route('prefecture.bulletins') : route('admin.bulletins.index'))
+51         <a href="{{ $retour }}" style="margin-right:8px;">← Retour</a>
+52         <button onclick="window.print()">🖨️ Imprimer</button>
+53     </div>
+54     
+55     <div class="container">
+56         <table class="header-table">
+57             <tr>
+58                 <td style="width: 15%;"><div style="font-weight:bold; color:blue; font-size:10px;">
+59                 <img src="{{ asset('assets/images/drape.png') }}" width="100" alt="">    
+60                 </div></td>
+61                 <td style="width: 70%;">
+62                     <div class="header-title">{{ $bulletinPays }}</div>
+63                     <div class="header-title" style="font-size: 12px;">{{ $bulletinMinistere }}</div>
+64                     <div style="font-size: 11px;">{{ $systemSettings->nom_etablissement ?? '' }}</div>
+65                 </td>
+66                 <td style="width: 15%;"><div style="font-weight:bold; color:red; font-size:10px;">
+67                       <img src="{{ asset('assets/images/622px-Armoiries_de_la_République_démocratique_du_Congo_-_2006.png') }}" width="100" alt="">  
+68                 </div></td>
+69             </tr>
+70         </table>
+71     
+72         <table class="info-table">
+73             <tr>
+74                 <td colspan="3">
+75                     <b>N° ID :</b>
+76                     @if ($digits !== '')
+77                         @foreach (str_split($digits) as $chiffre)<span class="id-grid">{{ $chiffre }}</span>@endforeach
+78                     @else
+79                         @for ($i = 0; $i < 26; $i++)<span class="id-grid"></span>@endfor
+80                     @endif
+81                 </td>
+82             </tr>
+83             <tr>
+84                 <td><b>PROVINCE :</b> {{ $ouLigne($systemSettings->bulletin_province) }}</td>
+85                 <td rowspan="3" style="vertical-align:top;">
+86                     <b>ÉLÈVE :</b> {{ $eleve?->nom }} {{ $eleve?->postnom }} {{ $eleve?->prenom }}<br>
+87                     <b>NÉ(E) À :</b> {{ $eleve?->lieu_naissance ?: '___________________' }} <b>LE :</b> {{ $eleve?->date_naissance?->format('d/m/Y') ?? '__/__/____' }}<br>
+88                     <b>CLASSE :</b> {{ $classe?->nom ?? '________' }}
+89                 </td>
+90                 <td><b>SEXE :</b> {{ $eleve?->sexe === 'M' ? 'M' : ($eleve?->sexe === 'F' ? 'F' : '___') }}</td>
+91             </tr>
+92             <tr>
+93                 <td><b>VILLE :</b> {{ $ouLigne($systemSettings->bulletin_ville) }}<br><b>COMMUNE / TER (1) :</b> {{ $ouLigne($systemSettings->bulletin_commune) }}</td>
+94                 <td><b>MATRICULE :</b> {{ $matricule ?: '—' }}</td>
+95             </tr>
+96             <tr>
+97                 <td><b>ÉCOLE :</b> {{ $systemSettings->nom_etablissement ?? '________' }}<br><b>CODE :</b> {{ $ouLigne($systemSettings->bulletin_code_ecole) }}</td>
+98                 <td></td>
+99             </tr>
+100            <tr>
+101                <td colspan="3" style="text-align:center; font-weight:bold; background-color:#f0f0f0;">
+102                    {{ $bulletinTitre }} — ANNÉE SCOLAIRE {{ $inscription->anneeScolaire?->libelle ?? '20___ - 20___' }}
+103                </td>
+104            </tr>
+105        </table>
+106    
+107        <table class="main-table">
+108            <thead>
+109                <tr>
+
+[showing lines 30-109 of 231; read again with offset=110 for more]

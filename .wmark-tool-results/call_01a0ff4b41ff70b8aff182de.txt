@@ -1,0 +1,26 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\e8f943213216\20261003-020503-bash-call_01a0ff4b41ff70b8aff182de.txt (1,422 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Structured view (text):
+[powershell — Windows side]
+resources\views\admin\profile\accounts.blade.php:36:      .profile-actions-bar { background: #1b8bf9; padding: 10px 15px; border-radius: 4px; margin-bottom: 20px; }
+resources\views\admin\profile\accounts.blade.php:37:      .profile-actions-bar a { color: #fff; margin-right: 15px; font-size: 13px; font-weight: 500; text-decoration: none; }
+resources\views\admin\profile\accounts.blade.php:38:      .profile-actions-bar a:hover { text-decoration: underline; }
+resources\views\admin\profile\accounts.blade.php:50:         <a href="{{ route('admin.dashboard') }}" class="logo">
+resources\views\admin\profile\accounts.blade.php:90:                        <li><a href="{{ route('admin.profile.settings') }}"><i class="icon-settings"></i> Paramètres</a></li>
+resources\views\admin\profile\accounts.blade.php:91:                        <li><a href="{{ route('admin.profile.show') }}"><i class="icon-user"></i> Mon Profil</a></li>
+resources\views\admin\profile\accounts.blade.php:96:                           <form id="logout-form" method="POST" action="{{ route('logout') }}" style="display: none;">@csrf</form>
+resources\views\admin\profile\accounts.blade.php:111:                    <a class="waves-effect waves-dark" href="{{ route('admin.dashboard') }}">
+resources\views\admin\profile\accounts.blade.php:118:                    <a class="waves-effect waves-dark" href="{{ route('admin.profile.show') }}">
+resources\views\admin\profile\accounts.blade.php:123:               
+… 960 chars elided …
+e('admin.profile.accounts.create') }}">
+resources\views\admin\profile\accounts.blade.php:174:                  <div class="profile-actions-bar d-flex flex-wrap align-items-center">
+resources\views\admin\profile\accounts.blade.php:175:                     <a href="{{ route('admin.profile.show') }}"><i class="fa fa-user"></i> Mon profil</a>
+resources\views\admin\profile\accounts.blade.php:176:                     <a href="{{ route('admin.profile.accounts') }}"><i class="fa fa-users"></i> Tous les comptes</a>
+resources\views\admin\profile\accounts.blade.php:177:                     <a href="{{ route('admin.profile.edit') }}"><i class="fa fa-pencil"></i> Modifier mon profil</a>
+resources\views\admin\profile\accounts.blade.php:178:                     <a href="{{ route('admin.dashboard') }}"><i
+… 1,760 chars elided …
+aves-effect" type="submit" title="Supprimer">
+
+
+
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">2</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

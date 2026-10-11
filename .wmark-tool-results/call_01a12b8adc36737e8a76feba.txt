@@ -1,0 +1,29 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\aba9102c187c\20261011-161804-bash-call_01a12b8adc36737e8a76feba.txt (950 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Structured view (text):
+[powershell — Windows side]
+LineNumber Line                                                                                                        
+---------- ----                                                                                                        
+       275                     @if (auth()->user()->photo)                                                             
+       300             @if (auth()->user()->photo)                                                                     
+       317             <li><a class="app-menu__item {{ request()->routeIs('messagerie.index') ? 'active' : '' }}"      
+           href="{{ route('messagerie.index') }}"><i class="app-menu__icon fa fa-comments"></i><span                   
+           class="app-menu__label">Messagerie @if ($messagesNonLus > 0)<span class="badge badge-danger ml-1">{{        
+           $messagesNonLus }}</span>@endif</span></a></li>                                                             
+       371             <li><a class="app-menu__item {{ request()->routeIs('admin.messages-contact.*') ? 'active' : ''  
+           }}" href="{{ route('admin.messages-contact.index') }}"><i class="app-menu__icon fa fa-envelope-o"></i><span 
+           class="app-menu__label">Messages de contact @if ($messagesContactNonLus > 0)<span class="badge badge-danger 
+           ml-1">{{ $messagesContactNonLus }}</span>@endif</span></a></li>                                             
+       381                 @if (
+… 840 chars elided …
+               <th>Pr�nom</th>                                                         
+       498                                     <th>Sexe</th>                                                           
+       499                                     <th>Classe</th>                                                         
+       500                                     <th>Cycle</th>                                                          
+       501                                     <th class="text-center">Actions</th>                                    
+       505                                 @forelse ($eleves as $eleve)                                                
+       508                                         <td class="text-center align-middle">                        
+… 1,641 chars elided …
+                                              
+
+
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

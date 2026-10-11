@@ -1,0 +1,20 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/RegistrationRequestWorkflowTest.php (1 hunk applied)
+Landed at lines 295-333 (the file's new text; no re-read needed):
+295    
+296    test('a public student application without a school year is attached to the current year', function () {
+297        $this->post(route('registration.student.store'), collect(validStudentRequest())->except('annee_scolaire_id')->all())
+298            ->assertRedirect(route('registration.student.create'))
+299            ->assertSessionHas('success');
+300    
+301        expect((int) DB::table('demandes_inscription')->value('annee_scolaire_id'))
+302            ->toBe((int) DB::table('annees_scolaires')->where('is_encours', true)->value('id'));
+      … 23 lines omitted …
+326                'nom_mere' => 'Marie Kabila',
+327                'telephone_mere' => '0990000000',
+328            ])
+329            ->assertRedirect();
+330    
+331        expect((int) DB::table('inscriptions')->value('annee_scolaire_id'))
+332            ->toBe((int) DB::table('annees_scolaires')->where('is_encours', true)->value('id'));
+333    });

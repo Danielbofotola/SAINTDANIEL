@@ -1,0 +1,14 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\e1ce9c26600a\20261005-003202-bash-call_01a10942d1e9719a92c50afb.txt (563 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+[powershell — Windows side]
+Parse error: syntax error, unexpected token "endif", expecting end of file in C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\storage\framework\views\f2bb900998614e8c7a224eeba29015f4.php on line 83
+Errors parsing C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\storage\framework\views\f2bb900998614e8c7a224eeba29015f4.php
+--- lignes autour de 83 ---
+.raccourcis-nav__item { display: inline-flex; align-items: center; height: 50px; padding: 0 14px; color: rgba(255,255,25
+font-size: 13px; font-weight: 500; text-decoration: none; white-space: nowrap; }
+.raccourcis-nav__item:hover, .raccourcis-nav__item:focus { color: #fff; background: rgba(255,255,255,.08); text-decorati
+@media (max-width: 575px) { .raccourcis-nav { margin-left: 0; } .raccourcis-nav__item { padding: 0 8px; } }
+</style>
+<?php endif; ?>
+<?php /**PATH C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\resources\views\partials\raccourcis.blade.php END
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

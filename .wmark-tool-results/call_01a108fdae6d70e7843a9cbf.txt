@@ -1,0 +1,13 @@
+[powershell — Windows side]
+259: .menu-section { padding: 16px 24px 6px; font-size: 12px; font-weight: 600; color: var(--able-text-muted); list-style: none; }
+309: <li class="menu-section">Pilotage</li>
+311: <li class="menu-section">Scolarité</li>
+328: <li class="menu-section">Personnel enseignant</li>
+329: <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-user-md"></i><span class="app-menu__label">Professeurs</span><i class="treeview-indicator fa fa-angle-right"></i></a>
+337: <li class="menu-section">Organisation</li>
+350: <li class="menu-section">Finances</li>
+355: <li><a class="treeview-item" href="{{ route('admin.depenses.index') }}"><i class="icon fa fa-shopping-cart"></i> Dépenses</a></li>
+356: <li><a class="treeview-item" href="{{ route('admin.archives.index') }}"><i class="icon fa fa-archive"></i> Clôture &amp; archives</a></li>
+359: <li class="menu-section">Accès</li>
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

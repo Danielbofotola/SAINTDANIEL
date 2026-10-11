@@ -1,0 +1,13 @@
+[powershell — Windows side]
+=== where role=parent is assigned ===
+app\Http\Controllers\AdminRegistrationRequestController.php:162: 'role' => ['required', 'in:prefetture,titulaire,professeur,comptable,parent'],
+app\Http\Controllers\PortailParentController.php:46: ->where(fn ($query) => $query->where('cible', 'tous')->orWhere('cible', 'parent'))
+app\Http\Controllers\PortailParentController.php:54: ->where('role', '!=', 'parent')
+app\Http\Controllers\RegistrationRequestController.php:93: 'role_souhaite' => ['required', 'in:prefetture,titulaire,professeur,comptable,parent'],
+app\Models\Annonce.php:26: 'parent' => 'Parents',
+app\Models\User.php:27: public const ROLES = ['admin', 'prefetture', 'titulaire', 'professeur', 'comptable', 'parent'];
+app\Models\User.php:36: 'parent' => 'Parent',
+app\Models\User.php:58: 'parent' => 'parent.dashboard',
+app\Support\Raccourcis.php:58: 'parent' => [
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

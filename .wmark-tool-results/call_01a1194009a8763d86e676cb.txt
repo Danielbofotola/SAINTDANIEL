@@ -1,0 +1,47 @@
+60     
+61             <nav class="navbar navbar-header navbar-expand-lg">
+62                 <div class="container-fluid">
+63                     <ul class="navbar-nav topbar-nav ml-md-auto align-items-center">
+64                         <li class="nav-item">
+65                             <span class="nav-link" title="Année scolaire">
+66                                 <i class="far fa-calendar-alt"></i>
+67                                 <span class="d-none d-md-inline">{{ $schoolYear?->libelle ?? 'Année non définie' }}</span>
+68                             </span>
+69                         </li>
+70                         <li class="nav-item dropdown hidden-caret">
+71                             <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#" aria-expanded="false">
+72                                 <div class="avatar-sm">
+73                                     @if ($user->photo)
+74                                         <img src="{{ asset('storage/'.$user->photo) }}" alt="" class="avatar-img rounded-circle">
+75                                     @else
+76                                         <span class="avatar-title rounded-circle bg-primary">{{ $initial }}</span>
+77                                     @endif
+78                                 </div>
+79                             </a>
+80                             <ul class="dropdown-menu dropdown-user animated fadeIn">
+81                                 <li>
+82                                     <div class="user-box">
+83                                         <div class="avatar-lg">
+84                                             @if ($user->photo)
+85                                                 <img src="{{ asset('storage/'.$user->photo) }}" alt="" class="avatar-img rounded">
+86                                             @else
+87                                                 <span class="avatar-title rounded bg-primary">{{ $initial }}</span>
+88                                             @endif
+89                                         </div>
+90                                         <div class="u-text">
+91                                             <h4>{{ $displayName }}</h4>
+92                                             <p class="text-muted">{{ $user->email }}</p>
+93                                             <a href="{{ route('prefecture.profil') }}" class="btn btn-rounded btn-danger btn-sm">Mon profil</a>
+94                                         </div>
+95                                     </div>
+96                                 </li>
+97                                 <li>
+98                                     <div class="dropdown-divider"></div>
+99                                     <a class="dropdown-item" href="{{ route('prefecture.profil') }}">Mon profil</a>
+100                                    <a class="dropdown-item" href="{{ route('notifications.index') }}">Notifications</a>
+101                                    <div class="dropdown-divider"></div>
+102                                    <form method="POST" action="{{ route('logout') }}">
+103                                        @csrf
+104                                        <button class="dropdown-item" type="submit">Déconnexion</button>
+
+[showing lines 60-104 of 299; read again with offset=105 for more]

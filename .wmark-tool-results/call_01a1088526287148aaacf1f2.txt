@@ -1,0 +1,1 @@
+Updated app/Http/Controllers/ProfesseurController.php: replaced 9 lines with 63 lines

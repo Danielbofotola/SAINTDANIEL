@@ -1,0 +1,6 @@
+150        // Notifications : boîte de réception commune à tous les rôles.
+151        Route::get('/notifications', [NotificationController::class, 'index'])->middleware('auth')->name('notifications.index');
+152        Route::patch('/notifications/toutes-lues', [NotificationController::class, 'readAll'])->middleware('auth')->name('notifications.readall');
+153        Route::patch('/notifications/{notification}/lue', [NotificationController::class, 'read'])->middleware('auth')->name('notifications.read');
+
+[showing lines 150-153 of 235; read again with offset=154 for more]

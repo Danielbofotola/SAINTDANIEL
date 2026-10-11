@@ -1,0 +1,7 @@
+Applied patch: 1 file changed (1 updated)
+Updated resources/views/professeur/presences.blade.php (2 hunks applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 8-12 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+  ⚠ hunk 2: context matched at lines 108-115 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 114-114:
+114    @endif

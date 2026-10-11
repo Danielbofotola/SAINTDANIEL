@@ -1,0 +1,32 @@
+211        public function impersonate(Request $request, User $user): RedirectResponse
+212        {
+213            if ($request->session()->has('impersonating_admin_id')) {
+214                return back()->with('error', 'Une session de consultation est déjà en cours.');
+215            }
+216    
+217            if ($user->is($request->user()) || $user->role === 'admin' || $user->statut !== 'actif') {
+218                return back()->with('error', 'Seuls les autres comptes actifs non administrateurs peuvent être ouverts.');
+219            }
+220    
+221            $admin = $request->user();
+222            $request->session()->put('impersonating_admin_id', $admin->id);
+223            auth()->login($user);
+224            $request->session()->regenerate();
+225    
+226            Log::notice('Admin started account impersonation', [
+227                'admin_id' => $admin->id,
+228                'user_id' => $user->id,
+229            ]);
+230    
+231            return redirect()->route($user->dashboardRouteName());
+232        }
+233    
+234        public function stopImpersonation(Request $request): RedirectResponse
+235        {
+236            $admin = User::query()
+237                ->whereKey($request->session()->get('impersonating_admin_id'))
+238                ->where('role', 'admin')
+239                ->where('statut', 'actif')
+240                ->first();
+
+[showing lines 211-240 of 437; read again with offset=241 for more]

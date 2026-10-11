@@ -1,0 +1,43 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\e1ce9c26600a\20261004-230106-bash-call_01a108ef934d72049fc64775.txt (2,181 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Structured view (text):
+[powershell — Windows side]
+app\Http\Controllers\UserProfileController.php:21:    {
+  app\Http\Controllers\UserProfileController.php:22:        return view('admin.profile.account-create', [
+> app\Http\Controllers\UserProfileController.php:23:            'professeurs' => Professeurs::where('statut', 
+'actif')->orderBy('nom')->orderBy('prenom')->get(),
+  app\Http\Controllers\UserProfileController.php:24:        ]);
+  app\Http\Controllers\UserProfileController.php:25:    }
+  app\Http\Controllers\UserProfileController.php:26:
+  app\Http\Controllers\UserProfileController.php:27:    public function storeAccount(Request $request): 
+RedirectResponse
+  app\Http\Controllers\UserProfileController.php:28:    {
+  app\Http\Controllers\UserProfileController.php:29:        $data = $request->validate([
+  app\Http\Controllers\UserProfileController.php:41:            ],
+  app\Http\Controllers\UserProfileController.php:42:            'role' => ['required', 
+'in:admin,prefetture,titulaire,professeur,comptable'],
+> app\Http\Controllers\UserProfileController.php:43:            'statut' => ['required', 'in:actif,inactif'],
+  app\Http\Controllers\UserProfileController.php:44:            'password' => ['required', 'string', 'min:8', 
+'confirmed'],
+  app\Http\Controllers\UserProfileController.php:45:            'pin_code' => ['nullable', 'digits:4'],
+  app\Http\Controllers\UserProfileController.php:46:        ], [
+  app\Http\Controllers\UserProfileController.php:47:            'username.unique' => "Ce 
+… 2,790 chars elided …
+
+  app\Http\Controllers\UserProfileController.php:192:
+> app\Http\Controllers\UserProfileController.php:193:        if ($user->is($request->user()) || $user->role === 
+'admin' || $user->statut !== 'actif') {
+  app\Http\Controllers\UserProfileController.php:194:            return back()->with('error', 'Seuls les autres 
+comptes actifs non administrateurs peuvent être ouverts.');
+  app\Http\Controllers\UserProfileController.php:195:        }
+  app\Http\Controllers\UserProfileController.php:196:
+  app\Http\Controllers\UserProfileController.php:197:        $admin = $request->user();
+  app\Http\Controllers\UserProfileController.php:198:        $request->session()->put('impersonating_admin_id', 
+$admin->id);
+  app\Http\Controllers\UserProfileController.php:199:        auth()->login($user);
+  app
+… 3,590 chars elided …
+ pouvez pas 
+supprimer votre propre compte.');
+
+
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">2</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

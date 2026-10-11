@@ -1,0 +1,30 @@
+368                                            <td></td>
+369                                        </tr>
+370                                    </tbody>
+371                                </table>
+372                            </div>
+373                            @if ($courant['frais']['non_affectes'] > 0)
+374                                <p class="text-muted mb-0" style="font-size:.85rem">
+375                                    <i class="fa fa-info-circle"></i>
+376                                    {{ number_format($courant['frais']['non_affectes'], 2) }} encaissé(s) sans affectation à une ligne de frais
+377                                    (déjà compté(s) dans le total payé).
+378                                </p>
+379                            @endif
+380                        @endif
+381                        </div>
+382                    </div>
+383                </div>
+384            @endif
+385    
+386            {{-- ==================== DOCUMENTS ==================== --}}
+387            <div class="row">
+388                <div class="col-md-12">
+389                    <div class="dossier-carte">
+390                        <h4 class="dossier-carte__titre">
+391                            <i class="fa fa-files-o" style="color:var(--dossier)"></i> Documents et fichiers attachés
+392                            <small class="text-muted ml-2">{{ $eleve->documents->count() }} pièce(s)</small>
+393                        </h4>
+394                        @forelse ($eleve->documents as $document)
+395                            <div class="d-flex justify-content-between align-items-center border-bottom py-2">
+
+[showing lines 368-395 of 413; read again with offset=396 for more]

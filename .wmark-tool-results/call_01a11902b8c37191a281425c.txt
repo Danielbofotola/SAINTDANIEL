@@ -1,0 +1,27 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/PrefectureVieScolaireTest.php (4 hunks applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 16-16 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 16-16:
+16             'documents_eleves', 'presences', 'notes', 'evaluations', 'periodes', 'emplois_du_temps', 'affectations_cours', 'cours',
+Landed at lines 228-237 (the file's new text; no re-read needed):
+228        Schema::create('documents_eleves', function (Blueprint $table) {
+229            $table->id();
+230            $table->unsignedBigInteger('eleve_id');
+231            $table->string('type_document');
+232            $table->string('chemin_fichier');
+233            $table->string('statut')->default('actif');
+234            $table->timestamp('created_at')->nullable();
+235        });
+236    
+237        // --- Données de test ---
+Landed at lines 267-270 (the file's new text; no re-read needed):
+267        DB::table('documents_eleves')->insert([
+268            'id' => 1, 'eleve_id' => 1, 'type_document' => 'certificat_medical',
+269            'chemin_fichier' => 'eleves/documents/certificat.pdf', 'statut' => 'actif', 'created_at' => now(),
+270        ]);
+Landed at lines 307-310 (the file's new text; no re-read needed):
+307            ->assertSee('Transport')
+308            // Le document attaché au dossier est visible et ouvrable.
+309            ->assertSee('Documents attachés')->assertSee('Certificat médical')
+310            ->assertSee('eleves/documents/certificat.pdf', false);

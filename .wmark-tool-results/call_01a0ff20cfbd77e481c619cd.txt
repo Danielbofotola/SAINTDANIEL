@@ -1,0 +1,10 @@
+Applied patch: 1 file changed (1 updated)
+Updated resources/views/admin/dashboard.blade.php (1 hunk applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 353-354 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 354-358:
+354                    @if ($anneeEnCours)
+355                        <span class="badge badge-success"><i class="fa fa-calendar mr-1"></i> Année en cours : {{ $anneeEnCours->libelle }}</span>
+356                    @else
+357                        <span class="badge badge-warning"><i class="fa fa-exclamation-triangle mr-1"></i> Aucune année en cours — <a href="{{ route('admin.annees.index') }}">en définir une</a></span>
+358                    @endif

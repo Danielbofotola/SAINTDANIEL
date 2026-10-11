@@ -1,0 +1,34 @@
+100            $eleveIds = $classe->inscriptions()
+101                ->anneeEnCours()
+102                ->where('statut', 'actif')
+103                ->pluck('eleve_id')
+104                ->map(fn ($id) => (int) $id)
+105                ->all();
+106    
+107            $evaluations = Evaluation::query()
+108                ->where('statut', 'actif')
+109                ->whereHas('affectation', fn ($query) => $query
+110                    ->where('classe_id', $classe->id)
+111                    ->when($annee, fn ($affectation) => $affectation->where('annee_scolaire_id', $annee->id)))
+112                ->get()
+113                ->keyBy('id');
+114    
+115            $enregistrees = 0;
+116            $ignorees = 0;
+117    
+118            DB::transaction(function () use ($request, $evaluations, $eleveIds, &$enregistrees, &$ignorees) {
+119                foreach ((array) $request->input('notes', []) as $eleveId => $ligne) {
+120                    $eleveId = (int) $eleveId;
+121    
+122                    if (! in_array($eleveId, $eleveIds, true)) {
+123                        continue;
+124                    }
+125    
+126                    foreach ((array) $ligne as $evaluationId => $valeur) {
+127                        $evaluation = $evaluations->get((int) $evaluationId);
+128    
+129                        if (! $evaluation) {
+130                            continue;
+131                        }
+
+[showing lines 100-131 of 178; read again with offset=132 for more]

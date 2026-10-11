@@ -1,0 +1,27 @@
+[powershell — Windows side]
+INFO  Blade templates cached successfully.  
+
+==viewcache 0==
+
+   PASS  Tests\Feature\ComptableCaisseTest
+  ✓ the cashier sees the payment page with a student filter and can record a payment                             0.24s  
+  ✓ the cashier payment page filters the student list by class                                                   0.03s  
+  ✓ the cashier dashboard links to the payment page                                                              0.04s  
+  ✓ the payment page is restricted to the cashier role                                                           0.03s  
+
+   PASS  Tests\Feature\FinancesPagesTest
+  ✓ an admin can manage fee types and class tariffs                                                              0.04s  
+  ✓ a payment is recorded with a receipt and must match the student class                                        0.03s  
+  ✓ expenses and categories are managed per school year                                                          0.02s  
+  ✓ closing a school year computes the summary and can be reopened                                               0.03s  
+  ✓ the payments page offers a student filter and shows the remaining balance                                    0.04s  
+  ✓ the finance menu links point to the new modules                                                              0.04s  
+  ✓ the admin profile sidebar links to the management modules                                                    0.04s  
+  ✓ a closed school year can be browsed in read-only                                                             0.05s  
+
+  Tests:    12 passed (84 assertions)
+  Duration: 0.80s
+
+==exit 0==
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

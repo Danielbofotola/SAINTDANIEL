@@ -1,0 +1,11 @@
+[powershell — Windows side]
+resources\views\admin\bulletins\document.blade.php
+resources\views\admin\bulletins\index.blade.php
+resources\views\prefecture\bulletins.blade.php
+---
+document.blade.php:40 $bulletinTitre = $systemSettings->bulletin_titre ?: 'Bulletin annuel — Cycle terminal de l’éducation de base (CTEB)';
+document.blade.php:102 {{ $bulletinTitre }} — ANNÉE SCOLAIRE {{ $inscription->anneeScolaire?->libelle ?? '20___ - 20___' }}
+index.blade.php:29 @unless ($annee)<div class="alert alert-warning"><i class="fa fa-exclamation-triangle"></i> Aucune année scolaire en cours.</div>@endunless
+index.blade.php:73 <td><a href="{{ route('admin.bulletins.document', $row['inscription']) }}" class="btn btn-sm btn-info" target="_blank" rel="noopener" title="Bulletin annuel (norme RDC)"><i class="fa fa-file-text-o"></i> Bulletin</a></td>
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

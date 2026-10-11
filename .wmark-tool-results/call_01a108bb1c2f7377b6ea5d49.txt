@@ -1,0 +1,18 @@
+55                                 <tr>
+56                                     <td>{{ $loop->iteration }}</td>
+57                                     <td><strong>{{ $archive->anneeScolaire?->libelle ?? '—' }}</strong></td>
+58                                     <td>{{ $archive->total_eleves_inscrits }}</td>
+59                                     <td>{{ number_format((float) $archive->total_recettes, 2, ',', ' ') }}</td>
+60                                     <td>{{ number_format((float) $archive->total_depenses, 2, ',', ' ') }}</td>
+61                                     <td><span class="badge badge-{{ $solde >= 0 ? 'success' : 'danger' }}">{{ number_format($solde, 2, ',', ' ') }}</span></td>
+62                                     <td>{{ $archive->date_cloture?->format('d/m/Y H:i') }}</td>
+63                                     <td>{{ $archive->remarques ?: '—' }}</td>
+64                                     <td>
+65                                         <form class="d-inline" method="POST" action="{{ route('admin.archives.destroy', $archive) }}" onsubmit="return confirm('Rouvrir cette année (supprimer l’archive) ?');">
+66                                             @csrf
+67                                             @method('DELETE')
+68                                             <button class="btn btn-sm btn-warning" type="submit" title="Rouvrir l'année"><i class="fa fa-unlock"></i></button>
+69                                         </form>
+70                                     </td>
+
+[showing lines 55-70 of 81; read again with offset=71 for more]

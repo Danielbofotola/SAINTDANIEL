@@ -1,0 +1,29 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\e8f943213216\20261003-013742-bash-call_01a0ff32376f7556b660948a.txt (1,153 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Structured view (text):
+[powershell — Windows side]
+resources\views\admin\dashboard.blade.php:450:                    <div style="position: relative; height: 280px; width: 100%;">
+> resources\views\admin\dashboard.blade.php:451:                        <canvas id="cyclesChart" role="img" aria-label="R�partition des �l�ves par cycle"></canvas>
+> resources\views\admin\dashboard.blade.php:452:                        <p class="chart-empty" id="cyclesEmpty">Aucun cycle � afficher.</p>
+  resources\views\admin\dashboard.blade.php:453:                    </div>
+  resources\views\admin\dashboard.blade.php:454:                </div>
+  resources\views\admin\dashboard.blade.php:472:                                    <th>Classe</th>
+> resources\views\admin\dashboard.blade.php:473:                                    <th>Cycle</th>
+  resources\views\admin\dashboard.blade.php:474:                                    <th class="text-center">Actions</th>
+  resources\views\admin\dashboard.blade.php:475:                                </tr>
+  resources\views\admin\dashboard.blade.php:496:                                        <td class="align-middle">{{ $inscription?->classe?->nom ?? 'Non affect�' }}</td>
+> resources\views\admin\dashboard.blade.php:497:                                        <td class="align-middle">{{ $inscription?->classe?->cycle?->nom ?? '-' }}</td>
+  resources\views\admin\dashboard.blade.php:498:                                        <td class="text-center align-middle text-nowrap">
+  resources\vi
+… 397 chars elided …
+ ?? 'Non affect�' }}"
+> resources\views\admin\dashboard.blade.php:507:                                                data-student-cycle="{{ $inscription?->classe?->cycle?->nom ?? 'Non renseign�' }}"
+  resources\views\admin\dashboard.blade.php:508:                                                data-student-photo="{{ $eleve->photo ? asset('storage/'.$eleve->photo) : '' }}"
+  resources\views\admin\dashboard.blade.php:509:                                                data-student-edit-url="{{ route('admin.eleves.edit', $eleve) }}"
+  resources\views\admin\dashboard.blade.php:545:                        <dt class="col-5 text-muted font-weight-normal">Classe</dt><dd class="col-7 font-weight-bold" id="studentDetailsClass"></dd>
+> resources\views\admin\dashboard.blade.php:546:                  
+… 1,197 chars elided …
+ Object.values(arr).some(v => Number(v) > 0);
+
+
+
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">2</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

@@ -1,0 +1,17 @@
+386    
+387        $this->actingAs($admin)
+388            ->get(route('admin.sections.create'))
+389            ->assertOk()
+390            ->assertSee('Créer une section');
+391    
+392        $this->post(route('admin.sections.store'), [
+393            'nom' => 'Scientifique',
+394            'description' => 'Section scientifique',
+395        ])->assertRedirect(route('admin.classes.create', ['section_id' => 1]));
+396    
+397        $this->get(route('admin.options.create', ['section_id' => 1]))
+398            ->assertOk()
+399            ->assertSee('Créer une option')
+400            ->assertSee('Scientifique');
+
+[showing lines 386-401 of 484; read again with offset=402 for more]

@@ -1,0 +1,14 @@
+[powershell — Windows side]
+No syntax errors detected in app/Support/Encaisse.php
+No syntax errors detected in app/Http/Controllers/ComptablePaiementController.php
+No syntax errors detected in app/Http/Controllers/PaiementController.php
+   INFO  Blade templates cached successfully.  
+
+  ✓ every model that carries a school year exposes the year relation and scope                                   0.02s  
+  ✓ relation foreign keys match the database schema                                                              0.03s  
+
+  Tests:    275 passed (1764 assertions)
+  Duration: 17.02s
+
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

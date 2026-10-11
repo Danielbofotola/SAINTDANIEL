@@ -1,0 +1,31 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\e1ce9c26600a\20261004-222413-bash-call_01a108cdccfb74ca8cb3a657.txt (2,551 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Structured view (text):
+[powershell — Windows side]
+AdminUserManagementTest.php:238: Schema::create('inscriptions', function (Blueprint $table) {
+AdminUserManagementTest.php:285: DB::table('inscriptions')->insert([
+AdminUserManagementTest.php:463: $eleve->setRelation('inscriptions', collect([$inscription]));
+AnneeEnCoursScopingTest.php:10: foreach (['inscriptions', 'eleves', 'classes', 'cycles', 'sections', 'options', 'salles', 'annees_scolaires', 'users'] as $table) {
+AnneeEnCoursScopingTest.php:80: Schema::create('inscriptions', function (Blueprint $table) {
+AnneeEnCoursScopingTest.php:143: DB::table('inscriptions')->insert([
+AnneeScolaireTest.php:9: Schema::dropIfExists('inscriptions');
+AnneeScolaireTest.php:174: Schema::create('inscriptions', function (Blueprint $table) {
+AnneeScolaireTest.php:181: DB::table('inscriptions')->insert(['annee_scolaire_id' => $annee->id]);
+BulletinDocumentTest.php:14: 'professeurs', 'inscriptions', 'eleves', 'tuteurs', 'classes', 'cycles', 'salles',
+BulletinDocumentTest.php:105: Schema::create('inscriptions', function (Blueprint $table) {
+BulletinDocumentTest.php:180: return DB::table('inscriptions')->insertGetId([
+BulletinDocumentTest.php:201: $eleveId = (int) DB::table('inscriptions')->where('id', $inscriptionId)->value('eleve_id');
+BulletinDocumentTest.php:220: $eleveId = (int) DB::table('inscriptions')->where('id', $inscriptionId)->value('eleve_id');
+BulletinDocumentTest.php:233: $eleveId = (int) DB::table('inscriptions')->where('id', $inscriptionId)->value('ele
+… 2,310 chars elided …
+ (Blueprint $table) {
+RegistrationRequestWorkflowTest.php:12: 'demandes_comptes', 'demandes_inscription', 'inscriptions', 'eleve_sante', 'eleves',
+RegistrationRequestWorkflowTest.php:100: Schema::create('inscriptions', function (Blueprint $table) {
+RegistrationRequestWorkflowTest.php:196: ->and(DB::table('inscriptions')->count())->toBe(0);
+RegistrationRequestWorkflowTest.php:216: ->and(DB::table('inscriptions')->where('eleve_id', $student->id)->count())->toBe(1);
+RegistrationRequestWorkflowTest.php:331: expect((int) DB::table('inscriptions')->value('annee_scolaire_id'))
+RoleDashboardsTest.php:11: 'inscriptions', 'eleves', 'classes', 'cycles', 'salles', 'professeurs', 'annees_scolaires', 'users',
+RoleDashboardsTest.php:88: Schema::create('inscriptions', function (Blueprint $table) {
+RoleDas
+… 3,110 chars elided …
+'bulletin', 'certificat_medical'] as $type) if ($request->hasFile($type)) DB::table('documents_eleves')->insert(['eleve_id' => $eleve->id, 'type_document' => $type, 'chemin_fichier' => $request->file($type)->store('eleves/documents', 'public'), 'statut' => 'actif', 'created_at' => now()]);
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

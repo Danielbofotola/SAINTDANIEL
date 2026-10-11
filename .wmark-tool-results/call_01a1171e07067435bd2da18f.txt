@@ -1,0 +1,11 @@
+Applied patch: 1 file changed (1 updated)
+Updated resources/views/messagerie/_espace.blade.php (1 hunk applied)
+Landed at lines 81-88 (the file's new text; no re-read needed):
+81         /* min-width:0 : sinon l'input garde sa largeur intrinsèque et pousse les
+82            boutons (dont l'envoi) hors de l'écran sur les petits écrans. */
+83         .chat-input { flex: 1 1 auto; min-width: 0; background: #3a3b3c; border: none;
+84             border-radius: 20px; padding: 9px 16px; color: #fff; outline: none; }
+85         .icon-btn { background: transparent; border: none; color: var(--chat-blue); width: 36px; height: 36px;
+86             border-radius: 50%; cursor: pointer; display: inline-flex; align-items: center; justify-content: center;
+87             flex: 0 0 auto; font-size: 1.05rem; }
+88         .icon-btn--send { width: 40px; height: 40px; background: var(--chat-blue); color: #fff; font-size: 1.2rem; }

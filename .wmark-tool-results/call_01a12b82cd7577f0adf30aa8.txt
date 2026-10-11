@@ -1,0 +1,169 @@
+1      <?php
+2      
+3      namespace App\Http\Controllers;
+4      
+5      use App\Models\DocumentEleve;
+6      use App\Models\Eleve;
+7      use App\Support\SituationEleve;
+8      use Illuminate\Http\RedirectResponse;
+9      use Illuminate\Http\Request;
+10     use Illuminate\Support\Facades\DB;
+11     use Illuminate\View\View;
+12     
+13     class EleveController extends Controller
+14     {
+15         /**
+16          * Active ou désactive un élève : « inactif » le fait disparaître des
+17          * listes, des effectifs et des écrans de suivi (sa fiche reste
+18          * consultable par son URL directe).
+19          */
+20         public function toggleStatut(Request $request, Eleve $eleve): RedirectResponse
+21         {
+22             $eleve->update(['statut' => $eleve->statut === 'actif' ? 'inactif' : 'actif']);
+23     
+24             $nom = trim($eleve->nom.' '.$eleve->prenom);
+25     
+26             return back()->with('success', $eleve->statut === 'actif'
+27                 ? $nom.' est activé : il est de nouveau visible dans l\'application.'
+28                 : $nom.' est désactivé : il n\'apparaît plus dans les listes ni les effectifs.');
+29         }
+30     
+31         public function index(Request $request): View
+32         {
+33             $search = trim((string) $request->query('q', ''));
+34             $statut = (string) $request->query('statut', '');
+35     
+36             $eleves = Eleve::query()
+37                 ->with(['inscriptions' => fn ($query) => $query
+38                     ->anneeEnCours()
+39                     ->whereIn('statut', ['actif', 'en_attente'])
+40                     ->with('classe')])
+41                 ->when($search !== '', fn ($query) => $query->where(function ($query) use ($search) {
+42                     $query->where('nom', 'like', "%{$search}%")
+43                         ->orWhere('postnom', 'like', "%{$search}%")
+44                         ->orWhere('prenom', 'like', "%{$search}%")
+45                         ->orWhere('matricule', 'like', "%{$search}%");
+46                 }))
+47                 ->when(in_array($statut, ['actif', 'inactif', 'suspendu', 'exclu'], true), fn ($query) => $query->where('statut', $statut))
+48                 ->orderBy('nom')
+49                 ->orderBy('postnom')
+50                 ->orderBy('prenom')
+51                 ->paginate(25)
+52                 ->withQueryString();
+53     
+54             return view('admin.eleves.index', [
+55                 'eleves' => $eleves,
+56                 'search' => $search,
+57                 'statut' => $statut,
+58                 'stats' => [
+59                     'total' => Eleve::count(),
+60                     'garcons' => Eleve::where('sexe', 'M')->count(),
+61                     'filles' => Eleve::where('sexe', 'F')->count(),
+62                     'inscrits' => Eleve::inscritAnneeEnCours()->count(),
+63                 ],
+64             ]);
+65         }
+66     
+67         public function edit(Eleve $eleve): View
+68         {
+69             $eleve->load(['tuteur', 'sante', 'documents' => fn ($query) => $query->latest('created_at')]);
+70     
+71             return view('admin.eleves.edit', compact('eleve'));
+72         }
+73     
+74         public function update(Request $request, Eleve $eleve): RedirectResponse
+75         {
+76             $data = $request->validate([
+77                 'nom' => ['required', 'string', 'max:50'],
+78                 'postnom' => ['required', 'string', 'max:50'],
+79                 'prenom' => ['required', 'string', 'max:50'],
+80                 'sexe' => ['required', 'in:M,F'],
+81                 'date_naissance' => ['required', 'date', 'before:today'],
+82                 'lieu_naissance' => ['nullable', 'string', 'max:100'],
+83                 'statut' => ['required', 'in:actif,inactif,suspendu,exclu'],
+84                 'photo' => ['nullable', 'image', 'max:2048'],
+85                 'nom_mere' => ['required', 'string', 'max:100'],
+86                 'telephone_mere' => ['required', 'string', 'max:20'],
+87                 'profession_mere' => ['nullable', 'string', 'max:100'],
+88                 'email_mere' => ['nullable', 'email', 'max:100'],
+89                 'adresse_mere' => ['nullable', 'string'],
+90                 'nom_pere' => ['nullable', 'string', 'max:100'],
+91                 'telephone_pere' => ['nullable', 'string', 'max:20'],
+92                 'profession_pere' => ['nullable', 'string', 'max:100'],
+93                 'email_pere' => ['nullable', 'email', 'max:100'],
+94                 'adresse_pere' => ['nullable', 'string'],
+95                 'groupe_sanguin' => ['nullable', 'string', 'max:5'],
+96                 'allergies_pathologies' => ['nullable', 'string'],
+97                 'traitements_urgences' => ['nullable', 'string'],
+98                 'medecin_referent' => ['nullable', 'string', 'max:150'],
+99             ], $this->messages());
+100    
+101            DB::transaction(function () use ($request, $eleve, $data) {
+102                $photo = $request->file('photo')?->store('eleves/photos', 'public');
+103                $eleve->update(collect($data)->only(['nom', 'postnom', 'prenom', 'sexe', 'date_naissance', 'lieu_naissance', 'statut'])->merge($photo ? ['photo' => $photo] : [])->all());
+104                $eleve->tuteur()->update(collect($data)->only(['nom_mere', 'telephone_mere', 'profession_mere', 'email_mere', 'adresse_mere', 'nom_pere', 'telephone_pere', 'profession_pere', 'email_pere', 'adresse_pere'])->all());
+105                $eleve->sante()->updateOrCreate([], collect($data)->only(['groupe_sanguin', 'allergies_pathologies', 'traitements_urgences', 'medecin_referent'])->all());
+106            });
+107    
+108            return redirect()->route('admin.eleves.show', $eleve)->with('success', 'Le profil de l’élève a été modifié.');
+109        }
+110    
+111        public function storeDocument(Request $request, Eleve $eleve): RedirectResponse
+112        {
+113            $data = $request->validate([
+114                'type_document' => ['required', 'in:acte_naissance,bulletin,certificat_medical,autre'],
+115                'document' => ['required', 'file', 'mimes:pdf,jpg,jpeg,png', 'max:4096'],
+116            ], [
+117                'document.required' => 'Veuillez sélectionner un fichier.',
+118                'document.max' => 'Le fichier ne doit pas dépasser 4 Mo.',
+119                'document.mimes' => 'Le fichier doit être au format PDF, JPG, JPEG ou PNG.',
+120            ]);
+121    
+122            DocumentEleve::create([
+123                'eleve_id' => $eleve->id,
+124                'type_document' => $data['type_document'],
+125                'chemin_fichier' => $request->file('document')->store('eleves/documents', 'public'),
+126                'statut' => 'actif',
+127                'created_at' => now(),
+128            ]);
+129    
+130            return back()->with('success', 'Le document a été ajouté au dossier.');
+131        }
+132    
+133        public function show(Eleve $eleve): View
+134        {
+135            $eleve->load([
+136                'tuteur',
+137                'sante',
+138                'documents' => fn ($query) => $query->where('statut', 'actif')->latest('created_at'),
+139            ]);
+140    
+141            // Seule l'inscription de l'année en cours est présentée sur le dossier.
+142            $inscription = $eleve->inscriptions()
+143                ->anneeEnCours()
+144                ->whereIn('statut', ['actif', 'en_attente'])
+145                ->with(['classe.cycle', 'classe.section', 'classe.option'])
+146                ->latest('date_inscription')
+147                ->first();
+148    
+149            // Parcours complet (années passées comprises) + état financier : même
+150            // logique que le dossier du préfet des études (App\Support\SituationEleve).
+151            $parcours = SituationEleve::parcours($eleve);
+152    
+153            return view('admin.eleves.show', compact('eleve', 'inscription') + [
+154                'parcours' => $parcours,
+155                'detteTotale' => SituationEleve::detteTotale($parcours),
+156                'paiements' => $inscription ? SituationEleve::paiements($inscription) : collect(),
+157            ]);
+158        }
+159    
+160        private function messages(): array
+161        {
+162            return [
+163                '*.required' => 'Ce champ est obligatoire.',
+164                'date_naissance.before' => 'La date de naissance doit être antérieure à aujourd’hui.',
+165                'photo.max' => 'La photo ne doit pas dépasser 2 Mo.',
+166                '*.email' => 'Veuillez saisir une adresse e-mail valide.',
+167            ];
+168        }
+169    }

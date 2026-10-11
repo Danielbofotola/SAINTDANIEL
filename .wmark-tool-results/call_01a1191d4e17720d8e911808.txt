@@ -1,0 +1,17 @@
+238    
+239                    @yield('contenu')
+240                </div>
+241            </div>
+242        </div>
+243    </div>
+244    
+245    {{-- Scripts --}}
+246    <script src="{{ asset('azzara/js/core/jquery.3.2.1.min.js') }}"></script>
+247    <script src="{{ asset('azzara/js/core/popper.min.js') }}"></script>
+248    <script src="{{ asset('azzara/js/core/bootstrap.min.js') }}"></script>
+249    <script src="{{ asset('azzara/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js') }}"></script>
+250    <script src="{{ asset('azzara/js/plugin/chart.js/chart.min.js') }}"></script>
+251    <script src="{{ asset('azzara/js/ready.min.js') }}"></script>
+252    @stack('scripts')
+253    </body>
+254    </html>

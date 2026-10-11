@@ -1,0 +1,59 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\e1ce9c26600a\20261004-210023-bash-call_01a108810292714e85a045b5.txt (1,184 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Structured view (text):
+[powershell — Windows side]
+<td class="text-center"><i class="fa fa-user-circle fa-2x text-secondary"></i></td>\n
+                                <td>ELV-2026-0002</td>\n
+                                <td>Ilunga  David</td>\n
+                                <td>Garçon</td>\n
+                                <td>12/05/2014</td>\n
+                                <td>3e A</td>\n
+                                <td><span class="badge badge-secondary">Inactif</span></td>\n
+                                <td class="text-nowrap">\n
+                                    <a href="http://localhost:8000/admin/eleves/2" class="btn btn-sm btn-info" title="Voir le dossier"><i class="fa fa-folder-open"></i></a>\n
+                                    <a href="http://localhost:8000/admin/eleves/2/modifier" class="btn btn-sm btn-primary" title="Modifier"><i class="fa fa-pencil"></i></a>\n
+                                </td>\n
+                            </tr>\n
+                                            </tbody>\n
+                </table>\n
+            </div>\n
+            <div class="d-flex justify-content-between align-items-center flex-wrap">\n
+                <small class="text-muted">1 élève(s) — page 1 / 1</small>\n
+                \n
+            </div>\n
+        </div>\n
+    </main>\n
+</body>\n
+</html>\n
+
+
+  To contain: Ilunga David
+
+  at tests\Feature\ElevesPagesTest.php:186
+    182▕ 
+    183▕     $this->actingAs($admin)
+    184▕         ->get(route('admin.eleves.index', ['q' => 'Ilu
+… 0 chars elided …
+nga']))
+    185▕         ->assertOk()
+  ➜ 186▕         ->assertSee('Ilunga David')
+    187▕         ->assertDontSee('Mwamba Kabila Aline');
+    188▕ 
+    189▕     $this->actingAs($admin)
+    190▕         ->get(route('admin.eleves.index', ['statut' => 'inactif']))
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\ElevesPagesTest > the enrollment history lists processed applications and h…  QueryException   
+  SQLSTATE[HY000]: General error: 1 all VALUES must have the same number of terms (Connection: sqlite, Database: :memory:, SQL: insert into "demandes_inscription" ("annee_scolaire_id", "classe_id", "created_at", "date_naissance", "nom", "nom_mere", "prenom", "sexe", "statut", "telephone_mere"
+… 793 chars elided …
+  581▕ 
+    582▕             $this->recordsHaveBeenModified();
+
+  1   vendor\laravel\framework\src\Illuminate\Database\Connection.php:578
+  2   vendor\laravel\framework\src\Illuminate\Database\Connection.php:827
+
+
+  Tests:    2 failed, 2 passed (11 assertions)
+  Duration: 1.26s
+
+==exit 2==
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

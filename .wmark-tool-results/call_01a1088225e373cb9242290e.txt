@@ -1,0 +1,44 @@
+335                         <div class="card-block p-0">
+336                            <form method="POST" action="{{ route('admin.profile.password') }}">
+337                               @csrf
+338                               @method('PATCH')
+339                               <div class="row">
+340                                  <div class="col-md-4 form-group">
+341                                     <label>Mot de passe actuel</label>
+342                                     <input class="form-control" type="password" name="current_password" required>
+343                                  </div>
+344                                  <div class="col-md-4 form-group">
+345                                     <label>Nouveau mot de passe</label>
+346                                     <input class="form-control" type="password" name="password" minlength="8" required>
+347                                  </div>
+348                                  <div class="col-md-4 form-group">
+349                                     <label>Confirmer le mot de passe</label>
+350                                     <input class="form-control" type="password" name="password_confirmation" minlength="8" required>
+351                                  </div>
+352                               </div>
+353                               <button class="btn btn-warning waves-effect waves-light mt-2" type="submit">
+354                                  <i class="icofont icofont-save"></i> Modifier le mot de passe
+355                               </button>
+356                            </form>
+357                         </div>
+358                      </div>
+359                   </div>
+360                </div>
+361    
+362             </div>
+363          </div>
+364       </div>
+365    
+366       <!-- Required Scripts -->
+367       <script src="{{ asset('assets/plugins/Jquery/dist/jquery.min.js') }}"></script>
+368       <script src="{{ asset('assets/plugins/jquery-ui/jquery-ui.min.js') }}"></script>
+369       <script src="{{ asset('assets/plugins/tether/dist/js/tether.min.js') }}"></script>
+370       <script src="{{ asset('assets/plugins/bootstrap/js/bootstrap.min.js') }}"></script>
+371       <script src="{{ asset('assets/plugins/jquery-slimscroll/jquery.slimscroll.js') }}"></script>
+372    
+373       <!-- Custom Scripts -->
+374       <script type="text/javascript" src="{{ asset('assets/js/main.min.js') }}"></script>
+375       <script src="{{ asset('assets/js/menu.min.js') }}"></script>
+376    
+377    </body>
+378    </html>

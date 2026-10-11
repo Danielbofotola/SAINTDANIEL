@@ -1,0 +1,20 @@
+Applied patch: 1 file changed (1 updated)
+Updated resources/views/prefecture/layout.blade.php (1 hunk applied)
+Landed at lines 163-197 (the file's new text; no re-read needed):
+163                        <li class="nav-section">
+164                            <span class="sidebar-mini-icon"><i class="fa fa-ellipsis-h"></i></span>
+165                            <h4 class="text-section">Vie scolaire</h4>
+166                        </li>
+167                        <li class="nav-item {{ request()->routeIs('prefecture.presences') ? 'active' : '' }}">
+168                            <a href="{{ route('prefecture.presences') }}">
+169                                <i class="fas fa-user-clock"></i>
+170                                <p>Présence &amp; ponctualité</p>
+      … 19 lines omitted …
+190                        </li>
+191                        <li class="nav-item {{ request()->routeIs('prefecture.tuteurs') ? 'active' : '' }}">
+192                            <a href="{{ route('prefecture.tuteurs') }}">
+193                                <i class="fas fa-user-friends"></i>
+194                                <p>Tuteurs &amp; parents</p>
+195                            </a>
+196                        </li>
+197                        <li class="nav-item {{ request()->routeIs('notifications.*') ? 'active' : '' }}">

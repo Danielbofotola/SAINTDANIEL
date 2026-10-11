@@ -1,0 +1,316 @@
+1      <?php
+2      
+3      use App\Models\User;
+4      use Illuminate\Database\Schema\Blueprint;
+5      use Illuminate\Support\Facades\DB;
+6      use Illuminate\Support\Facades\Schema;
+7      
+8      beforeEach(function () {
+9          Schema::disableForeignKeyConstraints();
+10         foreach ([
+11             'bulletins', 'paiements', 'frais_scolaires', 'type_frais', 'documents_eleves', 'eleve_sante', 'demandes_inscription', 'inscriptions', 'eleves', 'tuteurs', 'classes',
+12             'cycles', 'salles', 'annees_scolaires', 'professeurs', 'users',
+13         ] as $table) {
+14             Schema::dropIfExists($table);
+15         }
+16         Schema::enableForeignKeyConstraints();
+17     
+18         Schema::create('users', function (Blueprint $table) {
+19             $table->id();
+20             $table->string('username')->unique();
+21             $table->string('email')->unique();
+22             $table->string('password');
+23             $table->string('pin_code')->nullable();
+24             $table->string('role');
+25             $table->string('statut');
+26             $table->rememberToken();
+27             $table->timestamps();
+28         });
+29         Schema::create('bulletins', function (Blueprint $table) {
+30             $table->id();
+31             $table->unsignedBigInteger('inscription_id');
+32             $table->unsignedBigInteger('periode_id')->nullable();
+33             $table->decimal('total_points', 8, 2)->default(0);
+34             $table->decimal('max_possible', 8, 2)->default(0);
+35             $table->decimal('pourcentage', 5, 2)->default(0);
+36             $table->unsignedInteger('place_classe')->nullable();
+37             $table->string('mention')->nullable();
+38             $table->string('statut')->default('actif');
+39             $table->timestamps();
+40         });
+41     
+42         Schema::create('type_frais', function (Blueprint $table) {
+43             $table->id();
+44             $table->string('libelle')->nullable();
+45             $table->string('nom')->nullable();
+46         });
+47         Schema::create('frais_scolaires', function (Blueprint $table) {
+48             $table->id();
+49             $table->unsignedBigInteger('type_frais_id')->nullable();
+50             $table->unsignedBigInteger('classe_id');
+51             $table->unsignedBigInteger('annee_scolaire_id');
+52             $table->decimal('montant_exige', 10, 2)->default(0);
+53             $table->date('date_echeance')->nullable();
+54             $table->string('statut')->default('actif');
+55             $table->timestamps();
+56         });
+57         Schema::create('paiements', function (Blueprint $table) {
+58             $table->id();
+59             $table->string('num_recu')->nullable();
+60             $table->unsignedBigInteger('inscription_id');
+61             $table->unsignedBigInteger('frais_scolaire_id')->nullable();
+62             $table->unsignedBigInteger('periode_id')->nullable();
+63             $table->decimal('montant_paye', 10, 2)->default(0);
+64             $table->timestamp('date_paiement')->nullable();
+65             $table->string('mode_paiement')->nullable();
+66             $table->string('reference_transaction')->nullable();
+67             $table->string('statut')->default('actif');
+68             $table->timestamps();
+69         });
+70     
+71         Schema::create('eleve_sante', function (Blueprint $table) {
+72             $table->id();
+73             $table->unsignedBigInteger('eleve_id');
+74             $table->string('groupe_sanguin')->nullable();
+75             $table->text('allergies_pathologies')->nullable();
+76             $table->text('traitements_urgences')->nullable();
+77             $table->string('medecin_referent')->nullable();
+78             $table->timestamps();
+79         });
+80         Schema::create('documents_eleves', function (Blueprint $table) {
+81             $table->id();
+82             $table->unsignedBigInteger('eleve_id');
+83             $table->string('type_document');
+84             $table->string('chemin_fichier');
+85             $table->string('statut')->default('actif');
+86             $table->timestamp('created_at')->nullable();
+87         });
+88     
+89         Schema::create('annees_scolaires', function (Blueprint $table) {
+90             $table->id();
+91             $table->string('libelle');
+92             $table->date('date_debut');
+93             $table->date('date_fin');
+94             $table->boolean('is_encours')->default(false);
+95             $table->string('statut');
+96             $table->timestamps();
+97         });
+98         Schema::create('cycles', function (Blueprint $table) {
+99             $table->id();
+100            $table->string('nom');
+101            $table->string('statut');
+102            $table->timestamps();
+103        });
+104        Schema::create('salles', function (Blueprint $table) {
+105            $table->id();
+106            $table->string('nom');
+107            $table->string('statut')->default('actif');
+108            $table->timestamps();
+109        });
+110        Schema::create('classes', function (Blueprint $table) {
+111            $table->id();
+112            $table->unsignedBigInteger('cycle_id')->nullable();
+113            $table->unsignedBigInteger('salle_id')->nullable();
+114            $table->unsignedBigInteger('section_id')->nullable();
+115            $table->unsignedBigInteger('option_id')->nullable();
+116            $table->string('nom');
+117            $table->string('statut');
+118            $table->timestamps();
+119        });
+120        Schema::create('professeurs', function (Blueprint $table) {
+121            $table->id();
+122            $table->string('matricule');
+123            $table->string('nom');
+124            $table->string('postnom')->nullable();
+125            $table->string('prenom');
+126            $table->string('sexe');
+127            $table->string('specialite');
+128            $table->string('telephone');
+129            $table->string('email');
+130            $table->string('statut');
+131        });
+132        Schema::create('tuteurs', function (Blueprint $table) {
+133            $table->id();
+134            $table->string('nom_mere');
+135            $table->string('telephone_mere');
+136            $table->string('email_mere')->nullable();
+137            $table->text('adresse_mere')->nullable();
+138            $table->string('nom_pere')->nullable();
+139            $table->string('telephone_pere')->nullable();
+140            $table->string('email_pere')->nullable();
+141            $table->string('statut')->default('actif');
+142            $table->timestamps();
+143        });
+144        Schema::create('eleves', function (Blueprint $table) {
+145            $table->id();
+146            $table->string('matricule')->unique();
+147            $table->string('nom');
+148            $table->string('postnom')->nullable();
+149            $table->string('prenom');
+150            $table->string('sexe');
+151            $table->date('date_naissance');
+152            $table->string('lieu_naissance')->nullable();
+153            $table->unsignedBigInteger('tuteur_id');
+154            $table->string('photo')->nullable();
+155            $table->string('statut');
+156            $table->timestamps();
+157        });
+158        Schema::create('inscriptions', function (Blueprint $table) {
+159            $table->id();
+160            $table->unsignedBigInteger('eleve_id');
+161            $table->unsignedBigInteger('classe_id');
+162            $table->unsignedBigInteger('annee_scolaire_id');
+163            $table->date('date_inscription');
+164            $table->string('statut');
+165            $table->timestamps();
+166        });
+167        Schema::create('demandes_inscription', function (Blueprint $table) {
+168            $table->id();
+169            $table->string('nom');
+170            $table->string('postnom')->nullable();
+171            $table->string('prenom');
+172            $table->string('sexe');
+173            $table->date('date_naissance');
+174            $table->string('lieu_naissance')->nullable();
+175            $table->unsignedBigInteger('classe_id')->nullable();
+176            $table->unsignedBigInteger('annee_scolaire_id')->nullable();
+177            $table->string('nom_mere');
+178            $table->string('telephone_mere');
+179            $table->string('email_mere')->nullable();
+180            $table->text('adresse_mere')->nullable();
+181            $table->string('nom_pere')->nullable();
+182            $table->string('telephone_pere')->nullable();
+183            $table->string('email_pere')->nullable();
+184            $table->string('statut')->default('en_attente');
+185            $table->unsignedBigInteger('traite_par')->nullable();
+186            $table->timestamp('traite_le')->nullable();
+187            $table->text('motif_refus')->nullable();
+188            $table->timestamps();
+189        });
+190    
+191        DB::table('cycles')->insert(['id' => 1, 'nom' => 'Secondaire', 'statut' => 'actif']);
+192        DB::table('salles')->insert(['id' => 1, 'nom' => 'Salle 1', 'statut' => 'actif']);
+193        DB::table('classes')->insert(['id' => 1, 'cycle_id' => 1, 'salle_id' => 1, 'nom' => '3e A', 'statut' => 'actif']);
+194        DB::table('annees_scolaires')->insert([
+195            'id' => 1, 'libelle' => '2026-2027', 'date_debut' => '2026-09-01',
+196            'date_fin' => '2027-07-01', 'is_encours' => true, 'statut' => 'actif',
+197        ]);
+198    });
+199    
+200    function seedEleve(array $overrides = []): int
+201    {
+202        $tuteurId = DB::table('tuteurs')->insertGetId([
+203            'nom_mere' => 'Marie Kabila', 'telephone_mere' => '0990000000',
+204            'statut' => 'actif', 'created_at' => now(), 'updated_at' => now(),
+205        ]);
+206    
+207        $eleveId = DB::table('eleves')->insertGetId(array_merge([
+208            'matricule' => 'ELV-2026-0001',
+209            'nom' => 'Mwamba', 'postnom' => 'Kabila', 'prenom' => 'Aline',
+210            'sexe' => 'F', 'date_naissance' => '2014-05-12', 'lieu_naissance' => 'Kinshasa',
+211            'tuteur_id' => $tuteurId, 'statut' => 'actif',
+212            'created_at' => now(), 'updated_at' => now(),
+213        ], $overrides));
+214    
+215        DB::table('inscriptions')->insert([
+216            'eleve_id' => $eleveId, 'classe_id' => 1, 'annee_scolaire_id' => 1,
+217            'date_inscription' => '2026-09-05', 'statut' => 'actif',
+218            'created_at' => now(), 'updated_at' => now(),
+219        ]);
+220    
+221        return $eleveId;
+222    }
+223    
+224    test('the student list page shows enrollments, class and statistics', function () {
+225        seedEleve();
+226        $admin = User::factory()->create(['role' => 'admin']);
+227    
+228        $this->actingAs($admin)
+229            ->get(route('admin.eleves.index'))
+230            ->assertOk()
+231            ->assertSee('Liste des élèves')
+232            ->assertSee('Mwamba Kabila Aline')
+233            ->assertSee('ELV-2026-0001')
+234            ->assertSee('3e A')
+235            ->assertSee('Inscrits cette année');
+236    });
+237    
+238    test('désactiver un élève le rend invisible et l’activation le rétablit', function () {
+239        $eleveId = seedEleve();
+240        $admin = User::factory()->create(['role' => 'admin']);
+241    
+242        // Désactivation : l'élève sort des effectifs et des écrans de suivi.
+243        $this->actingAs($admin)->patch(route('admin.eleves.toggle', $eleveId))
+244            ->assertRedirect()
+245            ->assertSessionHas('success', fn ($m) => str_contains($m, 'désactivé'));
+246    
+247        expect(\App\Models\Eleve::find($eleveId)->statut)->toBe('inactif')
+248            ->and(\App\Models\Eleve::inscritAnneeEnCours()->whereKey($eleveId)->exists())->toBeFalse();
+249    
+250        // Son dossier reste consultable : le suivi administratif continue.
+251        $this->actingAs($admin)->get(route('admin.eleves.show', $eleveId))->assertOk()
+252            ->assertSee("Dossier de l'élève", false)
+253            ->assertSee('Responsables légaux');
+254    
+255        // Réactivation : il réapparaît dans les listes et les effectifs.
+256        $this->actingAs($admin)->patch(route('admin.eleves.toggle', $eleveId))->assertRedirect();
+257    
+258        expect(\App\Models\Eleve::find($eleveId)->statut)->toBe('actif')
+259            ->and(\App\Models\Eleve::inscritAnneeEnCours()->whereKey($eleveId)->exists())->toBeTrue();
+260    });
+261    
+262    test('the student list can be filtered by search term and by status', function () {
+263        seedEleve();
+264        seedEleve(['matricule' => 'ELV-2026-0002', 'nom' => 'Ilunga', 'postnom' => 'Mukendi', 'prenom' => 'David', 'sexe' => 'M', 'statut' => 'inactif']);
+265        $admin = User::factory()->create(['role' => 'admin']);
+266    
+267        $this->actingAs($admin)
+268            ->get(route('admin.eleves.index', ['q' => 'Ilunga']))
+269            ->assertOk()
+270            ->assertSee('Ilunga Mukendi David')
+271            ->assertDontSee('Mwamba Kabila Aline');
+272    
+273        $this->actingAs($admin)
+274            ->get(route('admin.eleves.index', ['statut' => 'inactif']))
+275            ->assertOk()
+276            ->assertSee('Ilunga Mukendi David')
+277            ->assertDontSee('Mwamba Kabila Aline');
+278    });
+279    
+280    test('the enrollment history lists processed applications and hides pending ones', function () {
+281        $admin = User::factory()->create(['role' => 'admin']);
+282    
+283        $rows = [
+284            ['Acceptee', 'F', 'acceptee', 1, 1, null],
+285            ['Refusee', 'M', 'refusee', 1, 1, 'Dossier incomplet'],
+286            ['EnAttente', 'M', 'en_attente', null, null, null],
+287        ];
+288    
+289        foreach ($rows as [$nom, $sexe, $statut, $classeId, $anneeId, $motif]) {
+290            DB::table('demandes_inscription')->insert([
+291                'nom' => $nom, 'postnom' => 'Cas', 'prenom' => 'Cas', 'sexe' => $sexe,
+292                'date_naissance' => '2014-01-01', 'lieu_naissance' => null,
+293                'classe_id' => $classeId, 'annee_scolaire_id' => $anneeId,
+294                'nom_mere' => 'Marie', 'telephone_mere' => '0990000000',
+295                'email_mere' => null, 'adresse_mere' => null,
+296                'nom_pere' => null, 'telephone_pere' => null, 'email_pere' => null,
+297                'statut' => $statut, 'traite_par' => $statut === 'en_attente' ? null : $admin->id,
+298                'traite_le' => $statut === 'en_attente' ? null : now(),
+299                'motif_refus' => $motif, 'created_at' => now(), 'updated_at' => now(),
+300            ]);
+301        }
+302    
+303        $this->actingAs($admin)
+304            ->get(route('admin.registration.students.history'))
+305            ->assertOk()
+306            ->assertSee("Historique d'inscription", false)
+307            ->assertSee('Acceptee Cas Cas')
+308            ->assertSee('Refusee Cas Cas')
+309            ->assertSee('Dossier incomplet')
+310            ->assertDontSee('EnAttente Cas Cas');
+311    
+312        $this->actingAs($admin)
+313            ->get(route('admin.registration.students.history', ['statut' => 'refusee']))
+314            ->assertOk()
+
+[lines 1-327 of 327 exceed the 4000-token delivery ceiling; showing lines 1-314. Continue with offset=315 — each windowed read arrives in full]

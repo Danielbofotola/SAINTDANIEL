@@ -1,0 +1,31 @@
+166    });
+167    
+168    function seedProfesseur(array $overrides = []): int
+169    {
+170        return DB::table('professeurs')->insertGetId(array_merge([
+171            'matricule' => 'PROF-2026-0001',
+172            'nom' => 'Kabila', 'postnom' => 'Mwamba', 'prenom' => 'Aline',
+173            'sexe' => 'F', 'specialite' => 'Mathématiques', 'telephone' => '0990000000',
+174            'email' => 'aline.kabila@example.test', 'statut' => 'actif',
+175            'created_at' => now(), 'updated_at' => now(),
+176        ], $overrides));
+177    }
+178    
+179    function seedCours(array $overrides = []): int
+180    {
+181        return DB::table('cours')->insertGetId(array_merge([
+182            'code' => 'MATH6', 'intitule' => 'Mathématiques 6', 'ponderation' => 4,
+183            'statut' => 'actif', 'created_at' => now(), 'updated_at' => now(),
+184        ], $overrides));
+185    }
+186    
+187    function seedAffectation(int $professeurId, int $coursId, int $classeId, int $anneeId = 1): int
+188    {
+189        return DB::table('affectations_cours')->insertGetId([
+190            'professeur_id' => $professeurId, 'cours_id' => $coursId, 'classe_id' => $classeId,
+191            'annee_scolaire_id' => $anneeId, 'statut' => 'actif',
+192            'created_at' => now(), 'updated_at' => now(),
+193        ]);
+194    }
+
+[showing lines 166-195 of 430; read again with offset=196 for more]

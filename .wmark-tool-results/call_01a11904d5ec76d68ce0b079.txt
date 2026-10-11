@@ -1,0 +1,24 @@
+1      <?php
+2      
+3      namespace App\Http\Controllers;
+4      
+5      use App\Models\AnneeScolaire;
+6      use App\Models\Classe;
+7      use App\Models\Cycle;
+8      use App\Models\Eleve;
+9      use App\Models\EmploiDuTemps;
+10     use App\Models\Evaluation;
+11     use App\Models\Option;
+12     use App\Models\Presence;
+13     use App\Models\Professeurs;
+14     use App\Models\Section;
+15     use App\Models\Tuteur;
+16     use App\Models\User;
+17     use Illuminate\Http\Request;
+18     use Illuminate\Support\Carbon;
+19     use Illuminate\View\View;
+20     
+21     class PrefectureDashboardController extends Controller
+22     {
+
+[showing lines 1-22 of 362; read again with offset=23 for more]

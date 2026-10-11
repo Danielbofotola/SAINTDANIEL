@@ -1,0 +1,32 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\b493c9bc81dc\20261008-011344-bash-call_01a118dc1b5b738b8f6ba33e.txt (797 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+[powershell — Windows side]
+42: .portail-nav { display: flex; justify-content: space-around; align-items: center; background: var(--card);
+44: .portail-nav__item { color: var(--muted); cursor: pointer; padding: 10px 18px; border-bottom: 3px solid transparent;
+46: .portail-nav__item span { font-size: .82rem; font-weight: 600; }
+47: .portail-nav__item.active { color: var(--blue); border-bottom-color: var(--blue); }
+48: .portail-nav__badge { position: absolute; top: 2px; right: 6px; background: #e4
+
+... 651 chars truncated ...
+
+k="portailTab('messages', this)">
+110: <span class="portail-nav__badge" data-non-lus>{{ $nonLus }}</span>
+113: <div class="portail-nav__item" data-tab="profil" onclick="portailTab('profil', this)">
+121: <section id="tab-actualites" class="portail-panel active">
+138: <section id="tab-notifications" class="portail-panel">
+160: <section id="tab-messages" class="portail-panel">
+195: <section id="tab-profil" class="portail-panel">
+225: function portailTab(nom, element) {
+226: document.querySelectorAll('.portail-panel').forEach(p => p.classList.remove('active'));
+227: document.querySelectorAll('.portail-nav__item').forEach(i => i.classList.remove('active'));
+228: const cible = document.getElementById('tab-' + nom);
+=== Inscription model ===
+16: protected $fillable = ['eleve_id', 'classe_id', 'annee_scolaire_id', 'date_inscription', 'statut'];
+22: public function valider(): void
+29: public function estEnAttente(): bool
+39: public function eleve()
+44: public function classe()
+46: return $this->belongsTo(Classe::class);
+49: public function bulletins()
+54: public function paiements()
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

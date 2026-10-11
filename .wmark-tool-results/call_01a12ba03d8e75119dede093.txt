@@ -1,0 +1,13 @@
+Applied patch: 2 files changed (2 updated)
+Updated app/Http/Controllers/ComptableDashboardController.php (2 hunks applied)
+Updated resources/views/comptable/dashboard.blade.php (1 hunk applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 2: context matched at lines 54-55 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 56-56:
+56                 'encaisseParDevise' => $schoolYear ? Encaisse::parDevise($schoolYear) : [],
+Landed at lines 10-10 (the file's new text; no re-read needed):
+10     use App\Support\Encaisse;
+Landed at lines 307-309 (the file's new text; no re-read needed):
+307                                            <div class="fw-bold fs-3 my-1">
+308                                                @forelse ($encaisseParDevise as $devise => $montant){{ $money($montant, $devise) }}@if (! $loop->last) · @endif @empty {{ $money($encaisse) }} @endforelse
+309                                            </div>

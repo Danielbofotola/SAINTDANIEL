@@ -1,0 +1,60 @@
+1      @extends('prefecture.layout')
+2      
+3      @section('titre', 'Mon profil — Espace préfecture')
+4      
+5      @section('actions')
+6          <div class="btn-group btn-group-page-header">
+7              <a href="{{ route('profile.edit') }}" class="btn btn-light btn-round">
+8                  <i class="fas fa-pen"></i> Modifier
+9              </a>
+10             <button type="button" class="btn btn-light btn-round" onclick="window.print()">
+11                 <i class="fas fa-print"></i> Imprimer
+12             </button>
+13         </div>
+14     @endsection
+15     
+16     @section('contenu')
+17         @php
+18             $nomComplet = trim(($user->nom ?? '').' '.($user->postnom ?? '').' '.($user->prenom ?? '')) ?: $user->username;
+19             $initial = mb_strtoupper(mb_substr($user->prenom ?: $user->username, 0, 1));
+20             $joursDepuis = $user->created_at ? (int) $user->created_at->diffInDays(now()) : 0;
+21         @endphp
+22     
+23         {{-- Carte d'identité --}}
+24         <div class="row">
+25             <div class="col-md-12">
+26                 <div class="card card-profile">
+27                     <div class="card-header" style="background-image: url('{{ asset('azzara/img/blogpost.jpg') }}')">
+28                         <div class="profile-picture">
+29                             <div class="avatar avatar-xl">
+30                                 @if ($user->photo)
+31                                     <img src="{{ asset('storage/'.$user->photo) }}" alt="{{ $nomComplet }}" class="avatar-img rounded-circle">
+32                                 @else
+33                                     <span class="avatar-title rounded-circle bg-primary" style="font-size:2rem">{{ $initial }}</span>
+34                                 @endif
+35                             </div>
+36                         </div>
+37                     </div>
+38                     <div class="card-body">
+39                         <div class="user-profile text-center">
+40                             <div class="name">{{ $nomComplet }}</div>
+41                             <div class="job">Préfecture — Supervision de l'établissement</div>
+42                             <div class="mb-2">
+43                                 <span class="badge badge-primary">{{ \App\Models\User::libelleRole($user->role) }}</span>
+44                                 <span class="badge {{ $user->statut === 'actif' ? 'badge-success' : 'badge-danger' }}">{{ $user->statut }}</span>
+45                                 @if ($user->pin_code)
+46                                     <span class="badge badge-info">Code PIN défini</span>
+47                                 @endif
+48                             </div>
+49                             <div class="desc">{{ $user->email }}</div>
+50                             <div class="social-media">
+51                                 <a href="{{ route('prefecture.profil') }}" class="btn btn-info btn-twitter btn-sm btn-link"><i class="fas fa-id-card"></i> Profil</a>
+52                                 <a href="{{ route('notifications.index') }}" class="btn btn-primary btn-sm btn-link"><i class="far fa-bell"></i> Notifications</a>
+53                                 <a href="{{ route('profile.edit') }}" class="btn btn-success btn-sm btn-link"><i class="fas fa-pen"></i> Modifier</a>
+54                             </div>
+55                         </div>
+56                     </div>
+57                 </div>
+58             </div>
+
+[showing lines 1-58 of 250; read again with offset=59 for more]

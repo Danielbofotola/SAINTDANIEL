@@ -1,0 +1,38 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\b493c9bc81dc\20261008-004736-bash-call_01a118c42b09731893abfdd6.txt (601 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+[powershell — Windows side]
+161:             'dernier_id' => (int) ($messages->last()->id ?? $apres),
+162:             'non_lus' => Messagerie::nonLus($request->user()),
+163:         ]);
+164:     }
+165: 
+166:     private function autoriser(Conversation $conversation, Request $request): void
+167:     {
+168:         abort_unless(
+169:             $conversation->participants()->where('user_id', $request->user()->id)->exists(),
+170:             403,
+171:             'Cette conversation ne vous conce
+
+... 57 chars truncated ...
+
+20-40 ===
+20:             'conversation_id' => ['required', 'integer', 'exists:conversations,id'],
+21:             'type' => ['required', 'in:audio,video'],
+22:             'offre' => ['required', 'string'],
+23:         ]);
+24: 
+25:         $conversation = Conversation::findOrFail($data['conversation_id']);
+26:         abort_unless(
+27:             $conversation->participants()->where('user_id', $request->user()->id)->exists(),
+28:             403,
+29:             'Cette conversation ne vous concerne pas.'
+30:         );
+31: 
+32:         $destinataire = $conversation->participants()
+33:             ->where('user_id', '!=', $request->user()->id)
+34:             ->first();
+35: 
+36:         abort_if(! $destinataire, 422, 'Aucun correspondant joignable dans cette conversation.');
+37: 
+38:         // Une seule sonnerie en cours par appelant.
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

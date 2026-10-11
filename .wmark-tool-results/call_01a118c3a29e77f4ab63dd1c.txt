@@ -1,0 +1,8 @@
+resources/views/errors/ (7 lines, newest first):
+  403.blade.php
+  404.blade.php
+  419.blade.php
+  429.blade.php
+  500.blade.php
+  503.blade.php
+  layout.blade.php

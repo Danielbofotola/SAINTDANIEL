@@ -1,0 +1,19 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/FinancesPagesTest.php (2 hunks applied)
+Landed at lines 397-408 (the file's new text; no re-read needed):
+397        // Un salaire versé pendant l'année : il doit entrer dans la clôture.
+398        DB::table('salaires')->insert([
+399            'id' => 1, 'beneficiaire_type' => 'professeur', 'beneficiaire_id' => 1,
+400            'salaire_base' => 100, 'devise' => 'USD', 'statut' => 'actif',
+401            'created_at' => now(), 'updated_at' => now(),
+402        ]);
+403        DB::table('paies')->insert([
+404            'num_paie' => 'PAIE-2026-10-0001', 'salaire_id' => 1, 'periode' => '2026-10',
+405            'montant_base' => 100, 'primes' => 10, 'retenues' => 0, 'montant_net' => 110,
+406            'date_paiement' => '2026-10-05', 'mode_paiement' => 'especes', 'statut' => 'actif',
+407            'created_at' => now(), 'updated_at' => now(),
+408        ]);
+Landed at lines 420-422 (the file's new text; no re-read needed):
+420            ->and((float) $archive->total_salaires)->toBe(110.0)
+421            ->and((int) $archive->nombre_paies)->toBe(1)
+422            ->and((float) $archive->solde_final)->toBe(0.0)

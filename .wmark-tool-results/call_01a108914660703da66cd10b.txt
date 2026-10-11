@@ -1,0 +1,27 @@
+1      <?php
+2      
+3      namespace App\Models;
+4      
+5      use Illuminate\Database\Eloquent\Model;
+6      
+7      class Note extends Model
+8      {
+9          protected $table = 'notes';
+10     
+11         protected $fillable = ['evaluation_id', 'eleve_id', 'note_obtenue', 'observation', 'statut'];
+12     
+13         protected function casts(): array
+14         {
+15             return ['note_obtenue' => 'decimal:2'];
+16         }
+17     
+18         public function evaluation()
+19         {
+20             return $this->belongsTo(Evaluation::class);
+21         }
+22     
+23         public function eleve()
+24         {
+25             return $this->belongsTo(Eleve::class);
+26         }
+27     }

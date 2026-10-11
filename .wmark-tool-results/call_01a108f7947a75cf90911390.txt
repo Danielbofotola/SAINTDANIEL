@@ -1,0 +1,18 @@
+[powershell — Windows side]
+INFO  Blade templates cached successfully.  
+
+==viewcache 0==
+
+   PASS  Tests\Feature\ComptableDepenseTest
+  ✓ the cashier records an expense together with its nature                                                      0.19s  
+  ✓ the cashier can create a new expense nature                                                                  0.02s  
+  ✓ an expense without a nature is rejected                                                                      0.02s  
+  ✓ the cashier can delete an expense entry                                                                      0.01s  
+  ✓ the expense page is restricted to the cashier role                                                           0.04s  
+
+  Tests:    5 passed (20 assertions)
+  Duration: 0.44s
+
+==exit 0==
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

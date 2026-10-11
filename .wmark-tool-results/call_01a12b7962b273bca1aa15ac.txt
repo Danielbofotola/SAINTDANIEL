@@ -1,0 +1,58 @@
+1      <?php
+2      
+3      namespace App\Models;
+4      
+5      use App\Models\Concerns\BelongsToAnneeScolaire;
+6      use Illuminate\Database\Eloquent\Model;
+7      
+8      class Inscription extends Model
+9      {
+10         use BelongsToAnneeScolaire;
+11     
+12         public const STATUT_EN_ATTENTE = 'en_attente';
+13     
+14         public const STATUT_ACTIF = 'actif';
+15     
+16         protected $fillable = ['eleve_id', 'classe_id', 'annee_scolaire_id', 'date_inscription', 'statut'];
+17     
+18         /**
+19          * Valide l'inscription : elle devient active (généralement après le
+20          * règlement du frais d'inscription par la caisse).
+21          */
+22         public function valider(): void
+23         {
+24             if ($this->statut !== self::STATUT_ACTIF) {
+25                 $this->update(['statut' => self::STATUT_ACTIF]);
+26             }
+27         }
+28     
+29         public function estEnAttente(): bool
+30         {
+31             return $this->statut === self::STATUT_EN_ATTENTE;
+32         }
+33     
+34         protected function casts(): array
+35         {
+36             return ['date_inscription' => 'date'];
+37         }
+38     
+39         public function eleve()
+40         {
+41             return $this->belongsTo(Eleve::class);
+42         }
+43     
+44         public function classe()
+45         {
+46             return $this->belongsTo(Classe::class);
+47         }
+48     
+49         public function bulletins()
+50         {
+51             return $this->hasMany(Bulletin::class);
+52         }
+53     
+54         public function paiements()
+55         {
+56             return $this->hasMany(Paiement::class);
+57         }
+58     }

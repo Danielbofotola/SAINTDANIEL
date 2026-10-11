@@ -1,0 +1,7 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/BulletinDocumentTest.php (1 hunk applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 66-71 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 71-72:
+71             $table->unsignedInteger('max_travaux_journaliers')->nullable();
+72             $table->unsignedInteger('max_examen')->nullable();

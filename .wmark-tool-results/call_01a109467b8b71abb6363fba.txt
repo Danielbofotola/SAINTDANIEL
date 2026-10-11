@@ -1,0 +1,14 @@
+[powershell — Windows side]
+=== ou est defini .topbar-actions / .topbar ? ===
+role-space-styles.blade.php:43: .topbar { display: flex; min-height: 76px; align-items: center; justify-content: space-between; border-bottom: 1px solid
+role-space-styles.blade.php:46: .topbar-actions { display: flex; align-items: center; gap: 10px; }
+role-space-styles.blade.php:151: .topbar { min-height: 61px; }
+
+=== bloc CSS importe par ces vues ? ===
+11: <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+=== mon bloc utilise-t-il un positionnement absolu ? ===
+30: .raccourcis-nav { float: left; display: flex; align-items: center; height: 100%; margin: 0 0 0 8px; padding: 0; list-style: none; }
+35: .raccourcis-nav--clair { float: none; display: inline-flex; height: auto; margin: 0; align-items: center; }
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

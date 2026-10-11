@@ -1,0 +1,38 @@
+1      <?php
+2      
+3      namespace App\Models;
+4      
+5      use Illuminate\Database\Eloquent\Model;
+6      
+7      class ParametreSysteme extends Model
+8      {
+9          protected $table = 'parametres_systeme';
+10     
+11         protected $fillable = ['nom_etablissement', 'nom_court', 'telephone', 'email', 'adresse', 'saisie_notes_active', 'portail_parents_actif'];
+12     
+13         protected function casts(): array
+14         {
+15             return [
+16                 'saisie_notes_active' => 'boolean',
+17                 'portail_parents_actif' => 'boolean',
+18             ];
+19         }
+20     
+21         /**
+22          * Réglages en vigueur (ligne unique), ou valeurs par défaut si aucune n'existe.
+23          */
+24         public static function current(): self
+25         {
+26             return static::query()->first() ?? static::defaults();
+27         }
+28     
+29         public static function defaults(): self
+30         {
+31             return new self([
+32                 'nom_etablissement' => 'COMPLEXE SCOLAIRE BABAZIN',
+33                 'nom_court' => 'C.S. Moty',
+34                 'saisie_notes_active' => true,
+35                 'portail_parents_actif' => false,
+36             ]);
+37         }
+38     }

@@ -1,0 +1,10 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/MessagerieTest.php (1 hunk applied)
+Landed at lines 336-342 (the file's new text; no re-read needed):
+336            ->toContain('data-cible="correspondants"')
+337            // Et l'aller-retour : rouvrir la conversation depuis la liste.
+338            ->toContain('has-conv')
+339            ->toContain('onclick="reprendreConversation()"')
+340            ->toContain('window.reprendreConversation')
+341            ->toContain('Reprendre la discussion')
+342            ->toContain('only-mobile');

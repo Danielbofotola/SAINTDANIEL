@@ -1,0 +1,12 @@
+68         Schema::create('messages', function (Blueprint $table) {
+69             $table->id();
+70             $table->unsignedBigInteger('conversation_id');
+71             $table->unsignedBigInteger('auteur_id')->nullable();
+72             $table->text('corps');
+73             $table->string('piece_jointe')->nullable();
+74             $table->string('piece_jointe_nom')->nullable();
+75             $table->timestamps();
+76         });
+77     });
+
+[showing lines 68-77 of 359; read again with offset=78 for more]

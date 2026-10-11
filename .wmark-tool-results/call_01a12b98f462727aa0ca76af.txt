@@ -1,0 +1,85 @@
+126            var payeParPaire = @json($soldePaye);
+127            var montantsFrais = @json($montantsFrais);
+128            var classesParInscription = @json($classesParInscription ?? []);
+129            var classesParFrais = @json($classesParFrais ?? []);
+130            var tarifsDisponibles = @json($tarifsDisponibles ?? []);
+131            var nomsClasses = @json($nomsClasses ?? []);
+132            var recherche = document.getElementById('eleveSearch');
+133            var inscriptionSelect = document.getElementById('inscriptionSelect');
+134            var fraisSelect = document.getElementById('fraisSelect');
+135            var soldeInfo = document.getElementById('soldeInfo');
+136    
+137            function filtrerEleves() {
+138                if (!recherche || !inscriptionSelect) { return; }
+139                var terme = recherche.value.trim().toLowerCase();
+140                Array.prototype.forEach.call(inscriptionSelect.options, function (option) {
+141                    if (!option.value) { option.hidden = false; return; }
+142                    option.hidden = terme !== '' && option.text.toLowerCase().indexOf(terme) === -1;
+143                });
+144            }
+145    
+146            function majSolde() {
+147                if (!inscriptionSelect || !fraisSelect || !soldeInfo) { return; }
+148                var inscription = inscriptionSelect.value;
+149                var frais = fraisSelect.value;
+150                if (!inscription || !frais) { soldeInfo.classList.add('d-none'); return; }
+151                var exige = Number(montantsFrais[frais] || 0);
+152                var paye = Number(payeParPaire[inscription + '-' + frais] || 0);
+153                var reste = Math.max(exige - paye, 0);
+154                soldeInfo.classList.remove('d-none');
+155                soldeInfo.innerHTML = 'Montant exigé : <b>' + exige.toFixed(2) + '</b> · Déjà payé : <b>' + paye.toFixed(2) + '</b> · <b>Reste à payer : ' + reste.toFixed(2) + '</b>';
+156            }
+157    
+158            // Reconstruit la liste des tarifs : ne garde QUE ceux de la classe de
+159            // l'élève sélectionné (les tarifs des autres classes sont retirés du DOM,
+160            // et non simplement masqués).
+161            function rendreTarifs() {
+162                if (!fraisSelect) { return; }
+163    
+164                var inscription = inscriptionSelect ? inscriptionSelect.value : '';
+165                var classe = inscription ? String(classesParInscription[inscription] || '') : '';
+166                var courant = fraisSelect.value;
+167                var disponibles = tarifsDisponibles.filter(function (tarif) {
+168                    return classe === '' || String(tarif.classe) === classe;
+169                });
+170    
+171                var label = document.getElementById('tarifLabel');
+172                if (label) {
+173                    label.textContent = (classe !== '' && nomsClasses[classe])
+174                        ? 'Tarif * (classe ' + nomsClasses[classe] + ')'
+175                        : "Tarif de la classe de l'élève *";
+176                }
+177    
+178                fraisSelect.innerHTML = '';
+179                var vide = document.createElement('option');
+180                vide.value = '';
+181                vide.textContent = classe !== '' && nomsClasses[classe]
+182                    ? 'Choisir un tarif de ' + nomsClasses[classe]
+183                    : 'Choisir un tarif';
+184                fraisSelect.appendChild(vide);
+185    
+186                disponibles.forEach(function (tarif) {
+187                    var option = document.createElement('option');
+188                    option.value = tarif.id;
+189                    option.textContent = tarif.libelle;
+190                    fraisSelect.appendChild(option);
+191                });
+192    
+193                var encoreValide = disponibles.some(function (tarif) { return String(tarif.id) === String(courant); });
+194                if (encoreValide) {
+195                    fraisSelect.value = courant;
+196                } else if (disponibles.length === 1) {
+197                    fraisSelect.value = disponibles[0].id;
+198                }
+199    
+200                majSolde();
+201            }
+202    
+203            if (recherche) { recherche.addEventListener('input', filtrerEleves); }
+204            if (inscriptionSelect) { inscriptionSelect.addEventListener('change', rendreTarifs); }
+205            if (fraisSelect) { fraisSelect.addEventListener('change', majSolde); }
+206            rendreTarifs();
+207        })();
+208    </script>
+209    </body>
+210    </html>

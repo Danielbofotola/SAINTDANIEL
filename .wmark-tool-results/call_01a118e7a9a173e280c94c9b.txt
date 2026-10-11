@@ -1,0 +1,32 @@
+[powershell — Windows side]
+=== dossiers sous public/azzara ===
+core
+css
+fonts
+img
+js
+sass
+.htaccess
+=== fonts ? ===
+flaticon
+fontawesome
+summernote
+=== url() dans fonts.css ===
+"../fonts/flaticon/Flaticon.eot"
+"../fonts/flaticon/Flaticon.eot?#iefix"
+"../fonts/flaticon/Flaticon.woff"
+"../fonts/flaticon/Flaticon.ttf"
+"../fonts/flaticon/Flaticon.svg#Flaticon"
+"../fonts/fontawesome/fa-brands-400.eot"
+"../fonts/fontawesome/fa-brands-400.eot?#iefix"
+"../fonts/fontawesome/fa-brands-400.woff2"
+"../fonts/fontawesome/fa-brands-400.woff"
+"../fonts/fontawesome/fa-brands-400.ttf"
+"../fonts/fontawesome/fa-brands-400.svg#fontawesome"
+"../fonts/fontawesome/fa-regular-400.eot"
+=== Chart.js présent ? ===
+chart.min.js
+=== ready.min.js taille ===
+4857
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

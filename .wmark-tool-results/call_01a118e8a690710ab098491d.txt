@@ -1,0 +1,10 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/PrefectureDashboardTest.php (2 hunks applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 129-132 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+  ⚠ hunk 2: context matched at lines 147-150 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 130-130:
+130            ->assertSee('Personnel')
+Auto-corrected hunk landed at lines 150-151:
+150            // 1 seul élève de l'année en cours : la répartition du cycle le confirme.
+151            ->assertSee('1 (100%)');

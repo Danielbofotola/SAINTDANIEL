@@ -1,0 +1,18 @@
+13     beforeEach(function () {
+14         Schema::disableForeignKeyConstraints();
+15         foreach (['notifications', 'annonces', 'messages', 'conversation_user', 'conversations', 'parametres_systeme', 'professeurs', 'users'] as $table) {
+16             Schema::dropIfExists($table);
+17         }
+18         Schema::enableForeignKeyConstraints();
+19     
+20         Schema::create('users', function (Blueprint $table) {
+21             $table->id();
+22             $table->unsignedBigInteger('professeur_id')->nullable()->unique();
+23             $table->string('nom', 50)->nullable();
+24             $table->string('postnom', 50)->nullable();
+25             $table->string('prenom', 50)->nullable();
+26             $table->string('photo')->nullable();
+27             $table->string('username')->unique();
+28             $table->string('email')->unique();
+
+[showing lines 13-28 of 192; read again with offset=29 for more]

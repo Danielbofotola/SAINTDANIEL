@@ -1,0 +1,20 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/MessagerieTest.php (1 hunk applied)
+Landed at lines 183-210 (the file's new text; no re-read needed):
+183    
+184    test('the picture of the correspondent is displayed in the thread and the list', function () {
+185        $alice = User::factory()->create(['role' => 'admin', 'nom' => 'Mwamba', 'prenom' => 'Alice']);
+186        $bruno = User::factory()->create([
+187            'role' => 'professeur', 'nom' => 'Kabila', 'prenom' => 'Bruno', 'photo' => 'users/photos/bruno.jpg',
+188        ]);
+189    
+190        // Alice crée la conversation : elle voit la photo de son correspondant.
+      … 12 lines omitted …
+203            ->get(route('messagerie.index', ['conversation' => $conversation->id]))
+204            ->assertOk()
+205            ->getContent();
+206    
+207        expect($html)->toContain('users/photos/bruno.jpg')
+208            ->toContain('bulle--autre')
+209            ->toContain('Mwamba Alice');   // participant sans photo : initiales, pas d’image cassée
+210    });

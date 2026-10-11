@@ -1,0 +1,9 @@
+Applied patch: 1 file changed (1 updated)
+Updated app/Http/Controllers/EleveController.php (1 hunk applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 35-36 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 36-39:
+36                 // Les élèves désactivés disparaissent de la liste par défaut :
+37                 // ils ne reviennent qu'en filtrant explicitement sur leur statut.
+38                 ->when(! in_array($statut, ['inactif', 'suspendu', 'exclu'], true),
+39                     fn ($query) => $query->where('statut', '!=', 'inactif'))

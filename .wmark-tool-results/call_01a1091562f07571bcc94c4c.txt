@@ -1,0 +1,9 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/ComptableDepenseTest.php (1 hunk applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 10-10 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 11-14:
+11             // La page des dépenses calcule aussi le signal de charge : il lui faut
+12             // les paiements (recettes) et les paies (salaires).
+13         }
+14         foreach (['paies', 'salaires', 'professeurs', 'paiements', 'frais_scolaires', 'types_frais', 'inscriptions', 'eleves', 'tuteurs', 'classes', 'cycles', 'depenses', 'categories_depenses', 'annees_scolaires', 'users'] as $table) {

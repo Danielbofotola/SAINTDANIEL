@@ -1,0 +1,15 @@
+153            'created_at' => now(), 'updated_at' => now(),
+154        ]);
+155    });
+156    
+157    test('the cashier sees the payment page with a student filter and can record a payment', function () {
+158        $comptable = User::factory()->create(['role' => 'comptable']);
+159    
+160        $this->actingAs($comptable)
+161            ->get(route('comptable.paiements.index'))
+162            ->assertOk()
+163            ->assertSee('Encaisser un paiement')
+164            ->assertSee('eleveSearch')
+165            ->assertSee('Mwamba');
+
+[showing lines 153-166 of 264; read again with offset=167 for more]

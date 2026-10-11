@@ -1,0 +1,32 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\e1ce9c26600a\20261004-215110-bash-call_01a108af7aa87753963fe7ae.txt (504 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+[powershell — Windows side]
+INFO  Blade templates cached successfully.  
+
+==viewcache 0==
+
+   PASS  Tests\Feature\BulletinDocumentTest
+  ✓ the calculator applies the percentage rule and pass threshold                                                0.29s  
+  ✓ a student below the pass threshold is declared failed and listed for retake                                  0.03s  
+  ✓ the bulletin document renders the official layout with the computed results                                  0.15s  
+  
+
+... 352 chars truncated ...
+
+ 0.05s  
+  ✓ the branch maximums can be recorded from the course form                                                     0.05s  
+
+   PASS  Tests\Feature\ProfesseursPagesTest
+  ✓ the professor list shows the teaching staff and can be filtered                                              0.13s  
+  ✓ the professor file shows linked account, affectations and toggles status                                     0.06s  
+  ✓ an admin can create a cours and an affectation for the current year                                          0.04s  
+  ✓ a duplicate affectation is rejected and a cours in use cannot be deleted                                     0.04s  
+  ✓ an admin can schedule a timetable slot and conflicts are rejected                                            0.06s  
+  ✓ the timetable refuses an end time before the start time                                                      0.04s  
+  ✓ the professor menu links point to the new modules                                                            0.07s  
+
+  Tests:    14 passed (77 assertions)
+  Duration: 1.43s
+
+==exit 0==
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

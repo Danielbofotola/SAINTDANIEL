@@ -1,0 +1,20 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/DeliberationTest.php (1 hunk applied)
+Landed at lines 514-539 (the file's new text; no re-read needed):
+514    
+515    test('l’année suivante est déduite de l’année en cours et proposée au passage', function () {
+516        $s = scenarioDeliberation();
+517    
+518        expect(AnneeScolaire::suivante($s['annee'])?->id)->toBe($s['cible']->id)
+519            ->and(AnneeScolaire::suivante($s['cible']))->toBeNull();
+520    
+521        $this->actingAs($s['alice'])
+      … 10 lines omitted …
+532    
+533        $this->actingAs($s['alice'])->post(route('admin.deliberations.appliquer'), [
+534            'annee_scolaire_id' => $s['annee']->id,
+535            'annee_cible_id' => $ancienne->id,
+536        ])->assertSessionHas('error');
+537    
+538        expect(Inscription::where('annee_scolaire_id', $ancienne->id)->count())->toBe(0);
+539    });

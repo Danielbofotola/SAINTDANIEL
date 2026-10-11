@@ -1,0 +1,18 @@
+Applied patch: 1 file changed (1 updated)
+Updated resources/views/admin/classes/index.blade.php (2 hunks applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 29-29 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+  ⚠ hunk 2: context matched at lines 35-35 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 29-29:
+29                         <thead><tr><th>#</th><th>Classe</th><th>Niveau</th><th>Si admis →</th><th>Cycle</th><th>Section</th><th>Option</th><th>Salle</th><th>Élèves @if($anneeEnCours)<small>{{ $anneeEnCours->libelle }}</small>@endif</th><th>Statut</th><th>Actions</th></tr></thead>
+Auto-corrected hunk landed at lines 36-45:
+36                                     @php($suivante = $classe->ordre === null ? null : $classe->suivante())
+37                                     <td>
+38                                         @if ($classe->ordre === null)
+39                                             <span class="badge badge-warning" title="Renseignez le niveau de cette classe">Niveau à définir</span>
+40                                         @elseif ($suivante)
+41                                             <span class="badge badge-success" title="Classe des admis pour l'année suivante">{{ $suivante->nom }}</span>
+42                                         @else
+43                                             <span class="badge badge-secondary" title="Aucune classe de niveau supérieur dans ce cycle : les admis n'ont pas de cible">Fin de cycle</span>
+44                                         @endif
+45                                     </td>

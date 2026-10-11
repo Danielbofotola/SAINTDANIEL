@@ -1,0 +1,7 @@
+Applied patch: 1 file changed (1 updated)
+Updated routes/web.php (1 hunk applied)
+Landed at lines 64-67 (the file's new text; no re-read needed):
+64         Route::get('/admin/professeurs/{professeur}/modifier', [ProfesseurController::class, 'edit'])->middleware('role:admin')->name('admin.professeurs.edit');
+65         Route::put('/admin/professeurs/{professeur}', [ProfesseurController::class, 'update'])->middleware('role:admin')->name('admin.professeurs.update');
+66         Route::post('/admin/professeurs/{professeur}/documents', [ProfesseurController::class, 'storeDocument'])->middleware('role:admin')->name('admin.professeurs.documents.store');
+67         Route::delete('/admin/professeurs/documents/{document}', [ProfesseurController::class, 'destroyDocument'])->middleware('role:admin')->name('admin.professeurs.documents.destroy');

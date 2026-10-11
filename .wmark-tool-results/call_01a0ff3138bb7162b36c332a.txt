@@ -1,0 +1,22 @@
+36          * L'année scolaire « en cours » (unique), ou null si aucune n'est définie.
+37          */
+38         public static function enCours(): ?self
+39         {
+40             return static::where('is_encours', true)->first();
+41         }
+42     
+43         /**
+44          * Les inscriptions rattachées à cette année scolaire.
+45          */
+46         public function inscriptions()
+47         {
+48             return $this->hasMany(Inscription::class);
+49         }
+50     
+51         /**
+52          * Indique si l'année est référencée par des données métier
+53          * (inscriptions, périodes, finances…), ce qui interdit sa suppression.
+54          */
+55         public function isUtilisee(): bool
+
+[showing lines 36-55 of 65; read again with offset=56 for more]

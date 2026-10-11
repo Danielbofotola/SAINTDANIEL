@@ -1,0 +1,180 @@
+1      <?php
+2      
+3      namespace App\Support;
+4      
+5      use App\Models\AffectationCours;
+6      use App\Models\Inscription;
+7      use App\Models\Note;
+8      use App\Models\ParametreSysteme;
+9      use App\Models\Periode;
+10     
+11     /**
+12      * Calcul du bulletin annuel selon la norme congolaise (RDC — CTEB).
+13      *
+14      * Règles retenues :
+15      *  - Pour une branche et une période, les notes se répartissent en
+16      *    « Travaux journaliers » (interrogations / devoirs) et « Examen » ;
+17      *    le total obtenu est TJ + Examen, le maximum est la somme des notes
+18      *    maximales des évaluations notées de la période.
+19      *  - Le pourcentage d'une branche est le rapport total obtenu / total maximum,
+20      *    exprimé en pourcentage ; le pourcentage général est le rapport des sommes
+21      *    de tous les totaux sur tous les maxima (et non la moyenne des pourcentages).
+22      *  - L'élève passe à partir de 50 % (seuil de réussite) ; en dessous, il double,
+23      *    et les branches sous le seuil sont listées pour l'examen de repêchage.
+24      */
+25     class BulletinRdc
+26     {
+27         /** Seuil appliqué si l'administration n'en a configuré aucun. */
+28         public const SEUIL_REUSSITE = 50.0;
+29      
+30         public function __construct(
+31             private readonly Inscription $inscription,
+32             private readonly ?float $seuilReussite = null,
+33         ) {
+34         }
+35      
+36         /**
+37          * @param  float|null  $seuilReussite  Seuil de réussite à appliquer ; par défaut celui
+38          *                                     configuré dans les paramètres du système (50 %).
+39          */
+40         public static function for(Inscription $inscription, ?float $seuilReussite = null): self
+41         {
+42             return new self($inscription, $seuilReussite);
+43         }
+44      
+45         /** Seuil de réussite effectif (paramètre du système si aucun seuil n'est imposé). */
+46         public function seuil(): float
+47         {
+48             return $this->seuilReussite ?? ParametreSysteme::seuilReussiteBulletin();
+49         }
+50     
+51         /**
+52          * @return array{
+53          *     inscription: Inscription,
+54          *     periodes: \Illuminate\Support\Collection<int, Periode>,
+55          *     branches: array<int, array<string, mixed>>,
+56          *     total_general: float,
+57          *     max_general: float,
+58          *     pourcentage_general: float,
+59          *     decision: string,
+60          *     branches_repechage: array<int, string>
+61          * }
+62          */
+63         public function build(): array
+64         {
+65             $anneeId = $this->inscription->annee_scolaire_id;
+66             $classeId = $this->inscription->classe_id;
+67     
+68             $periodes = Periode::query()
+69                 ->where('annee_scolaire_id', $anneeId)
+70                 ->where('statut', 'actif')
+71                 ->orderBy('id')
+72                 ->get();
+73     
+74             $affectations = AffectationCours::query()
+75                 ->where('classe_id', $classeId)
+76                 ->where('annee_scolaire_id', $anneeId)
+77                 ->where('statut', 'actif')
+78                 ->with('cours')
+79                 ->get()
+80                 ->sortBy(fn ($affectation) => $affectation->cours?->intitule)
+81                 ->values();
+82     
+83             $notes = Note::query()
+84                 ->where('eleve_id', $this->inscription->eleve_id)
+85                 ->where('statut', 'actif')
+86                 ->with(['evaluation:id,affectation_id,periode_id,max_note,type_evaluation'])
+87                 ->get()
+88                 ->groupBy(fn ($note) => $note->evaluation?->affectation_id);
+89     
+90             $branches = [];
+91             $totalGeneral = 0.0;
+92             $maxGeneral = 0.0;
+93     
+94             foreach ($affectations as $affectation) {
+95                 $cours = $affectation->cours;
+96                 $lignes = [];
+97                 $totalBranche = 0.0;
+98                 $maxBranche = 0.0;
+99     
+100                foreach ($periodes as $periode) {
+101                    $notesPeriode = $this->notesPeriode($notes->get($affectation->id, collect()), $periode->id);
+102    
+103                    [$tjObtenu, $tjMaxCalcule] = $this->agrege($notesPeriode, examen: false);
+104                    [$exObtenu, $exMaxCalcule] = $this->agrege($notesPeriode, examen: true);
+105    
+106                    // Le maximum de référence (barème saisi sur la branche) prime ;
+107                    // à défaut, on retombe sur le maximum calculé des évaluations.
+108                    $maxTj = $cours?->max_travaux_journaliers !== null ? (float) $cours->max_travaux_journaliers : $tjMaxCalcule;
+109                    $maxEx = $cours?->max_examen !== null ? (float) $cours->max_examen : $exMaxCalcule;
+110    
+111                    $total = $tjObtenu + $exObtenu;
+112                    $max = $maxTj + $maxEx;
+113    
+114                    $lignes[$periode->id] = [
+115                        'tj' => round($tjObtenu, 2),
+116                        'tj_max' => round($maxTj, 2),
+117                        'examen' => round($exObtenu, 2),
+118                        'examen_max' => round($maxEx, 2),
+119                        'total' => round($total, 2),
+120                        'max' => round($max, 2),
+121                        'pourcentage' => $max > 0 ? round($total / $max * 100, 2) : null,
+122                    ];
+123    
+124                    $totalBranche += $total;
+125                    $maxBranche += $max;
+126                }
+127    
+128                $branches[] = [
+129                    'intitule' => $cours?->intitule ?? 'Branche',
+130                    'code' => $cours?->code,
+131                    'periodes' => $lignes,
+132                    'total' => round($totalBranche, 2),
+133                    'max' => round($maxBranche, 2),
+134                    'pourcentage' => $maxBranche > 0 ? round($totalBranche / $maxBranche * 100, 2) : null,
+135                ];
+136    
+137                $totalGeneral += $totalBranche;
+138                $maxGeneral += $maxBranche;
+139            }
+140    
+141            $pourcentageGeneral = $maxGeneral > 0 ? round($totalGeneral / $maxGeneral * 100, 2) : 0.0;
+142    
+143            $seuil = $this->seuil();
+144     
+145            $branchesRepechage = array_values(array_map(
+146                fn (array $branche) => $branche['intitule'],
+147                array_filter($branches, fn (array $branche) => $branche['max'] > 0 && $branche['pourcentage'] < $seuil)
+148            ));
+149    
+150            return [
+151                'inscription' => $this->inscription,
+152                'periodes' => $periodes,
+153                'branches' => $branches,
+154                'total_general' => round($totalGeneral, 2),
+155                'max_general' => round($maxGeneral, 2),
+156                'pourcentage_general' => $pourcentageGeneral,
+157                'decision' => $pourcentageGeneral >= $seuil ? 'Passe' : 'Double',
+158                'seuil_reussite' => $seuil,
+159                'branches_repechage' => $branchesRepechage,
+160            ];
+161        }
+162    
+163        private function notesPeriode($notes, int $periodeId): \Illuminate\Support\Collection
+164        {
+165            return collect($notes)->filter(fn ($note) => (int) $note->evaluation?->periode_id === $periodeId)->values();
+166        }
+167    
+168        /**
+169         * @return array{0: float, 1: float} [obtenu, maximum]
+170         */
+171        private function agrege(\Illuminate\Support\Collection $notes, bool $examen): array
+172        {
+173            $filtrees = $notes->filter(fn ($note) => ($note->evaluation?->type_evaluation === 'examen') === $examen);
+174    
+175            return [
+176                round((float) $filtrees->sum('note_obtenue'), 2),
+177                round((float) $filtrees->sum(fn ($note) => (float) $note->evaluation?->max_note), 2),
+178            ];
+179        }
+180    }

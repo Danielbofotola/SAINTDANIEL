@@ -1,0 +1,3 @@
+Updated app/Http/Controllers/AdminRegistrationRequestController.php: replaced 1 lines with 1 lines (fuzzy match: indent-shift)
+Auto-corrected edit landed at lines 162-162:
+162                'role' => ['required', 'in:prefetture,titulaire,professeur,comptable,parent'],

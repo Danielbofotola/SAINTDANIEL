@@ -1,0 +1,16 @@
+439                btnBas.classList.toggle('on', loin);
+440            };
+441            fil.addEventListener('scroll', majBtnBas);
+442            majBtnBas();
+443    
+444            const ajouter = (html, id) => {
+445                if (!html) return;
+446                fil.insertAdjacentHTML('beforeend', html);
+447                if (id) dernierId = Math.max(dernierId, Number(id));
+448                bas();
+449                majBtnBas();
+450            };
+451    
+452            const majBadges = (total) => {
+
+[showing lines 439-452 of 823; read again with offset=453 for more]

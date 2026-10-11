@@ -1,0 +1,52 @@
+300                                </div>
+301                                <div class="text-center text-secondary mb-2">{{ $schoolYear ? 'Année scolaire '.$schoolYear->libelle : 'Année scolaire non définie' }}</div>
+302                                <div class="row g-2 align-items-center mb-2">
+303                                    <div class="col-7">
+304                                        <div class="inner-block text-center">
+305                                            <div class="text-muted fw-semibold">Total encaissé</div>
+306                                            <div class="fw-bold fs-3 my-1">{{ $money($encaisse) }}</div>
+307                                            <div class="text-secondary">sur {{ $money($fraisDefinis) }} de frais définis</div>
+308                                        </div>
+309                                    </div>
+310                                    <div class="col-5">
+311                                        <div class="inner-block text-center">
+312                                            <div class="gauge-container" role="img" aria-label="Taux de recouvrement : {{ $taux }} %">
+313                                                <div class="gauge-body" style="background: conic-gradient(from 270deg, #107c41 0deg {{ $angle }}deg, #e2e8f0 {{ $angle }}deg 180deg);"></div>
+314                                                <div class="gauge-inner">{{ $taux }} %</div>
+315                                            </div>
+316                                            <div class="text-secondary fw-semibold mt-1">Recouvrement</div>
+317                                        </div>
+318                                    </div>
+319                                </div>
+320                                <div class="inner-block text-center py-2">
+321                                    <span class="fw-bold">Reste à percevoir :</span> {{ $money($reste) }}
+322                                </div>
+323                            </div>
+324                        </div>
+325    
+326                        <!-- Synthèse -->
+327                        <div class="col-md-5">
+328                            <div class="caisse-card">
+329                                <div class="card-title-header">Synthèse de l’année</div>
+330                                <div class="bg-white border rounded p-2">
+331                                    <div class="d-flex justify-content-between border-bottom pb-1 mb-1"><div><div class="fw-bold">Élèves inscrits</div><div class="text-muted">Inscriptions actives</div></div><div class="fw-bold fs-6">{{ $elevesInscrits }}</div></div>
+332                                    <div class="d-flex justify-content-between border-bottom pb-1 mb-1"><div><div class="fw-bold">Paiements enregistrés</div><div class="text-muted">Reçus émis</div></div><div class="fw-bold fs-6">{{ $nbPaiements }}</div></div>
+333                                    <div class="d-flex justify-content-between"><div><div class="fw-bold">Encaissé par élève</div><div class="text-muted">Moyenne perçue</div></div><div class="fw-bold fs-6">{{ $elevesInscrits > 0 ? $money($encaisse / $elevesInscrits) : 0 }}</div></div>
+334                                </div>
+335                            </div>
+336                        </div>
+337                    </div>
+338    
+339                    <!-- Recouvrement par classe -->
+340                    <div class="caisse-card mb-2" id="recouvrement">
+341                        <div class="card-title-header">Recouvrement par classe</div>
+342                        @if ($parClasse->isNotEmpty())
+343                            <div class="table-responsive">
+344                                <table class="table table-caisse align-middle">
+345                                    <thead><tr><th>Classe</th><th class="text-end">Défini</th><th class="text-end">Encaissé</th><th class="text-end">Reste</th><th>Avancement</th></tr></thead>
+346                                    <tbody>
+347                                        @foreach ($parClasse as $ligne)
+348                                            @php($pct = $ligne->defini > 0 ? min(100, round($ligne->encaisse / $ligne->defini * 100)) : 0)
+349                                            <tr>
+
+[showing lines 300-349 of 499; read again with offset=350 for more]

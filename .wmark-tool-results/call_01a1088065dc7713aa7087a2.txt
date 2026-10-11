@@ -1,0 +1,1 @@
+Updated resources/views/admin/dashboard.blade.php: replaced 6 lines with 6 lines

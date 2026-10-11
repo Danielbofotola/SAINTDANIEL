@@ -1,0 +1,18 @@
+Applied patch: 1 file changed (1 updated)
+Updated resources/views/prefecture/eleve-fiche.blade.php (3 hunks applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 2: context matched at lines 435-436 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+  ⚠ hunk 3: context matched at lines 477-484 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 436-443:
+436                            @if ($courant['frais']['lignes']->isEmpty())
+437                                <p class="text-muted mb-0">
+438                                    <i class="fas fa-circle-info"></i>
+439                                    Aucun frais n'est défini pour cette classe pour
+440                                    {{ $courant['inscription']->anneeScolaire?->libelle ?? "l'année de référence" }}.
+441                                    Les frais se définissent dans <strong>Admin → Frais scolaires</strong>.
+442                                </p>
+443                            @else
+Auto-corrected hunk landed at lines 492-492:
+492                            @endif
+Landed at lines 422-422 (the file's new text; no re-read needed):
+422        @if ($courant)

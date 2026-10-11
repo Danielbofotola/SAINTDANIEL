@@ -1,0 +1,10 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/MessagerieTest.php (1 hunk applied)
+Landed at lines 351-357 (the file's new text; no re-read needed):
+351    
+352        // Réception quasi instantanée : interrogation chaque seconde, récupération
+353        // immédiate au retour sur l'onglet, plus de cycle à 4 s.
+354        expect($html)
+355            ->toContain('await attendre(1000)')
+356            ->toContain('visibilitychange')
+357            ->not->toContain('attendre(4000)');

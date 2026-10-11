@@ -1,0 +1,16 @@
+Applied patch: 1 file changed (1 updated)
+Updated app/Http/Controllers/PrefectureDashboardController.php (2 hunks applied)
+Landed at lines 20-20 (the file's new text; no re-read needed):
+20     use App\Support\SituationEleve;
+Landed at lines 313-317 (the file's new text; no re-read needed):
+313            // Parcours complet (années passées comprises) et état financier.
+314            $annee = AnneeScolaire::enCours();
+315            $inscriptionEnCours = $eleve->inscriptions->first(fn ($inscription) => (int) $inscription->annee_scolaire_id === (int) ($annee?->id));
+316            $parcours = SituationEleve::parcours($eleve);
+317    
+Landed at lines 320-320 (the file's new text; no re-read needed):
+320                'schoolYear' => $annee,
+Landed at lines 322-324 (the file's new text; no re-read needed):
+322                'parcours' => $parcours,
+323                'detteTotale' => SituationEleve::detteTotale($parcours),
+324                'paiements' => $inscriptionEnCours ? SituationEleve::paiements($inscriptionEnCours) : collect(),

@@ -1,0 +1,115 @@
+1      <?php
+2      
+3      namespace App\Http\Controllers;
+4      
+5      use App\Models\AnneeScolaire;
+6      use App\Models\Classe;
+7      use App\Models\FraisScolaire;
+8      use App\Models\Inscription;
+9      use App\Models\Paiement;
+10     use App\Support\Caisse;
+11     use Illuminate\Http\RedirectResponse;
+12     use Illuminate\Http\Request;
+13     use Illuminate\Validation\Rule;
+14     use Illuminate\View\View;
+15     
+16     class PaiementController extends Controller
+17     {
+18         private const MODES = ['especes' => 'Espèces', 'banque' => 'Banque', 'mobile_money' => 'Mobile Money'];
+19     
+20         public function index(Request $request): View
+21         {
+22             $annee = AnneeScolaire::enCours();
+23             $classeId = $request->query('classe_id');
+24             $search = trim((string) $request->query('q', ''));
+25     
+26             $paiements = Paiement::query()
+27                 ->with(['inscription.eleve', 'inscription.classe', 'fraisScolaire.typeFrais', 'fraisScolaire.classe'])
+28                 ->whereHas('inscription', fn ($query) => $query->when($annee, fn ($inscription) => $inscription->where('annee_scolaire_id', $annee->id)))
+29                 ->when($classeId, fn ($query) => $query->whereHas('inscription', fn ($inscription) => $inscription->where('classe_id', $classeId)))
+30                 ->when($search !== '', fn ($query) => $query->where(function ($query) use ($search) {
+31                     $query->where('num_recu', 'like', "%{$search}%")
+32                         ->orWhereHas('inscription.eleve', fn ($eleve) => $eleve
+33                             ->where('nom', 'like', "%{$search}%")
+34                             ->orWhere('postnom', 'like', "%{$search}%")
+35                             ->orWhere('prenom', 'like', "%{$search}%")
+36                             ->orWhere('matricule', 'like', "%{$search}%"));
+37                 }))
+38                 ->latest('date_paiement')
+39                 ->paginate(25)
+40                 ->withQueryString();
+41     
+42             $tarifs = $annee
+43                 ? FraisScolaire::query()->where('annee_scolaire_id', $annee->id)->where('statut', 'actif')->with(['typeFrais', 'classe'])->get()
+44                 : collect();
+45     
+46             // Montant déjà réglé par couple (inscription, tarif) pour l'année en cours :
+47             // sert à afficher le reste à payer lorsque le règlement se fait par tranches.
+48             $soldePaye = $annee
+49                 ? Paiement::query()
+50                     ->where('statut', 'actif')
+51                     ->whereHas('inscription', fn ($query) => $query->where('annee_scolaire_id', $annee->id))
+52                     ->get(['inscription_id', 'frais_scolaire_id', 'montant_paye'])
+53                     ->groupBy(fn ($paiement) => $paiement->inscription_id.'-'.$paiement->frais_scolaire_id)
+54                     ->map(fn ($groupe) => round((float) $groupe->sum('montant_paye'), 2))
+55                 : collect();
+56     
+57             return view('admin.paiements.index', [
+58                 'paiements' => $paiements,
+59                 'annee' => $annee,
+60                 'classeId' => $classeId,
+61                 'search' => $search,
+62                 'modes' => self::MODES,
+63                 'classes' => Classe::where('statut', 'actif')->orderBy('nom')->get(),
+64                 'inscriptions' => $annee
+65                     ? Inscription::query()->where('annee_scolaire_id', $annee->id)->where('statut', 'actif')->with(['eleve', 'classe'])->get()
+66                     : collect(),
+67                 'tarifs' => $tarifs,
+68                 'soldePaye' => $soldePaye,
+69                 'montantsFrais' => $tarifs->pluck('montant_exige', 'id'),
+70                 'totalEncaisse' => $annee
+71                     ? (float) Paiement::query()->where('statut', 'actif')
+72                         ->whereHas('inscription', fn ($query) => $query->where('annee_scolaire_id', $annee->id))
+73                         ->sum('montant_paye')
+74                     : 0.0,
+75             ]);
+76         }
+77     
+78         public function store(Request $request): RedirectResponse
+79         {
+80             $annee = AnneeScolaire::enCours();
+81     
+82             if (! $annee) {
+83                 return back()->withInput()->with('error', 'Aucune année scolaire en cours : impossible d’enregistrer un paiement.');
+84             }
+85     
+86             $data = $request->validate([
+87                 'inscription_id' => ['required', Rule::exists('inscriptions', 'id')->where('annee_scolaire_id', $annee->id)->where('statut', 'actif')],
+88                 'frais_scolaire_id' => ['required', Rule::exists('frais_scolaires', 'id')->where('annee_scolaire_id', $annee->id)->where('statut', 'actif')],
+89                 'montant_paye' => ['required', 'numeric', 'min:0.01'],
+90                 'mode_paiement' => ['required', Rule::in(array_keys(self::MODES))],
+91                 'reference_transaction' => ['nullable', 'string', 'max:100'],
+92                 'date_paiement' => ['nullable', 'date'],
+93             ], [
+94                 'inscription_id.required' => 'Sélectionnez un élève inscrit.',
+95                 'frais_scolaire_id.required' => 'Sélectionnez un tarif.',
+96                 'montant_paye.required' => 'Le montant payé est obligatoire.',
+97                 'montant_paye.min' => 'Le montant payé doit être supérieur à zéro.',
+98             ]);
+99     
+100            try {
+101                $paiement = Caisse::enregistrer($annee, $data);
+102            } catch (\RuntimeException) {
+103                return back()->withInput()->with('error', 'Ce tarif ne correspond pas à la classe de l’élève.');
+104            }
+105    
+106            return redirect()->route('admin.paiements.index')->with('success', 'Le paiement a été enregistré sous le reçu '.$paiement->num_recu.'.');
+107        }
+108    
+109        public function destroy(Paiement $paiement): RedirectResponse
+110        {
+111            $paiement->delete();
+112    
+113            return redirect()->route('admin.paiements.index')->with('success', 'Le paiement a été supprimé.');
+114        }
+115    }

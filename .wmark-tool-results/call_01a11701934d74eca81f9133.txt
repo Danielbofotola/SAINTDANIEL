@@ -1,0 +1,42 @@
+1      <?php
+2      
+3      use Illuminate\Support\Str;
+4      use Pdo\Mysql;
+5      
+6      return [
+7      
+8          /*
+9          |--------------------------------------------------------------------------
+10         | Default Database Connection Name
+11         |--------------------------------------------------------------------------
+12         |
+13         | Here you may specify which of the database connections below you wish
+14         | to use as your default connection for database operations. This is
+15         | the connection which will be utilized unless another connection
+16         | is explicitly specified when you execute a query / statement.
+17         |
+18         */
+19     
+20         'default' => env('DB_CONNECTION', 'sqlite'),
+21     
+22         /*
+23         |--------------------------------------------------------------------------
+24         | Database Connections
+25         |--------------------------------------------------------------------------
+26         |
+27         | Below are all of the database connections defined for your application.
+28         | An example configuration is provided for each database system which
+29         | is supported by Laravel. You're free to add / remove connections.
+30         |
+31         */
+32     
+33         'connections' => [
+34     
+35             'sqlite' => [
+36                 'driver' => 'sqlite',
+37                 'url' => env('DB_URL'),
+38                 'database' => env('DB_DATABASE', database_path('database.sqlite')),
+39                 'prefix' => '',
+40                 'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
+
+[showing lines 1-40 of 184; read again with offset=41 for more]

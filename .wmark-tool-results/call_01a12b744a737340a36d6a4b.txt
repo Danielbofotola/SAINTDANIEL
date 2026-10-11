@@ -1,0 +1,90 @@
+1      <?php
+2      
+3      use Illuminate\Database\Migrations\Migration;
+4      use Illuminate\Database\Schema\Blueprint;
+5      use Illuminate\Support\Facades\Schema;
+6      
+7      /**
+8       * Module de délibération : un ordre de progression sur les classes (qui
+9       * n'existait pas), les critères de décision dans les paramètres, et la
+10      * décision persistée par élève et par année.
+11      *
+12      * La moyenne utilisée est celle du bulletin (`BulletinRdc`) : aucune formule
+13      * n'est dupliquée ici, la délibération ne fait que décider.
+14      */
+15     return new class extends Migration
+16     {
+17         public function up(): void
+18         {
+19             if (Schema::hasTable('classes') && ! Schema::hasColumn('classes', 'ordre')) {
+20                 Schema::table('classes', function (Blueprint $table) {
+21                     // Rang de progression dans le cycle (1, 2, 3…). La classe
+22                     // suivante est celle qui a l'ordre immédiatement supérieur.
+23                     $table->unsignedInteger('ordre')->nullable()->after('nom');
+24                 });
+25             }
+26     
+27             if (Schema::hasTable('parametres_systeme')) {
+28                 Schema::table('parametres_systeme', function (Blueprint $table) {
+29                     if (! Schema::hasColumn('parametres_systeme', 'deliberation_active')) {
+30                         $table->boolean('deliberation_active')->default(false);
+31                     }
+32                     if (! Schema::hasColumn('parametres_systeme', 'deliberation_seuil_admission')) {
+33                         $table->decimal('deliberation_seuil_admission', 5, 2)->default(50);
+34                     }
+35                     if (! Schema::hasColumn('parametres_systeme', 'deliberation_seuil_repechage')) {
+36                         $table->decimal('deliberation_seuil_repechage', 5, 2)->default(45);
+37                     }
+38                     if (! Schema::hasColumn('parametres_systeme', 'deliberation_max_cours_echoues')) {
+39                         $table->unsignedInteger('deliberation_max_cours_echoues')->nullable();
+40                     }
+41                     if (! Schema::hasColumn('parametres_systeme', 'deliberation_note_min_cours')) {
+42                         $table->decimal('deliberation_note_min_cours', 5, 2)->nullable();
+43                     }
+44                 });
+45             }
+46     
+47             if (! Schema::hasTable('deliberations')) {
+48                 Schema::create('deliberations', function (Blueprint $table) {
+49                     $table->id();
+50                     $table->foreignId('inscription_id')->constrained('inscriptions')->cascadeOnDelete();
+51                     $table->foreignId('annee_scolaire_id')->constrained('annees_scolaires')->cascadeOnDelete();
+52                     $table->decimal('pourcentage_general', 5, 2)->default(0);
+53                     $table->unsignedInteger('cours_echoues')->default(0);
+54                     $table->string('decision', 20)->default('redouble');   // admis | ajourne | redouble
+55                     $table->text('critere')->nullable();                    // photo des critères appliqués
+56                     $table->boolean('manuelle')->default(false);            // décision forcée à la main
+57                     $table->unsignedBigInteger('classe_suivante_id')->nullable();
+58                     $table->unsignedBigInteger('decide_par')->nullable();
+59                     $table->timestamp('decide_le')->nullable();
+60                     $table->text('commentaire')->nullable();
+61                     $table->timestamps();
+62                     $table->unique(['inscription_id', 'annee_scolaire_id']);
+63                 });
+64             }
+65         }
+66     
+67         public function down(): void
+68         {
+69             Schema::dropIfExists('deliberations');
+70     
+71             if (Schema::hasTable('parametres_systeme')) {
+72                 Schema::table('parametres_systeme', function (Blueprint $table) {
+73                     foreach ([
+74                         'deliberation_active', 'deliberation_seuil_admission', 'deliberation_seuil_repechage',
+75                         'deliberation_max_cours_echoues', 'deliberation_note_min_cours',
+76                     ] as $colonne) {
+77                         if (Schema::hasColumn('parametres_systeme', $colonne)) {
+78                             $table->dropColumn($colonne);
+79                         }
+80                     }
+81                 });
+82             }
+83     
+84             if (Schema::hasTable('classes') && Schema::hasColumn('classes', 'ordre')) {
+85                 Schema::table('classes', function (Blueprint $table) {
+86                     $table->dropColumn('ordre');
+87                 });
+88             }
+89         }
+90     };

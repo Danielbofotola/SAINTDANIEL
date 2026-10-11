@@ -1,0 +1,54 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\b493c9bc81dc\20261008-014908-python-call_01a118fc800c7319aa2a0325.txt (644 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+--- Presence ---
+  fillable: 'affectation_id', 'eleve_id', 'date_seance', 'statut_presence', 'motif', 'enregistre_par'
+  relations: eleve
+--- EmploiDuTemps ---
+  fillable: 'affectation_id', 'salle_id', 'jour', 'heure_debut', 'heure_fin', 'statut'
+  relations: affectation, salle
+--- Evaluation ---
+  fillable: 'affectation_id', 'periode_id', 'titre', 'type_evaluation', 'max_note', 'date_evaluation', 'statut'
+  relations: affectation, periode, notes
+--- EleveSante ---
+  fillable: 'eleve_id', 'group
+
+... 151 chars truncated ...
+
+id', 'annee_scolaire_id', 'date_inscription', 'statut'
+  relations: valider, estEnAttente, eleve, classe, bulletins, paiements
+--- Periode ---
+  fillable: 'annee_scolaire_id', 'nom', 'statut'
+  relations: evaluations, bulletins
+--- Cours ---
+  fillable: 'code', 'intitule', 'ponderation', 'max_travaux_journaliers', 'max_examen', 'statut'
+  relations: maximumParPeriode, affectations
+--- Salle ---
+  fillable: 'nom', 'capacite', 'statut'
+  relations: classes
+--- Cycle ---
+  fillable: 'nom', 'statut'
+  relations: classes, inscriptions
+--- Section ---
+  fillable: 'nom'
+  relations: options, classes
+--- Option ---
+  fillable: 'nom', 'section_id'
+  relations: section, classes
+--- CategorieDepense ---
+  fillable: 'nom', 'statut'
+  relations: depenses
+
+=== mentions discipline/sanction ===
+  app\Http\Controllers\PaieController.php -> retenue
+  app\Models\Paie.php -> retenue
+  app\Support\BulletinRdc.php -> retenue
+  app\Support\Paie.php -> retenue
+  database\migrations\2026_10_09_000000_create_salaires_and_paies_tables.php -> retenue
+  resources\views\admin\paies\index.blade.php -> retenue
+  resources\views\admin\profile\show.blade.php -> discipline
+  resources\views\comptable\paies.blade.php -> retenue
+  tests\Feature\ComptabiliteTest.php -> retenue
+  tests\Feature\ComptableDepenseTest.php -> retenue
+  tests\Feature\FinancesPagesTest.php -> retenue
+  tests\Feature\PaieTest.php -> retenue
+  tests\Feature\StatistiquesTest.php -> retenue
+  tests\Feature\TresorerieAlerteTest.php -> retenue

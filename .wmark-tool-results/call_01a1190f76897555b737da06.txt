@@ -1,0 +1,35 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\b493c9bc81dc\20261008-020950-bash-call_01a1190f76897555b737da06.txt (1,175 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Structured view (text):
+[powershell — Windows side]
+EvaluationController.php:11: use App\Models\Periode;
+EvaluationController.php:19: public function index(Request $request): View
+EvaluationController.php:21: $periodeId = $request->query('periode_id');
+EvaluationController.php:25: ->with(['periode', 'affectation.professeur', 'affectation.cours', 'affectation.classe'])
+EvaluationController.php:27: ->when($periodeId, fn ($query) => $query->where('periode_id', $periodeId))
+EvaluationController.php:38: 'periodeId' => $periodeId,
+EvaluationController.php:40: 'periodes' => Periode::anneeEnCours()->where('statut', 'actif')->orderBy('id')->get(),
+EvaluationController.php:41: 'classes' => Classe::where('statut', 'actif')->orderBy('nom')->get(),
+EvaluationController.php:42: 'affectations' => AffectationCours::anneeEnCours()->where('statut', 'actif')->with(['professeur', 'cours', 'classe'])->get(),
+EvaluationController.php:48: public function store(Request $request): RedirectResponse
+EvaluationController.php:57: 'affectation_id' => ['required', Rule::exists('affectations_cours', 'id')->where('annee_scolaire_id', $annee->id)->where('statut', 'actif')],
+EvaluationController.php:58: 'periode_id' => ['required', Rule::exists('periodes', 'id')->where('annee_scolaire_id', $annee->id)->where('statut', 'actif')],
+EvaluationController.php:65: 'periode_id.required' => 'Sélectionnez une période.',
+EvaluationController.php:72: Evaluation::create($data + ['statut' => 'actif']);
+EvaluationController.php:77: public function 
+… 344 chars elided …
+on storeNotes(Request $request, Evaluation $evaluation): RedirectResponse
+EvaluationController.php:116: ? array_map('intval', $classe->inscriptions()->anneeEnCours()->where('statut', 'actif')->pluck('eleve_id')->all())
+EvaluationController.php:137: 'statut' => 'actif',
+EvaluationController.php:145: public function destroy(Evaluation $evaluation): RedirectResponse
+EvaluationController.php:160: private function saisieNotesActive(): bool
+ProfesseurEvaluationController.php:21: public function index(Request $request): View
+ProfesseurEvaluationController.php:31: ->where('statut', 'actif')
+ProfesseurEvaluationController.php:45: 'periodes' => $schoolYear
+ProfesseurEvaluationController.php:46: ? DB::table('periodes')->where('annee_scolaire_id', $schoolYear->id)->where('statut', 'actif')->orderBy('n
+… 1,144 chars elided …
+tion): array
+NotesController.php:10: use App\Models\Periode;
+NotesController.php:24: public function index(Request $request): View
+NotesController.php:28: $periodeId = $request->query('periode_id');
+NotesController.php:30: $classes = Classe::where('statut', 'actif')->orderBy('nom')->get();
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

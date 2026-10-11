@@ -1,0 +1,18 @@
+===== cdnjs6
+resources\views\admin\deliberations\index.blade.php
+resources\views\admin\messagerie\index.blade.php
+resources\views\admin\messagerie\show.blade.php
+resources\views\messagerie\index.blade.php
+resources\views\notifications\index.blade.php
+resources\views\parent\portail.blade.php
+===== fontawesome.com
+public\boostrap\css\font-awesome\css\fa-brands.css
+public\boostrap\css\font-awesome\css\fa-brands.min.css
+public\boostrap\css\font-awesome\css\fa-regular.css
+public\boostrap\css\font-awesome\css\fa-regular.min.css
+public\boostrap\css\font-awesome\css\fa-solid.css
+public\boostrap\css\font-awesome\css\fa-solid.min.css
+public\boostrap\css\font-awesome\css\fontawesome-all.css
+public\boostrap\css\font-awesome\css\fontawesome-all.min.css
+public\boostrap\css\font-awesome\css\fontawesome.css
+public\boostrap\css\font-awesome\css\fontawesome.min.css

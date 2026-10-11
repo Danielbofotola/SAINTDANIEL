@@ -1,0 +1,141 @@
+1      <?php
+2      
+3      namespace App\Support;
+4      
+5      use App\Models\Conversation;
+6      use App\Models\Message;
+7      use App\Models\User;
+8      use Illuminate\Support\Collection;
+9      
+10     /**
+11      * Messagerie interne : conversation directe (un ou plusieurs collègues) ou
+12      * diffusion à tous les utilisateurs.
+13      */
+14     class Messagerie
+15     {
+16         /**
+17          * Crée une conversation, y inscrit l'auteur et les destinataires, puis
+18          * dépose le premier message.
+19          *
+20          * @param  array<int, int>  $destinatairesIds
+21          */
+22         public static function creer(User $auteur, array $destinatairesIds, string $sujet, string $corps): Conversation
+23         {
+24             $destinataires = User::query()
+25                 ->whereIn('id', $destinatairesIds)
+26                 ->where('id', '!=', $auteur->id)
+27                 ->pluck('id');
+28     
+29             $conversation = Conversation::create([
+30                 'sujet' => $sujet,
+31                 'type' => $destinataires->count() > 1 ? 'diffusion' : 'directe',
+32                 'createur_id' => $auteur->id,
+33                 'derniere_activite_at' => now(),
+34             ]);
+35     
+36             $participants = collect([$auteur->id])->merge($destinataires)->unique()->values();
+37     
+38             $conversation->participants()->sync(
+39                 $participants->mapWithKeys(fn (int $id) => [
+40                     $id => ['dernier_lu_at' => $id === $auteur->id ? now() : null],
+41                 ])->all()
+42             );
+43     
+44             self::envoyer($conversation, $auteur, $corps);
+45     
+46             return $conversation;
+47         }
+48     
+49         /**
+50          * Conversation directe entre deux utilisateurs : la retrouve si elle
+51          * existe déjà, sinon la crée (sans message initial). Permet d'écrire à un
+52          * correspondant d'un simple clic, sans passer par le formulaire complet.
+53          */
+54         public static function ouvrirDirecte(User $auteur, User $destinataire): Conversation
+55         {
+56             $existante = Conversation::query()
+57                 ->where('type', 'directe')
+58                 ->whereHas('participants', fn ($query) => $query->where('user_id', $auteur->id))
+59                 ->whereHas('participants', fn ($query) => $query->where('user_id', $destinataire->id))
+60                 ->has('participants', '=', 2)
+61                 ->first();
+62     
+63             if ($existante) {
+64                 return $existante;
+65             }
+66     
+67             $conversation = Conversation::create([
+68                 'sujet' => 'Discussion',
+69                 'type' => 'directe',
+70                 'createur_id' => $auteur->id,
+71                 'derniere_activite_at' => now(),
+72             ]);
+73     
+74             $conversation->participants()->sync([
+75                 $auteur->id => ['dernier_lu_at' => now()],
+76                 $destinataire->id => ['dernier_lu_at' => null],
+77             ]);
+78     
+79             return $conversation;
+80         }
+81     
+82         /**
+83          * Ajoute un message à une conversation.
+84          */
+85         public static function envoyer(
+86             Conversation $conversation,
+87             User $auteur,
+88             string $corps,
+89             ?string $pieceJointe = null,
+90             ?string $pieceJointeNom = null,
+91             ?int $reponseAId = null,
+92         ): Message {
+93             $message = $conversation->messages()->create([
+94                 'auteur_id' => $auteur->id,
+95                 'corps' => $corps,
+96                 'piece_jointe' => $pieceJointe,
+97                 'piece_jointe_nom' => $pieceJointeNom,
+98                 'reponse_a_id' => $reponseAId,
+99             ]);
+100    
+101            $conversation->forceFill(['derniere_activite_at' => now()])->save();
+102    
+103            self::marquerLu($conversation, $auteur);
+104    
+105            return $message;
+106        }
+107    
+108        /**
+109         * Marque la conversation comme lue par cet utilisateur.
+110         */
+111        public static function marquerLu(Conversation $conversation, User $utilisateur): void
+112        {
+113            if ($conversation->participants()->where('user_id', $utilisateur->id)->exists()) {
+114                $conversation->participants()->updateExistingPivot($utilisateur->id, [
+115                    'dernier_lu_at' => now(),
+116                    'dernier_message_id' => (int) $conversation->messages()->max('id'),
+117                ]);
+118            }
+119        }
+120    
+121        /**
+122         * Conversations d'un utilisateur, avec le nombre de messages non lus.
+123         */
+124        public static function conversationsDe(User $utilisateur): Collection
+125        {
+126            return Conversation::query()
+127                ->whereHas('participants', fn ($query) => $query->where('user_id', $utilisateur->id))
+128                ->with(['dernierMessage.auteur', 'createur', 'participants'])
+129                ->orderByDesc('derniere_activite_at')
+130                ->get()
+131                ->each(fn (Conversation $conversation) => $conversation->setAttribute('non_lus', $conversation->nonLusPour($utilisateur)));
+132        }
+133    
+134        /**
+135         * Total des messages non lus (badge du menu).
+136         */
+137        public static function nonLus(User $utilisateur): int
+138        {
+139            return (int) self::conversationsDe($utilisateur)->sum('non_lus');
+140        }
+141    }

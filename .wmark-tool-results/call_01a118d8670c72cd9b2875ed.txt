@@ -1,0 +1,38 @@
+83     test('a user writes to a colleague who then sees the message', function () {
+84         $alice = User::factory()->create(['role' => 'admin', 'username' => 'alice']);
+85         $bruno = User::factory()->create(['role' => 'professeur', 'username' => 'bruno']);
+86     
+87         $this->actingAs($alice)
+88             ->get(route('messagerie.index'))
+89             ->assertOk()
+90             ->assertSee('Messagerie interne')
+91             ->assertSee('Nouveau message');
+92     
+93         $this->actingAs($alice)
+94             ->post(route('messagerie.store'), [
+95                 'destinataires' => [(string) $bruno->id],
+96                 'sujet' => 'Préparation des bulletins',
+97                 'corps' => 'Peux-tu préparer les moyennes du 1er trimestre ?',
+98             ])
+99             ->assertRedirect()
+100            ->assertSessionHas('success', fn (string $m) => str_contains($m, '1 destinataire'));
+101    
+102        $conversation = Conversation::first();
+103        expect($conversation->type)->toBe('directe')
+104            ->and($conversation->participants()->count())->toBe(2)
+105            ->and(Messagerie::nonLus($bruno))->toBe(1)      // non lu pour Bruno
+106            ->and(Messagerie::nonLus($alice))->toBe(0);     // l'auteur a lu son propre message
+107    
+108        $this->actingAs($bruno)
+109            ->get(route('messagerie.index', ['conversation' => $conversation->id]))
+110            ->assertOk()
+111            ->assertSee('Peux-tu préparer les moyennes');   // le message s'affiche dans le fil
+112    
+113        // La consultation marque la conversation comme lue.
+114        expect(Messagerie::nonLus($bruno->fresh()))->toBe(0);
+115    });
+116    
+117    test('a broadcast reaches every active user', function () {
+118        $alice = User::factory()->create(['role' => 'admin', 'username' => 'alice']);
+
+[showing lines 83-118 of 544; read again with offset=119 for more]

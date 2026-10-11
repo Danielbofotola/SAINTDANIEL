@@ -1,0 +1,16 @@
+30                     $query->where('num_recu', 'like', "%{$search}%")
+31                         ->orWhereHas('inscription.eleve', fn ($eleve) => $eleve
+32                             ->where('nom', 'like', "%{$search}%")
+33                             ->orWhere('postnom', 'like', "%{$search}%")
+34                             ->orWhere('prenom', 'like', "%{$search}%")
+35                             ->orWhere('matricule', 'like', "%{$search}%"));
+36                 }))
+37                 ->latest('date_paiement')
+38                 ->paginate(25)
+39                 ->withQueryString();
+40     
+41             return view('admin.paiements.index', [
+42                 'paiements' => $paiements,
+43                 'annee' => $annee,
+
+[showing lines 30-43 of 117; read again with offset=44 for more]

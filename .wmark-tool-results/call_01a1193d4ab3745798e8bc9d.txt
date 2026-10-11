@@ -1,0 +1,32 @@
+466                                                @elseif ($ligne['paye'] > 0)
+467                                                    <span class="badge badge-warning">Partiel</span>
+468                                                @else
+469                                                    <span class="badge badge-danger">Non payé</span>
+470                                                @endif
+471                                            </td>
+472                                        </tr>
+473                                    @endforeach
+474                                    <tr class="fw-bold" style="background:#f8f9fa">
+475                                        <td colspan="2">Total de l'année</td>
+476                                        <td class="text-right">{{ number_format($courant['frais']['totaux']['exige'], 2) }}</td>
+477                                        <td class="text-right text-success">{{ number_format($courant['frais']['totaux']['paye'], 2) }}</td>
+478                                        <td class="text-right {{ $courant['frais']['totaux']['reste'] > 0 ? 'text-danger' : 'text-success' }}">
+479                                            {{ number_format($courant['frais']['totaux']['reste'], 2) }}
+480                                        </td>
+481                                        <td></td>
+482                                    </tr>
+483                                </tbody>
+484                            </table>
+485                            @if ($courant['frais']['non_affectes'] > 0)
+486                                <p class="fs-7 text-muted mb-0">
+487                                    <i class="fas fa-circle-info"></i>
+488                                    {{ number_format($courant['frais']['non_affectes'], 2) }} encaissé(s) sans affectation à une ligne de frais
+489                                    (déjà compté(s) dans le total payé).
+490                                </p>
+491                            @endif
+492                            @endif
+493                        </div>
+494                    </div>
+495                </div>
+
+[showing lines 466-495 of 580; read again with offset=496 for more]

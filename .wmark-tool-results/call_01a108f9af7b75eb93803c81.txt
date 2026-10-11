@@ -1,0 +1,32 @@
+46     
+47             <div class="tile">
+48                 <h4 class="tile-title"><i class="fa fa-list"></i> Années clôturées</h4>
+49                 <div class="table-responsive">
+50                     <table class="table table-hover table-bordered">
+51                         <thead><tr><th>#</th><th>Année</th><th>Élèves inscrits</th><th>Recettes</th><th>Dépenses</th><th>Solde</th><th>Clôturée le</th><th>Remarques</th><th>Actions</th></tr></thead>
+52                         <tbody>
+53                             @forelse ($archives as $archive)
+54                                 @php($solde = (float) $archive->solde_final)
+55                                 <tr>
+56                                     <td>{{ $loop->iteration }}</td>
+57                                     <td><strong>{{ $archive->anneeScolaire?->libelle ?? '—' }}</strong></td>
+58                                     <td>{{ $archive->total_eleves_inscrits }}</td>
+59                                     <td>{{ number_format((float) $archive->total_recettes, 2, ',', ' ') }}</td>
+60                                     <td>{{ number_format((float) $archive->total_depenses, 2, ',', ' ') }}</td>
+61                                     <td><span class="badge badge-{{ $solde >= 0 ? 'success' : 'danger' }}">{{ number_format($solde, 2, ',', ' ') }}</span></td>
+62                                     <td>{{ $archive->date_cloture?->format('d/m/Y H:i') }}</td>
+63                                     <td>{{ $archive->remarques ?: '—' }}</td>
+64                                     <td>
+65                                         <a href="{{ route('admin.archives.show', $archive) }}" class="btn btn-sm btn-info" title="Consulter l'année clôturée"><i class="fa fa-folder-open"></i> Consulter</a>
+66                                         <form class="d-inline" method="POST" action="{{ route('admin.archives.destroy', $archive) }}" onsubmit="return confirm('Rouvrir cette année (supprimer l’archive) ?');">
+67                                             @csrf
+68                                             @method('DELETE')
+69                                             <button class="btn btn-sm btn-warning" type="submit" title="Rouvrir l'année"><i class="fa fa-unlock"></i></button>
+70                                         </form>
+71                                     </td>
+72                                 </tr>
+73                             @empty
+74                                 <tr><td colspan="9" class="text-center text-muted">Aucune année clôturée pour le moment.</td></tr>
+75                             @endforelse
+
+[showing lines 46-75 of 82; read again with offset=76 for more]

@@ -1,0 +1,37 @@
+resources/views/admin/dashboard.blade.php
+resources/views/admin/profile/ (7 lines, newest first):
+  show.blade.php
+  edit.blade.php
+  accounts.blade.php
+  account-edit.blade.php
+  account-create.blade.php
+resources/views/projet/page-connexion/page-login-password.blade.php
+resources/views/admin/registration/account-requests.blade.php
+resources/views/admin/registration/student-requests.blade.php
+resources/views/professeur/dashboard.blade.php
+resources/views/registration/account-request.blade.php
+resources/views/registration/student-request.blade.php
+resources/views/admin/profile/ (7 lines, newest first):
+  statistics.blade.php
+  settings.blade.php
+resources/views/admin/classes/ (3 lines, newest first):
+  create.blade.php
+resources/views/admin/options/create.blade.php
+resources/views/admin/sections/create.blade.php
+resources/views/partials/impersonation-banner.blade.php
+resources/views/dashboard.blade.php
+resources/views/profile/edit.blade.php
+resources/views/profile/show.blade.php
+resources/views/admin/eleves/ (3 lines, newest first):
+  show.blade.php
+  edit.blade.php
+  create.blade.php
+resources/views/admin/professeurs/create.blade.php
+resources/views/admin/salles/ (3 lines, newest first):
+  index.blade.php
+  create.blade.php
+  edit.blade.php
+resources/views/admin/classes/ (3 lines, newest first):
+  students.blade.php
+  index.blade.php
+resources/views/projet/page-connexion/connexion-pin.blade.php

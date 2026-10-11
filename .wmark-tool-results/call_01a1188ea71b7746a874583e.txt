@@ -1,0 +1,75 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\b493c9bc81dc\20261007-234908-bash-call_01a1188ea71b7746a874583e.txt (1,132 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Structured view (text):
+[powershell — Windows side]
+=== public/boostrap ===
+css
+image-du-login.blade.php
+css\css
+css\font-awesome
+css\js
+css\css\main.css
+css\font-awesome\css
+css\font-awesome\less
+css\font-awesome\scss
+css\font-awesome\webfonts
+css\font-awesome\css\fa-brands.css
+css\font-awesome\css\fa-brands.min.css
+css\font-awesome\css\fa-regular.css
+css\font-awesome\css\fa-regular.min.css
+css\font-awesome\css\fa-solid.css
+css\font-awesome\css\fa-solid.min.css
+css\font-awesome\css\fontawesome-all.css
+css\font-awesome\css\fontawesome-all.min.css
+css\font-awesome\css\fontawesome.css
+css\font-awesome\css\fontawesome.min.css
+css\font-awesome\less\fa-brands.less
+css\font-awesome\less\fa-regular.less
+css\font-awesome\less\fa-solid.less
+css\font-awesome\less\fontawesome.less
+css\font-awesome\less\_animated.less
+css\font-awesome\less\_bordered-pulled.less
+css\font-awesome\less\_core.less
+css\font-awesome\less\_fixed-width.less
+css\font-awesome\less\_icons.less
+css\font-awesome\less\_larger.less
+css\font-awesome\less\_list.less
+css\font-awesome\less\_mixins.less
+css\font-awesome\less\_rotated-flipped.less
+css\font-awesome\less\_screen-reader.less
+css\font-awesome\less\_stacked.less
+css\font-awesome\less\_variables.less
+css\font-awesome\scss\fa-brands.scss
+css\font-awesome\scss\fa-regular.scss
+css\font-awesome\scss\fa-solid.scss
+css\font-awesome\scss\fontawesome.scss
+css\font-awesome\scss\_animated.scss
+css\font-awesome\scss\_bordered-pulled.scss
+css\font-awesome\scss\_core.scss
+css\font-awesome\scss\_fixed
+… 0 chars elided …
+-width.scss
+css\font-awesome\scss\_icons.scss
+css\font-awesome\scss\_larger.scss
+css\font-awesome\scss\_list.scss
+css\font-awesome\scss\_mixins.scss
+css\font-awesome\scss\_rotated-flipped.scss
+css\font-awesome\scss\_screen-reader.scss
+css\font-awesome\scss\_stacked.scss
+css\font-awesome\scss\_variables.scss
+css\font-awesome\webfonts\fa-brands-400.eot
+css\font-awesome\webfonts\fa-brands-400.svg
+css\font-awesome\webfonts\fa-brands-400.ttf
+css\font-awesome\webfonts\fa-brands-400.woff
+css\font-awesome\webfonts\fa-brands-400.woff2
+css\font-awesome\webfonts\fa-regular-400.eot
+css\font-awesome\webfonts\fa-regular-400.svg
+css\font-awesome\webfonts\fa-regular-400.ttf
+=== assets/fonts ===
+fontawesome-webfont.eot
+fontawesome-webfont.svg
+fontawesome-webfont.ttf
+fontawesome-webfont.woff
+fontawesome-web
+… 461 chars elided …
+io/license (Font: SIL OFL 1.1, CSS: MIT License)
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

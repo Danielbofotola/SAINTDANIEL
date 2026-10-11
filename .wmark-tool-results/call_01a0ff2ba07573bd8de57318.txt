@@ -1,0 +1,5 @@
+Created 4 tasks:
+  [pending] models: Modèles: relations + scopes « année en cours » (Inscription, Eleve) (2 criteria)
+  [pending] controllers: Contrôleurs: scoper dashboard admin + classes (index/students) sur l'année en cours (2 criteria)
+  [pending] views: Vues: afficher le contexte de l'année en cours (classes, dashboard) (2 criteria)
+  [pending] tests: Tests: scoping année en cours (effectifs classe, dashboard) + suite complète (2 criteria)

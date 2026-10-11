@@ -1,0 +1,40 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\b493c9bc81dc\20261008-024719-bash-call_01a11931c1977410862d25e7.txt (1,162 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Structured view (text):
+[powershell — Windows side]
+>   Expected response status code [200] but received 500.
+> Failed asserting that 500 is identical to 200.
+  
+> The following exception occurred during the last request:
+  
+> PDOException: SQLSTATE[HY000]: General error: 1 no such table: eleve_sante in C:\Users\danie\AppData\Roaming\Composer
+\vendor\bin\ecole\vendor\laravel\framework\src\Illuminate\Database\Connection.php:420
+  Stack trace:
+  #0 C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\vendor\laravel\framework\src\Illuminate\Database\Connecti
+on.php(420): PDO->prepare('select * from "...')
+> #35 C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\vendor\laravel\framework\src\Illuminate\View\Middleware\
+ShareErrorsFromSession.php(48): 
+Illuminate\Pipeline\Pipeline->Illuminate\Pipeline\{closure}(Object(Illuminate\Http\Request))
+> #36 C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\vendor\laravel\framework\src\Illuminate\Pipeline\Pipelin
+e.php(219): Illuminate\View\Middleware\ShareErrorsFromSession->handle(Object(Illuminate\Http\Request), Object(Closure))
+  #37 C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\vendor\laravel\framework\src\Illuminate\Session\Middlewa
+re\StartSession.php(120): Illuminate\Pipeline\Pipeline->Illuminate\Pipeline\{closure}(Object(Illuminate\Http\Request))
+  #38 C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\vendor\laravel\framework\src\Illuminate\Session\Middlewa
+re\StartSession.php(63): 
+Illuminate\Session\Middleware\StartSess
+… 0 chars elided …
+ion->handleStatefulRequest(Object(Illuminate\Http\Request), 
+Object(Illuminate\Session\Store), Object(Closure))
+> #78 C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\vendor\pestphp\pest\src\Support\ExceptionTrace.php(26): 
+P\Tests\Feature\ElevesPagesTest->Pest\Concerns\{closure}()
+> #79 C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\vendor\pestphp\pest\src\Concerns\Testable.php(419): 
+Pest\Support\ExceptionTrace::ensure(Object(Closure))
+  #80 C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\vendor\pestphp\pest\src\Concerns\Testable.php(321): 
+P\Tests\Feature\ElevesPagesTest->__callClosure(Object(Closure), Array)
+  #81 
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\vendor\pestphp\pest\src\Factories\TestCaseFactory.php(173) : 
+eval()'d code(26): P\Tests\
+… 841 chars elided …
+ine\{closure}(Object(Illuminate\Http\Request))
+
+
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">2</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

@@ -1,0 +1,22 @@
+80                                 </div>
+81                             </div>
+82                             <div class="alert alert-info d-none py-2 mt-2 mb-2" id="soldeInfo"></div>
+83                             <div class="row g-2">
+84                                 <div class="col-md-6"><label class="form-label mb-1 fw-bold">Période</label><select class="form-select form-select-sm" name="periode_id"><option value="">Non précisée</option>@foreach ($periodes as $periode)<option value="{{ $periode->id }}" @selected(old('periode_id') == $periode->id)>{{ $periode->nom }}</option>@endforeach</select></div>
+85                             </div>
+86                             <div class="row g-2">
+87                                 <div class="col-md-2"><label class="form-label mb-1 fw-bold">Montant reçu *</label><input class="form-control form-control-sm" type="number" step="0.01" min="0.01" id="montantRecu" name="montant_paye" value="{{ old('montant_paye') }}" required></div>
+88                                 <div class="col-md-2"><label class="form-label mb-1 fw-bold">Devise *</label><select class="form-select form-select-sm" id="deviseSelect" name="devise">@foreach ($devises as $code => $libelle)<option value="{{ $code }}" @selected(old('devise', 'USD') === $code)>{{ $libelle }}</option>@endforeach</select></div>
+89                                 <div class="col-md-2"><label class="form-label mb-1 fw-bold" title="Francs congolais pour 1 dollar">Taux (FC/1$)</label><input class="form-control form-control-sm" type="number" step="0.01" min="0" id="tauxInput" name="taux" value="{{ old('taux', $tauxParDefaut) }}"></div>
+90                                 <div class="col-md-2"><label class="form-label mb-1 fw-bold">Mode *</label><select class="form-select form-select-sm" name="mode_paiement" required>@foreach ($modes as $value => $label)<option value="{{ $value }}" @selected(old('mode_paiement', 'especes') === $value)>{{ $label }}</option>@endforeach</select></div>
+91                                 <div class="col-md-2"><label class="form-label mb-1 fw-bold">Date</label><input class="form-control form-control-sm" type="date" name="date_paiement" value="{{ old('date_paiement', now()->toDateString()) }}"></div>
+92                                 <div class="col-md-2"><label class="form-label mb-1 fw-bold">Référence</label><input class="form-control form-control-sm" name="reference_transaction" value="{{ old('reference_transaction') }}" maxlength="100" placeholder="N° transaction"></div>
+93                             </div>
+94                             <div class="alert alert-secondary py-2 mt-2 mb-0" id="equivalence"></div>
+95                             <button class="btn btn-success mt-3 w-100 fw-bold" type="submit" style="--green-btn:#107c41;background:var(--green-btn);" @disabled(! $annee)><i class="bi bi-check2-circle me-1"></i> Encaisser le paiement</button>
+96                         </form>
+97                     @endif
+98                 </div>
+99             </div>
+
+[showing lines 80-99 of 257; read again with offset=100 for more]

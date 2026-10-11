@@ -1,0 +1,6 @@
+[powershell — Windows side]
+<warning> WARNING </warning> Attempt to read property "prenom" on null in storage\framework\views\5645cb871f2d827aed176a43fdd244be.php on line 237.
+  <warning> WARNING </warning> Attempt to read property "username" on null in storage\framework\views\5645cb871f2d827aed176a43fdd244be.php on line 237.
+professeur dashboard: 25316 octets
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

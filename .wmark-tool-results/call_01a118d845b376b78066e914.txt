@@ -1,0 +1,19 @@
+[powershell — Windows side]
+83: test('a user writes to a colleague who then sees the message', function () {
+117: test('a broadcast reaches every active user', function () {
+140: test('a participant answers and only the others get an unread message', function () {
+157: test('an outsider cannot write into a conversation he does not belong to', function () {
+171: test('the messaging page is reserved to authenticated users', function () {
+175: test('a message without recipient or without text is refused', function () {
+189: test('the picture of the correspondent is displayed in the thread and the list', function () {
+221: test('an image can be attached to a reply and is shown in the thread', function () {
+252: test('an image can be sent without text, the size and the format are checked', function () {
+292: test('la page de messagerie du personnel expose le modèle partagé (vocaux, stickers, pièces jointes, diffusion)', function () {
+419: test('l’aperçu d’un profil renvoie le nom et le rôle du correspondant', function () {
+439: test('la barre d’écriture reste disponible même sans discussion ouverte', function () {
+456: test('écrire à un correspondant ouvre une conversation directe unique (sans doublon)', function () {
+477: test('on ne peut pas démarrer une discussion avec soi-même', function () {
+485: test('une réponse citée apparaît sur la bulle du nouveau message', function () {
+509: test('une réaction émoji est enregistrée, affichée et retirée', function () {
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

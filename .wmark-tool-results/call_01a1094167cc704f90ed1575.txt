@@ -1,0 +1,7 @@
+268        <header class="app-header">
+269            <a class="app-header__logo" href="{{ route('admin.dashboard') }}">{{ $systemSettings->nom_court }}</a>
+270            <a class="app-sidebar__toggle fa fa-bars" href="#" data-toggle="sidebar" aria-label="Afficher ou masquer le menu"></a>
+271            <ul class="app-nav">
+272                <li class="dropdown">
+
+[showing lines 268-272 of 731; read again with offset=273 for more]

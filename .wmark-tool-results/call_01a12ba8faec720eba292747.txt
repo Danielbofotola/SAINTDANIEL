@@ -1,0 +1,42 @@
+255        
+256            a.action-box, button.action-box { text-decoration: none; font-family: inherit; }
+257            .progress-thin { height: 6px; min-width: 70px; background: #e2e8f0; }
+258            .progress-thin .progress-bar { background: var(--green-btn); }
+259    </style>
+260    </head>
+261    <body class="p-2">
+262        @php
+263            $displayName = trim(($user->prenom ?: '').' '.($user->nom ?: '')) ?: $user->username;
+264            $money = fn ($value) => number_format((float) $value, 0, ',', ' ');
+265            $angle = min(max((float) $taux, 0), 100) * 1.8;
+266            $dernier = $derniersPaiements->first();
+267        @endphp
+268        @include('partials.impersonation-banner')
+269        <div class="d-flex justify-content-end mb-2">@include('partials.raccourcis', ['raccourcis' => \App\Support\Raccourcis::pour($user), 'variante' => 'clair'])</div>
+270    
+271        <div class="container-fluid">
+272            <div class="row g-2">
+273    
+274                <!-- PRINCIPAL -->
+275                <div class="col-lg-9">
+276    
+277                    @if (! $schoolYear)
+278                        <div class="alert alert-info py-2 mb-2" role="status"><strong>Aucune année scolaire en cours n’est définie.</strong> Les frais et paiements s’afficheront dès que l’administration en activera une.</div>
+279                    @endif
+280    
+281                    <div class="row g-2 mb-2">
+282                        <!-- Tableau de bord de caisse -->
+283                        <div class="col-md-7">
+284                            <div class="caisse-card">
+285                                <div class="card-title-header">Tableau de bord de caisse : {{ $displayName }}</div>
+286                                <div class="inner-block d-flex align-items-center mb-2">
+287                                    @if ($user->photo)
+288                                        <img src="{{ asset('storage/'.$user->photo) }}" alt="" class="rounded-circle me-2" style="width:44px;height:44px;object-fit:cover;">
+289                                    @else
+290                                        <span class="rounded-circle me-2 d-inline-flex align-items-center justify-content-center fw-bold text-white" style="width:44px;height:44px;background:#107c41;">{{ mb_strtoupper(mb_substr($displayName, 0, 1)) }}</span>
+291                                    @endif
+292                                    <div class="flex-grow-1">
+293                                        <div class="fw-bold">{{ trim($user->nom.' '.$user->postnom.' '.$user->prenom) ?: $user->username }}</div>
+294                                        <div class="text-muted">{{ '@'.$user->username }} · Comptable (caisse)</div>
+
+[showing lines 255-294 of 515; read again with offset=295 for more]

@@ -1,0 +1,72 @@
+55                 <section class="settings-panel">
+56                     <h2 class="panel-title"><i class="fa fa-university"></i> Identité de l’établissement</h2>
+57                     <p class="panel-hint">Ces informations remplacent le nom et les coordonnées affichés partout dans l’application (vitrine publique, en-têtes, bulletins).</p>
+58     
+59                     <div class="form-group">
+60                         <label class="form-label" for="nom_etablissement">Nom complet de l’établissement *</label>
+61                         <input class="form-control" id="nom_etablissement" name="nom_etablissement" value="{{ old('nom_etablissement', $settings->nom_etablissement) }}" maxlength="150" required>
+62                         <div class="settings-hint">Exemple : COMPLEXE SCOLAIRE BABAZIN — c’est ce nom qui s’affiche en haut de la vitrine publique et du bulletin.</div>
+63                     </div>
+64                     <div class="form-group">
+65                         <label class="form-label" for="nom_court">Nom court / sigle *</label>
+66                         <input class="form-control" id="nom_court" name="nom_court" value="{{ old('nom_court', $settings->nom_court) }}" maxlength="60" required>
+67                         <div class="settings-hint">Utilisé dans les logos, les en-têtes et les menus.</div>
+68                     </div>
+69                     <div class="row">
+70                         <div class="col-md-6 form-group">
+71                             <label class="form-label" for="telephone">Téléphone</label>
+72                             <input class="form-control" id="telephone" name="telephone" value="{{ old('telephone', $settings->telephone) }}" maxlength="30">
+73                         </div>
+74                         <div class="col-md-6 form-group">
+75                             <label class="form-label" for="email">E-mail</label>
+76                             <input class="form-control" id="email" type="email" name="email" value="{{ old('email', $settings->email) }}" maxlength="150">
+77                         </div>
+78                     </div>
+79                     <div class="form-group">
+80                         <label class="form-label" for="adresse">Adresse</label>
+81                         <textarea class="form-control" id="adresse" name="adresse" rows="2" maxlength="1000">{{ old('adresse', $settings->adresse) }}</textarea>
+82                     </div>
+83                 </section>
+84     
+85                 <section class="settings-panel">
+86                     <h2 class="panel-title"><i class="fa fa-toggle-on"></i> Options de l’application</h2>
+87                     <p class="panel-hint">Activez ou désactivez les modules selon l’organisation de l’école. Une case décochée ferme le module à tous les rôles concernés.</p>
+88     
+89                     <div class="switch-row">
+90                         <input type="hidden" name="saisie_notes_active" value="0">
+91                         <input type="checkbox" id="saisie_notes_active" name="saisie_notes_active" value="1" @checked(old('saisie_notes_active', $settings->saisie_notes_active))>
+92                         <label for="saisie_notes_active">
+93                             <span class="switch-titre">Saisie des notes</span>
+94                             <p class="switch-texte">Autorise les professeurs et la préfecture à encoder les cotes. Décochée, la saisie est refusée jusqu’à réactivation.</p>
+95                         </label>
+96                     </div>
+97                     <div class="switch-row">
+98                         <input type="hidden" name="portail_parents_actif" value="0">
+99                         <input type="checkbox" id="portail_parents_actif" name="portail_parents_actif" value="1" @checked(old('portail_parents_actif', $settings->portail_parents_actif))>
+100                        <label for="portail_parents_actif">
+101                            <span class="switch-titre">Portail Parents</span>
+102                            <p class="switch-texte">Ouvre aux parents l’accès aux notes, présences et annonces de leurs enfants.</p>
+103                        </label>
+104                    </div>
+105                    <div class="switch-row">
+106                        <input type="hidden" name="deliberation_active" value="0">
+107                        <input type="checkbox" id="deliberation_active" name="deliberation_active" value="1" @checked(old('deliberation_active', $settings->deliberation_active))>
+108                        <label for="deliberation_active">
+109                            <span class="switch-titre">Délibération &amp; passage de classe</span>
+110                            <p class="switch-texte">Active le module de délibération de fin d’année (seuils d’admission et de repêchage configurables dans Délibération).</p>
+111                        </label>
+112                    </div>
+113                    <div class="settings-hint">
+114                        <a href="{{ route('admin.modules.index') }}"><i class="fa fa-external-link"></i> Version courte de ces options (page « Commuter les modules »)</a>
+115                    </div>
+116                </section>
+117    
+118                <section class="settings-panel">
+119                    <h2 class="panel-title"><i class="fa fa-file-text-o"></i> Bulletin (en-tête, pied de page, règles)</h2>
+120                    <p class="panel-hint">Ces valeurs sont reprises telles quelles sur chaque bulletin imprimé.</p>
+121    
+122                    <h3 class="section-title">En-tête officiel</h3>
+123                    <div class="row">
+124                        <div class="col-md-6 form-group">
+
+[showing lines 55-124 of 210; read again with offset=125 for more]

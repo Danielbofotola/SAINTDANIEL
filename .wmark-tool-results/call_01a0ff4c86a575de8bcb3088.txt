@@ -1,0 +1,19 @@
+[powershell — Windows side]
+PASS  Tests\Feature\AdminAccountCredentialsTest
+  ✓ the dedicated page shows the account and the credentials form                                                0.27s  
+  ✓ an admin can reset another account password from the dedicated page                                          0.04s  
+  ✓ an admin can set and then remove the login PIN                                                               0.03s  
+  ✓ omitting the PIN keeps the current one                                                                       0.02s  
+  ✓ a weak password or a wrong confirmation is rejected                                                          0.02s  
+  ✓ a password is required to reset an account                                                                   0.02s  
+  ✓ a PIN that is not four digits is rejected                                                                    0.02s  
+  ✓ an admin cannot reset their own password from this page                                                      0.02s  
+  ✓ the profile update no longer touches the password or the PIN                                                 0.03s  
+  ✓ the account edit page links to the dedicated credentials page                                                0.06s  
+
+  Tests:    10 passed (39 assertions)
+  Duration: 0.76s
+
+
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

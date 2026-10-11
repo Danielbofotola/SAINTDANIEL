@@ -1,0 +1,116 @@
+1      <!DOCTYPE html>
+2      <html lang="fr">
+3      <head>
+4          <meta charset="utf-8">
+5          <meta name="viewport" content="width=device-width, initial-scale=1">
+6          <title>Cours &amp; affectation</title>
+7          <link rel="stylesheet" href="{{ asset('boostrap/css/css/main.css') }}">
+8          <link rel="stylesheet" href="{{ asset('boostrap/css/font-awesome/css/fa-regular.min.css') }}">
+9          <link rel="stylesheet" href="{{ asset('boostrap/css/font-awesome/css/fontawesome.css') }}">
+10         <link rel="stylesheet" href="{{ asset('boostrap/css/font-awesome/css/fa-solid.css') }}">
+11         <link rel="stylesheet" href="{{ asset('assets/css/font-awesome.min.css') }}">
+12         <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap4.min.css">
+13     </head>
+14     <body class="app">
+15         <main class="app-content" style="margin-left:0">
+16             <div class="app-title">
+17                 <div>
+18                     <h1><i class="fa fa-list"></i> Cours &amp; affectation</h1>
+19                     <p>Attribuez les cours aux classes et aux professeurs @if($annee) — année <strong>{{ $annee->libelle }}</strong>@endif.</p>
+20                 </div>
+21                 <div>
+22                     <a href="{{ route('admin.dashboard') }}" class="btn btn-secondary">Retour</a>
+23                     <a href="{{ route('admin.emplois-du-temps.index') }}" class="btn btn-primary"><i class="fa fa-clock-o"></i> Emploi du temps</a>
+24                 </div>
+25             </div>
+26     
+27             @if (session('success'))<div class="alert alert-success">{{ session('success') }}</div>@endif
+28             @if (session('error'))<div class="alert alert-danger">{{ session('error') }}</div>@endif
+29             @if ($errors->any())<div class="alert alert-danger"><ul class="mb-0">@foreach ($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul></div>@endif
+30             @unless ($annee)<div class="alert alert-warning"><i class="fa fa-exclamation-triangle"></i> Aucune année scolaire en cours. Définissez-en une dans « Années scolaires » pour créer des affectations.</div>@endunless
+31     
+32             <div class="row">
+33                 <div class="col-md-6">
+34                     <div class="tile mb-4">
+35                         <h4 class="tile-title"><i class="fa fa-plus"></i> Nouvelle affectation</h4>
+36                         <form method="POST" action="{{ route('admin.affectations.store') }}">
+37                             @csrf
+38                             <div class="form-group"><label class="form-label">Professeur *</label><select class="form-control" name="professeur_id" required><option value="">Choisir un professeur</option>@foreach ($professeurs as $professeur)<option value="{{ $professeur->id }}" @selected(old('professeur_id') == $professeur->id)>{{ $professeur->nom }} {{ $professeur->postnom }} {{ $professeur->prenom }}</option>@endforeach</select></div>
+39                             <div class="form-group"><label class="form-label">Cours *</label><select class="form-control" name="cours_id" required><option value="">Choisir un cours</option>@foreach ($cours as $coursItem)<option value="{{ $coursItem->id }}" @selected(old('cours_id') == $coursItem->id)>{{ $coursItem->code }} — {{ $coursItem->intitule }}</option>@endforeach</select></div>
+40                             <div class="form-group"><label class="form-label">Classe *</label><select class="form-control" name="classe_id" required><option value="">Choisir une classe</option>@foreach ($classes as $classe)<option value="{{ $classe->id }}" @selected(old('classe_id') == $classe->id)>{{ $classe->nom }}</option>@endforeach</select></div>
+41                             <button class="btn btn-primary" type="submit" @disabled(! $annee || $professeurs->isEmpty() || $cours->isEmpty() || $classes->isEmpty())><i class="fa fa-save"></i> Enregistrer l'affectation</button>
+42                         </form>
+43                     </div>
+44                 </div>
+45                 <div class="col-md-6">
+46                     <div class="tile mb-4">
+47                         <h4 class="tile-title"><i class="fa fa-book"></i> Nouveau cours</h4>
+48                         <form method="POST" action="{{ route('admin.cours.store') }}">
+49                             @csrf
+50                             <div class="row">
+51                                 <div class="col-md-4 form-group"><label class="form-label">Code *</label><input class="form-control" name="code" value="{{ old('code') }}" maxlength="20" required placeholder="MATH6"></div>
+52                                 <div class="col-md-8 form-group"><label class="form-label">Intitulé *</label><input class="form-control" name="intitule" value="{{ old('intitule') }}" maxlength="100" required placeholder="Mathématiques"></div>
+53                                 <div class="col-md-4 form-group"><label class="form-label">Pondération *</label><input class="form-control" type="number" name="ponderation" value="{{ old('ponderation', 1) }}" min="1" max="20" required></div>
+54                                 <div class="col-md-4 form-group"><label class="form-label">Max. Travaux journ.</label><input class="form-control" type="number" name="max_travaux_journaliers" value="{{ old('max_travaux_journaliers') }}" min="0" max="1000" placeholder="Ex. 20"><small class="text-muted">Maximum de la branche par période</small></div>
+55                                 <div class="col-md-4 form-group"><label class="form-label">Max. Examen</label><input class="form-control" type="number" name="max_examen" value="{{ old('max_examen') }}" min="0" max="1000" placeholder="Ex. 40"></div>
+56                             </div>
+57                             <button class="btn btn-success" type="submit"><i class="fa fa-plus"></i> Ajouter le cours</button>
+58                         </form>
+59                         <hr>
+60                         <h5>Cours enregistrés</h5>
+61                         @forelse ($cours as $coursItem)
+62                             <div class="border-bottom py-2 d-flex justify-content-between align-items-center">
+63                                 <span><strong>{{ $coursItem->code }}</strong> — {{ $coursItem->intitule }} <small class="text-muted">(pondération {{ $coursItem->ponderation }}@if ($coursItem->maximumParPeriode() !== null) · max/période {{ $coursItem->maximumParPeriode() }}@endif)</small></span>
+64                                 <form method="POST" action="{{ route('admin.cours.destroy', $coursItem) }}" onsubmit="return confirm('Supprimer ce cours ?');">
+65                                     @csrf
+66                                     @method('DELETE')
+67                                     <button class="btn btn-sm btn-danger" type="submit" title="Supprimer"><i class="fa fa-trash"></i></button>
+68                                 </form>
+69                             </div>
+70                         @empty
+71                             <p class="text-muted mb-0">Aucun cours enregistré.</p>
+72                         @endforelse
+73                     </div>
+74                 </div>
+75             </div>
+76     
+77             <div class="tile">
+78                 <h4 class="tile-title"><i class="fa fa-th-list"></i> Affectations @if($annee)<small class="text-muted">{{ $annee->libelle }}</small>@endif</h4>
+79                 <form class="row mb-3" method="GET" action="{{ route('admin.affectations.index') }}">
+80                     <div class="col-md-7 form-group mb-md-0"><input class="form-control" type="search" name="q" value="{{ $search }}" placeholder="Rechercher par professeur, cours ou classe…"></div>
+81                     <div class="col-md-3 form-group mb-md-0"><select class="form-control" name="classe_id"><option value="">Toutes les classes</option>@foreach ($classes as $classe)<option value="{{ $classe->id }}" @selected((string) $classeId === (string) $classe->id)>{{ $classe->nom }}</option>@endforeach</select></div>
+82                     <div class="col-md-2"><button class="btn btn-info btn-block" type="submit"><i class="fa fa-filter"></i> Filtrer</button></div>
+83                 </form>
+84                 <div class="table-responsive">
+85                     <table class="table table-hover table-bordered">
+86                         <thead><tr><th>#</th><th>Professeur</th><th>Cours</th><th>Classe</th><th>Statut</th><th>Actions</th></tr></thead>
+87                         <tbody>
+88                             @forelse ($affectations as $affectation)
+89                                 <tr>
+90                                     <td>{{ $affectations->firstItem() + $loop->index }}</td>
+91                                     <td>{{ $affectation->professeur?->nom }} {{ $affectation->professeur?->prenom }}</td>
+92                                     <td>{{ $affectation->cours?->code }} — {{ $affectation->cours?->intitule }}</td>
+93                                     <td>{{ $affectation->classe?->nom }}</td>
+94                                     <td><span class="badge badge-{{ $affectation->statut === 'actif' ? 'success' : 'secondary' }}">{{ ucfirst($affectation->statut) }}</span></td>
+95                                     <td>
+96                                         <form class="d-inline" method="POST" action="{{ route('admin.affectations.destroy', $affectation) }}" onsubmit="return confirm('Supprimer cette affectation ?');">
+97                                             @csrf
+98                                             @method('DELETE')
+99                                             <button class="btn btn-sm btn-danger" type="submit" title="Supprimer"><i class="fa fa-trash"></i></button>
+100                                        </form>
+101                                    </td>
+102                                </tr>
+103                            @empty
+104                                <tr><td colspan="6" class="text-center text-muted">Aucune affectation pour cette sélection.</td></tr>
+105                            @endforelse
+106                        </tbody>
+107                    </table>
+108                </div>
+109                <div class="d-flex justify-content-between align-items-center flex-wrap">
+110                    <small class="text-muted">{{ $affectations->total() }} affectation(s) — page {{ $affectations->currentPage() }} / {{ $affectations->lastPage() }}</small>
+111                    {{ $affectations->links('pagination::bootstrap-4') }}
+112                </div>
+113            </div>
+114        </main>
+115    </body>
+116    </html>

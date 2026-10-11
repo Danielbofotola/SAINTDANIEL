@@ -1,0 +1,4 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/StatistiquesTest.php (1 hunk applied)
+Landed at lines 204-204 (the file's new text; no re-read needed):
+204            ->assertSee(route('admin.dashboard'), false)

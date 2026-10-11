@@ -1,0 +1,10 @@
+18                 <div>
+19                     <h1><i class="fa fa-balance-scale"></i> Balance générale</h1>
+20                     <p>Totaux par compte — débit, crédit et solde (débit − crédit).</p>
+21                 </div>
+22                 <div class="no-print">
+23                     <a class="btn btn-secondary" href="{{ route('admin.comptabilite.index') }}"><i class="fa fa-arrow-left"></i> Comptabilité</a>
+24                     <a class="btn btn-info" href="{{ route('admin.comptabilite.plan') }}"><i class="fa fa-sitemap"></i> Plan comptable</a>
+25                     <button class="btn btn-primary" onclick="window.print()"><i class="fa fa-print"></i> Imprimer</button>
+
+[showing lines 18-25 of 86; read again with offset=26 for more]

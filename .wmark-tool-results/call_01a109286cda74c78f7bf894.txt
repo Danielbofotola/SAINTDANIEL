@@ -1,0 +1,12 @@
+142                    new Chart(zone, {
+143                        type: 'bar',
+144                        data: {
+145                            labels: @json($heuresParCours->keys()),
+146                            datasets: [{ label: 'Heures / semaine', data: @json($heuresParCours->values()), backgroundColor: '#4680ff' }]
+147                        },
+148                        options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
+149                    });
+150                })();
+151            </script>
+152        @endif
+153    @endpush

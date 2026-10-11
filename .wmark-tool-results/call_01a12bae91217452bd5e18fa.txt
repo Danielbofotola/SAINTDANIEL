@@ -1,0 +1,24 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\aba9102c187c\20261011-165705-bash-call_01a12bae91217452bd5e18fa.txt (563 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+[powershell — Windows side]
+✓ a duplicate affectation is rejected and a cours in use cannot be deleted                                     0.02s  
+  ✓ an admin can schedule a timetable slot and conflicts are rejected                                            0.04s  
+  ✓ the timetable refuses an end time before the start time                                                      0.03s  
+  ✓ the professor menu links point to the new modules                                                          
+
+... 838 chars truncated ...
+
+hreshold                                                0.04s  
+  ✓ a student below the pass threshold is declared failed and listed for retake                                  0.03s  
+  ✓ the bulletin document renders the official layout with the computed results                                  0.05s  
+  ✓ the bulletin document is restricted to administrators                                                        0.03s  
+  ✓ the bulletins list links to the RDC document                                                                 0.03s  
+  ✓ the reference maximum of a branch is displayed even without any note                                         0.02s  
+  ✓ the branch maximums can be recorded from the course form                                                     0.02s  
+  ✓ the settings screen saves the application options and the bulletin settings                                  0.04s  
+  ✓ the bulletin document uses the saved parameters and pass threshold                                           0.03s  
+
+  Tests:    22 passed (143 assertions)
+  Duration: 1.10s
+
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

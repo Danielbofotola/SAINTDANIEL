@@ -1,0 +1,19 @@
+Applied patch: 1 file changed (1 updated)
+Updated resources/views/prefecture/layout.blade.php (1 hunk applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 40-41 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 42-55:
+42         // Indicateurs vivants du menu : recalculés à chaque page.
+43         try {
+44             $nonLues = $user->unreadNotifications()->count();
+45         } catch (\Throwable) {
+46             $nonLues = 0;
+47         }
+48         try {
+49             $aSuivreAujourdhui = \App\Models\Presence::query()
+50                 ->where('date_seance', now()->toDateString())
+51                 ->whereIn('statut_presence', ['absent', 'retard'])
+52                 ->count();
+53         } catch (\Throwable) {
+54             $aSuivreAujourdhui = 0;
+55         }

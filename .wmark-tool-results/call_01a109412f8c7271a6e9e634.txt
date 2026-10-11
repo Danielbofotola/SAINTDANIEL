@@ -1,0 +1,1 @@
+Wrote resources/views/partials/raccourcis.blade.php (82 lines)

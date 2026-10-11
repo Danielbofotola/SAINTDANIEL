@@ -1,0 +1,62 @@
+240                    <button type="button" class="msg-tab {{ $vueParDefaut === 'correspondants' ? 'active' : '' }}"
+241                            data-cible="correspondants" onclick="msgTab('correspondants', this)">
+242                        <i class="fa-solid fa-user-group"></i> Correspondants
+243                    </button>
+244                    <button type="button" class="msg-tab {{ $vueParDefaut === 'discussions' ? 'active' : '' }}"
+245                            data-cible="discussions" onclick="msgTab('discussions', this)">
+246                        <i class="fa-solid fa-comments"></i> Discussions
+247                    </button>
+248                </div>
+249                @if ($active)
+250                    <button class="btn-compose only-mobile" type="button" onclick="reprendreConversation()">
+251                        <i class="fa-solid fa-comment-dots"></i> Reprendre la discussion
+252                    </button>
+253                @endif
+254                <button class="btn-compose" type="button" onclick="ouvrirCompose()">
+255                    <i class="fa-solid fa-pen-to-square"></i> Nouveau message
+256                </button>
+257                <input type="text" id="convSearch" placeholder="Rechercher…">
+258            </div>
+259    
+260            <div class="conv-scroll" id="convContainer" data-vue="discussions" @if ($vueParDefaut !== 'discussions') style="display:none" @endif>
+261                @forelse ($conversations as $conversation)
+262                    @php($corr = $conversation->participants->firstWhere('id', '!=', $user->id))
+263                    <a class="conv {{ $active && $active->id === $conversation->id ? 'active' : '' }}"
+264                       href="{{ $espaceUrl.'?conversation='.$conversation->id }}"
+265                       @if ($active && $active->id === $conversation->id) onclick="reprendreConversation(); return false;" @endif
+266                       data-search="{{ mb_strtolower($nomConversation($conversation)) }}">
+267                        <span class="msg-avatar">
+268                            @if ($conversation->type !== 'directe' || ! $corr)
+269                                <i class="fa-solid fa-bullhorn"></i>
+270                            @elseif ($corr->photo)
+271                                <img class="msg-avatar" src="{{ asset('storage/'.$corr->photo) }}" alt="{{ $nomConversation($conversation) }}">
+272                            @else
+273                                {{ $initiales($corr) }}
+274                            @endif
+275                        </span>
+276                        <div style="flex:1; min-width:0">
+277                            <div class="conv__name text-truncate">{{ $nomConversation($conversation) }}</div>
+278                            <div class="text-truncate {{ $conversation->non_lus > 0 ? 'conv__meta--fort' : 'conv__meta' }}">
+279                                @if ($conversation->non_lus > 0)
+280                                    <span class="conv__badge">{{ $conversation->non_lus }}</span>
+281                                @else
+282                                    Vous :
+283                                @endif
+284                                {{ $conversation->dernierMessage?->corps }}
+285                            </div>
+286                        </div>
+287                        @if ($conversation->non_lus === 0)
+288                            <i class="fa-solid fa-circle-check conv__vu"></i>
+289                        @endif
+290                    </a>
+291                @empty
+292                    <p class="p-3 text-center mb-0" style="color:var(--chat-muted);font-size:.8rem">Aucune discussion.</p>
+293                @endforelse
+294            </div>
+295    
+296            <div class="conv-scroll" id="contactsContainer" data-vue="correspondants" @if ($vueParDefaut !== 'correspondants') style="display:none" @endif>
+297                @forelse ($destinataires as $compte)
+298                    @php($nomCompte = trim(($compte->nom ?? '').' '.($compte->prenom ?? '')) ?: $compte->username)
+299                    <div class="conv" data-search="{{ mb_strtolower($nomCompte.' '.\App\Models\User::libelleRole($compte->role)) }}"
+
+[showing lines 240-299 of 957; read again with offset=300 for more]

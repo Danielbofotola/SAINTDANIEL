@@ -1,0 +1,1 @@
+Wrote resources/views/parent/actualites.blade.php (21 lines)

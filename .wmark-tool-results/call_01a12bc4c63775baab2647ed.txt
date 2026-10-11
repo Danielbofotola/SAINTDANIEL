@@ -1,0 +1,24 @@
+[powershell — Windows side]
+Psy\Exception\ParseErrorException 
+
+  PHP Parse error: Syntax error, unexpected T_NS_SEPARATOR on line 1
+
+  at vendor\psy\psysh\src\Exception\ParseErrorException.php:44
+     40▕      * @param \PhpParser\Error $e
+     41▕      */
+     42▕     public static function fromParseError(\PhpParser\Error $e): self
+     43▕     {
+  ➜  44▕         return new self($e->getRawMessage(), $e->getAttributes());
+     45▕     }
+     46▕ }
+     47▕
+
+  1   vendor\psy\psysh\src\CodeCleaner.php:657
+      Psy\Exception\ParseErrorException::fromParseError(Object(PhpParser\Error))
+
+  2   vendor\psy\psysh\src\CodeCleaner.php:273
+      Psy\CodeCleaner::parse("<?php \ = \Illuminate\Support\Facades\DB::table('classes as c')->leftJoin('cycles as cy','cy.id','=','c.cycle_id')->leftJoin('sections as s','s.id','=','c.section_id')->leftJoin('options as o','o.id','=','c.option_id')->select('c.id','c.nom as classe','cy.nom as cycle','s.nom as section','o.nom as option')->limit(20)->get(); echo json_encode(\, JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT);
+")
+
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

@@ -1,0 +1,29 @@
+[powershell — Windows side]
+<div class="reject-reason"><strong>Motif du refus :</strong> Dossier incomplet</div>\n
+                            </article>\n
+        \n
+            </main>\n
+</body>\n
+</html>\n
+
+
+  To contain: Historique d&#039;inscription
+
+  at tests\Feature\ElevesPagesTest.php:222
+    218▕ 
+    219▕     $this->actingAs($admin)
+    220▕         ->get(route('admin.registration.students.history'))
+    221▕         ->assertOk()
+  ➜ 222▕         ->assertSee("Historique d'inscription")
+    223▕         ->assertSee('Acceptee Cas')
+    224▕         ->assertSee('Refusee Cas')
+    225▕         ->assertSee('Dossier incomplet')
+    226▕         ->assertDontSee('EnAttente Cas');
+
+
+  Tests:    2 failed, 2 passed (13 assertions)
+  Duration: 0.49s
+
+==exit 1==
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

@@ -1,0 +1,20 @@
+236        Route::put('/admin/salles/{salle}', [SalleController::class, 'update'])->middleware('role:admin')->name('admin.salles.update');
+237        Route::patch('/admin/salles/{salle}/statut', [SalleController::class, 'toggleStatus'])->middleware('role:admin')->name('admin.salles.toggle-status');
+238        Route::delete('/admin/salles/{salle}', [SalleController::class, 'destroy'])->middleware('role:admin')->name('admin.salles.destroy');
+239        Route::get('/prefecture/tableau-de-bord', [PrefectureDashboardController::class, 'index'])->middleware('role:prefetture')->name('prefecture.dashboard');
+240        Route::get('/titulaire/tableau-de-bord', [TitulaireDashboardController::class, 'index'])->middleware('role:titulaire')->name('titulaire.dashboard');
+241        Route::get('/professeur/tableau-de-bord', [ProfesseurDashboardController::class, 'index'])->middleware('role:professeur')->name('professeur.dashboard');
+242        Route::get('/comptable/tableau-de-bord', [ComptableDashboardController::class, 'index'])->middleware('role:comptable')->name('comptable.dashboard');
+243        // Espace Parent : page de communication dédiée, ouverte aux parents (et à
+244        // l'admin pour prévisualisation) quand le module est actif.
+245        Route::get('/espace-parent', [PortailParentController::class, 'index'])->middleware('role:parent,admin')->name('parent.dashboard');
+246        // Espace enseignant : une page par fonction.
+247        Route::get('/professeur/planning', [ProfesseurEspaceController::class, 'planning'])->middleware('role:professeur')->name('professeur.planning');
+248        Route::get('/professeur/profil', [ProfesseurEspaceController::class, 'profil'])->middleware('role:professeur')->name('professeur.profil');
+249        Route::get('/professeur/cours', [ProfesseurEspaceController::class, 'cours'])->middleware('role:professeur')->name('professeur.cours');
+250        Route::get('/professeur/cours/{affectation}', [ProfesseurEspaceController::class, 'coursShow'])->middleware('role:professeur')->name('professeur.cours.show');
+251        Route::get('/professeur/eleves', [ProfesseurEspaceController::class, 'eleves'])->middleware('role:professeur')->name('professeur.eleves');
+252        Route::get('/professeur/eleves/{eleve}', [ProfesseurEspaceController::class, 'eleveShow'])->middleware('role:professeur')->name('professeur.eleves.show');
+253        Route::get('/professeur/evaluations', [ProfesseurEvaluationController::class, 'index'])->middleware('role:professeur')->name('professeur.evaluations');
+
+[showing lines 236-253 of 270; read again with offset=254 for more]

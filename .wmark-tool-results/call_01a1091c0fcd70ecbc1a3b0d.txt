@@ -1,0 +1,6 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/EspaceProfesseurTest.php (2 hunks applied)
+Landed at lines 210-210 (the file's new text; no re-read needed):
+210        DB::table('affectations_cours')->insert(['id' => 2, 'professeur_id' => 2, 'cours_id' => 1, 'classe_id' => 2, 'annee_scolaire_id' => 1, 'statut' => 'actif']);
+Landed at lines 252-252 (the file's new text; no re-read needed):
+252        $this->actingAs($autre)->get(route('professeur.cours.show', 2))->assertOk();

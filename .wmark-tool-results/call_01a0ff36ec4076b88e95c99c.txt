@@ -1,0 +1,34 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\e8f943213216\20261003-014250-bash-call_01a0ff36ec4076b88e95c99c.txt (1,102 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Structured view (text):
+[powershell — Windows side]
+> app\Http\Controllers\UserProfileController.php:27:    public function storeAccount(Request $request): RedirectResponse
+  app\Http\Controllers\UserProfileController.php:28:    {
+  app\Http\Controllers\UserProfileController.php:29:        $data = $request->validate([
+  app\Http\Controllers\UserProfileController.php:30:            'nom' => ['nullable', 'string', 'max:50'],
+> app\Http\Controllers\UserProfileController.php:36:            'professeur_id' => [
+  app\Http\Controllers\UserProfileController.php:37:                'nullable',
+  app\Http\Controllers\UserProfileController.php:38:                'exists:professeurs,id',
+> app\Http\Controllers\UserProfileController.php:39:                Rule::unique('users', 'professeur_id'),
+  app\Http\Controllers\UserProfileController.php:40:                Rule::requiredIf(fn () => $request->input('role') === 'professeur'),
+  app\Http\Controllers\UserProfileController.php:41:            ],
+> app\Http\Controllers\UserProfileController.php:42:            'role' => ['required', 'in:admin,prefetture,titulaire,professeur,comptable'],
+  app\Http\Controllers\UserProfileController.php:43:            'statut' => ['required', 'in:actif,inactif'],
+  app\Http\Controllers\UserProfileController.php:44:            'password' => ['required', 'string', 'min:8', 'confirmed'],
+  app\Http\Controllers\UserProfileController.php:45:            'pin_code' => ['nullable', 'digits:4'],
+> app\Http\Controllers\UserProfileController.ph
+… 299 chars elided …
+Controller.php:54:        ]);
+  app\Http\Controllers\UserProfileController.php:55:
+  app\Http\Controllers\UserProfileController.php:56:        $data['pin_code'] = filled($data['pin_code'] ?? null) ? Hash::make($data['pin_code']) : null;
+> app\Http\Controllers\UserProfileController.php:83:                        ->when($user->professeur_id, fn ($query) => $query->orWhere('id', $user->professeur_id));
+  app\Http\Controllers\UserProfileController.php:84:                })
+  app\Http\Controllers\UserProfileController.php:85:                ->orderBy('nom')
+  app\Http\Controllers\UserProfileController.php:86:                ->orderBy('prenom')
+> app\Http\Controllers\UserProfileController.php:107:            'role' => ['required', 'in:admin,prefetture,titulaire,professeur,comptable'],
+  app\Http
+… 1,099 chars elided …
+            $roleCounts->get('titulaire', 0),
+
+
+
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">2</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

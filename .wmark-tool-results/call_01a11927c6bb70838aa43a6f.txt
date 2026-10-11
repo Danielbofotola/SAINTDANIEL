@@ -1,0 +1,22 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/PortailParentTest.php (1 hunk applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 419-422 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 419-466:
+419    test('le parent ouvre le détail d’une notification, qui passe en lue', function () {
+420        reglerPortailParents(true);
+421    
+422        $parent = User::factory()->create(['role' => 'parent']);
+423        $id = (string) \Illuminate\Support\Str::uuid();
+424    
+425        DB::table('notifications')->insert([
+426            'id' => $id,
+      … 32 lines omitted …
+459        $autre = User::factory()->create(['role' => 'parent']);
+460        $this->actingAs($autre)->get(route('parent.notification', $id))->assertNotFound();
+461    });
+462    
+463    /**
+464     * Petit fichier audio WAVE valide, pour tester les pièces jointes vocales sans
+465     * dépendre d'un encodeur : la règle « mimes » détecte le type par le contenu.
+466     */

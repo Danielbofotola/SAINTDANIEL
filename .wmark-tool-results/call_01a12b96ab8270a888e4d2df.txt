@@ -1,0 +1,207 @@
+1      <!DOCTYPE html>
+2      <html lang="fr">
+3      <head>
+4          <meta charset="UTF-8">
+5          <meta name="viewport" content="width=device-width, initial-scale=1">
+6          <title>Caisse — Encaisser un paiement | {{ $systemSettings->nom_court }}</title>
+7          <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+8          <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+9          <link rel="stylesheet" href="{{ asset('boostrap/css/font-awesome/css/fontawesome.css') }}">
+10         <link rel="stylesheet" href="{{ asset('boostrap/css/font-awesome/css/fa-solid.css') }}">
+11         <link rel="stylesheet" href="{{ asset('assets/css/font-awesome.min.css') }}">
+12         <link rel="stylesheet" href="{{ asset('boostrap/css/css/main.css') }}">
+13         <style>
+14             :root { --bg-canvas:#d0dbe5; --card-bg:#f2f5f8; --card-border:#b0c2d0; --green-btn:#107c41; }
+15             body { background-color: var(--bg-canvas); font-family: 'Segoe UI', system-ui, sans-serif; color:#1e293b; font-size:.82rem; }
+16             .caisse-card { background: var(--card-bg); border:1px solid var(--card-border); border-radius:8px; padding:14px; box-shadow:0 2px 6px rgba(0,0,0,.06); height:100%; }
+17             .card-title-header { font-size:.95rem; font-weight:700; color:#0f172a; margin-bottom:8px; text-transform:uppercase; }
+18             .table-caisse thead th { background:#cbd5e1; }
+19         </style>
+20     </head>
+21     <body class="p-3">
+22     @php($money = fn ($v) => number_format((float) $v, 2, ',', ' '))
+23     <div class="container-fluid">
+24     
+25         <div class="caisse-card mb-3 d-flex flex-wrap align-items-center justify-content-between">
+26             <div>
+27                 <div class="card-title-header mb-0"><i class="bi bi-cash-coin me-2"></i>Caisse — Encaisser un paiement</div>
+28                 <small class="text-muted">{{ $systemSettings->nom_etablissement }}@if($annee) · année <strong>{{ $annee->libelle }}</strong>@endif · Total encaissé : <strong>{{ $money($encaisse) }}</strong></small>
+29             </div>
+30             <div>
+31                 <a href="{{ route('comptable.dashboard') }}" class="btn btn-sm btn-secondary"><i class="bi bi-speedometer2 me-1"></i> Tableau de bord de caisse</a>
+32             </div>
+33         </div>
+34     
+35         @if (session('success'))<div class="alert alert-success">{{ session('success') }}</div>@endif
+36         @if (session('error'))<div class="alert alert-danger">{{ session('error') }}</div>@endif
+37         @if ($errors->any())<div class="alert alert-danger"><ul class="mb-0">@foreach ($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul></div>@endif
+38         @unless ($annee)<div class="alert alert-warning"><i class="bi bi-exclamation-triangle me-1"></i>Aucune année scolaire en cours.</div>@endunless
+39     
+40         <div class="row g-3">
+41             <div class="col-lg-7">
+42                 <div class="caisse-card">
+43                     <div class="card-title-header"><i class="bi bi-search me-1"></i> Filtrer les élèves</div>
+44                     <form class="row g-2 align-items-end mb-3" method="GET" action="{{ route('comptable.paiements.index') }}">
+45                         <div class="col-md-6"><label class="form-label mb-1 fw-bold">Classe</label>
+46                             <select class="form-select form-select-sm" name="classe_id">
+47                                 <option value="">Toutes les classes</option>
+48                                 @foreach ($classes as $classe)<option value="{{ $classe->id }}" @selected((string) $classeId === (string) $classe->id)>{{ $classe->nom }}</option>@endforeach
+49                             </select>
+50                         </div>
+51                         <div class="col-md-4"><button class="btn btn-sm btn-info text-white w-100"><i class="bi bi-funnel me-1"></i> Filtrer par classe</button></div>
+52                         <div class="col-md-2"><a href="{{ route('comptable.paiements.index') }}" class="btn btn-sm btn-outline-secondary w-100">Tout</a></div>
+53                     </form>
+54     
+55                     <div class="card-title-header"><i class="bi bi-cash-stack me-1"></i> Nouveau paiement</div>
+56                     @if ($inscriptions->isEmpty() || $tarifs->isEmpty())
+57                         <p class="text-muted mb-0">Il faut au moins un élève inscrit et un tarif pour l'année en cours. Les tarifs se définissent dans « Types de frais ».</p>
+58                     @else
+59                         <form method="POST" action="{{ route('comptable.paiements.store') }}">
+60                             @csrf
+61                             <input type="hidden" name="classe_id" value="{{ $classeId }}">
+62                             <div class="mb-2">
+63                                 <label class="form-label mb-1 fw-bold">Rechercher l'élève</label>
+64                                 <input class="form-control form-control-sm" type="text" id="eleveSearch" placeholder="Tapez un nom ou un matricule pour filtrer la liste…" autocomplete="off">
+65                             </div>
+66                             <div class="row g-2">
+67                                 <div class="col-md-6"><label class="form-label mb-1 fw-bold">Élève *</label>
+68                                     <select class="form-select form-select-sm" id="inscriptionSelect" name="inscription_id" required>
+69                                         <option value="">Choisir un élève</option>
+70                                         @foreach ($inscriptions as $inscription)<option value="{{ $inscription->id }}" @selected(old('inscription_id') == $inscription->id)>{{ $inscription->eleve?->nom }} {{ $inscription->eleve?->postnom }} {{ $inscription->eleve?->prenom }} — {{ $inscription->classe?->nom }} ({{ $inscription->eleve?->matricule }})</option>@endforeach
+71                                     </select>
+72                                 </div>
+73                                 <div class="col-md-6"><label class="form-label mb-1 fw-bold" id="tarifLabel">Tarif de la classe de l'élève *</label>
+74                                     <select class="form-select form-select-sm" id="fraisSelect" name="frais_scolaire_id" required>
+75                                         <option value="">Choisir un tarif</option>
+76                                         @foreach ($tarifs as $tarif)<option value="{{ $tarif->id }}" @selected(old('frais_scolaire_id') == $tarif->id)>{{ $tarif->typeFrais?->nom }} — {{ $tarif->classe?->nom }} ({{ $money($tarif->montant_exige) }})</option>@endforeach
+77                                     </select>
+78                                 </div>
+79                             </div>
+80                             <div class="alert alert-info d-none py-2 mt-2 mb-2" id="soldeInfo"></div>
+81                             <div class="row g-2">
+82                                 <div class="col-md-6"><label class="form-label mb-1 fw-bold">Période</label><select class="form-select form-select-sm" name="periode_id"><option value="">Non précisée</option>@foreach ($periodes as $periode)<option value="{{ $periode->id }}" @selected(old('periode_id') == $periode->id)>{{ $periode->nom }}</option>@endforeach</select></div>
+83                             </div>
+84                             <div class="row g-2">
+85                                 <div class="col-md-3"><label class="form-label mb-1 fw-bold">Montant *</label><input class="form-control form-control-sm" type="number" step="0.01" min="0.01" name="montant_paye" value="{{ old('montant_paye') }}" required></div>
+86                                 <div class="col-md-3"><label class="form-label mb-1 fw-bold">Mode *</label><select class="form-select form-select-sm" name="mode_paiement" required>@foreach ($modes as $value => $label)<option value="{{ $value }}" @selected(old('mode_paiement', 'especes') === $value)>{{ $label }}</option>@endforeach</select></div>
+87                                 <div class="col-md-3"><label class="form-label mb-1 fw-bold">Date</label><input class="form-control form-control-sm" type="date" name="date_paiement" value="{{ old('date_paiement', now()->toDateString()) }}"></div>
+88                                 <div class="col-md-3"><label class="form-label mb-1 fw-bold">Référence</label><input class="form-control form-control-sm" name="reference_transaction" value="{{ old('reference_transaction') }}" maxlength="100" placeholder="N° transaction"></div>
+89                             </div>
+90                             <button class="btn btn-success mt-3 w-100 fw-bold" type="submit" style="--green-btn:#107c41;background:var(--green-btn);" @disabled(! $annee)><i class="bi bi-check2-circle me-1"></i> Encaisser le paiement</button>
+91                         </form>
+92                     @endif
+93                 </div>
+94             </div>
+95     
+96             <div class="col-lg-5">
+97                 <div class="caisse-card">
+98                     <div class="card-title-header"><i class="bi bi-receipt me-1"></i> Derniers paiements</div>
+99                     <div class="table-responsive">
+100                        <table class="table table-sm table-caisse align-middle mb-0">
+101                            <thead><tr><th>Reçu</th><th>Élève</th><th class="text-end">Montant</th><th></th></tr></thead>
+102                            <tbody>
+103                                @forelse ($paiements as $paiement)
+104                                    <tr>
+105                                        <td><span class="fw-bold">{{ $paiement->num_recu }}</span><br><small class="text-muted">{{ $paiement->date_paiement?->format('d/m/Y H:i') }}</small></td>
+106                                        <td>{{ $paiement->inscription?->eleve?->nom }} {{ $paiement->inscription?->eleve?->prenom }}<br><small class="text-muted">{{ $paiement->inscription?->classe?->nom }} · {{ $paiement->fraisScolaire?->typeFrais?->nom }}</small></td>
+107                                        <td class="text-end fw-bold">{{ $money($paiement->montant_paye) }}</td>
+108                                        <td class="text-end"><a href="{{ route('comptable.paiements.recu', $paiement) }}" class="btn btn-sm btn-outline-info" title="Voir le reçu"><i class="bi bi-receipt"></i></a></td>
+109                                    </tr>
+110                                @empty
+111                                    <tr><td colspan="4" class="text-center text-muted">Aucun paiement enregistré.</td></tr>
+112                                @endforelse
+113                            </tbody>
+114                        </table>
+115                    </div>
+116                </div>
+117            </div>
+118        </div>
+119    </div>
+120    
+121    <script>
+122        (function () {
+123            var payeParPaire = @json($soldePaye);
+124            var montantsFrais = @json($montantsFrais);
+125            var classesParInscription = @json($classesParInscription ?? []);
+126            var classesParFrais = @json($classesParFrais ?? []);
+127            var tarifsDisponibles = @json($tarifsDisponibles ?? []);
+128            var nomsClasses = @json($nomsClasses ?? []);
+129            var recherche = document.getElementById('eleveSearch');
+130            var inscriptionSelect = document.getElementById('inscriptionSelect');
+131            var fraisSelect = document.getElementById('fraisSelect');
+132            var soldeInfo = document.getElementById('soldeInfo');
+133    
+134            function filtrerEleves() {
+135                if (!recherche || !inscriptionSelect) { return; }
+136                var terme = recherche.value.trim().toLowerCase();
+137                Array.prototype.forEach.call(inscriptionSelect.options, function (option) {
+138                    if (!option.value) { option.hidden = false; return; }
+139                    option.hidden = terme !== '' && option.text.toLowerCase().indexOf(terme) === -1;
+140                });
+141            }
+142    
+143            function majSolde() {
+144                if (!inscriptionSelect || !fraisSelect || !soldeInfo) { return; }
+145                var inscription = inscriptionSelect.value;
+146                var frais = fraisSelect.value;
+147                if (!inscription || !frais) { soldeInfo.classList.add('d-none'); return; }
+148                var exige = Number(montantsFrais[frais] || 0);
+149                var paye = Number(payeParPaire[inscription + '-' + frais] || 0);
+150                var reste = Math.max(exige - paye, 0);
+151                soldeInfo.classList.remove('d-none');
+152                soldeInfo.innerHTML = 'Montant exigé : <b>' + exige.toFixed(2) + '</b> · Déjà payé : <b>' + paye.toFixed(2) + '</b> · <b>Reste à payer : ' + reste.toFixed(2) + '</b>';
+153            }
+154    
+155            // Reconstruit la liste des tarifs : ne garde QUE ceux de la classe de
+156            // l'élève sélectionné (les tarifs des autres classes sont retirés du DOM,
+157            // et non simplement masqués).
+158            function rendreTarifs() {
+159                if (!fraisSelect) { return; }
+160    
+161                var inscription = inscriptionSelect ? inscriptionSelect.value : '';
+162                var classe = inscription ? String(classesParInscription[inscription] || '') : '';
+163                var courant = fraisSelect.value;
+164                var disponibles = tarifsDisponibles.filter(function (tarif) {
+165                    return classe === '' || String(tarif.classe) === classe;
+166                });
+167    
+168                var label = document.getElementById('tarifLabel');
+169                if (label) {
+170                    label.textContent = (classe !== '' && nomsClasses[classe])
+171                        ? 'Tarif * (classe ' + nomsClasses[classe] + ')'
+172                        : "Tarif de la classe de l'élève *";
+173                }
+174    
+175                fraisSelect.innerHTML = '';
+176                var vide = document.createElement('option');
+177                vide.value = '';
+178                vide.textContent = classe !== '' && nomsClasses[classe]
+179                    ? 'Choisir un tarif de ' + nomsClasses[classe]
+180                    : 'Choisir un tarif';
+181                fraisSelect.appendChild(vide);
+182    
+183                disponibles.forEach(function (tarif) {
+184                    var option = document.createElement('option');
+185                    option.value = tarif.id;
+186                    option.textContent = tarif.libelle;
+187                    fraisSelect.appendChild(option);
+188                });
+189    
+190                var encoreValide = disponibles.some(function (tarif) { return String(tarif.id) === String(courant); });
+191                if (encoreValide) {
+192                    fraisSelect.value = courant;
+193                } else if (disponibles.length === 1) {
+194                    fraisSelect.value = disponibles[0].id;
+195                }
+196    
+197                majSolde();
+198            }
+199    
+200            if (recherche) { recherche.addEventListener('input', filtrerEleves); }
+201            if (inscriptionSelect) { inscriptionSelect.addEventListener('change', rendreTarifs); }
+202            if (fraisSelect) { fraisSelect.addEventListener('change', majSolde); }
+203            rendreTarifs();
+204        })();
+205    </script>
+206    </body>
+207    </html>

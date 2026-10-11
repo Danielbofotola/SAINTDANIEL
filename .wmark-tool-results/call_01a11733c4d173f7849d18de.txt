@@ -1,0 +1,12 @@
+[powershell — Windows side]
+112: .sticker-picker { display: none; position: absolute; bottom: 62px; left: 10px; right: 10px; background: var(--chat-card);
+114: .sticker-picker.on { display: block; }
+115: .sticker-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; font-size: 1.6rem; text-align: center; }
+116: .sticker-grid span { cursor: pointer; padding: 5px; border-radius: 8px; }
+117: .sticker-grid span:hover { background: var(--chat-hover); }
+334: <div class="sticker-picker" id="stickerPicker">
+339: <div class="sticker-grid">
+341: <span onclick="envoyerSticker('{{ $sticker }}')">{{ $sticker }}</span>
+575: window.envoyerSticker = function (sticker) {
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

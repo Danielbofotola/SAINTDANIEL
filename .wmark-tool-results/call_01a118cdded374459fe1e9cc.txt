@@ -1,0 +1,24 @@
+179        public function demarrer(Request $request): JsonResponse
+180        {
+181            $data = $request->validate([
+182                'destinataire' => ['required', 'integer', 'exists:users,id'],
+183            ]);
+184    
+185            $destinataire = User::query()
+186                ->where('id', '!=', $request->user()->id)
+187                ->where('statut', 'actif')
+188                ->findOrFail($data['destinataire']);
+189    
+190            $conversation = Messagerie::ouvrirDirecte($request->user(), $destinataire);
+191    
+192            return response()->json(['conversation_id' => $conversation->id]);
+193        }
+194    
+195        /**
+196         * Pose (ou retire, avec une réaction vide) une réaction émoji sur un
+197         * message, et renvoie la bulle mise à jour.
+198         */
+199        public function reagir(Request $request, Message $message): JsonResponse
+200        {
+
+[showing lines 179-200 of 235; read again with offset=201 for more]

@@ -1,0 +1,99 @@
+1      <?php
+2      
+3      namespace App\Http\Controllers;
+4      
+5      use App\Models\Option;
+6      use App\Models\Section;
+7      use Illuminate\Http\RedirectResponse;
+8      use Illuminate\Http\Request;
+9      use Illuminate\Support\Facades\DB;
+10     use Illuminate\Support\Str;
+11     use Illuminate\Validation\Rule;
+12     use Illuminate\View\View;
+13     
+14     class SectionOptionController extends Controller
+15     {
+16         public function createSection(): View
+17         {
+18             return view('admin.sections.create');
+19         }
+20     
+21         public function storeSection(Request $request): RedirectResponse
+22         {
+23             $data = $request->validate([
+24                 'nom' => ['required', 'string', 'max:100', 'unique:sections,nom'],
+25                 'description' => ['nullable', 'string', 'max:1000'],
+26             ], [
+27                 'nom.required' => 'Le nom de la section est obligatoire.',
+28                 'nom.unique' => 'Cette section existe déjà.',
+29             ]);
+30     
+31             $section = Section::create([
+32                 ...$data,
+33                 'code' => $this->uniqueCode($data['nom'], 'sections', 'SECTION'),
+34                 'statut' => 'actif',
+35             ]);
+36     
+37             return redirect()
+38                 ->route('admin.classes.create', ['section_id' => $section->id])
+39                 ->with('success', 'La section a été créée. Vous pouvez maintenant compléter la classe.');
+40         }
+41     
+42         public function createOption(Request $request): View
+43         {
+44             return view('admin.options.create', [
+45                 'sections' => Section::where('statut', 'actif')->orderBy('nom')->get(),
+46                 'selectedSectionId' => $request->query('section_id'),
+47             ]);
+48         }
+49     
+50         public function storeOption(Request $request): RedirectResponse
+51         {
+52             $data = $request->validate([
+53                 'section_id' => ['required', Rule::exists('sections', 'id')->where('statut', 'actif')],
+54                 'nom' => [
+55                     'required',
+56                     'string',
+57                     'max:100',
+58                     Rule::unique('options', 'nom')->where('section_id', $request->input('section_id')),
+59                 ],
+60                 'description' => ['nullable', 'string', 'max:1000'],
+61             ], [
+62                 'section_id.required' => 'Sélectionnez une section.',
+63                 'section_id.exists' => 'La section sélectionnée est introuvable ou inactive.',
+64                 'nom.required' => 'Le nom de l’option est obligatoire.',
+65                 'nom.unique' => 'Cette option existe déjà dans cette section.',
+66             ]);
+67     
+68             $option = Option::create([
+69                 ...$data,
+70                 'code' => $this->uniqueCode($data['nom'], 'options', 'OPTION', (int) $data['section_id']),
+71                 'statut' => 'actif',
+72             ]);
+73     
+74             return redirect()
+75                 ->route('admin.classes.create', [
+76                     'section_id' => $option->section_id,
+77                     'option_id' => $option->id,
+78                 ])
+79                 ->with('success', 'L’option a été créée. Vous pouvez maintenant compléter la classe.');
+80         }
+81     
+82         private function uniqueCode(string $name, string $table, string $fallback, ?int $sectionId = null): string
+83         {
+84             $base = Str::upper(Str::slug($name));
+85             $base = substr($base ?: $fallback, 0, 30);
+86             $code = $base;
+87             $suffix = 2;
+88     
+89             while (DB::table($table)
+90                 ->where('code', $code)
+91                 ->when($sectionId, fn ($query) => $query->where('section_id', $sectionId))
+92                 ->exists()) {
+93                 $ending = '-'.$suffix++;
+94                 $code = substr($base, 0, 30 - strlen($ending)).$ending;
+95             }
+96     
+97             return $code;
+98         }
+99     }

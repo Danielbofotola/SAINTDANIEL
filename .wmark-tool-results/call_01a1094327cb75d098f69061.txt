@@ -1,0 +1,20 @@
+[powershell — Windows side]
+No syntax errors detected in C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\storage\framework\views\f2bb900998614e8c7a224eeba29015f4.php
+
+  ✓ a student below the pass threshold is declared failed and listed for retake                                  0.02s 
+ 
+   FAIL  Tests\Feature\RaccourcisTest
+  ⨯ the admin header shows the shortcut bar of the template                                                      1.30s 
+ 
+  ⨯ the teacher header shows his own shortcuts                                                                   0.66s 
+ 
+   FAILED  Tests\Feature\RaccourcisTest > the admin header shows the shortcut bar of the template                      
+ 
+Failed asserting that 500 is identical to 200.
+   FAILED  Tests\Feature\RaccourcisTest > the teacher header shows his own shortcuts                                   
+ 
+Failed asserting that 500 is identical to 200.
+
+
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

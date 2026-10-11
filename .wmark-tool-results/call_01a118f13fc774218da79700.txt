@@ -1,0 +1,113 @@
+1      <?php
+2      
+3      use App\Models\User;
+4      use App\Support\PresenceUtilisateurs;
+5      use Illuminate\Database\Schema\Blueprint;
+6      use Illuminate\Support\Facades\DB;
+7      use Illuminate\Support\Facades\Schema;
+8      
+9      beforeEach(function () {
+10         Schema::disableForeignKeyConstraints();
+11         foreach (['sessions', 'professeurs', 'parametres_systeme', 'users'] as $table) {
+12             Schema::dropIfExists($table);
+13         }
+14         Schema::enableForeignKeyConstraints();
+15     
+16         Schema::create('users', function (Blueprint $table) {
+17             $table->id();
+18             $table->unsignedBigInteger('professeur_id')->nullable()->unique();
+19             $table->string('nom', 50)->nullable();
+20             $table->string('postnom', 50)->nullable();
+21             $table->string('prenom', 50)->nullable();
+22             $table->string('photo')->nullable();
+23             $table->string('username')->unique();
+24             $table->string('email')->unique();
+25             $table->string('password');
+26             $table->string('pin_code')->nullable();
+27             $table->string('role');
+28             $table->string('statut');
+29             $table->rememberToken();
+30             $table->timestamps();
+31         });
+32         Schema::create('professeurs', function (Blueprint $table) {
+33             $table->id();
+34             $table->string('matricule')->unique();
+35             $table->string('nom');
+36             $table->string('postnom')->nullable();
+37             $table->string('prenom');
+38             $table->string('sexe');
+39             $table->string('statut')->default('actif');
+40             $table->timestamps();
+41         });
+42         Schema::create('parametres_systeme', function (Blueprint $table) {
+43             $table->id();
+44             $table->string('nom_etablissement', 150)->default('Etablissement');
+45             $table->string('nom_court', 60)->default('Ecole');
+46             $table->timestamps();
+47         });
+48         DB::table('parametres_systeme')->insert(['nom_court' => 'Ecole Test', 'created_at' => now(), 'updated_at' => now()]);
+49     
+50         // Table des sessions du pilote « database » de Laravel.
+51         Schema::create('sessions', function (Blueprint $table) {
+52             $table->string('id')->primary();
+53             $table->unsignedBigInteger('user_id')->nullable()->index();
+54             $table->string('ip_address', 45)->nullable();
+55             $table->text('user_agent')->nullable();
+56             $table->longText('payload');
+57             $table->integer('last_activity')->index();
+58         });
+59     });
+60     
+61     function sessionActive(string $id, ?int $userId, string $ip, string $agent, int $minutesAgo = 0): void
+62     {
+63         DB::table('sessions')->insert([
+64             'id' => $id,
+65             'user_id' => $userId,
+66             'ip_address' => $ip,
+67             'user_agent' => $agent,
+68             'payload' => base64_encode(serialize([])),
+69             'last_activity' => now()->subMinutes($minutesAgo)->getTimestamp(),
+70         ]);
+71     }
+72     
+73     test('the admin sees the accounts currently online, not the stale sessions', function () {
+74         $admin = User::factory()->create(['role' => 'admin', 'username' => 'admin.test']);
+75         $comptable = User::factory()->create(['role' => 'comptable', 'username' => 'comptable.test']);
+76     
+77         sessionActive('sess-admin', $admin->id, '10.0.0.1', 'Mozilla/5.0 (Windows NT 10.0) Chrome/120.0', 0);
+78         sessionActive('sess-vieux', $comptable->id, '10.0.0.2', 'Mozilla/5.0 Firefox/121.0', 40);
+79         sessionActive('sess-invite', null, '10.0.0.3', 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0) Safari', 0);
+80     
+81         $this->actingAs($admin)
+82             ->get(route('admin.profile.online'))
+83             ->assertOk()
+84             ->assertSee('Utilisateurs en ligne')
+85             ->assertSee('admin.test')
+86             ->assertSee('10.0.0.1')
+87             ->assertSee('Chrome · Windows')
+88             ->assertDontSee('comptable.test')          // session trop ancienne
+89             ->assertDontSee('10.0.0.2')
+90             ->assertSee('Sessions invitées')           // session sans compte
+91             ->assertSee('Safari · iPhone');
+92     
+93         expect(PresenceUtilisateurs::idsEnLigne())->toBe([$admin->id]);
+94     
+95         // Le profil administrateur donne accès à la page.
+96         $this->actingAs($admin)
+97             ->get(route('admin.profile.show'))
+98             ->assertOk()
+99             ->assertSee(route('admin.profile.online'), false);
+100    });
+101    
+102    test('online users page is reserved to the admin role', function () {
+103        $comptable = User::factory()->create(['role' => 'comptable']);
+104    
+105        $this->actingAs($comptable)->get(route('admin.profile.online'))->assertForbidden();
+106    });
+107    
+108    test('the device label is derived from the user agent', function () {
+109        expect(PresenceUtilisateurs::appareil('Mozilla/5.0 (Windows NT 10.0) Chrome/120.0'))->toBe('Chrome · Windows')
+110            ->and(PresenceUtilisateurs::appareil('Mozilla/5.0 (Linux; Android 13) Firefox/121.0'))->toBe('Firefox · Android')
+111            ->and(PresenceUtilisateurs::appareil(null))->toBe('Appareil inconnu')
+112            ->and(PresenceUtilisateurs::appareil(''))->toBe('Appareil inconnu');
+113    });

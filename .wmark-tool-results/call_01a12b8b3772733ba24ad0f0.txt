@@ -1,0 +1,40 @@
+1      <?php
+2      
+3      namespace App\Http\Controllers;
+4      
+5      use App\Models\Eleve;
+6      use App\Models\Classe;
+7      use App\Models\Professeurs;
+8      use App\Models\Cycle;
+9      use Illuminate\View\View;
+10     
+11     class AdminDashboardController extends Controller
+12     {
+13         public function index(): View
+14         {
+15             return view('admin.dashboard', [
+16                 'eleves' => Eleve::with(['inscriptions.classe.cycle'])
+17                     ->inscritAnneeEnCours()
+18                     ->latest()
+19                     ->get(),
+20                 'statistiques' => [
+21                     'garcons' => Eleve::inscritAnneeEnCours()->where('statut', 'actif')->where('sexe', 'M')->count(),
+22                     'filles' => Eleve::inscritAnneeEnCours()->where('statut', 'actif')->where('sexe', 'F')->count(),
+23                     'classes' => Classe::where('statut', 'actif')->count(),
+24                     'professeurs' => Professeurs::where('statut', 'actif')->count(),
+25                 ],
+26                 'occupationSalles' => Classe::with('salle')
+27                     ->withCount(['inscriptions as eleves_count' => fn ($query) => $query->anneeEnCours()->where('statut', 'actif')])
+28                     ->where('statut', 'actif')
+29                     ->orderBy('nom')
+30                     ->get(),
+31                 'repartitionCycles' => Cycle::query()
+32                     ->where('statut', 'actif')
+33                     ->withCount(['inscriptions as total' => fn ($query) => $query
+34                         ->anneeEnCours()
+35                         ->where('inscriptions.statut', 'actif')])
+36                     ->orderBy('nom')
+37                     ->get(),
+38             ]);
+39         }
+40     }

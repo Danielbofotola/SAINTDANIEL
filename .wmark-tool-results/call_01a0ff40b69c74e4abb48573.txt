@@ -1,0 +1,24 @@
+166    });
+167    
+168        test('a professor without an assigned teacher record can open the professor dashboard', function () {
+169            $admin = User::factory()->create(['role' => 'admin']);
+170            $professor = User::factory()->create(['role' => 'professeur', 'professeur_id' => null]);
+171    
+172            $this->actingAs($admin)
+173                ->post(route('admin.profile.accounts.impersonate', $professor))
+174                ->assertRedirect(route('professeur.dashboard'));
+175    
+176            $this->get(route('professeur.dashboard'))
+177            ->assertOk()
+178            ->assertSee('Espace enseignant')
+179                ->assertSee('Revenir à mon compte administrateur')
+180            ->assertSee('Aucune fiche enseignant n’est reliée à ce compte.');
+181    
+182            $this->post(route('admin.impersonation.stop'))->assertRedirect(route('admin.dashboard'));
+183            $this->assertAuthenticatedAs($admin);
+184        });
+185    
+186    test('a professor dashboard shows the teacher assigned courses and evaluations', function () {
+187        Schema::create('professeurs', function (Blueprint $table) {
+
+[showing lines 166-187 of 484; read again with offset=188 for more]

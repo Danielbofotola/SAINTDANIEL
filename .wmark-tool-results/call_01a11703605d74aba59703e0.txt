@@ -1,0 +1,3 @@
+Updated app/Http/Controllers/MessagerieController.php: replaced 1 lines with 1 lines (fuzzy match: indent-shift)
+Auto-corrected edit landed at lines 102-102:
+102                'piece_jointe.mimes' => 'Format de pièce jointe non autorisé (images, PDF, documents Office, audio, zip).',

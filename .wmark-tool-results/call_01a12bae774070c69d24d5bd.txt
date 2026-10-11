@@ -1,0 +1,11 @@
+420        $otherId = seedProfesseur(['matricule' => 'PROF-2026-0002', 'email' => 'autre.prof@example.test']);
+421        $admin = User::factory()->create(['role' => 'admin']);
+422    
+423        $this->actingAs($admin)
+424            ->put(route('admin.professeurs.update', $otherId), [
+425                'nom' => 'Kabila', 'postnom' => 'Mwamba', 'prenom' => 'Aline',
+426                'sexe' => 'F', 'specialite' => 'Maths', 'telephone' => '0990',
+427                'email' => 'aline.kabila@example.test', 'statut' => 'actif',
+428            ])
+429            ->assertSessionHasErrors('email');
+430    });

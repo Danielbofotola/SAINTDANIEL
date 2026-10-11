@@ -1,0 +1,14 @@
+321                                    <span class="fw-bold">Reste à percevoir :</span> {{ $money($reste) }}
+322                                </div>
+323                                 <div class="mt-2">
+324                                     <a href="{{ route('comptable.paiements.index') }}" class="btn btn-success fw-bold w-100"><i class="bi bi-cash-coin me-1"></i> Encaisser un paiement</a>
+325                                 </div>
+326                                  <div class="mt-1">
+327                                      <a href="{{ route('comptable.recouvrement.index') }}" class="btn btn-outline-primary bg-white fw-bold w-100"><i class="bi bi-graph-up-arrow me-1"></i> Recouvrement &amp; évolution</a>
+328                                  </div>
+329                            </div>
+330                        </div>
+331    
+332                        <!-- Synthèse -->
+
+[showing lines 321-332 of 505; read again with offset=333 for more]

@@ -1,0 +1,14 @@
+Applied patch: 1 file changed (1 updated)
+Updated app/Http/Controllers/EleveController.php (2 hunks applied)
+Landed at lines 7-7 (the file's new text; no re-read needed):
+7      use App\Support\SituationEleve;
+Landed at lines 149-157 (the file's new text; no re-read needed):
+149            // Parcours complet (années passées comprises) + état financier : même
+150            // logique que le dossier du préfet des études (App\Support\SituationEleve).
+151            $parcours = SituationEleve::parcours($eleve);
+152    
+153            return view('admin.eleves.show', compact('eleve', 'inscription') + [
+154                'parcours' => $parcours,
+155                'detteTotale' => SituationEleve::detteTotale($parcours),
+156                'paiements' => $inscription ? SituationEleve::paiements($inscription) : collect(),
+157            ]);

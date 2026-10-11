@@ -1,0 +1,22 @@
+Applied patch: 1 file changed (1 updated)
+Updated app/Http/Controllers/ArchiveAnneeController.php (2 hunks applied)
+Landed at lines 140-152 (the file's new text; no re-read needed):
+140            // Salaires versés aux professeurs et au personnel : ils pèsent sur le
+141            // solde de l'année et sont donc figés eux aussi.
+142            $annee = AnneeScolaire::findOrFail($anneeId);
+143            $paiesDeLAnnee = Paie::query()->where('statut', 'actif');
+144            if ($annee->date_debut && $annee->date_fin) {
+145                $paiesDeLAnnee->whereBetween('periode', [
+146                    $annee->date_debut->format('Y-m'),
+147                    $annee->date_fin->format('Y-m'),
+148                ]);
+149            }
+150            $salaires = (float) $paiesDeLAnnee->sum('montant_net');
+151            $nombrePaies = (clone $paiesDeLAnnee)->count();
+152    
+Landed at lines 170-170 (the file's new text; no re-read needed):
+170            DB::transaction(function () use ($anneeId, $data, $recettes, $depenses, $salaires, $nombrePaies, $totalEleves, $attendu, $garcons, $filles, $bulletins, $notes) {
+Landed at lines 176-178 (the file's new text; no re-read needed):
+176                    'total_salaires' => $salaires,
+177                    'nombre_paies' => $nombrePaies,
+178                    'solde_final' => $recettes - $depenses - $salaires,

@@ -1,0 +1,22 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/AnneeScolaireTest.php (2 hunks applied)
+Landed at lines 9-9 (the file's new text; no re-read needed):
+9          Schema::dropIfExists('inscriptions');
+Landed at lines 126-189 (the file's new text; no re-read needed):
+126    
+127    test('the current school year is exposed through the enCours helper', function () {
+128        AnneeScolaire::create(['libelle' => '2024-2025', 'date_debut' => '2024-09-01', 'date_fin' => '2025-07-15']);
+129        $current = AnneeScolaire::create(['libelle' => '2025-2026', 'date_debut' => '2025-09-01', 'date_fin' => '2026-07-15', 'is_encours' => true]);
+130    
+131        expect(AnneeScolaire::enCours()?->id)->toBe($current->id);
+132    });
+133    
+      … 48 lines omitted …
+182    
+183        $this->actingAs($admin)
+184            ->delete(route('admin.annees.destroy', $annee))
+185            ->assertRedirect()
+186            ->assertSessionHas('error');
+187    
+188        $this->assertDatabaseHas('annees_scolaires', ['id' => $annee->id]);
+189    });

@@ -1,0 +1,8 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/UtilisateursEnLigneTest.php (1 hunk applied)
+Landed at lines 95-99 (the file's new text; no re-read needed):
+95         // Le profil administrateur donne accès à la page.
+96         $this->actingAs($admin)
+97             ->get(route('admin.profile.show'))
+98             ->assertOk()
+99             ->assertSee(route('admin.profile.online'), false);

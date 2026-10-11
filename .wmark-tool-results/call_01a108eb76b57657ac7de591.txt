@@ -1,0 +1,6 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/ProfesseursPagesTest.php (1 hunk applied)
+Landed at lines 4-4 (the file's new text; no re-read needed):
+4      use Illuminate\Http\UploadedFile;
+Landed at lines 8-8 (the file's new text; no re-read needed):
+8      use Illuminate\Support\Facades\Storage;

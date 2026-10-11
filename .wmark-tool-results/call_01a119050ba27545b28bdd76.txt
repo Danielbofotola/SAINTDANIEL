@@ -1,0 +1,12 @@
+247        // Vie scolaire : présence, horaires, évaluations, dossiers élèves, tuteurs.
+248        Route::get('/prefecture/presences', [PrefectureDashboardController::class, 'presences'])->middleware('role:prefetture')->name('prefecture.presences');
+249        Route::get('/prefecture/horaires', [PrefectureDashboardController::class, 'horaires'])->middleware('role:prefetture')->name('prefecture.horaires');
+250        Route::get('/prefecture/evaluations', [PrefectureDashboardController::class, 'evaluations'])->middleware('role:prefetture')->name('prefecture.evaluations');
+251        Route::get('/prefecture/eleves', [PrefectureDashboardController::class, 'eleves'])->middleware('role:prefetture')->name('prefecture.eleves');
+252        Route::get('/prefecture/eleves/{eleve}', [PrefectureDashboardController::class, 'eleveFiche'])->middleware('role:prefetture')->name('prefecture.eleves.fiche');
+253        Route::get('/prefecture/tuteurs', [PrefectureDashboardController::class, 'tuteurs'])->middleware('role:prefetture')->name('prefecture.tuteurs');
+254        Route::get('/titulaire/tableau-de-bord', [TitulaireDashboardController::class, 'index'])->middleware('role:titulaire')->name('titulaire.dashboard');
+255        Route::get('/professeur/tableau-de-bord', [ProfesseurDashboardController::class, 'index'])->middleware('role:professeur')->name('professeur.dashboard');
+256        Route::get('/comptable/tableau-de-bord', [ComptableDashboardController::class, 'index'])->middleware('role:comptable')->name('comptable.dashboard');
+
+[showing lines 247-256 of 284; read again with offset=257 for more]

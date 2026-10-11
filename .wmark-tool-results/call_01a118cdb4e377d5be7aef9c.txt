@@ -1,0 +1,31 @@
+20         public function index(Request $request): View
+21         {
+22             $utilisateur = $request->user();
+23             $conversations = Messagerie::conversationsDe($utilisateur);
+24     
+25             $active = $request->query('conversation')
+26                 ? $conversations->firstWhere('id', (int) $request->query('conversation'))
+27                 : $conversations->first();
+28     
+29             if ($active) {
+30                 Messagerie::marquerLu($active, $utilisateur);
+31                 $active->setAttribute('non_lus', 0);
+32             }
+33     
+34             return view('messagerie.index', [
+35                 'user' => $utilisateur,
+36                 'conversations' => $conversations,
+37                 'active' => $active,
+38                 'messages' => $active ? $active->messages()->with('auteur')->get() : collect(),
+39                 'destinataires' => User::query()
+40                     ->where('statut', 'actif')
+41                     ->where('id', '!=', $utilisateur->id)
+42                     ->orderBy('nom')
+43                     ->orderBy('prenom')
+44                     ->get(),
+45                 'totalUtilisateurs' => User::where('statut', 'actif')->count(),
+46                 'nonLus' => (int) $conversations->sum('non_lus'),
+47             ]);
+48         }
+
+[showing lines 20-49 of 235; read again with offset=50 for more]

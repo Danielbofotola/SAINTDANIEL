@@ -1,0 +1,16 @@
+348                </li>
+349                <li class="menu-section">Finances</li>
+350                <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-money"></i><span class="app-menu__label">Paiements et frais</span><i class="treeview-indicator fa fa-angle-right"></i></a>
+351                    <ul class="treeview-menu">
+352                        <li><a class="treeview-item" href="#"><i class="icon fa fa-circle-o"></i> Types de frais</a></li>
+353                        <li><a class="treeview-item" href="#"><i class="icon fa fa-circle-o"></i> Paiements</a></li>
+354                    </ul>
+355                </li>
+356                <li class="menu-section">Accès</li>
+357                <li><a class="app-menu__item" href="{{ route('admin.registration.accounts') }}"><i class="app-menu__icon fa fa-user-plus"></i><span class="app-menu__label">Demandes de comptes</span></a></li>
+358            </ul>
+359        </aside>
+360    
+361        <!-- CONTENT -->
+
+[showing lines 348-361 of 720; read again with offset=362 for more]

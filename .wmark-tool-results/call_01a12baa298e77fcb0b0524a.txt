@@ -1,0 +1,27 @@
+104                </section>
+105    
+106                <section class="settings-panel">
+107                    <h2 class="panel-title"><i class="fa fa-toggle-on"></i> Options de l’application</h2>
+108                    <p class="panel-hint">Activez ou désactivez les modules selon l’organisation de l’école. Une case décochée ferme le module à tous les rôles concernés.</p>
+109    
+110                    <div class="switch-row">
+111                        <input type="hidden" name="saisie_notes_active" value="0">
+112                        <input type="checkbox" id="saisie_notes_active" name="saisie_notes_active" value="1" @checked(old('saisie_notes_active', $settings->saisie_notes_active))>
+113                        <label for="saisie_notes_active">
+114                            <span class="switch-titre">Saisie des notes</span>
+115                            <p class="switch-texte">Autorise les professeurs et la préfecture à encoder les cotes. Décochée, la saisie est refusée jusqu’à réactivation.</p>
+116                        </label>
+117                    </div>
+118                    <div class="switch-row">
+119                        <input type="hidden" name="portail_parents_actif" value="0">
+120                        <input type="checkbox" id="portail_parents_actif" name="portail_parents_actif" value="1" @checked(old('portail_parents_actif', $settings->portail_parents_actif))>
+121                        <label for="portail_parents_actif">
+122                            <span class="switch-titre">Portail Parents</span>
+123                            <p class="switch-texte">Ouvre aux parents l’accès aux notes, présences et annonces de leurs enfants.</p>
+124                        </label>
+125                    </div>
+126                    <div class="switch-row">
+127                        <input type="hidden" name="deliberation_active" value="0">
+128                        <input type="checkbox" id="deliberation_active" name="deliberation_active" value="1" @checked(old('deliberation_active', $settings->deliberation_active))>
+
+[showing lines 104-128 of 231; read again with offset=129 for more]

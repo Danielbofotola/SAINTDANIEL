@@ -1,0 +1,10 @@
+240        Route::patch('/admin/salles/{salle}/statut', [SalleController::class, 'toggleStatus'])->middleware('role:admin')->name('admin.salles.toggle-status');
+241        Route::delete('/admin/salles/{salle}', [SalleController::class, 'destroy'])->middleware('role:admin')->name('admin.salles.destroy');
+242        Route::get('/prefecture/tableau-de-bord', [PrefectureDashboardController::class, 'index'])->middleware('role:prefetture')->name('prefecture.dashboard');
+243        Route::get('/titulaire/tableau-de-bord', [TitulaireDashboardController::class, 'index'])->middleware('role:titulaire')->name('titulaire.dashboard');
+244        Route::get('/professeur/tableau-de-bord', [ProfesseurDashboardController::class, 'index'])->middleware('role:professeur')->name('professeur.dashboard');
+245        Route::get('/comptable/tableau-de-bord', [ComptableDashboardController::class, 'index'])->middleware('role:comptable')->name('comptable.dashboard');
+246        // Espace Parent : page de communication dédiée, ouverte aux parents (et à
+247        // l'admin pour prévisualisation) quand le module est actif.
+
+[showing lines 240-247 of 273; read again with offset=248 for more]

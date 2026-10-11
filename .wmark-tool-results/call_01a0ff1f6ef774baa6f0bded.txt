@@ -1,0 +1,18 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\e8f943213216\20261003-011711-bash-call_01a0ff1f6ef774baa6f0bded.txt (519 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+[powershell — Windows side]
+app\Models\Inscription.php:8:{
+> app\Models\Inscription.php:9:    protected $fillable = ['eleve_id', 'classe_id', 'annee_scolaire_id', 'date_inscription', 'statut'];
+  app\Models\Inscription.php:10:
+  app\Models\DemandeInscription.php:12:        'nom', 'postnom', 'prenom', 'sexe', 'date_naissance', 'lieu_naissance',
+> app\Models\DemandeInscription.php:13:        'classe_id', 'annee_scolaire_id', 'nom_mere', 'telephone_mere', 'email_mere',
+  app\Models\DemandeInscription.php:14:        'adresse_mere', 'nom_pere', 'telephone_pere', 'email_pere', 'statut',
+  app\Models\DemandeInscription.php:30:
+> app\Models\DemandeInscription.php:31:    public function anneeScolaire()
+  app\Models\DemandeInscription.php:32:    {
+> app\Models\DemandeInscription.php:33:        return $this->belongsTo(AnneeScolaire::class);
+  app\Models\DemandeInscription.php:34:    }
+
+
+
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">2</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

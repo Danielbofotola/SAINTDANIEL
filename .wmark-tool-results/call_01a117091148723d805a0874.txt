@@ -1,0 +1,21 @@
+120        $prof = User::factory()->create(['role' => 'professeur', 'nom' => 'Mapika', 'prenom' => 'Joseph']);
+121    
+122        Messagerie::creer($prof, [$parent->id], 'Bienvenue', 'Bonjour, bienvenue sur le portail.');
+123    
+124        $this->actingAs($parent)
+125            ->get(route('parent.dashboard'))
+126            ->assertOk()
+127            ->assertSee('Espace Parent')
+128            ->assertSee('bienvenue sur le portail')
+129            ->assertSee('Mapika');
+130    });
+131    
+132    test('l’espace parent répond 404 quand le module est fermé', function () {
+133        reglerPortailParents(false);
+134    
+135        $parent = User::factory()->create(['role' => 'parent']);
+136    
+137        $this->actingAs($parent)->get(route('parent.dashboard'))->assertNotFound();
+138    });
+
+[showing lines 120-139 of 221; read again with offset=140 for more]

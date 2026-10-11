@@ -1,0 +1,18 @@
+Applied patch: 1 file changed (1 updated)
+Updated app/Models/Inscription.php (2 hunks applied)
+Landed at lines 5-5 (the file's new text; no re-read needed):
+5      use App\Models\Concerns\BelongsToAnneeScolaire;
+Landed at lines 10-11 (the file's new text; no re-read needed):
+10         use BelongsToAnneeScolaire;
+11     
+Landed at lines 28-37 (the file's new text; no re-read needed):
+28     
+29         public function bulletins()
+30         {
+31             return $this->hasMany(Bulletin::class);
+32         }
+33     
+34         public function paiements()
+35         {
+36             return $this->hasMany(Paiement::class);
+37         }

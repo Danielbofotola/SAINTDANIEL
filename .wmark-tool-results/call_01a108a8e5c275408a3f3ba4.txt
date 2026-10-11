@@ -1,0 +1,11 @@
+Applied patch: 1 file changed (1 updated)
+Updated resources/views/admin/bulletins/index.blade.php (2 hunks applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 55-55 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+  ⚠ hunk 2: context matched at lines 66-75 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 55-55:
+55                             <thead><tr><th>Place</th><th>Élève</th><th>Notes</th><th>Total</th><th>Max</th><th>Pourcentage</th><th>Mention</th><th>Bulletin</th><th>Document RDC</th></tr></thead>
+Auto-corrected hunk landed at lines 73-73:
+73                                         <td><a href="{{ route('admin.bulletins.document', $row['inscription']) }}" class="btn btn-sm btn-info" target="_blank" rel="noopener" title="Bulletin annuel (norme RDC)"><i class="fa fa-file-text-o"></i> Bulletin</a></td>
+Auto-corrected hunk landed at lines 76-76:
+76                                     <tr><td colspan="9" class="text-center text-muted">Aucun élève inscrit dans cette classe pour l'année en cours.</td></tr>

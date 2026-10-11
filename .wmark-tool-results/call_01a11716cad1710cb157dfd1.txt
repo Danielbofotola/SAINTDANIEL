@@ -1,0 +1,18 @@
+62         });
+63         Schema::create('conversation_user', function (Blueprint $table) {
+64             $table->id();
+65             $table->unsignedBigInteger('conversation_id');
+66             $table->unsignedBigInteger('user_id');
+67             $table->timestamp('dernier_lu_at')->nullable();
+68             $table->unsignedBigInteger('dernier_message_id')->nullable();
+69             $table->timestamps();
+70             $table->unique(['conversation_id', 'user_id']);
+71         });
+72         Schema::create('messages', function (Blueprint $table) {
+73             $table->id();
+74             $table->unsignedBigInteger('conversation_id');
+75             $table->unsignedBigInteger('auteur_id')->nullable();
+76             $table->text('corps');
+77             $table->string('piece_jointe')->nullable();
+
+[showing lines 62-77 of 236; read again with offset=78 for more]

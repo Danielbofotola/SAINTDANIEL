@@ -1,0 +1,71 @@
+232            </div>
+233        </aside>
+234    
+235        <section class="msg-thread">
+236            @if (! $active)
+237                <div class="msg-thread__empty">
+238                    <i class="fa-solid fa-comment-dots fa-3x mb-3"></i>
+239                    <p class="mb-0">Sélectionnez une discussion ou un correspondant.</p>
+240                </div>
+241            @else
+242                <div class="msg-thread__head">
+243                    <div class="d-flex align-items-center gap-2" style="min-width:0">
+244                        <a class="icon-btn d-inline-flex d-md-none" href="{{ $espaceUrl }}" title="Retour"><i class="fa-solid fa-arrow-left"></i></a>
+245                        @php($corrActif = $active->participants->firstWhere('id', '!=', $user->id))
+246                        <span class="msg-avatar msg-avatar--sm">
+247                            @if ($active->type !== 'directe' || ! $corrActif)
+248                                <i class="fa-solid fa-bullhorn"></i>
+249                            @elseif ($corrActif->photo)
+250                                <img class="msg-avatar msg-avatar--sm" src="{{ asset('storage/'.$corrActif->photo) }}" alt="">
+251                            @else
+252                                {{ $initiales($corrActif) }}
+253                            @endif
+254                        </span>
+255                        <div style="min-width:0">
+256                            <div class="titre text-truncate">{{ $nomConversation($active) }}</div>
+257                            <div class="sous text-truncate">{{ $active->libelleType() }} · {{ $active->sujet }}</div>
+258                        </div>
+259                    </div>
+260                    <div class="msg-thread__icones">
+261                        <i class="fa-solid fa-phone" title="Appel (bientôt)"></i>
+262                        <i class="fa-solid fa-video" title="Vidéo (bientôt)"></i>
+263                        <i class="fa-solid fa-gear" title="Options"></i>
+264                    </div>
+265                </div>
+266    
+267                <div class="msg-thread__body" id="messagesContainer" data-flux="{{ route('messagerie.messages', $active) }}">
+268                    @foreach ($messages as $message)
+269                        @include('messagerie._bulle', ['message' => $message, 'active' => $active])
+270                    @endforeach
+271                </div>
+272    
+273                <div class="reply-bar" id="replyBar" style="display:none">
+274                    <div style="min-width:0">
+275                        <div class="reply-bar__label"><i class="fa-solid fa-reply"></i> Réponse à</div>
+276                        <div class="reply-bar__extrait" id="replyExtrait"></div>
+277                    </div>
+278                    <button type="button" class="reply-bar__close" onclick="annulerReponse()"><i class="fa-solid fa-xmark"></i></button>
+279                </div>
+280    
+281                <div class="chat-input-wrap">
+282                    <div class="sticker-picker" id="stickerPicker">
+283                        <div class="d-flex justify-content-between mb-2" style="font-size:.78rem;color:var(--chat-muted)">
+284                            <span>Stickers & réactions</span>
+285                            <i class="fa-solid fa-xmark" style="cursor:pointer" onclick="toggleStickers()"></i>
+286                        </div>
+287                        <div class="sticker-grid">
+288                            @foreach (['📚','🎓','📝','✅','👍','👏','💯','⭐','🏫','❤️','😀','🙏'] as $sticker)
+289                                <span onclick="envoyerSticker('{{ $sticker }}')">{{ $sticker }}</span>
+290                            @endforeach
+291                        </div>
+292                    </div>
+293    
+294                    @if ($avecFichier)
+295                        <label class="icon-btn" for="fileAttachment" title="Joindre un fichier (5 Mo max)" style="cursor:pointer">
+296                            <i class="fa-solid fa-paperclip"></i>
+297                        </label>
+298                        <input type="file" id="fileAttachment" style="display:none"
+299                               accept="image/*,audio/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv,.zip">
+300                    @endif
+
+[showing lines 232-301 of 594; read again with offset=302 for more]

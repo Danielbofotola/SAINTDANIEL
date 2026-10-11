@@ -1,0 +1,19 @@
+[powershell — Windows side]
+@extends('site::layout')
+
+@section('titre', 'Demande dâ€™inscription scolaire')
+@section('description', 'Formulaire de demande dâ€™admission pour un nouvel Ã©lÃ¨ve Ã  ' . $systemSettings->nom_etablissement . '.')
+=== prof layout tail ===
+    <script src="{{ asset('boostrap/css/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('boostrap/css/js/main.js') }}"></script>
+    @stack('scripts')
+</body>
+</html>
+=== pref layout tail ===
+        });
+    });
+</script>
+</body>
+</html>
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

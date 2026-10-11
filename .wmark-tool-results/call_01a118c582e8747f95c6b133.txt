@@ -1,0 +1,62 @@
+36     test('admin can temporarily access an active user account and return to their own session', function () {
+37         $admin = User::factory()->create(['role' => 'admin']);
+38         $user = User::factory()->create(['role' => 'comptable']);
+39     
+40         $this->actingAs($admin)
+41             ->get(route('admin.profile.accounts'))
+42             ->assertOk()
+43             ->assertSee('Accéder au compte');
+44     
+45         $this->post(route('admin.profile.accounts.impersonate', $user))
+46             ->assertRedirect(route('comptable.dashboard'));
+47     
+48         $this->assertAuthenticatedAs($user);
+49         $this->assertSame($admin->id, session('impersonating_admin_id'));
+50         $this->get(route('comptable.dashboard'))->assertSee('Revenir à mon compte administrateur');
+51     
+52         $this->post(route('admin.impersonation.stop'))
+53             ->assertRedirect(route('admin.dashboard'));
+54     
+55         $this->assertAuthenticatedAs($admin);
+56         $this->assertNull(session('impersonating_admin_id'));
+57     });
+58     
+59     test('admin cannot impersonate another admin or an inactive account', function () {
+60         $admin = User::factory()->create(['role' => 'admin']);
+61         $otherAdmin = User::factory()->create(['role' => 'admin']);
+62         $inactiveUser = User::factory()->create(['role' => 'comptable', 'statut' => 'inactif']);
+63     
+64         $this->actingAs($admin)
+65             ->post(route('admin.profile.accounts.impersonate', $otherAdmin))
+66             ->assertSessionHas('error');
+67     
+68         $this->post(route('admin.profile.accounts.impersonate', $inactiveUser))
+69             ->assertSessionHas('error');
+70     
+71         $this->assertAuthenticatedAs($admin);
+72     });
+73     
+74     test('an impersonated session cannot access admin routes if the user role changes', function () {
+75         $admin = User::factory()->create(['role' => 'admin']);
+76         $user = User::factory()->create(['role' => 'comptable']);
+77     
+78         $this->actingAs($admin)
+79             ->post(route('admin.profile.accounts.impersonate', $user))
+80             ->assertRedirect(route('comptable.dashboard'));
+81     
+82         $user->update(['role' => 'admin']);
+83     
+84         $this->get(route('admin.dashboard'))->assertForbidden();
+85         $this->post(route('admin.impersonation.stop'))->assertRedirect(route('admin.dashboard'));
+86         $this->assertAuthenticatedAs($admin);
+87     });
+88     
+89     test('admin can edit user profile without changing password or pin', function () {
+90         $admin = User::factory()->create(['role' => 'admin']);
+91         $user = User::factory()->create(['role' => 'comptable']);
+92         $password = $user->password;
+93         $pinCode = $user->pin_code;
+94     
+95         $this->actingAs($admin)
+
+[showing lines 36-95 of 480; read again with offset=96 for more]

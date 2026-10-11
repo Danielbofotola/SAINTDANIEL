@@ -1,0 +1,6 @@
+268        // l'admin pour prévisualisation) quand le module est actif.
+269        Route::get('/espace-parent', [PortailParentController::class, 'index'])->middleware('role:parent,admin')->name('parent.dashboard');
+270        // Espace enseignant : une page par fonction.
+271        Route::get('/professeur/planning', [ProfesseurEspaceController::class, 'planning'])->middleware('role:professeur')->name('professeur.planning');
+
+[showing lines 268-271 of 294; read again with offset=272 for more]

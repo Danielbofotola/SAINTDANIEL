@@ -1,0 +1,89 @@
+1      <?php
+2      
+3      namespace App\Support;
+4      
+5      use App\Models\AnneeScolaire;
+6      use App\Models\FraisScolaire;
+7      use App\Models\Inscription;
+8      use App\Models\Paiement;
+9      use App\Models\ParametreSysteme;
+10     use App\Support\Monnaie;
+11     use Illuminate\Support\Facades\Schema;
+12     use RuntimeException;
+13     
+14     /**
+15      * Encaissement d'un paiement : vérifie la cohérence tarif/classe de l'élève,
+16      * génère un numéro de reçu unique puis enregistre le paiement.
+17      */
+18     class Caisse
+19     {
+20         /**
+21          * @param  array{inscription_id: int|string, frais_scolaire_id: int|string, montant_paye: float|string, mode_paiement: string, periode_id?: int|string|null, reference_transaction?: string|null, date_paiement?: string|null}  $data
+22          *
+23          * @throws RuntimeException lorsque le tarif ne correspond pas à la classe de l'élève.
+24          */
+25         public static function enregistrer(AnneeScolaire $annee, array $data): Paiement
+26         {
+27             $inscription = Inscription::findOrFail($data['inscription_id']);
+28             $frais = FraisScolaire::findOrFail($data['frais_scolaire_id']);
+29     
+30             if ((int) $frais->classe_id !== (int) $inscription->classe_id) {
+31                 throw new RuntimeException('tarif_classe');
+32             }
+33     
+34             // Devise du tarif = devise de référence des totaux ; devise encaissée =
+35             // celle remise par le payeur. Le montant crédité (montant_paye) est
+36             // toujours ramené dans la devise du tarif au taux appliqué.
+37             $deviseTarif = Monnaie::normaliser($frais->devise ?? Monnaie::USD);
+38             $deviseRecue = Monnaie::normaliser($data['devise'] ?? $deviseTarif);
+39             $taux = (float) ($data['taux'] ?? 0) ?: ParametreSysteme::tauxChange();
+40             $montantRecu = round((float) $data['montant_paye'], 2);
+41             $montantPaye = Monnaie::convertir($montantRecu, $deviseRecue, $deviseTarif, $taux);
+42     
+43             $prefix = 'REC-'.$annee->libelle.'-';
+44             $numero = Paiement::where('num_recu', 'like', $prefix.'%')->count() + 1;
+45             do {
+46                 $numRecu = $prefix.str_pad((string) $numero++, 4, '0', STR_PAD_LEFT);
+47             } while (Paiement::where('num_recu', $numRecu)->exists());
+48     
+49             $paiement = Paiement::create(self::colonnesPaiement([
+50                 'num_recu' => $numRecu,
+51                 'inscription_id' => $data['inscription_id'],
+52                 'frais_scolaire_id' => $data['frais_scolaire_id'],
+53                 'periode_id' => $data['periode_id'] ?? null,
+54                 'montant_paye' => $montantPaye,
+55                 'devise' => $deviseRecue,
+56                 'taux' => $taux,
+57                 'montant_recu' => $montantRecu,
+58                 'mode_paiement' => $data['mode_paiement'],
+59                 'reference_transaction' => $data['reference_transaction'] ?? null,
+60                 'date_paiement' => $data['date_paiement'] ?? now(),
+61                 'statut' => 'actif',
+62             ]));
+63     
+64             // Le règlement du frais d'inscription valide automatiquement l'inscription.
+65             if ($frais->typeFrais?->estFraisInscription()) {
+66                 $inscription->valider();
+67             }
+68     
+69             return $paiement;
+70         }
+71     
+72         /**
+73          * Écarte les colonnes devise/taux/montant_recu quand elles n'existent pas
+74          * encore (base non migrée ou schéma de test partiel).
+75          *
+76          * @param  array<string, mixed>  $attributs
+77          * @return array<string, mixed>
+78          */
+79         private static function colonnesPaiement(array $attributs): array
+80         {
+81             foreach (['devise', 'taux', 'montant_recu'] as $colonne) {
+82                 if (array_key_exists($colonne, $attributs) && ! Schema::hasColumn('paiements', $colonne)) {
+83                     unset($attributs[$colonne]);
+84                 }
+85             }
+86     
+87             return $attributs;
+88         }
+89     }

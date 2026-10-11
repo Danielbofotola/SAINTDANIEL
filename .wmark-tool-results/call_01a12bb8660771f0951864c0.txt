@@ -1,0 +1,12 @@
+173        $this->actingAs($comptable)
+174            ->get(route('comptable.paiements.index'))
+175            ->assertOk()
+176            ->assertSee('Encaisser un paiement')
+177            ->assertSee('eleveSearch')
+178            ->assertSee('Mwamba')
+179            ->assertSee('classesParFrais', false)
+180            ->assertSee('classesParInscription', false);
+181    
+182        $this->actingAs($comptable)
+
+[showing lines 173-182 of 378; read again with offset=183 for more]

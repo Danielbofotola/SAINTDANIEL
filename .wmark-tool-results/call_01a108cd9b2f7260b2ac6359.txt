@@ -1,0 +1,113 @@
+1      <?php
+2      
+3      namespace App\Http\Controllers;
+4      
+5      use App\Models\AnneeScolaire;
+6      use App\Models\Classe;
+7      use App\Models\FraisScolaire;
+8      use App\Models\TypeFrais;
+9      use Illuminate\Http\RedirectResponse;
+10     use Illuminate\Http\Request;
+11     use Illuminate\Validation\Rule;
+12     use Illuminate\View\View;
+13     
+14     class FraisController extends Controller
+15     {
+16         public function index(): View
+17         {
+18             return view('admin.frais.index', [
+19                 'annee' => AnneeScolaire::enCours(),
+20                 'types' => TypeFrais::query()
+21                     ->withCount('fraisScolaires')
+22                     ->orderBy('nom')
+23                     ->get(),
+24                 'tarifs' => FraisScolaire::query()
+25                     ->anneeEnCours()
+26                     ->with(['typeFrais', 'classe'])
+27                     ->orderBy('type_frais_id')
+28                     ->orderBy('classe_id')
+29                     ->get(),
+30                 'classes' => Classe::where('statut', 'actif')->orderBy('nom')->get(),
+31                 'typesActifs' => TypeFrais::where('statut', 'actif')->orderBy('nom')->get(),
+32             ]);
+33         }
+34     
+35         public function storeType(Request $request): RedirectResponse
+36         {
+37             $data = $request->validate([
+38                 'nom' => ['required', 'string', 'max:100', 'unique:types_frais,nom'],
+39                 'description' => ['nullable', 'string', 'max:1000'],
+40             ], [
+41                 'nom.required' => 'Le nom du type de frais est obligatoire.',
+42                 'nom.unique' => 'Ce type de frais existe déjà.',
+43             ]);
+44     
+45             TypeFrais::create($data + ['statut' => 'actif']);
+46     
+47             return redirect()->route('admin.frais.index')->with('success', 'Le type de frais a été créé.');
+48         }
+49     
+50         public function toggleType(TypeFrais $typeFrais): RedirectResponse
+51         {
+52             $typeFrais->update(['statut' => $typeFrais->statut === 'actif' ? 'inactif' : 'actif']);
+53     
+54             return back()->with('success', 'Le statut du type de frais a été mis à jour.');
+55         }
+56     
+57         public function destroyType(TypeFrais $typeFrais): RedirectResponse
+58         {
+59             if ($typeFrais->fraisScolaires()->exists()) {
+60                 return back()->with('error', 'Ce type de frais est utilisé par des tarifs : supprimez-les d’abord.');
+61             }
+62     
+63             $typeFrais->delete();
+64     
+65             return redirect()->route('admin.frais.index')->with('success', 'Le type de frais a été supprimé.');
+66         }
+67     
+68         public function storeTarif(Request $request): RedirectResponse
+69         {
+70             $annee = AnneeScolaire::enCours();
+71     
+72             if (! $annee) {
+73                 return back()->withInput()->with('error', 'Aucune année scolaire en cours : impossible d’enregistrer un tarif.');
+74             }
+75     
+76             $data = $request->validate([
+77                 'type_frais_id' => ['required', Rule::exists('types_frais', 'id')->where('statut', 'actif')],
+78                 'classe_id' => ['required', Rule::exists('classes', 'id')->where('statut', 'actif')],
+79                 'montant_exige' => ['required', 'numeric', 'min:0'],
+80                 'date_echeance' => ['required', 'date'],
+81             ], [
+82                 'type_frais_id.required' => 'Sélectionnez un type de frais.',
+83                 'classe_id.required' => 'Sélectionnez une classe.',
+84                 'montant_exige.required' => 'Le montant exigé est obligatoire.',
+85                 'date_echeance.required' => 'La date d’échéance est obligatoire.',
+86             ]);
+87     
+88             $exists = FraisScolaire::query()
+89                 ->where('type_frais_id', $data['type_frais_id'])
+90                 ->where('classe_id', $data['classe_id'])
+91                 ->where('annee_scolaire_id', $annee->id)
+92                 ->exists();
+93     
+94             if ($exists) {
+95                 return back()->withInput()->with('error', 'Un tarif existe déjà pour ce type de frais et cette classe cette année.');
+96             }
+97     
+98             FraisScolaire::create($data + ['annee_scolaire_id' => $annee->id, 'statut' => 'actif']);
+99     
+100            return redirect()->route('admin.frais.index')->with('success', 'Le tarif a été enregistré.');
+101        }
+102    
+103        public function destroyTarif(FraisScolaire $fraisScolaire): RedirectResponse
+104        {
+105            if ($fraisScolaire->paiements()->exists()) {
+106                return back()->with('error', 'Ce tarif a déjà des paiements enregistrés : supprimez-les d’abord.');
+107            }
+108    
+109            $fraisScolaire->delete();
+110    
+111            return redirect()->route('admin.frais.index')->with('success', 'Le tarif a été supprimé.');
+112        }
+113    }

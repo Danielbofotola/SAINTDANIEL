@@ -1,0 +1,7 @@
+Applied patch: 2 files changed (2 updated)
+Updated resources/views/admin/sections/index.blade.php (1 hunk applied)
+Updated resources/views/admin/options/index.blade.php (1 hunk applied)
+Landed at lines 40-40 (the file's new text; no re-read needed):
+40                             <input type="hidden" name="retour" value="gestion">
+Landed at lines 46-46 (the file's new text; no re-read needed):
+46                             <input type="hidden" name="retour" value="gestion">

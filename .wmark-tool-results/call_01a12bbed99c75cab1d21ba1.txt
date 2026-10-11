@@ -1,0 +1,31 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\aba9102c187c\20261011-171451-bash-call_01a12bbed99c75cab1d21ba1.txt (1,909 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Structured view (text):
+[powershell — Windows side]
+AdminUserManagementTest.php:241 Schema::create('salles', function (Blueprint $table) {
+AdminUserManagementTest.php:319 foreach (['eleves', 'classes', 'professeurs', 'salles'] as $tableName) {
+AdminUserManagementTest.php:335 Schema::create('salles', function (Blueprint $table) {
+AdminUserManagementTest.php:402 foreach (['classes', 'salles', 'cycles'] as $tableName) {
+AdminUserManagementTest.php:410 Schema::create('salles', function (Blueprint $table) {
+AdminUserManagementTest.php:465 'occupationSalles' => collect(),
+AnneeEnCoursScopingTest.php:10 foreach (['bulletins', 'paiements', 'frais_scolaires', 'type_frais', 'inscriptions', 'eleves', 'classes', 'cycles', 'sections', 'options', 'salles', 'annees_scolaires', 'users'] as $table) {
+AnneeEnCoursScopingTest.php:88 Schema::create('salles', function (Blueprint $table) {
+BulletinDocumentTest.php:15 'professeurs', 'inscriptions', 'eleves', 'tuteurs', 'classes', 'cycles', 'salles',
+BulletinDocumentTest.php:78 Schema::create('salles', function (Blueprint $table) {
+ComptabiliteTest.php:14 'eleves', 'tuteurs', 'classes', 'salles', 'cycles', 'professeurs', 'annees_scolaires', 'users',
+ComptableCaisseTest.php:12 'classes', 'cycles', 'salles', 'annees_scolaires', 'users', 'parametres_systeme',
+ComptableCaisseTest.php:53 Schema::create('salles', function (Blueprint $table) {
+CyclesPagesTest.php:11 'inscriptions', 'eleves', 'tuteurs', 'classes', 'cycles', 'salles',
+CyclesPagesTest.php:49 Schema::create('salles',
+… 1,149 chars elided …
+ions', 'eleves', 'tuteurs', 'classes', 'salles', 'cycles', 'annees_scolaires', 'users',
+InscriptionValidationTest.php:50 Schema::create('salles', function (Blueprint $table) {
+ModuleSwitchTest.php:12 'inscriptions', 'eleves', 'tuteurs', 'classes', 'cycles', 'salles',
+ModuleSwitchTest.php:76 Schema::create('salles', function (Blueprint $table) {
+NotesClasseTest.php:12 'inscriptions', 'eleves', 'tuteurs', 'classes', 'cycles', 'salles',
+NotesClasseTest.php:57 Schema::create('salles', function (Blueprint $table) {
+PrefectureDashboardTest.php:9 foreach (['notifications', 'documents_professeurs', 'inscriptions', 'eleves', 'classes', 'cycles', 'sections', 'options', 'salles', 'professeurs', 'annees_scolaires', 'users'] as $table) {
+PrefectureDashboardTest.php:45 Schema::create('salles', function 
+… 1,950 chars elided …
+TEB',
+419: ->assertSee('BULLETIN ANNUEL — CTEB')
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

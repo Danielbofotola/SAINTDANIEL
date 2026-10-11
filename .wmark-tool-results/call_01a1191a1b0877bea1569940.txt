@@ -1,0 +1,35 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\b493c9bc81dc\20261008-022127-bash-call_01a1191a1b0877bea1569940.txt (964 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Structured view (text):
+[powershell — Windows side]
+ParentEnfantsTest.php:157: test('l’administrateur rattache un ou plusieurs enfants à un compte parent', function () {
+ParentEnfantsTest.php:181: test('les enfants ne restent pas rattachés à un compte qui n’est pas parent', function () {
+ParentEnfantsTest.php:202: test('le portail du parent affiche ses enfants', function () {
+ParentEnfantsTest.php:215: ->get(route('parent.dashboard'))
+ParentEnfantsTest.php:222: test('un parent sans enfant rattaché voit un message d’information', function () {
+ParentEnfantsTest.php:233: ->get(route('parent.dashboard'))
+PortailParentTest.php:163: test('un parent accède à son espace quand le module est ouvert', function () {
+PortailParentTest.php:173: ->get(route('parent.dashboard'))
+PortailParentTest.php:197: test('l’espace parent répond 404 quand le module est fermé', function () {
+PortailParentTest.php:202: $this->actingAs($parent)->get(route('parent.dashboard'))->assertNotFound();
+PortailParentTest.php:205: test('l’espace parent est interdit aux autres rôles', function () {
+PortailParentTest.php:211: $this->actingAs($comptable)->get(route('parent.dashboard'))->assertForbidden();
+PortailParentTest.php:212: $this->actingAs($professeur)->get(route('parent.dashboard'))->assertForbidden();
+PortailParentTest.php:215: test('un administrateur connecté peut ouvrir le portail parent', function () {
+PortailParentTest.php:221: ->get(route('parent.dashboard'))
+PortailParentTest.php:226: test('un admin qui consulte un compte par
+… 0 chars elided …
+ent accède au portail', function () {
+PortailParentTest.php:235: ->get(route('parent.dashboard'))
+PortailParentTest.php:240: test('en consultation, une route strictement réservée à l’admin reste interdite', function () {
+PortailParentTest.php:250: test('le portail d’un parent ne propose que le préfet comme correspondant', function () {
+PortailParentTest.php:258: $reponse = $this->actingAs($parent)->get(route('parent.dashboard'))->assertOk();
+PortailParentTest.php:266: test('le portail propose au parent de démarrer la discussion en un clic', function () {
+PortailParentTest.php:274: ->get(route('parent.dashboard'))
+PortailParentTest.php:284: ->get(route('parent.dashboard'))
+PortailParentTest.php:291: test('un parent écrit au préfet depuis le portail', function () {
+PortailParentTest.php:310:
+… 731 chars elided …
+t.php:387: test('les stickers (emojis seuls) reçoivent un habillage dédié', function () {
+PortailParentTest.php:393: $message = $conversation->messages()->latest('id')->first();
+PortailParentTest.php:405: function fichierAudioDeTest(string $nom = 'vocal.wav'): \Illuminate\Http\UploadedFile
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

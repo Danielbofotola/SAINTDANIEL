@@ -1,0 +1,29 @@
+1      <?php
+2      
+3      use Illuminate\Database\Migrations\Migration;
+4      use Illuminate\Database\Schema\Blueprint;
+5      use Illuminate\Support\Facades\Schema;
+6      
+7      return new class extends Migration
+8      {
+9          public function up(): void
+10         {
+11             Schema::create('eleves', function (Blueprint $table) {
+12                 $table->id();
+13                 $table->string('nom', 50);
+14                 $table->string('postnom', 50)->nullable();
+15                 $table->string('prenom', 50);
+16                 $table->enum('sexe', ['M', 'F']);
+17                 $table->string('classe', 100);
+18                 $table->string('cycle', 100);
+19                 $table->string('photo')->nullable();
+20                 $table->enum('statut', ['actif', 'inactif'])->default('actif');
+21                 $table->timestamps();
+22             });
+23         }
+24     
+25         public function down(): void
+26         {
+27             Schema::dropIfExists('eleves');
+28         }
+29     };

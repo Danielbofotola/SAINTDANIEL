@@ -1,0 +1,70 @@
+1      <!DOCTYPE html>
+2      <html lang="fr">
+3      <head>
+4          <meta charset="utf-8">
+5          <meta name="viewport" content="width=device-width, initial-scale=1">
+6          <title>Liste des salles</title>
+7          <link rel="stylesheet" href="{{ asset('boostrap/css/css/main.css') }}">
+8          <link rel="stylesheet" href="{{ asset('assets/css/font-awesome.min.css') }}">
+9          <link rel="stylesheet" href="{{ asset('boostrap/css/css/main.css') }}">
+10         <link rel="stylesheet" href="{{ asset('boostrap/css/font-awesome/css/fa-regular.min.css') }}">
+11         <link rel="stylesheet" href="{{ asset('boostrap/css/font-awesome/css/fontawesome.css') }}">
+12         <link rel="stylesheet" href="{{ asset('boostrap/css/font-awesome/css/fa-solid.css') }}">
+13         <link rel="stylesheet" href="{{ asset('assets/css/font-awesome.min.css') }}">
+14         <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap4.min.css">
+15         <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+16     </head>
+17     <body class="app">
+18         <main class="app-content" style="margin-left:0">
+19             <div class="app-title">
+20                 <div>
+21                     <h1><i class="fa fa-university"></i> Salles disponibles</h1>
+22                     <p>Consultez et gérez les salles de l'établissement.</p>
+23                 </div>
+24                 <div>
+25                     <a href="{{ route('admin.dashboard') }}" class="btn btn-secondary">Retour</a>
+26                     <a href="{{ route('admin.salles.create') }}" class="btn btn-primary"><i class="fa fa-plus"></i> Nouvelle salle</a>
+27                 </div>
+28             </div>
+29     
+30             <div class="tile">
+31                 @if (session('success'))
+32                     <div class="alert alert-success">{{ session('success') }}</div>
+33                 @endif
+34     
+35                 <div class="table-responsive">
+36                     <table class="table table-hover table-bordered">
+37                         <thead>
+38                             <tr><th>#</th><th>Nom</th><th>Capacité</th><th>Statut</th><th class="text-center">Actions</th></tr>
+39                         </thead>
+40                         <tbody>
+41                             @forelse ($salles as $salle)
+42                                 <tr>
+43                                     <td>{{ $loop->iteration }}</td>
+44                                     <td>{{ $salle->nom }}</td>
+45                                     <td>{{ $salle->capacite ?? 'Non définie' }}</td>
+46                                     <td><span class="badge badge-{{ $salle->statut === 'actif' ? 'success' : 'secondary' }}">{{ $salle->statut === 'actif' ? 'Active' : 'Inactive' }}</span></td>
+47                                     <td class="text-center">
+48                                         <a href="{{ route('admin.salles.edit', $salle) }}" class="btn btn-sm btn-info" title="Modifier"><i class="fa fa-pencil"></i></a>
+49                                         <form class="d-inline" method="POST" action="{{ route('admin.salles.toggle-status', $salle) }}">
+50                                             @csrf
+51                                             @method('PATCH')
+52                                             <button class="btn btn-sm btn-{{ $salle->statut === 'actif' ? 'warning' : 'success' }}" type="submit" title="{{ $salle->statut === 'actif' ? 'Désactiver' : 'Activer' }}"><i class="fa fa-power-off"></i></button>
+53                                         </form>
+54                                         <form class="d-inline" method="POST" action="{{ route('admin.salles.destroy', $salle) }}" onsubmit="return confirm('Voulez-vous vraiment supprimer cette salle ?');">
+55                                             @csrf
+56                                             @method('DELETE')
+57                                             <button class="btn btn-sm btn-danger" type="submit" title="Supprimer"><i class="fa fa-trash"></i></button>
+58                                         </form>
+59                                     </td>
+60                                 </tr>
+61                             @empty
+62                                 <tr><td class="text-center" colspan="5">Aucune salle enregistrée.</td></tr>
+63                             @endforelse
+64                         </tbody>
+65                     </table>
+66                 </div>
+67             </div>
+68         </main>
+69     </body>
+70     </html>

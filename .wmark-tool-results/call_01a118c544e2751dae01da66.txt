@@ -1,0 +1,45 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\b493c9bc81dc\20261008-004848-bash-call_01a118c544e2751dae01da66.txt (774 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+[powershell — Windows side]
+206:         return redirect()
+207:             ->route('admin.profile.accounts')
+208:             ->with('success', "Les identifiants de {$user->username} ont Ã©tÃ© rÃ©initialisÃ©s.");
+209:     }
+210: 
+211:     public function impersonate(Request $request, User $user): RedirectResponse
+212:     {
+213:         if ($request->session()->has('impersonating_admin_id')) {
+214:             return back()->with('error', 'Une session de consultation est dÃ©jÃ  en cours.');
+215
+
+... 856 chars truncated ...
+
+)
+237:             ->whereKey($request->session()->get('impersonating_admin_id'))
+238:             ->where('role', 'admin')
+239:             ->where('statut', 'actif')
+240:             ->first();
+241: 
+242:         if (! $admin) {
+243:             auth()->logout();
+244:             $request->session()->invalidate();
+245:             $request->session()->regenerateToken();
+246: 
+247:             return redirect()->route('login')->with('error', 'La session administrateur dâ€™origine nâ€™est plus disponible.');
+248:         }
+249: 
+250:         Log::notice('Admin stopped account impersonation', [
+251:             'admin_id' => $admin->id,
+252:             'user_id' => $request->user()->id,
+253:         ]);
+254: 
+255:         auth()->login($admin);
+256:         $request->session()->forget('impersonating_admin_id');
+257:         $request->session()->regenerate();
+258: 
+259:         return redirect()->route('admin.dashboard')->with('success', 'Vous Ãªtes de retour sur votre compte administrateur.');
+260:     }
+261: 
+262:     public function show(Request $request): View
+263:     {
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

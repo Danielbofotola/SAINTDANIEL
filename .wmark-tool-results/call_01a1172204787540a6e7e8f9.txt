@@ -1,0 +1,20 @@
+312            ->toContain('msg-avatar')
+313            // Liste des correspondants actifs + action « écrire ».
+314            ->toContain('id="contactsContainer"')
+315            ->toContain('onclick="ouvrirDiscussion(')
+316            // La page porte ses propres liens : pas d'injection du bouton flottant.
+317            ->not->toContain('<a class="messagerie-flottante');
+318    
+319        // Barre de saisie : le champ peut rétrécir (sinon les boutons, dont
+320        // l'envoi, sont poussés hors de l'écran) et le bouton d'envoi — cercle
+321        // bleu plein — est bien rendu après le champ, dans la même barre.
+322        expect($html)
+323            ->toContain('.chat-input { flex: 1 1 auto; min-width: 0;')
+324            ->toContain('.icon-btn--send { width: 40px; height: 40px; background: var(--chat-blue); color: #fff; font-size: 1.2rem; }');
+325    
+326        expect(strpos($html, 'chat-input-wrap'))->toBeLessThan(strpos($html, 'id="messageInput"'))
+327            ->and(strpos($html, 'id="messageInput"'))->toBeLessThan(strpos($html, 'id="sendBtn"'))
+328            ->and(strpos($html, 'id="sendBtn"'))->toBeLessThan(strpos($html, '</section>'));
+329    });
+
+[showing lines 312-329 of 430; read again with offset=330 for more]

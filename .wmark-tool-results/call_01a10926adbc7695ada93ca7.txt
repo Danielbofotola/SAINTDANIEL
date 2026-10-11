@@ -1,0 +1,77 @@
+160                            <i class="icon-settings"></i><span> Paramètres Établissement</span>
+161                        </a>
+162                    </li>
+163                      <li class="treeview">
+164                         <a class="waves-effect waves-dark" href="{{ route('admin.professeurs.index') }}">
+165                               <i class="icon-settings"></i><span> Professeur & attachement</span>
+166                         </a>
+167                      </li>
+168                      <li class="treeview">
+169                         <a class="waves-effect waves-dark" href="{{ route('admin.emplois-du-temps.index') }}">
+170                               <i class="icon-settings"></i><span> Emplois du Temps</span>
+171                         </a>
+172                      </li>
+173                      <li class="treeview">
+174                         <a class="waves-effect waves-dark" href="{{ route('admin.bulletins.index') }}">
+175                               <i class="icon-settings"></i><span>Validation Finale des 
+176                                  <p>Bulletins Trimestriels</p>
+177                               </span>
+178                         </a>
+179                      </li>
+180                      <li class="treeview">
+181                         <a class="waves-effect waves-dark" href="{{ route('admin.modules.index') }}">
+182                               <i class="icon-settings"></i><span>Commuter les modules 
+183                                  <p>(Saisie
+184                                  Notes, Portail Parents) </p>
+185                               </span>
+186                         </a>
+187                      </li>
+188    
+189                    <li class="nav-level">--- Gestion Administrative</li>
+190                    <li class="treeview">
+191                        <a class="waves-effect waves-dark" href="#!">
+192                            <i class="icon-people"></i><span> reglage &  affectation</span><i class="icon-arrow-down"></i>
+193                        </a>
+194                        <ul class="treeview-menu">
+195                            <li><a class="waves-effect waves-dark" href="{{ route('admin.classes.index') }}"><i class="icon-arrow-right"></i> Classes et élèves</a></li>
+196                            <li><a class="waves-effect waves-dark" href="{{ route('admin.salles.index') }}"><i class="icon-arrow-right"></i> Salles</a></li>
+197                            <li><a class="waves-effect waves-dark" href="{{ route('admin.affectations.index') }}"><i class="icon-arrow-right"></i>Gestion de cours</a></li>
+198                            <li><a class="waves-effect waves-dark" href="#!"><i class="icon-arrow-right"></i>Gestion de Programme</a></li>
+199                            <li><a class="waves-effect waves-dark" href="{{ route('admin.periodes.index') }}"><i class="icon-arrow-right"></i>Gestion de periode</a></li>
+200                            <li><a class="waves-effect waves-dark" href="{{ route('admin.affectations.index') }}"><i class="icon-arrow-right"></i>Gestion des affectations_cours</a></li>
+201                            <li><a class="waves-effect waves-dark" href="{{ route('admin.evaluations.index') }}"><i class="icon-arrow-right"></i>Gestion des evaluations</a></li>
+202                            <li><a class="waves-effect waves-dark" href="{{ route('admin.notes.index') }}"><i class="icon-arrow-right"></i>Gestion des notes </a></li>
+203                            <li><a class="waves-effect waves-dark" href="{{ route('admin.bulletins.index') }}"><i class="icon-arrow-right"></i>Gestion des bulletins</a></li>
+204                            <li><a class="waves-effect waves-dark" href="{{ route('admin.archives.index') }}"><i class="icon-arrow-right"></i>Gestion des archives_annees</a></li>
+205                            <li><a class="waves-effect waves-dark" href="{{ route('admin.paies.index') }}"><i class="icon-arrow-right"></i>Gestion des salaires</a></li>
+206                            <li><a class="waves-effect waves-dark" href="{{ route('admin.comptabilite.index') }}"><i class="icon-arrow-right"></i>Comptabilité OHADA</a></li>
+207                            <li><a class="waves-effect waves-dark" href="{{ route('admin.statistiques.index') }}"><i class="icon-arrow-right"></i>Statistiques &amp; évolution</a></li>
+208                            <li><a class="waves-effect waves-dark" href="{{ route('admin.eleves.index') }}"><i class="icon-arrow-right"></i>Gestion des documents_eleves</a></li>
+209                            <li><a class="waves-effect waves-dark" href="{{ route('admin.periodes.index') }}"><i class="icon-arrow-right"></i>Gestion des periodes</a></li>
+210                        </ul>
+211                    </li>
+212                    <li class="treeview">
+213                        <a class="waves-effect waves-dark" href="#!">
+214                            <i class="icon-people"></i><span> paiement &  Caisse</span><i class="icon-arrow-down"></i>
+215                        </a>
+216                        <ul class="treeview-menu">
+217                            <li><a class="waves-effect waves-dark" href="{{ route('admin.frais.index') }}"><i class="icon-arrow-right"></i>Type de frais</a></li>
+218                            <li><a class="waves-effect waves-dark" href="{{ route('admin.frais.index') }}"><i class="icon-arrow-right"></i> frais_scolaires</a></li>
+219                            <li><a class="waves-effect waves-dark" href="{{ route('admin.paiements.index') }}"><i class="icon-arrow-right"></i> paiements</a></li>
+220                            <li><a class="waves-effect waves-dark" href="{{ route('admin.depenses.index') }}"><i class="icon-arrow-right"></i> categories_depenses</a></li>
+221                            <li><a class="waves-effect waves-dark" href="{{ route('admin.depenses.index') }}"><i class="icon-arrow-right"></i> depenses</a></li>
+222                            <li><a class="waves-effect waves-dark" href="{{ route('admin.archives.index') }}"><i class="icon-arrow-right"></i> archives_annees</a></li>
+223                        </ul>
+224                    </li>
+225                </ul>
+226             </section>
+227          </aside>
+228    
+229          <!-- Main Content -->
+230          <div class="content-wrapper">
+231             <div class="container-fluid">
+232                
+233                <div class="row">
+234                   <div class="main-header">
+
+[showing lines 160-234 of 381; read again with offset=235 for more]

@@ -1,0 +1,6 @@
+Applied patch: 1 file changed (1 updated)
+Updated resources/views/admin/dashboard.blade.php (1 hunk applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 311-311 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 312-312:
+312                <li><a class="app-menu__item {{ request()->routeIs('admin.profile.online') ? 'active' : '' }}" href="{{ route('admin.profile.online') }}"><i class="app-menu__icon fa fa-plug"></i><span class="app-menu__label">Utilisateurs en ligne</span></a></li>

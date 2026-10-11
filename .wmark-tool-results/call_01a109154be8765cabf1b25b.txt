@@ -1,0 +1,35 @@
+[powershell — Windows side]
+users
+annees_scolaires
+categories_depenses
+depenses
+---- failing test body ----
+test('the cashier records an expense together with its nature', function () {
+    $comptable = User::factory()->create(['role' => 'comptable']);
+
+    $this->actingAs($comptable)
+        ->get(route('comptable.depenses.index'))
+        ->assertOk()
+        ->assertSee('Enregistrer une dépense')
+        ->assertSee('Nature de la dépense')
+        ->assertSee('Fournitures');
+
+    $this->actingAs($comptable)
+        ->post(route('comptable.depenses.store'), [
+            'nature_id' => 1,
+            'motif' => 'Achat de craies',
+            'montant' => 45.5,
+            'date_depense' => '2026-10-04',
+            'piece_justificative' => 'FACT-001',
+        ])
+        ->assertRedirect(route('comptable.depenses.index'))
+        ->assertSessionHas('success', fn (string $message) => str_contains($message, 'Fournitures'));
+
+    $depense = DB::table('depenses')->first();
+    expect($depense)->not->toBeNull()
+        ->and((int) $depense->category_id)->toBe(1)
+        ->and($depense->motif)->toBe('Achat de craies')
+        ->and((float) $depense->montant)->toBe(45.5)
+        ->and((int) $depense->annee_scolaire_id)->toBe(1);
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

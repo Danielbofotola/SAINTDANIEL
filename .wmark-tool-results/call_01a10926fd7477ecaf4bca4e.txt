@@ -1,0 +1,15 @@
+Applied patch: 1 file changed (1 updated)
+Updated resources/views/admin/profile/show.blade.php (1 hunk applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 39-39 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 40-49:
+40           /* Design du modèle fourni : bandeau sombre + barre d’action + navigation de profil */
+41           .profile-top { background:#0d0c0f; color:#fff; border-radius:4px; }
+42           .profile-top h5 { color:#fff; }
+43           .profile-actions { background:#b26111; border-radius:4px; }
+44           .profile-actions a { color:#fff; padding:8px 12px; font-size:13px; font-weight:500; text-decoration:none; }
+45           .profile-actions a:hover { color:#fff; background:rgba(255,255,255,.15); }
+46           .profile-nav { display:flex; flex-wrap:wrap; align-items:center; gap:2px; }
+47           .profile-nav .nav-link { color:#323130; font-size:14px; padding:10px 16px; border-left:3px solid transparent; }
+48           .profile-nav .nav-link i { width:22px; color:#0078d4; }
+49           .profile-nav .nav-link.active, .profile-nav .nav-link:hover { background:#f3f2f1; border-left-color:#0078d4; text-decoration:none; }

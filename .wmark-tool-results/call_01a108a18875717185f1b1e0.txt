@@ -1,0 +1,22 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/FinancesPagesTest.php (1 hunk applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 365-375 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 376-392:
+376    
+377    test('the admin profile sidebar links to the management modules', function () {
+378        $admin = User::factory()->create(['role' => 'admin']);
+379    
+380        $this->actingAs($admin)
+381            ->get(route('admin.profile.show'))
+382            ->assertOk()
+383            ->assertSee(route('admin.affectations.index'), false)
+      … 1 lines omitted …
+385            ->assertSee(route('admin.evaluations.index'), false)
+386            ->assertSee(route('admin.bulletins.index'), false)
+387            ->assertSee(route('admin.archives.index'), false)
+388            ->assertSee(route('admin.eleves.index'), false)
+389            ->assertSee(route('admin.frais.index'), false)
+390            ->assertSee(route('admin.paiements.index'), false)
+391            ->assertSee(route('admin.depenses.index'), false);
+392    });

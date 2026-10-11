@@ -1,0 +1,6 @@
+328            ])
+329            ->assertRedirect();
+330    
+331        expect((int) DB::table('inscriptions')->value('annee_scolaire_id'))
+332            ->toBe((int) DB::table('annees_scolaires')->where('is_encours', true)->value('id'));
+333    });

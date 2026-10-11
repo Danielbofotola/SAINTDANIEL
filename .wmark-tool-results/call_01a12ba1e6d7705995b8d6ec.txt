@@ -1,0 +1,25 @@
+1      <?php
+2      
+3      namespace App\Models;
+4      
+5      use App\Models\Concerns\BelongsToAnneeScolaire;
+6      use Illuminate\Database\Eloquent\Model;
+7      
+8      class Periode extends Model
+9      {
+10         use BelongsToAnneeScolaire;
+11     
+12         protected $table = 'periodes';
+13     
+14         protected $fillable = ['annee_scolaire_id', 'nom', 'statut'];
+15     
+16         public function evaluations()
+17         {
+18             return $this->hasMany(Evaluation::class);
+19         }
+20     
+21         public function bulletins()
+22         {
+23             return $this->hasMany(Bulletin::class);
+24         }
+25     }

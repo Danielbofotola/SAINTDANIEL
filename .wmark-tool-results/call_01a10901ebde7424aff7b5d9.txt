@@ -1,0 +1,20 @@
+49                 <div class="table-responsive">
+50                     <table class="table table-hover table-bordered">
+51                         <thead><tr><th>#</th><th>Année</th><th>Élèves inscrits</th><th>Recettes</th><th>Dépenses</th><th>Solde</th><th>Impayés</th><th>Bulletins</th><th>Clôturée le</th><th>Remarques</th><th>Actions</th></tr></thead>
+52                         <tbody>
+53                             @forelse ($archives as $archive)
+54                                 @php($solde = (float) $archive->solde_final)
+55                                 <tr>
+56                                     <td>{{ $loop->iteration }}</td>
+57                                     <td><strong>{{ $archive->anneeScolaire?->libelle ?? '—' }}</strong></td>
+58                                     <td>{{ $archive->total_eleves_inscrits }}</td>
+59                                     <td>{{ number_format((float) $archive->total_recettes, 2, ',', ' ') }}</td>
+60                                     <td>{{ number_format((float) $archive->total_depenses, 2, ',', ' ') }}</td>
+61                                     <td><span class="badge badge-{{ $solde >= 0 ? 'success' : 'danger' }}">{{ number_format($solde, 2, ',', ' ') }}</span></td>
+62                                     <td>{{ number_format((float) $archive->total_impayes, 2, ',', ' ') }}</td>
+63                                     <td>{{ $archive->total_bulletins }}</td>
+64                                     <td>{{ $archive->date_cloture?->format('d/m/Y H:i') }}</td>
+65                                     <td>{{ $archive->remarques ?: '—' }}</td>
+66                                     <td>
+
+[showing lines 49-66 of 84; read again with offset=67 for more]

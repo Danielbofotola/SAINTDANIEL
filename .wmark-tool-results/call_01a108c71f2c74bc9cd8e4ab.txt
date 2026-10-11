@@ -1,0 +1,8 @@
+Applied patch: 1 file changed (1 updated)
+Updated resources/views/comptable/dashboard.blade.php (1 hunk applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 323-325 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 326-328:
+326                                  <div class="mt-1">
+327                                      <a href="{{ route('comptable.recouvrement.index') }}" class="btn btn-outline-primary bg-white fw-bold w-100"><i class="bi bi-graph-up-arrow me-1"></i> Recouvrement &amp; évolution</a>
+328                                  </div>

@@ -1,0 +1,14 @@
+Applied patch: 1 file changed (1 updated)
+Updated routes/web.php (2 hunks applied)
+Landed at lines 16-17 (the file's new text; no re-read needed):
+16     use App\Http\Controllers\AnnonceController;
+17     use App\Http\Controllers\NotificationController;
+Landed at lines 150-157 (the file's new text; no re-read needed):
+150        // Notifications : boîte de réception commune à tous les rôles.
+151        Route::get('/notifications', [NotificationController::class, 'index'])->middleware('auth')->name('notifications.index');
+152        Route::patch('/notifications/toutes-lues', [NotificationController::class, 'readAll'])->middleware('auth')->name('notifications.readall');
+153        Route::patch('/notifications/{notification}/lue', [NotificationController::class, 'read'])->middleware('auth')->name('notifications.read');
+154        // Annonces : diffusion d'une notification par l'administrateur.
+155        Route::get('/admin/annonces', [AnnonceController::class, 'index'])->middleware('role:admin')->name('admin.annonces.index');
+156        Route::post('/admin/annonces', [AnnonceController::class, 'store'])->middleware('role:admin')->name('admin.annonces.store');
+157        Route::delete('/admin/annonces/{annonce}', [AnnonceController::class, 'destroy'])->middleware('role:admin')->name('admin.annonces.destroy');

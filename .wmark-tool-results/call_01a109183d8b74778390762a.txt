@@ -1,0 +1,27 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\e1ce9c26600a\20261004-234531-bash-call_01a109183d8b74778390762a.txt (646 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+[powershell — Windows side]
+0001_01_01_000000_create_users_table.php
+0001_01_01_000001_create_cache_table.php
+0001_01_01_000002_create_jobs_table.php
+2026_09_20_222131_create_professeurs_table.php
+2026_09_20_225243_add_professeur_id_to_users_table.php
+2026_09_21_000000_add_professeur_foreign_key_to_users_table.php
+2026_09_21_010000_create_eleves_table.php
+2026_09_21_020000_create_school_management_tables.php
+2026_09_21_030000_create_sections_and_options_tables.php
+2026_09_21_040000_align_sections_options_schema.php
+2026_09_21_050000_add_profile_fields_to_users_table.php
+2026_09_29_000000_create_registration_request_tables.php
+2026_09_29_010000_create_parametres_systeme_table.php
+2026_10_03_000000_enforce_single_current_school_year.php
+2026_10_04_000000_add_module_switches_to_parametres_systeme_table.php
+2026_10_04_010000_add_maxima_to_cours_table.php
+2026_10_05_000000_add_periode_to_paiements_table.php
+2026_10_06_000000_add_est_inscription_to_types_frais_table.php
+2026_10_07_000000_widen_statut_on_inscriptions_table.php
+2026_10_08_000000_add_details_to_archives_annees_table.php
+2026_10_09_000000_create_salaires_and_paies_tables.php
+2026_10_10_000000_add_salaires_to_archives_annees_table.php
+2026_10_11_000000_create_comptabilite_tables.php
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

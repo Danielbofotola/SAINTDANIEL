@@ -1,0 +1,6 @@
+Created 5 tasks:
+  [pending] role: Ajouter le rôle 'parent' de bout en bout (enum, modèle, listes de validation, vues d'admin/inscription, Annonce::CIBLES, Raccourcis) (3 criteria)
+  [pending] controller: PortailParentController + route GET /espace-parent (parent.dashboard), gardé par auth+role:parent,admin et le commutateur portail_parents_actif (3 criteria)
+  [pending] view: Vue parent/portail.blade.php reprenant le design du template, branchée sur la messagerie réelle (liste conversations, fil, envoi, polling) (3 criteria)
+  [pending] audio: Vocaux réels : MediaRecorder -> pièce jointe audio, backend autorise les mimes audio, la bulle affiche un lecteur <audio> (3 criteria)
+  [pending] verify: Tests : test de feature sur la route + rendu, puis exécution de la suite phpunit (2 criteria)

@@ -1,0 +1,32 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\e1ce9c26600a\20261004-211301-bash-call_01a1088c8ebd70c3b3e00ae9.txt (1,280 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Structured view (text):
+[powershell — Windows side]
+account-create.blade.php:64: <li><a href="#">Rapports Journaliers</a></li>
+account-create.blade.php:65: <li><a href="#">Cahiers de texte</a></li>
+account-create.blade.php:66: <li><a href="#">Absences Enseignants</a></li>
+account-create.blade.php:67: <li><a href="#">�valuations & Examens</a></li>
+accounts.blade.php:67: <li><a href="#">Rapports Journaliers</a></li>
+accounts.blade.php:68: <li><a href="#">Cahiers de texte</a></li>
+accounts.blade.php:69: <li><a href="#">Absences Enseignants</a></li>
+accounts.blade.php:70: <li><a href="#">�valuations & Examens</a></li>
+edit.blade.php:263: <a href="#" class="icon-link" title="Notifications">
+edit.blade.php:268: <a href="#" class="icon-link" title="Messages">
+show.blade.php:68: <li><a href="#">Rapports Journaliers</a></li>
+show.blade.php:69: <li><a href="#">Cahiers de texte</a></li>
+show.blade.php:70: <li><a href="#">Absences Enseignants</a></li>
+show.blade.php:71: <li><a href="#">�valuations & Examens</a></li>
+show.blade.php:164: <a class="waves-effect waves-dark" href="">
+show.blade.php:169: <a class="waves-effect waves-dark" href="">
+show.blade.php:174: <a class="waves-effect waves-dark" href="">
+show.blade.php:181: <a class="waves-effect waves-dark" href="">
+dashboard.blade.php:270: <a class="app-sidebar__toggle fa fa-bars" href="#" data-toggle="sidebar" aria-label="Afficher ou masquer le menu"></a>
+dashboard.blade.php:273: <a class="app-nav__item d-flex align-items-center" href="#" data-toggle="dropdo
+… 160 chars elided …
+a fa-users"></i><span class="app-menu__label">�l�ves</span><i class="treeview-indicator fa fa-angle-right"></i></a>
+dashboard.blade.php:321: <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-user-md"></i><span class="app-menu__label">Professeurs</span><i class="treeview-indicator fa fa-angle-right"></i></a>
+dashboard.blade.php:330: <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-graduation-cap"></i><span class="app-menu__label">Classes et salles</span><i class="treeview-indicator fa fa-angle-right"></i></a>
+dashboard.blade.php:332: <li><a class="treeview-item" href="#"><i class="icon fa fa-circle-o"></i> Cycles</a></li>
+dashboard.blade.php:343: <li class="treeview"><a c
+… 961 chars elided …
+data-toggle="dropdown" aria-label="Menu profil">
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

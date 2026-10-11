@@ -1,0 +1,30 @@
+355        expect(DB::table('paiements')->count())->toBe(1);
+356    });
+357    
+358    test('expenses and categories are managed per school year', function () {
+359        $admin = User::factory()->create(['role' => 'admin']);
+360    
+361        $this->actingAs($admin)
+362            ->post(route('admin.depenses.categories.store'), ['nom' => 'Fournitures'])
+363            ->assertRedirect(route('admin.depenses.index'));
+364        $categorieId = (int) DB::table('categories_depenses')->value('id');
+365    
+366        $this->actingAs($admin)
+367            ->post(route('admin.depenses.store'), [
+368                'category_id' => $categorieId, 'motif' => 'Achat craies', 'montant' => 25, 'date_depense' => '2026-10-02',
+369            ])
+370            ->assertRedirect(route('admin.depenses.index'));
+371    
+372        $depense = DB::table('depenses')->first();
+373        expect($depense)->not->toBeNull()
+374            ->and((int) $depense->annee_scolaire_id)->toBe(1)
+375            ->and((float) $depense->montant)->toBe(25.0);
+376    
+377        // Catégorie utilisée : suppression bloquée.
+378        $this->actingAs($admin)
+379            ->delete(route('admin.depenses.categories.destroy', $categorieId))
+380            ->assertSessionHas('error');
+381        expect(DB::table('categories_depenses')->count())->toBe(1);
+382    });
+
+[showing lines 355-382 of 536; read again with offset=383 for more]

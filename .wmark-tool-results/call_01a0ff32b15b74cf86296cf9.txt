@@ -1,0 +1,7 @@
+[powershell — Windows side]
+cycles: E.d base=2 | Humanité=5 | Maternelle=0 | Primaire=3
+effectifs: G=6 F=4 | eleves listés: 10
+dashboard rendu: 60670 octets
+colonne nom/total présentes: oui
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

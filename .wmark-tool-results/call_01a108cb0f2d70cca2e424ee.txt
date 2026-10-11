@@ -1,0 +1,9 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/ComptableCaisseTest.php (1 hunk applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 252-255 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 255-258:
+255            ->assertSee('3e A')
+256            ->assertSee('id="tableRecouvrement"', false)
+257            ->assertSee('id="tablePaiements"', false)
+258            ->assertSee('dataTables.bootstrap5.min.js', false);

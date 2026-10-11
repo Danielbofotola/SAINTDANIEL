@@ -1,0 +1,102 @@
+35         public function index(Request $request): View
+36         {
+37             $search = trim((string) $request->query('q', ''));
+38             $statut = (string) $request->query('statut', '');
+39     
+40             // Année observée : celle choisie, sinon l'année en cours. Elle sert à
+41             // préparer l'année suivante — on y voit les élèves qui y seront (promus
+42             // et redoublants issus de la délibération) à côté des nouveaux inscrits.
+43             $anneeId = $request->integer('annee') ?: AnneeScolaire::enCours()?->id;
+44             $annee = $anneeId ? AnneeScolaire::find($anneeId) : null;
+45     
+46             $eleves = Eleve::query()
+47                 ->with(['inscriptions' => fn ($query) => $query
+48                     ->when($annee, fn ($q) => $q->where('annee_scolaire_id', $annee->id), fn ($q) => $q->anneeEnCours())
+49                     ->whereIn('statut', ['actif', 'en_attente'])
+50                     ->with('classe')])
+51                 ->when($annee, fn ($query) => $query->whereHas('inscriptions', fn ($inscription) => $inscription
+52                     ->where('annee_scolaire_id', $annee->id)
+53                     ->whereIn('statut', ['actif', 'en_attente'])))
+54                 ->when($search !== '', fn ($query) => $query->where(function ($query) use ($search) {
+55                     $query->where('nom', 'like', "%{$search}%")
+56                         ->orWhere('postnom', 'like', "%{$search}%")
+57                         ->orWhere('prenom', 'like', "%{$search}%")
+58                         ->orWhere('matricule', 'like', "%{$search}%");
+59                 }))
+60                 ->when(in_array($statut, ['actif', 'inactif', 'suspendu', 'exclu'], true), fn ($query) => $query->where('statut', $statut))
+61                 ->orderBy('nom')
+62                 ->orderBy('postnom')
+63                 ->orderBy('prenom')
+64                 ->paginate(25)
+65                 ->withQueryString();
+66     
+67             // Provenance de chaque élève pour l'année observée : la décision de fin
+68             // d'année précédente (admis → passage, redoublant/ajourné → maintien) ou
+69             // « nouveau » s'il n'en a pas.
+70             $origines = $this->origines($annee, $eleves->pluck('id')->all());
+71     
+72             return view('admin.eleves.index', [
+73                 'eleves' => $eleves,
+74                 'search' => $search,
+75                 'statut' => $statut,
+76                 'annee' => $annee,
+77                 'annees' => AnneeScolaire::query()->orderByDesc('date_debut')->get(),
+78                 'origines' => $origines,
+79                 'stats' => [
+80                     'total' => Eleve::count(),
+81                     'garcons' => Eleve::where('sexe', 'M')->count(),
+82                     'filles' => Eleve::where('sexe', 'F')->count(),
+83                     'inscrits' => $annee
+84                         ? Inscription::where('annee_scolaire_id', $annee->id)
+85                             ->whereIn('statut', ['actif', 'en_attente'])
+86                             ->distinct()
+87                             ->count('eleve_id')
+88                         : 0,
+89                 ],
+90             ]);
+91         }
+92     
+93         /**
+94          * Décision de délibération de l'année précédente, par élève (clé = eleve_id).
+95          *
+96          * @param  array<int, int>  $eleveIds
+97          * @return array<int, string>
+98          */
+99         private function origines(?AnneeScolaire $annee, array $eleveIds): array
+100        {
+101            if ($annee === null || $eleveIds === [] || ! Schema::hasTable('deliberations')) {
+102                return [];
+103            }
+104    
+105            $precedente = AnneeScolaire::precedente($annee);
+106    
+107            if ($precedente === null) {
+108                return [];
+109            }
+110    
+111            return Deliberation::query()
+112                ->join('inscriptions', 'inscriptions.id', '=', 'deliberations.inscription_id')
+113                ->where('deliberations.annee_scolaire_id', $precedente->id)
+114                ->whereIn('inscriptions.eleve_id', $eleveIds)
+115                ->pluck('deliberations.decision', 'inscriptions.eleve_id')
+116                ->all();
+117        }
+118    
+119        public function edit(Eleve $eleve): View
+120        {
+121            $eleve->load(['tuteur', 'sante', 'documents' => fn ($query) => $query->latest('created_at')]);
+122    
+123            return view('admin.eleves.edit', compact('eleve'));
+124        }
+125    
+126        public function update(Request $request, Eleve $eleve): RedirectResponse
+127        {
+128            $data = $request->validate([
+129                'nom' => ['required', 'string', 'max:50'],
+130                'postnom' => ['required', 'string', 'max:50'],
+131                'prenom' => ['required', 'string', 'max:50'],
+132                'sexe' => ['required', 'in:M,F'],
+133                'date_naissance' => ['required', 'date', 'before:today'],
+134                'lieu_naissance' => ['nullable', 'string', 'max:100'],
+
+[showing lines 35-134 of 221; read again with offset=135 for more]

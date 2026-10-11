@@ -1,0 +1,12 @@
+416        }
+417    });
+418    
+419    /**
+420     * Petit fichier audio WAVE valide, pour tester les pièces jointes vocales sans
+421     * dépendre d'un encodeur : la règle « mimes » détecte le type par le contenu.
+422     */
+423    function fichierAudioDeTest(string $nom = 'vocal.wav'): \Illuminate\Http\UploadedFile
+424    {
+425        $entete = 'RIFF'.pack('V', 36).'WAVEfmt '.pack('V', 16).pack('v', 1).pack('v', 1)
+
+[showing lines 416-425 of 432; read again with offset=426 for more]

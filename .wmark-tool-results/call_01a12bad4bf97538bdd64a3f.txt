@@ -1,0 +1,10 @@
+Applied patch: 1 file changed (1 updated)
+Updated routes/web.php (1 hunk applied)
+Landed at lines 103-104 (the file's new text; no re-read needed):
+103        Route::patch('/admin/affectations/{affectation}/muter', [AffectationCoursController::class, 'muter'])->middleware('role:admin')->name('admin.affectations.muter');
+104        Route::post('/admin/affectations/permuter', [AffectationCoursController::class, 'permuter'])->middleware('role:admin')->name('admin.affectations.permuter');
+Landed at lines 106-106 (the file's new text; no re-read needed):
+106        Route::get('/admin/cours', [CoursController::class, 'index'])->middleware('role:admin')->name('admin.cours.index');
+Landed at lines 108-109 (the file's new text; no re-read needed):
+108        Route::put('/admin/cours/{cours}', [CoursController::class, 'update'])->middleware('role:admin')->name('admin.cours.update');
+109        Route::patch('/admin/cours/{cours}/statut', [CoursController::class, 'toggleStatus'])->middleware('role:admin')->name('admin.cours.toggle-status');

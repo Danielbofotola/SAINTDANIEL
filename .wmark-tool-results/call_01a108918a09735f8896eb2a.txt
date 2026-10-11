@@ -1,0 +1,6 @@
+Created 5 tasks:
+  [pending] periodes: Module Périodes : liste, création, statut, suppression (2 criteria)
+  [pending] evaluations: Module Évaluations + saisie des notes (2 criteria)
+  [pending] bulletins: Module Bulletins : consultation et génération (2 criteria)
+  [pending] menu-scol: Ajouter la section Évaluations & Bulletins au menu admin (2 criteria)
+  [pending] verify-scol: Vérifier routes, rendu, suite complète (2 criteria)

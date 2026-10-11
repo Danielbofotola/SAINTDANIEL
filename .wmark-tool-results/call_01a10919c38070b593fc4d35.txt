@@ -1,0 +1,64 @@
+356            @endif
+357    
+358            <!-- STATS -->
+359            <div class="row mb-4">
+360                <div class="col-sm-6 col-lg-3 mb-3"><div class="stat-card"><div class="stat-icon primary"><i class="fa fa-book"></i></div><div class="stat-details"><h4>Cours affectés</h4><p>{{ $assignments->count() }}</p></div></div></div>
+361                <div class="col-sm-6 col-lg-3 mb-3"><div class="stat-card"><div class="stat-icon info"><i class="fa fa-university"></i></div><div class="stat-details"><h4>Classes suivies</h4><p>{{ $assignments->pluck('classe_id')->unique()->count() }}</p></div></div></div>
+362                <div class="col-sm-6 col-lg-3 mb-3"><div class="stat-card"><div class="stat-icon warning"><i class="fa fa-users"></i></div><div class="stat-details"><h4>Élèves concernés</h4><p>{{ number_format($studentCount, 0, ',', ' ') }}</p></div></div></div>
+363                <div class="col-sm-6 col-lg-3 mb-3"><div class="stat-card"><div class="stat-icon danger"><i class="fa fa-pencil-square-o"></i></div><div class="stat-details"><h4>Évaluations à venir</h4><p>{{ $upcomingEvaluations->count() }}</p></div></div></div>
+364            </div>
+365    
+366            <div class="row">
+367                <div class="col-lg-7">
+368                    <div class="tile" id="planning">
+369                        <h3 class="tile-title">Mon planning · {{ ucfirst($todayLabel) }}</h3>
+370                        @forelse ($todaySchedule as $item)
+371                            <div class="row-item">
+372                                <div class="row-time">{{ substr($item->heure_debut, 0, 5) }}<small>{{ substr($item->heure_fin, 0, 5) }}</small></div>
+373                                <div class="row-main"><div class="row-title">{{ $item->cours_nom }}</div><div class="row-meta">{{ $item->classe_nom }}</div></div>
+374                                <span class="pill">{{ $item->salle_nom ?: 'Salle à confirmer' }}</span>
+375                            </div>
+376                        @empty
+377                            <div class="empty"><i class="fa fa-coffee" aria-hidden="true"></i><strong>Aucun cours prévu aujourd’hui</strong>{{ $nextClass ? 'Prochain cours : '.$nextClass->jour.' à '.substr($nextClass->heure_debut, 0, 5).'.' : 'Votre planning s’affichera dès que vos horaires seront disponibles.' }}</div>
+378                        @endforelse
+379                    </div>
+380    
+381                    <div class="tile" id="enseignements">
+382                        <h3 class="tile-title">Mes enseignements <span class="pill ml-2">{{ $assignments->count() }}</span></h3>
+383                        @forelse ($assignments as $assignment)
+384                            <div class="row-item">
+385                                <div class="row-main">
+386                                    <div class="row-title">{{ $assignment->cours_nom }}</div>
+387                                    <div class="row-meta">{{ $assignment->classe_nom }}@if ($assignment->section_nom) · {{ $assignment->section_nom }}@endif @if ($assignment->option_nom) · {{ $assignment->option_nom }}@endif</div>
+388                                </div>
+389                                <span class="pill">{{ $assignment->cours_code }}</span>
+390                            </div>
+391                        @empty
+392                            <div class="empty"><i class="fa fa-book" aria-hidden="true"></i><strong>Aucun cours affecté pour le moment</strong>Vos cours apparaîtront ici pour l’année scolaire en cours.</div>
+393                        @endforelse
+394                    </div>
+395                </div>
+396    
+397                <div class="col-lg-5">
+398                    <div class="tile" id="evaluations">
+399                        <h3 class="tile-title">Évaluations à venir</h3>
+400                        @forelse ($upcomingEvaluations as $evaluation)
+401                            @php($d = \Carbon\Carbon::parse($evaluation->date_evaluation))
+402                            <div class="row-item">
+403                                <time class="date-chip" datetime="{{ $d->toDateString() }}"><strong>{{ $d->format('d') }}</strong><span>{{ $evaluationMonths[(int) $d->format('n') - 1] }}</span></time>
+404                                <div class="row-main"><div class="row-title">{{ $evaluation->titre }}</div><div class="row-meta">{{ $evaluationTypes[$evaluation->type_evaluation] ?? 'Évaluation' }} · {{ $evaluation->classe_nom }}</div></div>
+405                            </div>
+406                        @empty
+407                            <div class="empty"><i class="fa fa-check" aria-hidden="true"></i><strong>Rien de planifié pour l’instant</strong>Les prochaines évaluations de vos classes apparaîtront ici.</div>
+408                        @endforelse
+409                    </div>
+410                </div>
+411            </div>
+412        </main>
+413    
+414        <script src="{{ asset('boostrap/css/js/jquery-3.2.1.min.js') }}"></script>
+415        <script src="{{ asset('boostrap/css/js/popper.min.js') }}"></script>
+416        <script src="{{ asset('boostrap/css/js/bootstrap.min.js') }}"></script>
+417        <script src="{{ asset('boostrap/css/js/main.js') }}"></script>
+418    </body>
+419    </html>

@@ -1,0 +1,19 @@
+104    
+105        protected function redirectBasedOnRole(string $role): RedirectResponse
+106        {
+107            return redirect()->intended(route($this->dashboardRouteForRole($role)));
+108        }
+109    
+110        protected function dashboardRouteForRole(string $role): string
+111        {
+112            return match ($role) {
+113                'admin' => 'admin.dashboard',
+114                'prefetture' => 'prefecture.dashboard',
+115                'titulaire' => 'titulaire.dashboard',
+116                'professeur' => 'professeur.dashboard',
+117                'comptable' => 'comptable.dashboard',
+118                default => 'home',
+119            };
+120    
+121        }
+122    }

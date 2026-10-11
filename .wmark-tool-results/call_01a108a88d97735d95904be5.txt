@@ -1,0 +1,6 @@
+71         Route::delete('/admin/periodes/{periode}', [PeriodeController::class, 'destroy'])->middleware('role:admin')->name('admin.periodes.destroy');
+72         Route::get('/admin/evaluations', [EvaluationController::class, 'index'])->middleware('role:admin')->name('admin.evaluations.index');
+73         Route::post('/admin/evaluations', [EvaluationController::class, 'store'])->middleware('role:admin')->name('admin.evaluations.store');
+74         Route::get('/admin/evaluations/{evaluation}/notes', [EvaluationController::class, 'notes'])->middleware('role:admin')->name('admin.evaluations.notes');
+
+[showing lines 71-74 of 166; read again with offset=75 for more]

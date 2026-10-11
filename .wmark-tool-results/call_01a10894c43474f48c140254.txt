@@ -1,0 +1,17 @@
+1      <?php
+2      
+3      namespace App\Models;
+4      
+5      use Illuminate\Database\Eloquent\Model;
+6      
+7      class CategorieDepense extends Model
+8      {
+9          protected $table = 'categories_depenses';
+10     
+11         protected $fillable = ['nom', 'statut'];
+12     
+13         public function depenses()
+14         {
+15             return $this->hasMany(Depense::class, 'category_id');
+16         }
+17     }

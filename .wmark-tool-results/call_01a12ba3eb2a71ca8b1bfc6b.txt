@@ -1,0 +1,15 @@
+305        $paiement = DB::table('paiements')->first();
+306    
+307        expect($paiement->devise)->toBe('CDF')
+308            ->and((float) $paiement->montant_recu)->toBe(140000.0)
+309            ->and((float) $paiement->taux)->toBe(2800.0)
+310            // 140 000 FC ÷ 2800 = 50 $ — la devise du tarif alimente les totaux.
+311            ->and((float) $paiement->montant_paye)->toBe(50.0);
+312    });
+313    
+314    test('l’affichage des montants retire les décimales du franc congolais', function () {
+315        expect(\App\Support\Monnaie::format(50, 'USD'))->toBe('50,00 $')
+316            ->and(\App\Support\Monnaie::format(140000, 'CDF'))->toBe('140 000 FC')
+317            ->and(\App\Support\Monnaie::convertir(140000, 'CDF', 'USD', 2800))->toBe(50.0)
+318            ->and(\App\Support\Monnaie::convertir(50, 'USD', 'CDF', 2800))->toBe(140000.0);
+319    });

@@ -1,0 +1,12 @@
+Applied patch: 1 file changed (1 updated)
+Updated app/Http/Controllers/PaiementController.php (2 hunks applied)
+Landed at lines 10-10 (the file's new text; no re-read needed):
+10     use App\Support\Caisse;
+Landed at lines 100-106 (the file's new text; no re-read needed):
+100            try {
+101                $paiement = Caisse::enregistrer($annee, $data);
+102            } catch (\RuntimeException) {
+103                return back()->withInput()->with('error', 'Ce tarif ne correspond pas à la classe de l’élève.');
+104            }
+105    
+106            return redirect()->route('admin.paiements.index')->with('success', 'Le paiement a été enregistré sous le reçu '.$paiement->num_recu.'.');

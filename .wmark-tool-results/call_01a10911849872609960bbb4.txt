@@ -1,0 +1,8 @@
+200            ->assertSee('chartEvolution')
+201            ->assertSee('chartInscriptions')
+202            ->assertSee('chartRecouvrement')
+203            ->assertSee('chartNature')
+204            ->assertSee('Recettes')
+205            ->assertSee('120,00')
+
+[showing lines 200-205 of 216; read again with offset=206 for more]

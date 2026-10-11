@@ -1,0 +1,8 @@
+10         foreach ([
+11             'archives_annees', 'depenses', 'categories_depenses', 'paiements', 'frais_scolaires',
+12             'types_frais', 'inscriptions', 'eleves', 'tuteurs', 'classes', 'cycles', 'salles',
+13             'professeurs', 'annees_scolaires', 'users',
+14         ] as $table) {
+15             Schema::dropIfExists($table);
+
+[showing lines 10-15 of 429; read again with offset=16 for more]

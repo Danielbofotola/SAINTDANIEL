@@ -1,0 +1,21 @@
+[powershell — Windows side]
+=== resume des runs ===
+run 1 :   Tests:    244 passed (1496 assertions)
+run 2 :   Tests:    244 passed (1496 assertions)
+run 3 :   Tests:    244 passed (1496 assertions)
+run 4 :   Tests:    244 passed (1496 assertions)
+run 5 :   Tests:    244 passed (1496 assertions)
+run 6 :   Tests:    244 passed (1496 assertions)
+run 7 :   Tests:    244 passed (1496 assertions)
+run 8 :   Tests:    244 passed (1496 assertions)
+run 9 :   Tests:    244 passed (1496 assertions)
+run 10 :   Tests:    244 passed (1496 assertions)
+run 11 :   Tests:    244 passed (1496 assertions)
+run 12 :   Tests:    244 passed (1496 assertions)
+run 13 :   Tests:    244 passed (1496 assertions)
+run 14 :   Tests:    244 passed (1496 assertions)
+run 15 :   Tests:    244 passed (1496 assertions)
+=== echecs reels (mot FAILED en majuscules) ===
+=== lignes 'Tests:' ===
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

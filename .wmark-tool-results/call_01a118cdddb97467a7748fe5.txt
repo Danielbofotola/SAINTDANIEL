@@ -1,0 +1,31 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\b493c9bc81dc\20261008-005811-bash-call_01a118cdddb97467a7748fe5.txt (1,156 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Structured view (text):
+[powershell — Windows side]
+app\Http\Controllers\AnnonceController.php:46: 'cible.in' => 'Destinataires inconnus.',
+app\Http\Controllers\AnnonceController.php:49: $destinataires = User::query()
+app\Http\Controllers\AnnonceController.php:53: if ($destinataires->isEmpty()) {
+app\Http\Controllers\AnnonceController.php:54: return back()->withInput()->with('error', 'Aucun utilisateur ne correspond à ces destinataires.');
+app\Http\Controllers\AnnonceController.php:59: 'destinataires' => $destinataires->count(),
+app\Http\Controllers\AnnonceController.php:64: Notification::send($destinataires, new AnnonceNotification($annonce));
+app\Http\Controllers\AnnonceController.php:67: .$destinataires->count().' utilisateur(s).');
+app\Http\Controllers\MessagerieController.php:39: 'destinataires' => User::query()
+app\Http\Controllers\MessagerieController.php:56: 'destinataires' => ['required', 'array', 'min:1'],
+app\Http\Controllers\MessagerieController.php:60: 'destinataires.required' => 'Choisissez au moins un destinataire.',
+app\Http\Controllers\MessagerieController.php:63: $choix = (array) $data['destinataires'];
+app\Http\Controllers\PortailParentController.php:52: 'destinataires' => User::query()
+app\Models\Annonce.php:29: protected $fillable = ['titre', 'message', 'niveau', 'lien', 'cible', 'envoye_par', 'destinataires'];
+app\Support\Messagerie.php:17: * Crée une conversation, y inscrit l'auteur et les destinataires, puis
+app\Support\Messagerie.php:20: * @param  array<int, int>  $destinata
+… 82 chars elided …
+array $destinatairesIds, string $sujet, string $corps): Conversation
+app\Support\Messagerie.php:24: $destinataires = User::query()
+app\Support\Messagerie.php:25: ->whereIn('id', $destinatairesIds)
+app\Support\Messagerie.php:31: 'type' => $destinataires->count() > 1 ? 'diffusion' : 'directe',
+app\Support\Messagerie.php:36: $participants = collect([$auteur->id])->merge($destinataires)->unique()->values();
+resources\views\admin\annonces.blade.php:60: <label class="form-label">Destinataires *</label>
+resources\views\admin\annonces.blade.php:89: {{ $annonce->libelleCible() }} · {{ $annonce->destinataires }} destinataire(s)
+resources\views\messagerie\index.blade.php:56: 'destinataires' => $destinataires,
+resources\views\messagerie\_espace.blade.php:8: *  - $user, $conversations, $active, $messag
+… 882 chars elided …
+lade.php:166: 'destinataires' => $destinataires,
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

@@ -1,0 +1,20 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/AdminUserManagementTest.php (2 hunks applied)
+Landed at lines 111-111 (the file's new text; no re-read needed):
+111    test('un utilisateur non administrateur consulte son profil mais ne peut plus le modifier', function () {
+Landed at lines 120-134 (the file's new text; no re-read needed):
+120        // La mise à jour de ses informations et coordonnées est réservée à l'admin.
+121        $this->get(route('profile.edit'))->assertForbidden();
+122    
+123        $this->put(route('profile.update'), [
+124            'nom' => 'Kabila',
+125            'username' => $user->username,
+126            'email' => $user->email,
+127            'telephone' => '+243 900 000 000',
+128            'adresse' => 'Kinshasa',
+129        ])->assertForbidden();
+130    
+131        $user->refresh();
+132        expect($user->nom)->not->toBe('Kabila')
+133            ->and($user->telephone)->toBeNull()
+134            ->and($user->role)->toBe('comptable');

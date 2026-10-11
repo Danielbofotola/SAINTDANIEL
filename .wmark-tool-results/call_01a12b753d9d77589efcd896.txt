@@ -1,0 +1,29 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\aba9102c187c\20261011-155441-bash-call_01a12b753d9d77589efcd896.txt (1,677 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Structured view (text):
+[powershell — Windows side]
+#64 C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\vendor\laravel\framework\src\Illuminate\Foundation\Http\Kernel.php(175): Illuminate\Pipeline\Pipeline->then(Object(Closure))
+#65 C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\vendor\laravel\framework\src\Illuminate\Foundation\Http\Kernel.php(144): Illuminate\Foundation\Http\Kernel->sendRequestThroughRouter(Object(Illuminate\Http\Request))
+#66 C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\vendor\laravel\framework\src\Illuminate\Foundation\Testing\Concerns\MakesHttpRequests.php(607): Illuminate\Foundation\Http\Kernel->handle(Object(Illuminate\Http\Request))
+#67 C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\vendor\laravel\framework\src\Illuminate\Foundation\Testing\Concerns\MakesHttpRequests.php(368): Illuminate\Foundation\Testing\TestCase->call('GET', 'https://mon-app...', Array, Array, Array, Array)
+#68 C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\tests\Feature\AdminUserManagementTest.php(427): Illuminate\Foundation\Testing\TestCase->get('https://mon-app...')
+#69 C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\vendor\pestphp\pest\src\Factories\TestCaseMethodFactory.php(171): P\Tests\Feature\AdminUserManagementTest->{closure}()
+#70 [internal function]: P\Tests\Feature\AdminUserManagementTest->Pest\Factories\{closure}()
+#71 C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\vendor\pestphp\pest\src\Concerns\Testable.php(419): call_us
+… 0 chars elided …
+er_func_array(Object(Closure), Array)
+#72 C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\vendor\pestphp\pest\src\Support\ExceptionTrace.php(26): P\Tests\Feature\AdminUserManagementTest->Pest\Concerns\{closure}()
+#73 C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\vendor\pestphp\pest\src\Concerns\Testable.php(419): Pest\Support\ExceptionTrace::ensure(Object(Closure))
+#74 C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\vendor\pestphp\pest\src\Concerns\Testable.php(321): P\Tests\Feature\AdminUserManagementTest->__callClosure(Object(Closure), Array)
+#75 C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\vendor\pestphp\pest\src\Factories\TestCaseFactory.php(173) : eval()'d code(98): P\Tests\Feature\AdminUserManagementTest->__runTest(Object(Closure))
+#76 C:\User
+… 2,657 chars elided …
+sertSee('Nouvelle section')
+    430▕         ->assertSee('Nouvelle option')
+    431▕         ->assertSee('data-section-id="1"', false)
+    432▕         ->assertSee('selected>Mathématiques - Physique</option>', false);
+
+
+  Tests:    1 failed, 267 passed (1721 assertions)
+  Duration: 14.46s
+
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

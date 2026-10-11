@@ -1,0 +1,8 @@
+315                        <li><a class="treeview-item" href="{{ route('admin.eleves.index') }}"><i class="icon fa fa-list"></i> Liste des élèves</a></li>
+316                        <li><a class="treeview-item" href="{{ route('admin.eleves.create') }}"><i class="icon fa fa-user-plus"></i> Inscrire un élève</a></li>
+317                        <li><a class="treeview-item" href="{{ route('admin.registration.students') }}"><i class="icon fa fa-inbox"></i> Demandes d’inscription</a></li>
+318                        <li><a class="treeview-item" href="{{ route('admin.registration.students.history') }}"><i class="icon fa fa-history"></i> Historique d'inscription</a></li>
+319                    </ul>
+320                </li>
+
+[showing lines 315-320 of 726; read again with offset=321 for more]

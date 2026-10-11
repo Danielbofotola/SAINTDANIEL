@@ -1,0 +1,62 @@
+1      <!DOCTYPE html>
+2      <html lang="fr">
+3      
+4      <head>
+5         <title>Gestion Scolaire - Profil de l'Administrateur</title>
+6         <meta charset="utf-8">
+7         <meta http-equiv="X-UA-Compatible" content="IE=edge">
+8         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+9         
+10        <!-- Favicon icon -->
+11        <link rel="shortcut icon" href="{{ asset('assets/images/favicon.png') }}" type="image/x-icon">
+12        <link rel="icon" href="{{ asset('assets/images/favicon.ico') }}" type="image/x-icon">
+13     
+14        <!-- Google font-->
+15        <link href="https://fonts.googleapis.com/css?family=Ubuntu:400,500,700" rel="stylesheet">
+16     
+17        <!-- Icons -->
+18        <link rel="stylesheet" type="text/css" href="{{ asset('assets/icon/themify-icons/themify-icons.css') }}">
+19        <link rel="stylesheet" type="text/css" href="{{ asset('assets/icon/icofont/css/icofont.css') }}">
+20        <link rel="stylesheet" type="text/css" href="{{ asset('assets/icon/simple-line-icons/css/simple-line-icons.css') }}">
+21        <link rel="stylesheet" type="text/css" href="{{ asset('boostrap/css/font-awesome/css/fontawesome.css') }}">
+22        <link rel="stylesheet" type="text/css" href="{{ asset('boostrap/css/font-awesome/css/fa-solid.css') }}">
+23     
+24        <!-- Required Framework -->
+25        <link rel="stylesheet" type="text/css" href="{{ asset('assets/plugins/bootstrap/css/bootstrap.min.css') }}">
+26     
+27        <!-- Style.css -->
+28        <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/main.css') }}">
+29        <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/responsive.css') }}">
+30     
+31        <style>
+32           .avatar { width:82px; height:82px; border-radius:50%; background:#795548; color:#fff; display:inline-flex; align-items:center; justify-content:center; font-size:30px; font-weight:600; object-fit:cover; }
+33           .mini-avatar { width:38px; height:38px; border-radius:50%; background:#795548; color:#fff; display:inline-flex; align-items:center; justify-content:center; font-weight:600; object-fit:cover; }
+34           .detail-row { display:flex; margin-bottom:14px; font-size:14px; }
+35           .detail-label { width:200px; font-weight:600; color:#1b1b1b; }
+36           .detail-value { color:#323130; }
+37           .profile-actions-bar { background: #1b8bf9; padding: 10px 15px; border-radius: 4px; margin-bottom: 20px; }
+38           .profile-actions-bar a { color: #fff; margin-right: 15px; font-size: 13px; font-weight: 500; text-decoration: none; }
+39           .profile-actions-bar a:hover { text-decoration: underline; }
+40        </style>
+41     </head>
+42     
+43     <body class="sidebar-mini fixed">
+44        <div class="loader-bg">
+45           <div class="loader-bar"></div>
+46        </div>
+47        <div class="wrapper">
+48           
+49           <!-- Navbar Top -->
+50           <header class="main-header-top hidden-print">
+51              <a href="{{ route('admin.dashboard') }}" class="logo">
+52                 <img class="img-fluid able-logo" src="{{ asset('assets/images/logo.png') }}" alt="Logo École">
+53              </a>
+54              <nav class="navbar navbar-static-top">
+55                 <a href="#!" data-toggle="offcanvas" class="sidebar-toggle"></a>
+56                 
+57                 <ul class="top-nav lft-nav">
+58                    <li>
+59                       <a href="#!" class="drop icon-circle txt-white">
+60                          <i class="ti-file"></i><span> Documents Administratifs</span>
+
+[showing lines 1-60 of 381; read again with offset=61 for more]

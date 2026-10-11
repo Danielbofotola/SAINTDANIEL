@@ -1,0 +1,1 @@
+Wrote resources/views/prefecture/bulletins.blade.php (138 lines)

@@ -1,0 +1,10 @@
+316        $this->actingAs($user)
+317            ->post(route('professeur.presences.store'), [
+318                'affectation_id' => 1, 'date_seance' => '2026-10-05',
+319                'statuts' => [1 => 'present', 2 => 'present'],
+320            ]);
+321    
+322        expect(DB::table('presences')->count())->toBe(2)
+323            ->and(DB::table('presences')->where('eleve_id', 1)->value('statut_presence'))->toBe('present');
+
+[showing lines 316-323 of 332; read again with offset=324 for more]

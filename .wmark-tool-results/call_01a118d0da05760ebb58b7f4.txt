@@ -1,0 +1,81 @@
+238    
+239    test('un parent ne peut pas écrire à un professeur (destinataire hors périmètre)', function () {
+240        reglerPortailParents(true);
+241    
+242        $parent = User::factory()->create(['role' => 'parent']);
+243        $prof = User::factory()->create(['role' => 'professeur']);
+244    
+245        $this->actingAs($parent)
+246            ->post(route('messagerie.store'), [
+247                'destinataires' => [(string) $prof->id],
+248                'sujet' => 'Bonjour',
+249                'corps' => 'Test',
+250            ])
+251            ->assertRedirect()
+252            ->assertSessionHas('error', fn (string $m) => str_contains($m, 'Aucun destinataire'));
+253    
+254        expect(DB::table('messages')->count())->toBe(0);
+255        expect(DB::table('conversations')->count())->toBe(0);
+256    });
+257    
+258    test('un parent ne peut pas démarrer une discussion avec un professeur', function () {
+259        $parent = User::factory()->create(['role' => 'parent']);
+260        $prof = User::factory()->create(['role' => 'professeur']);
+261    
+262        $this->actingAs($parent)
+263            ->post(route('messagerie.demarrer'), ['destinataire' => $prof->id])
+264            ->assertNotFound();
+265    });
+266    
+267    test('un message vocal est enregistré et rendu par un lecteur audio', function () {
+268        Storage::fake('public');
+269        reglerPortailParents(true);
+270    
+271        $parent = User::factory()->create(['role' => 'parent']);
+272        $prof = User::factory()->create(['role' => 'professeur']);
+273        $conversation = Messagerie::creer($prof, [$parent->id], 'Vocal', 'Envoyez-moi un vocal.');
+274    
+275        $this->actingAs($parent)
+276            ->post(route('messagerie.repondre', $conversation), [
+277                'piece_jointe' => fichierAudioDeTest('vocal.wav'),
+278            ])
+279            ->assertSessionHasNoErrors()
+280            ->assertRedirect();
+281    
+282        $message = $conversation->messages()->latest('id')->first();
+283    
+284        expect($message->piece_jointe)->not->toBeNull()
+285            ->and($message->estAudio())->toBeTrue();
+286    
+287        $html = view('messagerie._bulle', ['message' => $message, 'user' => $parent, 'active' => $conversation])->render();
+288    
+289        expect($html)->toContain('bulle__audio')->toContain('<audio');
+290    });
+291    
+292    test('les stickers (emojis seuls) reçoivent un habillage dédié', function () {
+293        $parent = User::factory()->create(['role' => 'parent']);
+294        $prof = User::factory()->create(['role' => 'professeur']);
+295        $conversation = Messagerie::creer($prof, [$parent->id], 'Réaction', 'Merci !');
+296    
+297        Messagerie::envoyer($conversation, $parent, '👍');
+298        $message = $conversation->messages()->latest('id')->first();
+299    
+300        expect($message->estSticker())->toBeTrue();
+301    
+302        $html = view('messagerie._bulle', ['message' => $message, 'user' => $parent, 'active' => $conversation])->render();
+303        expect($html)->toContain('bulle--sticker');
+304    });
+305    
+306    /**
+307     * Petit fichier audio WAVE valide, pour tester les pièces jointes vocales sans
+308     * dépendre d'un encodeur : la règle « mimes » détecte le type par le contenu.
+309     */
+310    function fichierAudioDeTest(string $nom = 'vocal.wav'): \Illuminate\Http\UploadedFile
+311    {
+312        $entete = 'RIFF'.pack('V', 36).'WAVEfmt '.pack('V', 16).pack('v', 1).pack('v', 1)
+313            .pack('V', 8000).pack('V', 8000).pack('v', 1).pack('v', 8).'data'.pack('V', 0);
+314    
+315        $chemin = tempnam(sys_get_temp_dir(), 'wmark_').'.wav';
+316        file_put_contents($chemin, $entete);
+
+[showing lines 238-317 of 319; read again with offset=318 for more]

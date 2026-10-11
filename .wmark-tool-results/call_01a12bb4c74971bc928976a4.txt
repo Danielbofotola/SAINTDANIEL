@@ -1,0 +1,14 @@
+420            ->assertSee('KIN-042')
+421            ->assertSee('Limete')
+422            ->assertSee('Le Directeur')
+423            ->assertSee('EBE/P.S./012')
+424            ->assertSee('PLACE / NBRE D')
+425            ->assertDontSee('CONDUITE')
+426            ->assertSee('*DOUBLE');
+427    
+428        $data = BulletinRdc::for(Inscription::find($inscriptionId))->build();
+429    
+430        expect($data['decision'])->toBe('Double')
+431            ->and($data['seuil_reussite'])->toBe(90.0)
+432            ->and($data['branches_repechage'])->toBe(['Algèbre']);
+433    });

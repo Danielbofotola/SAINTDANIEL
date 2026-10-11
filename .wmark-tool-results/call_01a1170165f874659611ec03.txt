@@ -1,0 +1,70 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\144c63540b62\20261007-163514-bash-call_01a1170165f874659611ec03.txt (1,999 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Structured view (text):
+[powershell — Windows side]
+AffectationCours.php
+AnneeScolaire.php
+Annonce.php
+ArchiveAnnee.php
+Bulletin.php
+CategorieDepense.php
+Classe.php
+CompteComptable.php
+Conversation.php
+Cours.php
+Cycle.php
+DemandeCompte.php
+DemandeInscription.php
+Depense.php
+DocumentEleve.php
+DocumentProfesseur.php
+Ecriture.php
+Eleve.php
+EleveSante.php
+EmploiDuTemps.php
+Evaluation.php
+FraisScolaire.php
+Inscription.php
+LigneEcriture.php
+Message.php
+Note.php
+Option.php
+Paie.php
+Paiement.php
+ParametreSysteme.php
+Periode.php
+Presence.php
+Professeurs.php
+Salaire.php
+Salle.php
+Section.php
+Tuteur.php
+TypeFrais.php
+User.php
+=== role values in code ===
+role = 'admin'
+role="alert"
+role="button"
+role="dialog"
+role="document"
+role="img"
+role="status"
+=== 'parent'|'tuteur' mentions ===
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Http\Controllers\AdminRegistrationRequestController.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Http\Controllers\EleveController.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Http\Controllers\EleveInscriptionController.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Http\Controllers\ModuleSwitchController.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Http\Controllers\ProfesseurPresenceController.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Models\Eleve.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Models\ParametreSysteme.php
+C:\Users\danie\AppData\Roaming\Com
+… 1,141 chars elided …
+reate.blade.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\resources\views\admin\profile\edit.blade.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\resources\views\admin\profile\show.blade.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\resources\views\comptable\dashboard.blade.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\resources\views\messagerie\index.blade.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\resources\views\paiements\recu.blade.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\resources\views\partials\flash.blade.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\resources\views\partials\role-space-styles.blade.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\resources\view
+… 1,942 chars elided …
+><TNRef RefId="1" /><ToString>=== 'parent'|'tuteur' mentions ===</ToString><Props><Obj N="MessageData" RefId="6"><TNRef RefId="2" /><ToString>=== 'parent'|'tuteur' mentions ===</ToString><Props><S N="Message">=== 'parent'|'tuteur' mentions ===</S><B N="NoNewLine">false</B><S N="ForegroundColor">Gray</S><S N="BackgroundColor">Black</S></Props></Obj><S N="Source">Write-Host</S><DT N="TimeGenerated">2026-10-07T16:35:14.2276911+01:00</DT><Obj N="Tags" RefId="7"><TNRef RefId="3" /><LST><S>PSHOST</S></LST></Obj><S N="User">DANIELBOFOTOLA\danie</S><S N="Computer">DanielBofotola</S><U32 N="ProcessId">17956</U32><U32 N="NativeThreadId">22288</U32><U32 N="ManagedThreadId">14</U32></Props></Obj></Objs>

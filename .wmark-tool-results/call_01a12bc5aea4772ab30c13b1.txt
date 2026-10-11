@@ -1,0 +1,14 @@
+39         $bulletinMinistere = $systemSettings->bulletin_ministere ?: "Ministère de l'Enseignement Primaire, Secondaire et Professionnel";
+40         // Titre réel : cycle, section et option de la classe de l'élève
+41         // (dédoublonnés), sauf titre imposé dans les Paramètres de l'établissement.
+42         $structure = collect([$classe?->cycle?->nom, $classe?->section?->nom, $classe?->option?->nom])
+43             ->filter(fn ($valeur) => filled($valeur))
+44             ->unique()
+45             ->implode(' — ');
+46         $bulletinTitre = $systemSettings->bulletin_titre ?: ('Bulletin annuel'.($structure !== '' ? ' — '.$structure : ''));
+47         $bulletinReference = $systemSettings->bulletin_reference ?: 'EBE/P.S./010';
+48         $bulletinSignataire = $systemSettings->bulletin_signataire ?: 'Le Chef d’Établissement';
+49         $bulletinLieuSignature = $systemSettings->bulletin_lieu_signature ?: '__________________________';
+50         $afficherPlace = $systemSettings->bulletin_afficher_place ?? true;
+
+[showing lines 39-50 of 237; read again with offset=51 for more]

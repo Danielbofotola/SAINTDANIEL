@@ -1,0 +1,42 @@
+455            };
+456    
+457            window.envoyerTexte = async function (texteForce) {
+458                const texte = texteForce !== undefined ? texteForce : (input ? input.value.trim() : '');
+459                const joint = AVEC_FICHIER && fichier && fichier.files.length ? fichier.files[0] : null;
+460                if (!texte && !joint) return;
+461    
+462                // Aucun fil ouvert : on démarre une conversation avec le destinataire choisi.
+463                if (!REPONDRE_URL) {
+464                    const sel = document.getElementById('nouveauDest');
+465                    const dest = sel ? sel.value : null;
+466                    if (!dest) { alert('Choisissez d’abord un destinataire.'); return; }
+467                    sendBtn.disabled = true;
+468                    try {
+469                        const donnees = new FormData();
+470                        donnees.append('_token', CSRF);
+471                        donnees.append('sujet', 'Discussion');
+472                        if (texte) donnees.append('corps', texte);
+473                        if (joint) donnees.append('piece_jointe', joint);
+474                        donnees.append('destinataires[]', dest);
+475                        const rep = await fetch(STORE_URL, {
+476                            method: 'POST',
+477                            headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'application/json' },
+478                            body: donnees,
+479                            credentials: 'same-origin',
+480                        });
+481                        const json = await rep.json();
+482                        if (!rep.ok) throw json;
+483                        window.location.assign(ESPACE_URL + '?conversation=' + json.conversation_id);
+484                    } catch (e) {
+485                        alert('Envoi impossible. Vérifiez le destinataire.');
+486                    } finally {
+487                        sendBtn.disabled = false;
+488                    }
+489                    return;
+490                }
+491    
+492                sendBtn.disabled = true;
+493                try {
+494                    const donnees = new FormData();
+
+[showing lines 455-494 of 812; read again with offset=495 for more]

@@ -1,0 +1,62 @@
+115        public function updateAccount(Request $request, User $user): RedirectResponse
+116        {
+117            if ($user->is($request->user())) {
+118                return redirect()->route('admin.profile.edit');
+119            }
+120    
+121            $data = $request->validate([
+122                'nom' => ['nullable', 'string', 'max:50'],
+123                'postnom' => ['nullable', 'string', 'max:50'],
+124                'prenom' => ['nullable', 'string', 'max:50'],
+125                'date_naissance' => ['nullable', 'date', 'before:today'],
+126                'username' => ['required', 'string', 'max:50', Rule::unique('users', 'username')->ignore($user->id)],
+127                'email' => ['required', 'email', 'max:100', Rule::unique('users', 'email')->ignore($user->id)],
+128                'telephone' => ['nullable', 'string', 'max:20'],
+129                'adresse' => ['nullable', 'string', 'max:500'],
+130                'photo' => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:2048'],
+131                'role' => ['required', Rule::in(User::ROLES)],
+132                'statut' => ['required', 'in:actif,inactif'],
+133                'professeur_id' => [
+134                    'nullable',
+135                    'exists:professeurs,id',
+136                    Rule::unique('users', 'professeur_id')->ignore($user->id),
+137                    Rule::requiredIf(fn () => $request->input('role') === 'professeur'),
+138                ],
+139            ]);
+140    
+141            if ($request->hasFile('photo')) {
+142                if ($user->photo) {
+143                    Storage::disk('public')->delete($user->photo);
+144                }
+145    
+146                $data['photo'] = $request->file('photo')->store('users/photos', 'public');
+147            }
+148    
+149            $user->update($data);
+150    
+151            return redirect()->route('admin.profile.accounts')->with('success', 'Le profil utilisateur a été mis à jour.');
+152        }
+153    
+154        /**
+155         * Page dédiée à la réinitialisation des identifiants d'un compte.
+156         */
+157        public function editAccountPassword(User $user): View|RedirectResponse
+158        {
+159            if ($user->is(auth()->user())) {
+160                return redirect()->route('admin.profile.edit')
+161                    ->with('error', 'Utilisez votre profil pour modifier votre propre mot de passe.');
+162            }
+163    
+164            return view('admin.profile.account-password', ['user' => $user]);
+165        }
+166    
+167        /**
+168         * Réinitialise le mot de passe (et le code PIN) d'un autre compte.
+169         */
+170        public function updateAccountPassword(Request $request, User $user): RedirectResponse
+171        {
+172            if ($user->is($request->user())) {
+173                return redirect()->route('admin.profile.edit');
+174            }
+
+[showing lines 115-174 of 437; read again with offset=175 for more]

@@ -1,0 +1,5 @@
+app/Http/Middleware/ (4 lines, newest first):
+  AccessMessagerie.php
+  FlashGlobal.php
+  EnsureUserIsActive.php
+  EnsureUserHasRole.php

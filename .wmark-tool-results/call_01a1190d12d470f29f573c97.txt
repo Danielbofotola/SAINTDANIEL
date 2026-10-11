@@ -1,0 +1,36 @@
+1      <!DOCTYPE html>
+2      <html lang="fr">
+3      <head>
+4          <meta charset="UTF-8">
+5          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+6          <title>Bulletin — {{ $inscription->eleve?->nom }} {{ $inscription->eleve?->prenom }}</title>
+7          <style>
+8              body { font-family: Arial, Helvetica, sans-serif; font-size: 11px; margin: 10px; color: #000; }
+9              .container { width: 100%; max-width: 1000px; margin: 0 auto; border: 2px solid #000; padding: 10px; box-sizing: border-box; }
+10             .header-table { width: 100%; border-collapse: collapse; margin-bottom: 5px; }
+11             .header-table td { text-align: center; vertical-align: middle; }
+12             .header-title { font-weight: bold; font-size: 13px; text-transform: uppercase; }
+13             .info-table { width: 100%; border-collapse: collapse; margin-bottom: 5px; }
+14             .info-table td { border: 1px solid #000; padding: 2px 4px; font-size: 10px; }
+15             .id-grid { display: inline-block; border: 1px solid #000; width: 15px; height: 15px; text-align: center; line-height: 15px; margin-right: 1px; }
+16             .main-table { width: 100%; border-collapse: collapse; font-size: 10px; text-align: center; }
+17             .main-table th, .main-table td { border: 1px solid #000; padding: 2px 3px; }
+18             .main-table th { background-color: #f2f2f2; font-weight: bold; }
+19             .section-header { background-color: #e0e0e0; font-weight: bold; text-align: center; text-transform: uppercase; }
+20             .text-left { text-align: left; padding-left: 5px !important; }
+21             .bg-black { background-color: #000; }
+22             .footer-section { margin-top: 10px; font-size: 10px; line-height: 1.4; }
+23             .footer-table { width: 100%; margin-top: 15px; border-collapse: collapse; }
+24             .footer-table td { vertical-align: top; }
+25             .toolbar { max-width: 1000px; margin: 0 auto 10px; text-align: right; }
+26             @media print { .toolbar { display: none; } body { margin: 0; } .container { border-width: 1px; } }
+27         </style>
+28     </head>
+29     <body>
+30     @php
+31         $fmt = fn ($v) => $v === null ? '' : rtrim(rtrim(number_format((float) $v, 2, '.', ''), '0'), '.');
+32         $eleve = $inscription->eleve;
+33         $classe = $inscription->classe;
+34         $matricule = (string) ($eleve?->matricule ?? '');
+
+[showing lines 1-34 of 210; read again with offset=35 for more]

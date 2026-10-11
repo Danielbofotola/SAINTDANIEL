@@ -1,0 +1,1 @@
+Wrote tests/Feature/FlashGlobalTest.php (37 lines)

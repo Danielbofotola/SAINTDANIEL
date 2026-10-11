@@ -1,0 +1,37 @@
+1      <?php
+2      
+3      namespace App\Models;
+4      
+5      use App\Models\Concerns\BelongsToAnneeScolaire;
+6      use Illuminate\Database\Eloquent\Model;
+7      
+8      /**
+9       * Synthèse figée d'une année clôturée (archives_annees ne stocke que created_at).
+10      */
+11     class ArchiveAnnee extends Model
+12     {
+13         use BelongsToAnneeScolaire;
+14     
+15         protected $table = 'archives_annees';
+16     
+17         public const UPDATED_AT = null;
+18     
+19         protected $fillable = [
+20             'annee_scolaire_id', 'total_eleves_inscrits', 'total_recettes',
+21             'total_depenses', 'solde_final', 'total_attendu', 'total_impayes',
+22             'eleves_garcons', 'eleves_filles', 'total_bulletins', 'total_notes',
+23             'date_cloture', 'remarques',
+24         ];
+25     
+26         protected function casts(): array
+27         {
+28             return [
+29                 'date_cloture' => 'datetime',
+30                 'total_recettes' => 'decimal:2',
+31                 'total_depenses' => 'decimal:2',
+32                 'solde_final' => 'decimal:2',
+33                 'total_attendu' => 'decimal:2',
+34                 'total_impayes' => 'decimal:2',
+35             ];
+36         }
+37     }

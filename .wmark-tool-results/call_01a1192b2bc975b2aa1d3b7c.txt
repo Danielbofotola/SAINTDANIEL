@@ -1,0 +1,6 @@
+Applied patch: 1 file changed (1 updated)
+Updated resources/views/prefecture/eleve-fiche.blade.php (3 hunks applied)
+Landed at lines 354-354 (the file's new text; no re-read needed):
+354                                <tr><th>Date de séance</th><th>Statut</th><th>Motif</th></tr>
+Landed at lines 369-369 (the file's new text; no re-read needed):
+369                                    <tr><td colspan="3" class="text-center text-muted">Aucun appel enregistré pour cet élève.</td></tr>

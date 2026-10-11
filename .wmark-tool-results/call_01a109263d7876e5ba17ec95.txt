@@ -1,0 +1,30 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\e1ce9c26600a\20261005-000049-bash-call_01a109263d7876e5ba17ec95.txt (1,510 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Structured view (text):
+[powershell — Windows side]
+136: Route::get('/admin/profil', [UserProfileController::class, 'show'])->middleware('role:admin')->name('admin.profile.show');
+137: Route::get('/admin/profil/parametres', [ParametreSystemeController::class, 'edit'])->middleware('role:admin')->name('admin.profile.settings');
+138: Route::put('/admin/profil/parametres', [ParametreSystemeController::class, 'update'])->middleware('role:admin')->name('admin.profile.settings.update');
+146: Route::get('/admin/profil/statistiques', [UserProfileController::class, 'statistics'])->middleware('role:admin')->name('admin.profile.statistics');
+147: Route::get('/admin/comptes', [UserProfileController::class, 'accounts'])->middleware('role:admin')->name('admin.profile.accounts');
+148: Route::get('/admin/comptes/{user}/modifier', [UserProfileController::class, 'editAccount'])->middleware('role:admin')->name('admin.profile.accounts.edit');
+149: Route::put('/admin/comptes/{user}', [UserProfileController::class, 'updateAccount'])->middleware('role:admin')->name('admin.profile.accounts.update');
+150: Route::post('/admin/comptes/{user}/impersoner', [UserProfileController::class, 'impersonate'])->middleware('role:admin')->name('admin.profile.accounts.impersonate');
+151: Route::get('/admin/comptes/nouveau', [UserProfileController::class, 'createAccount'])->middleware('role:admin')->name('admin.profile.accounts.create');
+152: Route::post('/admin/comptes', [UserProfileController::class, 'storeAccount'])->middleware('role:adm
+… 808 chars elided …
+min/comptes/{user}/mot-de-passe', [UserProfileController::class, 'editAccountPassword'])->middleware('role:admin')->name('admin.profile.accounts.password.edit');
+159: Route::patch('/admin/comptes/{user}/mot-de-passe', [UserProfileController::class, 'updateAccountPassword'])->middleware('role:admin')->name('admin.profile.accounts.password.update');
+160: Route::delete('/admin/comptes/{user}', [UserProfileController::class, 'destroyAccount'])->middleware('role:admin')->name('admin.profile.accounts.destroy');
+=== controleur ===
+UserProfileController.php
+=== methodes show + view data ===
+return view('admin.profile.account-create', [
+    'professeurs' => Professeurs::where('statut', 'actif')->orderBy('nom')->orderBy('prenom')->get(),
+    ]);
+    }
+    
+Rule::unique('users', 'professeur_id'),
+   
+… 1,608 chars elided …
+min,prefetture,titulaire,professeur,comptable'],
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

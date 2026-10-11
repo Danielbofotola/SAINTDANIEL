@@ -1,0 +1,98 @@
+1      <?php
+2      
+3      namespace App\Http\Controllers;
+4      
+5      use App\Models\AnneeScolaire;
+6      use App\Models\Classe;
+7      use App\Models\FraisScolaire;
+8      use App\Models\Inscription;
+9      use App\Models\Paiement;
+10     use Illuminate\Http\Request;
+11     use Illuminate\Support\Collection;
+12     use Illuminate\View\View;
+13     
+14     class ComptableDashboardController extends Controller
+15     {
+16         /**
+17          * Tableau de bord financier de l'année scolaire en cours.
+18          */
+19         public function index(Request $request): View
+20         {
+21             $schoolYear = AnneeScolaire::enCours();
+22     
+23             $fraisDefinis = 0.0;
+24             $encaisse = 0.0;
+25             $nbPaiements = 0;
+26             $elevesInscrits = 0;
+27             $parClasse = collect();
+28             $derniersPaiements = collect();
+29     
+30             if ($schoolYear) {
+31                 $fraisDefinis = (float) FraisScolaire::query()->anneeEnCours()->sum('montant_exige');
+32                 $encaisse = (float) $this->paiementsDeLAnnee($schoolYear->id)->sum('montant_paye');
+33                 $nbPaiements = $this->paiementsDeLAnnee($schoolYear->id)->count();
+34                 $elevesInscrits = Inscription::query()->anneeEnCours()->where('statut', 'actif')->distinct()->count('eleve_id');
+35                 $parClasse = $this->recouvrementParClasse($schoolYear->id);
+36                 $derniersPaiements = $this->paiementsDeLAnnee($schoolYear->id)
+37                     ->with(['inscription.eleve', 'inscription.classe'])
+38                     ->latest('date_paiement')
+39                     ->limit(8)
+40                     ->get();
+41             }
+42     
+43             $reste = max($fraisDefinis - $encaisse, 0);
+44             $taux = $fraisDefinis > 0 ? round($encaisse / $fraisDefinis * 100, 1) : 0.0;
+45     
+46             return view('comptable.dashboard', [
+47                 'user' => $request->user(),
+48                 'schoolYear' => $schoolYear,
+49                 'fraisDefinis' => $fraisDefinis,
+50                 'encaisse' => $encaisse,
+51                 'reste' => $reste,
+52                 'taux' => $taux,
+53                 'nbPaiements' => $nbPaiements,
+54                 'elevesInscrits' => $elevesInscrits,
+55                 'parClasse' => $parClasse,
+56                 'derniersPaiements' => $derniersPaiements,
+57             ]);
+58         }
+59     
+60         /**
+61          * Les paiements rattachés aux inscriptions de l'année donnée.
+62          */
+63         private function paiementsDeLAnnee(int $anneeId)
+64         {
+65             return Paiement::query()->whereHas('inscription', fn ($query) => $query->where('annee_scolaire_id', $anneeId));
+66         }
+67     
+68         /**
+69          * Montants attendus et encaissés, classe par classe.
+70          */
+71         private function recouvrementParClasse(int $anneeId): Collection
+72         {
+73             $definis = FraisScolaire::query()
+74                 ->anneeEnCours()
+75                 ->selectRaw('classe_id, SUM(montant_exige) as total')
+76                 ->groupBy('classe_id')
+77                 ->pluck('total', 'classe_id');
+78     
+79             $encaisses = Paiement::query()
+80                 ->join('inscriptions', 'inscriptions.id', '=', 'paiements.inscription_id')
+81                 ->where('inscriptions.annee_scolaire_id', $anneeId)
+82                 ->selectRaw('inscriptions.classe_id, SUM(paiements.montant_paye) as total')
+83                 ->groupBy('inscriptions.classe_id')
+84                 ->pluck('total', 'inscriptions.classe_id');
+85     
+86             return Classe::query()
+87                 ->where('statut', 'actif')
+88                 ->orderBy('nom')
+89                 ->get()
+90                 ->map(fn (Classe $classe) => (object) [
+91                     'nom' => $classe->nom,
+92                     'defini' => (float) ($definis[$classe->id] ?? 0),
+93                     'encaisse' => (float) ($encaisses[$classe->id] ?? 0),
+94                 ])
+95                 ->filter(fn (object $ligne) => $ligne->defini > 0 || $ligne->encaisse > 0)
+96                 ->values();
+97         }
+98     }

@@ -1,0 +1,34 @@
+1      <?php
+2      
+3      namespace App\Models;
+4      
+5      use Illuminate\Database\Eloquent\Model;
+6      
+7      class Bulletin extends Model
+8      {
+9          protected $table = 'bulletins';
+10     
+11         protected $fillable = [
+12             'inscription_id', 'periode_id', 'total_points', 'max_possible', 'pourcentage',
+13             'place_classe', 'mention', 'application', 'conduite', 'chemin_pdf', 'statut',
+14         ];
+15     
+16         protected function casts(): array
+17         {
+18             return [
+19                 'total_points' => 'decimal:2',
+20                 'max_possible' => 'decimal:2',
+21                 'pourcentage' => 'decimal:2',
+22             ];
+23         }
+24     
+25         public function inscription()
+26         {
+27             return $this->belongsTo(Inscription::class);
+28         }
+29     
+30         public function periode()
+31         {
+32             return $this->belongsTo(Periode::class);
+33         }
+34     }

@@ -1,0 +1,22 @@
+Applied patch: 1 file changed (1 updated)
+Updated resources/views/prefecture/profil.blade.php (1 hunk applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 180-188 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 180-208:
+180                        <p class="text-muted">Votre compte combine <strong>consultation</strong> et <strong>décisions de supervision</strong> : vous ne saisissez pas les données scolaires réservées à l'administration, mais vous validez et arbitrez la vie scolaire.</p>
+181    
+182                        <h6 class="fw-bold text-primary">Consultation</h6>
+183                        <ul class="list-unstyled mb-3">
+184                            <li class="pb-1"><i class="fas fa-check text-success"></i> Effectifs de l'année en cours (par cycle, par classe, par sexe)</li>
+185                            <li class="pb-1"><i class="fas fa-check text-success"></i> Organisation des classes (cycle, section, option, salle)</li>
+186                            <li class="pb-1"><i class="fas fa-check text-success"></i> Horaire des cours et charge des enseignants</li>
+187                            <li class="pb-1"><i class="fas fa-check text-success"></i> Présence &amp; ponctualité (absences, retards, motifs)</li>
+      … 13 lines omitted …
+201                        </ul>
+202    
+203                        <h6 class="fw-bold text-primary">Hors périmètre</h6>
+204                        <ul class="list-unstyled mb-0">
+205                            <li class="pb-1"><i class="fas fa-times text-danger"></i> Saisie des notes, des inscriptions, des paiements et des frais</li>
+206                            <li class="pb-1"><i class="fas fa-times text-danger"></i> Création ou modification des classes, professeurs et comptes utilisateurs</li>
+207                            <li class="pb-1"><i class="fas fa-times text-danger"></i> Paramétrage de l'établissement et des modules</li>
+208                        </ul>

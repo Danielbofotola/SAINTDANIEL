@@ -1,0 +1,132 @@
+300                    @endif
+301    
+302                    <button class="icon-btn" id="voiceBtn" type="button" onclick="toggleVoice()" title="Message vocal">
+303                        <i class="fa-solid fa-microphone"></i>
+304                    </button>
+305    
+306                    <input type="text" class="chat-input" id="messageInput" maxlength="2000"
+307                           placeholder="Message" autocomplete="off">
+308    
+309                    <div class="rec-status" id="recStatus">
+310                        <span class="rec-dot"></span>
+311                        <span>Enregistrement… <span id="recTimer">0:00</span></span>
+312                    </div>
+313    
+314                    <button class="icon-btn" type="button" onclick="toggleStickers()" title="Stickers"><i class="fa-regular fa-face-smile"></i></button>
+315                    <button class="icon-btn icon-btn--send" id="sendBtn" type="button" onclick="envoyerTexte()" title="Envoyer">
+316                        <i class="fa-solid fa-thumbs-up"></i>
+317                    </button>
+318                </div>
+319            @endif
+320        </section>
+321    </div>
+322    
+323    <div class="reaction-pop" id="reactionPop">
+324        @foreach (['👍','❤️','😂','😮','😢','🙏'] as $reaction)
+325            <span data-emoji="{{ $reaction }}">{{ $reaction }}</span>
+326        @endforeach
+327    </div>
+328    
+329    <div class="compose" id="composeModal">
+330        <div class="compose__box">
+331            <h3><i class="fa-solid fa-pen-to-square"></i> Nouveau message</h3>
+332            <label for="composeDest">Destinataire{{ $composeMultiple ? 's' : '' }}</label>
+333            <select id="composeDest" {{ $composeMultiple ? 'multiple' : '' }} @unless ($composeMultiple) required @endunless>
+334                @if ($composeMultiple)
+335                    <option value="tous">📢 — Tous les utilisateurs ({{ $destinataires->count() + 1 }}) —</option>
+336                @endif
+337                @foreach ($destinataires as $compte)
+338                    @php($nomCompte = trim(($compte->nom ?? '').' '.($compte->prenom ?? '')) ?: $compte->username)
+339                    <option value="{{ $compte->id }}">{{ $nomCompte }} — {{ \App\Models\User::libelleRole($compte->role) }}</option>
+340                @endforeach
+341            </select>
+342            <label for="composeSujet">Objet</label>
+343            <input type="text" id="composeSujet" maxlength="150" placeholder="Ex. Réunion des parents">
+344            <label for="composeCorps">Message</label>
+345            <textarea id="composeCorps" maxlength="2000" placeholder="Votre message…"></textarea>
+346            <div class="compose__actions">
+347                <button class="btn-ghost-2" type="button" onclick="fermerCompose()">Annuler</button>
+348                <button class="btn-compose" type="button" id="composeSend"><i class="fa-solid fa-paper-plane"></i> Envoyer</button>
+349            </div>
+350        </div>
+351    </div>
+352    
+353    @once
+354    <script>
+355        const CSRF = document.querySelector('meta[name="csrf-token"]').content;
+356        const FLUX_URL = @json($active ? route('messagerie.messages', $active) : null);
+357        const REPONDRE_URL = @json($active ? route('messagerie.repondre', $active) : null);
+358        const STORE_URL = @json(route('messagerie.store'));
+359        const DEMARRER_URL = @json(route('messagerie.demarrer'));
+360        const REAGIR_BASE = @json(route('messagerie.reagir', ['message' => '__ID__']));
+361        const ESPACE_URL = @json($espaceUrl);
+362        const AVEC_FICHIER = @json($avecFichier);
+363        const COMPOSE_MULTIPLE = @json($composeMultiple);
+364    
+365        let reponseAId = null;
+366    
+367        /* ---------- Fil temps réel ---------- */
+368        (function () {
+369            const fil = document.getElementById('messagesContainer');
+370            if (!fil) return;
+371    
+372            const input = document.getElementById('messageInput');
+373            const sendBtn = document.getElementById('sendBtn');
+374            const fichier = document.getElementById('fileAttachment');
+375            let dernierId = 0;
+376    
+377            const bulles = fil.querySelectorAll('[data-message-id]');
+378            if (bulles.length) dernierId = Number(bulles[bulles.length - 1].getAttribute('data-message-id')) || 0;
+379    
+380            const bas = () => { fil.scrollTop = fil.scrollHeight; };
+381            bas();
+382    
+383            const ajouter = (html, id) => {
+384                if (!html) return;
+385                fil.insertAdjacentHTML('beforeend', html);
+386                if (id) dernierId = Math.max(dernierId, Number(id));
+387                bas();
+388            };
+389    
+390            const majBadges = (total) => {
+391                document.querySelectorAll('[data-non-lus]').forEach(el => {
+392                    if (total > 0) { el.textContent = total > 99 ? '99+' : total; el.style.display = ''; }
+393                    else { el.style.display = 'none'; }
+394                });
+395            };
+396    
+397            window.envoyerTexte = async function (texteForce) {
+398                const texte = texteForce !== undefined ? texteForce : (input ? input.value.trim() : '');
+399                const joint = AVEC_FICHIER && fichier && fichier.files.length ? fichier.files[0] : null;
+400                if ((!texte && !joint) || !REPONDRE_URL) return;
+401                sendBtn.disabled = true;
+402                try {
+403                    const donnees = new FormData();
+404                    donnees.append('_token', CSRF);
+405                    if (texte) donnees.append('corps', texte);
+406                    if (joint) donnees.append('piece_jointe', joint);
+407                    if (reponseAId) donnees.append('reponse_a_id', reponseAId);
+408                    const rep = await fetch(REPONDRE_URL, {
+409                        method: 'POST',
+410                        headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'application/json' },
+411                        body: donnees,
+412                        credentials: 'same-origin',
+413                    });
+414                    const json = await rep.json();
+415                    if (!rep.ok) throw json;
+416                    ajouter(json.message.html, json.message.id);
+417                    majBadges(json.non_lus);
+418                    if (input) input.value = '';
+419                    if (fichier) fichier.value = '';
+420                    window.annulerReponse();
+421                } catch (e) {
+422                    alert((e && (e.message || (e.errors && e.errors.piece_jointe && e.errors.piece_jointe[0]))) || 'Envoi impossible.');
+423                } finally {
+424                    sendBtn.disabled = false;
+425                    if (input) input.focus();
+426                }
+427            };
+428    
+429            if (input) {
+
+[showing lines 300-429 of 594; read again with offset=430 for more]

@@ -1,0 +1,22 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\b493c9bc81dc\20261008-004700-bash-call_01a118c3a0ff7519af498600.txt (710 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+[powershell — Windows side]
+=== 'droits nécessaires' refs ===
+resources\views\errors\403.blade.php:5: @section('message', "Vous n’avez pas les droits nécessaires pour accéder à cette page.")
+=== abort(403) refs ===
+app\Http\Controllers\AppelController.php:26: abort_unless(
+app\Http\Controllers\AppelController.php:28: 403,
+app\Http\Controllers\AppelController.php:36: abort_if(! $destinataire, 422, 'Aucun correspondant joignable dans cette conversation.');
+app\Http\Controllers\AppelController.php:
+
+... 489 chars truncated ...
+
+es->contains('id', $eleve->id), 403, 'Cet élève n’est pas inscrit dans une de vos classes.');
+app\Http\Controllers\ProfesseurEspaceController.php:211: abort_unless(
+app\Http\Controllers\ProfesseurEspaceController.php:213: 403,
+app\Http\Controllers\ProfesseurEvaluationController.php:172: abort_unless($affectations->contains('id', $evaluation->affectation_id), 403, 'Cette évaluation ne concerne pas vos cours.');
+app\Http\Controllers\UserProfileController.php:30: abort_unless($user->statut === 'actif', 404);
+app\Http\Middleware\EnsureUserHasRole.php:14: abort(403, 'Les accès administrateur sont désactivés pendant une session de consultation.');
+app\Http\Middleware\EnsureUserHasRole.php:18: abort(403, 'Vous n’avez pas accès à cette page.');
+app\Http\Middleware\EnsureUserIsActive.php:30: return response()->json(['message' => $message], 403);
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

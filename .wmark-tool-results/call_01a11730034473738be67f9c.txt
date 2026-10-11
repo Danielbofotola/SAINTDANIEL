@@ -1,0 +1,35 @@
+528            if (FLUX_URL) {
+529                // Réception quasi instantanée : on interroge le fil chaque seconde
+530                // (au lieu de 4 s) et immédiatement dès que l'onglet redevient actif.
+531                const attendre = ms => new Promise(r => setTimeout(r, ms));
+532                const recuperer = async () => {
+533                    try {
+534                        const rep = await fetch(FLUX_URL + '?apres=' + dernierId, {
+535                            headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+536                            credentials: 'same-origin',
+537                        });
+538                        if (!rep.ok) return;
+539                        const json = await rep.json();
+540                        (json.messages || []).forEach(m => ajouter(m.html, m.id));
+541                        majBadges(json.non_lus);
+542                    } catch (e) { /* réessai au tour suivant */ }
+543                };
+544    
+545                (async function boucle() {
+546                    while (true) {
+547                        await attendre(1000);
+548                        if (document.hidden) continue;
+549                        await recuperer();
+550                    }
+551                })();
+552    
+553                window.addEventListener('focus', recuperer);
+554                document.addEventListener('visibilitychange', () => { if (!document.hidden) recuperer(); });
+555            }
+556        })();
+557    
+558        window.toggleStickers = function () {
+559            document.getElementById('stickerPicker').classList.toggle('on');
+560        };
+
+[showing lines 528-561 of 823; read again with offset=562 for more]

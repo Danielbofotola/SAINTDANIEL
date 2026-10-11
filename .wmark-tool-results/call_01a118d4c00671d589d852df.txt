@@ -1,0 +1,22 @@
+195    
+196    test('en consultation, une route strictement réservée à l’admin reste interdite', function () {
+197        $admin = User::factory()->create(['role' => 'admin']);
+198        $parent = User::factory()->create(['role' => 'parent']);
+199    
+200        $this->actingAs($parent)
+201            ->withSession(['impersonating_admin_id' => $admin->id])
+202            ->get(route('admin.dashboard'))
+203            ->assertForbidden();
+204    });
+205    
+206    test('le portail d’un parent ne propose que le préfet comme correspondant', function () {
+207        reglerPortailParents(true);
+208    
+209        $parent = User::factory()->create(['role' => 'parent']);
+210        $prefet = User::factory()->create(['role' => 'prefetture']);
+211        User::factory()->create(['role' => 'professeur']);
+212        User::factory()->create(['role' => 'comptable']);
+213    
+214        $reponse = $this->actingAs($parent)->get(route('parent.dashboard'))->assertOk();
+
+[showing lines 195-214 of 345; read again with offset=215 for more]

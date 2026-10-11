@@ -1,0 +1,28 @@
+126                    ->selectRaw('role, COUNT(*) as total')
+127                    ->groupBy('role')
+128                    ->pluck('total', 'role'),
+129                'comptes' => User::query()
+130                    ->orderBy('role')
+131                    ->orderBy('nom')
+132                    ->orderBy('prenom')
+133                    ->get(),
+134                'professeurs' => Professeurs::query()->orderBy('nom')->orderBy('prenom')->get(),
+135            ]);
+136        }
+137    
+138        /**
+139         * Profil du préfet : identité, coordonnées, activité et périmètre du rôle.
+140         */
+141        public function profil(Request $request): View
+142        {
+143            $utilisateur = $request->user();
+144    
+145            return view('prefecture.profil', [
+146                'user' => $utilisateur,
+147                'schoolYear' => AnneeScolaire::enCours(),
+148                'notificationsTotal' => $utilisateur->notifications()->count(),
+149                'notificationsNonLues' => $utilisateur->notifications()->whereNull('read_at')->count(),
+150                'dernieresNotifications' => $utilisateur->notifications()->latest()->limit(5)->get(),
+151                'effectifTotal' => Eleve::inscritAnneeEnCours()->where('statut', 'actif')->count(),
+
+[showing lines 126-151 of 362; read again with offset=152 for more]

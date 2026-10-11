@@ -1,0 +1,7 @@
+100        Route::delete('/admin/archives/{archiveAnnee}', [ArchiveAnneeController::class, 'destroy'])->middleware('role:admin')->name('admin.archives.destroy');
+101        Route::get('/admin/cycles', [CycleController::class, 'index'])->middleware('role:admin')->name('admin.cycles.index');
+102        Route::post('/admin/cycles', [CycleController::class, 'store'])->middleware('role:admin')->name('admin.cycles.store');
+103        Route::patch('/admin/cycles/{cycle}/statut', [CycleController::class, 'toggleStatus'])->middleware('role:admin')->name('admin.cycles.toggle-status');
+104        Route::delete('/admin/cycles/{cycle}', [CycleController::class, 'destroy'])->middleware('role:admin')->name('admin.cycles.destroy');
+
+[showing lines 100-104 of 171; read again with offset=105 for more]

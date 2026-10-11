@@ -1,0 +1,12 @@
+452    
+453    test('l’en-tête du bulletin affiche le cycle réel de la classe et l’année scolaire', function () {
+454        DB::table('parametres_systeme')->delete(); // aucun titre imposé → titre déduit du cycle
+455        $inscriptionId = seedBulletinEleve();
+456        $admin = User::factory()->create(['role' => 'admin']);
+457    
+458        $this->actingAs($admin)
+459            ->get(route('admin.bulletins.document', $inscriptionId))
+460            ->assertOk()
+461            ->assertSee('Bulletin annuel — Cycle terminal de l’éducation de base (CTEB)')
+462            ->assertSee('ANNÉE SCOLAIRE 2026-2027');
+463    });

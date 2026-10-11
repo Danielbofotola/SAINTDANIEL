@@ -1,0 +1,17 @@
+315            ->assertSee('Contrôle de géométrie')
+316            ->assertSee('Élèves concernés')
+317            ->assertSee('storage/users/photo-mise-a-jour.jpg', false)
+318            ->assertDontSee('storage/professeurs/ancienne-photo.jpg', false)
+319            ->assertSee('2');
+320    });
+321    
+322    test('admin can view account and school charts on a dedicated statistics page', function () {
+323        foreach (['eleves', 'classes', 'professeurs', 'salles'] as $tableName) {
+324            Schema::dropIfExists($tableName);
+325        }
+326    
+327        Schema::create('eleves', function (Blueprint $table) {
+328            $table->id();
+329            $table->string('statut');
+
+[showing lines 315-329 of 480; read again with offset=330 for more]

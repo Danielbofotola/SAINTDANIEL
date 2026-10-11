@@ -1,0 +1,1 @@
+Wrote resources/views/admin/modules/index.blade.php (66 lines)

@@ -1,0 +1,47 @@
+500            pop.classList.add('on');
+501            const r = bouton.getBoundingClientRect();
+502            pop.style.left = Math.max(8, r.left - 40) + 'px';
+503            pop.style.top = (r.top - 46) + 'px';
+504        };
+505    
+506        document.getElementById('reactionPop')?.addEventListener('click', async function (e) {
+507            const cible = e.target.closest('span[data-emoji]');
+508            if (!cible) return;
+509            const id = this.dataset.messageId;
+510            const emoji = cible.dataset.emoji;
+511            this.classList.remove('on');
+512            try {
+513                const donnees = new FormData();
+514                donnees.append('_token', CSRF);
+515                donnees.append('reaction', emoji);
+516                const rep = await fetch(REAGIR_BASE.replace('__ID__', id), {
+517                    method: 'POST',
+518                    headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'application/json' },
+519                    body: donnees,
+520                    credentials: 'same-origin',
+521                });
+522                const json = await rep.json();
+523                if (!rep.ok) throw json;
+524                const el = document.querySelector('[data-message-id="' + id + '"]');
+525                if (el && json.message.html) el.outerHTML = json.message.html;
+526            } catch (err) {
+527                alert('Impossible de réagir.');
+528            }
+529        });
+530    
+531        document.addEventListener('click', function (e) {
+532            const pop = document.getElementById('reactionPop');
+533            if (pop && pop.classList.contains('on') && !pop.contains(e.target) && !e.target.closest('.bulle-action')) {
+534                pop.classList.remove('on');
+535            }
+536        });
+537    
+538        /* ---------- Correspondants / Discussions ---------- */
+539        window.msgTab = function (cible, bouton) {
+540            document.querySelectorAll('.msg-tab').forEach(b => b.classList.toggle('active', b === bouton));
+541            document.querySelectorAll('[data-vue]').forEach(el => {
+542                el.style.display = el.getAttribute('data-vue') === cible ? '' : 'none';
+543            });
+544        };
+
+[showing lines 500-544 of 607; read again with offset=545 for more]

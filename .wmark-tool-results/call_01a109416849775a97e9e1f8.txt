@@ -1,0 +1,1 @@
+Updated resources/views/partials/raccourcis.blade.php: replaced 1 lines with 1 lines

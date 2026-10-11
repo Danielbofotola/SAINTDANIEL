@@ -1,0 +1,9 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/ComptableCaisseTest.php (1 hunk applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 178-180 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 180-183:
+180            ->assertSee('classesParInscription', false)
+181            // La date se saisit manuellement au format jj/mm/aaaa (masque JS).
+182            ->assertSee('data-date-fr', false)
+183            ->assertSee('js/date-fr.js', false);

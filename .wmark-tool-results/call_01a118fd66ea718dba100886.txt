@@ -1,0 +1,9 @@
+242        Route::get('/prefecture/tableau-de-bord', [PrefectureDashboardController::class, 'index'])->middleware('role:prefetture')->name('prefecture.dashboard');
+243        Route::get('/prefecture/effectifs', [PrefectureDashboardController::class, 'effectifs'])->middleware('role:prefetture')->name('prefecture.effectifs');
+244        Route::get('/prefecture/classes', [PrefectureDashboardController::class, 'classes'])->middleware('role:prefetture')->name('prefecture.classes');
+245        Route::get('/prefecture/personnel', [PrefectureDashboardController::class, 'personnel'])->middleware('role:prefetture')->name('prefecture.personnel');
+246        Route::get('/prefecture/profil', [PrefectureDashboardController::class, 'profil'])->middleware('role:prefetture')->name('prefecture.profil');
+247        Route::get('/titulaire/tableau-de-bord', [TitulaireDashboardController::class, 'index'])->middleware('role:titulaire')->name('titulaire.dashboard');
+248        Route::get('/professeur/tableau-de-bord', [ProfesseurDashboardController::class, 'index'])->middleware('role:professeur')->name('professeur.dashboard');
+
+[showing lines 242-248 of 277; read again with offset=249 for more]

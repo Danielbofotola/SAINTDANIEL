@@ -1,0 +1,15 @@
+[powershell — Windows side]
+✓ the picture of the correspondent is displayed in the thread and the list                                     0.04s  
+  ✓ an image can be attached to a reply and is shown in the thread                                               0.05s  
+  ✓ an image can be sent without text, the size and the format are checked                                       0.05s  
+
+   PASS  Tests\Feature\MessagerieAccesTest
+  ✓ every role gets a messenger button on a page that does not offer it                                          0.07s  
+  ✓ the button carries the unread counter                                                                        0.04s  
+  ✓ no duplicate on a page that already offers the messenger                                                     0.03s  
+
+  Tests:    18 passed (107 assertions)
+  Duration: 1.05s
+
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

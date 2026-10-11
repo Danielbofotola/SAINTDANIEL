@@ -1,0 +1,31 @@
+Applied patch: 1 file changed (1 updated)
+Updated app/Http/Controllers/PortailParentController.php (3 hunks applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 2: context matched at lines 38-38 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+  ⚠ hunk 3: context matched at lines 50-57 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 40-82:
+40             // Enfants rattachés à ce compte parent (lien posé par l'admin).
+41             $enfants = $utilisateur->role === 'parent'
+42                 ? $utilisateur->eleves()
+43                     ->with(['inscriptions' => fn ($query) => $query->anneeEnCours()->with('classe')])
+44                     ->orderBy('nom')
+45                     ->orderBy('prenom')
+46                     ->get()
+47                 : collect();
+      … 27 lines omitted …
+75                     ->get()
+76                     ->each(function (Evaluation $evaluation) use ($notes) {
+77                         $note = $notes->first(fn (Note $item) => (int) $item->evaluation_id === (int) $evaluation->id);
+78                         $evaluation->setAttribute('ma_note', $note?->note_obtenue);
+79                     });
+80             }
+81     
+82             return view('parent.portail', [
+Auto-corrected hunk landed at lines 94-97:
+94                 'enfants' => $enfants,
+95                 'enfantActif' => $enfantActif,
+96                 'notes' => $notes,
+97                 'travaux' => $travaux,
+Landed at lines 6-7 (the file's new text; no re-read needed):
+6      use App\Models\Evaluation;
+7      use App\Models\Note;

@@ -1,0 +1,24 @@
+14         ] as $table) {
+15             Schema::dropIfExists($table);
+16         }
+17         Schema::enableForeignKeyConstraints();
+18     
+19         Schema::create('users', function (Blueprint $table) {
+20             $table->id();
+21             $table->unsignedBigInteger('professeur_id')->nullable()->unique();
+22             $table->string('nom', 50)->nullable();
+23             $table->string('postnom', 50)->nullable();
+24             $table->string('prenom', 50)->nullable();
+25             $table->date('date_naissance')->nullable();
+26             $table->string('username', 50)->unique();
+27             $table->string('email', 100)->unique();
+28             $table->string('telephone', 20)->nullable();
+29             $table->text('adresse')->nullable();
+30             $table->string('photo')->nullable();
+31             $table->string('password');
+32             $table->string('pin_code')->nullable();
+33             $table->string('role');
+34             $table->string('statut');
+35             $table->dateTime('last_login')->nullable();
+
+[showing lines 14-35 of 294; read again with offset=36 for more]

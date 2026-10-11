@@ -1,0 +1,28 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\b493c9bc81dc\20261008-010043-bash-call_01a118d02dba765192c16cfa.txt (959 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+[powershell — Windows side]
+8: *  - $user, $conversations, $active, $messages, $destinataires, $nonLus
+11: *  - $composeMultiple: autoriser plusieurs destinataires + diffusion « tous »
+15: // Sans discussion en cours : on ouvre sur la liste des correspondants.
+16: $vueParDefaut = $conversations->isEmpty() ? 'correspondants' : 'discussions';
+29: $correspondant = $conversation->participants->firstWhere('id', '!=', $user->id);
+30: if ($conversation->type === 'directe' && $correspondant) {
+31: retur
+
+... 1,241 chars truncated ...
+
+option value="{{ $compte->id }}">{{ $nomCompte }} — {{ \App\Models\User::libelleRole($compte->role) }}</option>
+545: donnees.append('destinataires[]', dest);
+742: donnees.append('destinataires[]', dest);
+846: /* ---------- Correspondants / Discussions ---------- */
+854: /* Retour (vue mobile) : on revient sur la liste des CORRESPONDANTS, pour
+862: const onglet = document.querySelector('.msg-tab[data-cible="correspondants"]');
+863: if (onglet) window.msgTab('correspondants', onglet);
+884: /* Vue mobile : on ouvre d'abord sur les correspondants (les autres personnes). */
+886: const onglet = document.querySelector('.msg-tab[data-cible="correspondants"]');
+887: if (onglet) window.msgTab('correspondants', onglet);
+926: choix.forEach(c => donnees.append('destinataires[]', c));
+946: document.querySelectorAll('#convContainer .conv, #contactsContainer .conv').forEach(conv => {
+953: @include('messagerie._appels', ['nomCorrespondant' => $active ? $nomConversation($active) : null])
+956: 'correspondantId' => $active ? $active->participants->firstWhere('id', '!=', $user->id)?->id : null,
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

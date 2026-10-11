@@ -1,0 +1,16 @@
+266                'notesSaisies' => (int) $evaluations->sum('notes_count'),
+267            ]);
+268        }
+269    
+270        /**
+271         * Dossiers élèves : recherche et synthèse (classe, tuteur, santé).
+272         */
+273        public function eleves(Request $request): View
+274        {
+275            $recherche = trim((string) $request->query('q', ''));
+276    
+277            $eleves = Eleve::query()
+278                ->when($recherche !== '', fn ($query) => $query->where(function ($sous) use ($recherche) {
+279                    $sous->where('nom', 'like', "%{$recherche}%")
+
+[showing lines 266-279 of 459; read again with offset=280 for more]

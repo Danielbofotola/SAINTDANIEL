@@ -1,0 +1,5 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/FinancesPagesTest.php (1 hunk applied)
+Landed at lines 237-238 (the file's new text; no re-read needed):
+237            $table->decimal('total_salaires', 12, 2)->default(0);
+238            $table->unsignedInteger('nombre_paies')->default(0);

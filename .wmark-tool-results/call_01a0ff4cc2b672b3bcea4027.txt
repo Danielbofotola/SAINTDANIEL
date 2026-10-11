@@ -1,0 +1,28 @@
+[powershell — Windows side]
+Failed asserting that two strings are identical.
+--- Expected
++++ Actual
+@@ @@
+-'SCIENTIFIQUE'
++'code'
+
+  at tests\Feature\AdminUserManagementTest.php:402
+    398▕         'section_id' => 1,
+    399▕         'nom' => 'Mathématiques - Physique',
+    400▕     ])->assertRedirect(route('admin.classes.create', ['section_id' => 1, 'option_id' => 1]));
+    401▕ 
+  ➜ 402▕     expect(DB::table('sections')->where('id', 1)->value('code'))->toBe('SCIENTIFIQUE')
+    403▕         ->and(DB::table('options')->where('id', 1)->value('code'))->toBe('MATHEMATIQUES-PHYSIQUE');
+    404▕ 
+    405▕     foreach (['classes', 'salles', 'cycles'] as $tableName) {
+    406▕         Schema::dropIfExists($tableName);
+
+  1   tests\Feature\AdminUserManagementTest.php:402
+
+
+  Tests:    1 failed (10 assertions)
+  Duration: 0.41s
+
+
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

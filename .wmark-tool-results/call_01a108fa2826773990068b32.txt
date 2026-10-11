@@ -1,0 +1,12 @@
+165        Schema::create('archives_annees', function (Blueprint $table) {
+166            $table->id();
+167            $table->unsignedBigInteger('annee_scolaire_id')->unique();
+168            $table->unsignedInteger('total_eleves_inscrits')->default(0);
+169            $table->decimal('total_recettes', 12, 2)->default(0);
+170            $table->decimal('total_depenses', 12, 2)->default(0);
+171            $table->decimal('solde_final', 12, 2)->default(0);
+172            $table->dateTime('date_cloture')->nullable();
+173            $table->text('remarques')->nullable();
+174            $table->timestamp('created_at')->nullable();
+
+[showing lines 165-174 of 461; read again with offset=175 for more]

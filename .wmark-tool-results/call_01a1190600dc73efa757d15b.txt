@@ -1,0 +1,2 @@
+Applied patch: 1 file changed (1 updated)
+Updated resources/views/prefecture/layout.blade.php (1 hunk applied)

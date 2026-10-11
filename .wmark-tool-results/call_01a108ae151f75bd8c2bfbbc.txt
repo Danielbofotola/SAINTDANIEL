@@ -1,0 +1,10 @@
+Applied patch: 1 file changed (1 updated)
+Updated resources/views/admin/affectations/index.blade.php (2 hunks applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 53-53 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+  ⚠ hunk 2: context matched at lines 61-61 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 54-55:
+54                                 <div class="col-md-4 form-group"><label class="form-label">Max. Travaux journ.</label><input class="form-control" type="number" name="max_travaux_journaliers" value="{{ old('max_travaux_journaliers') }}" min="0" max="1000" placeholder="Ex. 20"><small class="text-muted">Maximum de la branche par période</small></div>
+55                                 <div class="col-md-4 form-group"><label class="form-label">Max. Examen</label><input class="form-control" type="number" name="max_examen" value="{{ old('max_examen') }}" min="0" max="1000" placeholder="Ex. 40"></div>
+Auto-corrected hunk landed at lines 63-63:
+63                                 <span><strong>{{ $coursItem->code }}</strong> — {{ $coursItem->intitule }} <small class="text-muted">(pondération {{ $coursItem->ponderation }}@if ($coursItem->maximumParPeriode() !== null) · max/période {{ $coursItem->maximumParPeriode() }}@endif)</small></span>

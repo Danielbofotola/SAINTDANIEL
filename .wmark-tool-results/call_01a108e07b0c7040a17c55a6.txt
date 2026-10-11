@@ -1,0 +1,19 @@
+[powershell — Windows side]
+at tests\Feature\ComptableCaisseTest.php:280
+    276▕     $comptable = User::factory()->create(['role' => 'comptable']);
+    277▕ 
+    278▕     $this->actingAs($comptable)
+    279▕         ->get(route('comptable.paiements.index', ['classe_id' => 1]))
+  ➜ 280▕         ->assertOk()
+    281▕         ->assertSee('tarifsDisponibles', false)
+    282▕         ->assertSee('Frais scolaires — 3e A', false)
+    283▕         ->assertDontSee('— 4e B', false);
+    284▕ });
+
+
+  Tests:    3 failed, 5 passed (25 assertions)
+  Duration: 2.22s
+
+==exit 1==
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

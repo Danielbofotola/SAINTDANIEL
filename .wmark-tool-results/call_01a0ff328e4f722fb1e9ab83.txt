@@ -1,0 +1,54 @@
+1      <?php
+2      
+3      namespace App\Http\Controllers;
+4      
+5      use App\Models\Eleve;
+6      use App\Models\AnneeScolaire;
+7      use App\Models\Classe;
+8      use App\Models\Professeurs;
+9      use App\Models\Cycle;
+10     use Illuminate\Support\Facades\DB;
+11     use Illuminate\View\View;
+12     
+13     class AdminDashboardController extends Controller
+14     {
+15         public function index(): View
+16         {
+17             $anneeId = AnneeScolaire::enCours()?->id;
+18     
+19             return view('admin.dashboard', [
+20                 'eleves' => Eleve::with(['inscriptions.classe.cycle'])
+21                     ->inscritAnneeEnCours()
+22                     ->latest()
+23                     ->get(),
+24                 'statistiques' => [
+25                     'garcons' => Eleve::inscritAnneeEnCours()->where('statut', 'actif')->where('sexe', 'M')->count(),
+26                     'filles' => Eleve::inscritAnneeEnCours()->where('statut', 'actif')->where('sexe', 'F')->count(),
+27                     'classes' => Classe::where('statut', 'actif')->count(),
+28                     'professeurs' => Professeurs::where('statut', 'actif')->count(),
+29                 ],
+30                 'occupationSalles' => Classe::with('salle')
+31                     ->withCount(['inscriptions as eleves_count' => fn ($query) => $query->anneeEnCours()->where('statut', 'actif')])
+32                     ->where('statut', 'actif')
+33                     ->orderBy('nom')
+34                     ->get(),
+35                 'repartitionCycles' => DB::table('cycles')
+36                     ->leftJoin('classes', fn ($join) => $join->on('classes.cycle_id', '=', 'cycles.id')->where('classes.statut', 'actif'))
+37                     ->leftJoin('inscriptions', function ($join) use ($anneeId) {
+38                         $join->on('inscriptions.classe_id', '=', 'classes.id')
+39                             ->where('inscriptions.statut', 'actif');
+40     
+41                         if ($anneeId) {
+42                             $join->where('inscriptions.annee_scolaire_id', $anneeId);
+43                         } else {
+44                             $join->whereRaw('1 = 0');
+45                         }
+46                     })
+47                     ->where('cycles.statut', 'actif')
+48                     ->groupBy('cycles.id', 'cycles.nom')
+49                     ->orderBy('cycles.nom')
+50                     ->selectRaw('cycles.nom, COUNT(inscriptions.id) as total')
+51                     ->get(),
+52             ]);
+53         }
+54     }

@@ -1,0 +1,8 @@
+Created 7 tasks:
+  [pending] migr: Migration: devise sur frais_scolaires, devise/taux/montant_recu sur paiements, devise/taux_change sur parametres_systeme
+  [pending] monnaie: Helper App\Support\Monnaie (format/symbole/convertir) + modèles (Paiement, FraisScolaire, ParametreSysteme)
+  [pending] caisse: Caisse::enregistrer : devise reçue + taux → montant_paye converti en devise du tarif
+  [pending] forms: Formulaires de paiement (admin + comptable) : devise + taux, affichage formaté
+  [pending] frais: Frais: devise par ligne + réglage global (settings)
+  [pending] recu: Reçu: devise et montants (1 criteria)
+  [pending] tests: Tests: devise/taux/conversion + suite complète verte (3 criteria)

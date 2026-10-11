@@ -1,0 +1,61 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\e1ce9c26600a\20261004-222356-bash-call_01a108cd8a8b7366b04140eb.txt (1,092 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Structured view (text):
+[powershell — Windows side]
+Concerns
+AffectationCours.php
+AnneeScolaire.php
+ArchiveAnnee.php
+Bulletin.php
+CategorieDepense.php
+Classe.php
+Cours.php
+Cycle.php
+DemandeCompte.php
+DemandeInscription.php
+Depense.php
+DocumentEleve.php
+DocumentProfesseur.php
+Eleve.php
+EleveSante.php
+EmploiDuTemps.php
+Evaluation.php
+FraisScolaire.php
+Inscription.php
+Note.php
+Option.php
+Paiement.php
+ParametreSysteme.php
+Periode.php
+Professeurs.php
+Salle.php
+Section.php
+Tuteur.php
+TypeFrais.php
+User.php
+---- typeFrais usages ----
+ArchiveAnneeController.php:73: ->groupBy(fn (Paiement $paiement) => $paiement->fraisScolaire?->typeFrais?->nom ?? 'Autre')
+ArchiveAnneeController.php:102: ->with(['inscription.eleve', 'inscription.classe', 'fraisScolaire.typeFrais'])
+ComptablePaiementController.php:44: ->with(['typeFrais', 'classe'])
+ComptablePaiementController.php:62: ->with(['inscription.eleve', 'inscription.classe', 'fraisScolaire.typeFrais'])
+ComptableRecouvrementController.php:64: ->with(['inscription.eleve', 'inscription.classe', 'fraisScolaire.typeFrais', 'periode'])
+FraisController.php:8: use App\Models\TypeFrais;
+FraisController.php:20: 'types' => TypeFrais::query()
+FraisController.php:26: ->with(['typeFrais', 'classe'])
+FraisController.php:27: ->orderBy('type_frais_id')
+FraisController.php:31: 'typesActifs' => TypeFrais::where('statut', 'actif')->orderBy('nom')->get(),
+FraisController.php:38: 'nom' => ['required', 'string', 'max:100', 'unique:types_frais,nom'],
+FraisController.php:45: TypeFrais::crea
+… 0 chars elided …
+te($data + ['statut' => 'actif']);
+FraisController.php:50: public function toggleType(TypeFrais $typeFrais): RedirectResponse
+FraisController.php:52: $typeFrais->update(['statut' => $typeFrais->statut === 'actif' ? 'inactif' : 'actif']);
+FraisController.php:57: public function destroyType(TypeFrais $typeFrais): RedirectResponse
+FraisController.php:59: if ($typeFrais->fraisScolaires()->exists()) {
+FraisController.php:63: $typeFrais->delete();
+FraisController.php:77: 'type_frais_id' => ['required', Rule::exists('types_frais', 'id')->where('statut', 'actif')],
+FraisController.php:82: 'type_frais_id.required' => 'S�lectionnez un type de frais.',
+FraisController.php:89: ->where('type_frais_id', $data['type_frais_id'])
+PaiementController.php:29: ->with(['inscription.eleve', 'inscription.classe',
+… 412 chars elided …
+raisScolaire.php:24: public function typeFrais()
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

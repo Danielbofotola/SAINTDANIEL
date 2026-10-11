@@ -1,0 +1,14 @@
+[powershell — Windows side]
+PASS  Tests\Feature\HomeRedirectTest
+  ✓ each role is sent from /accueil to its own dashboard                                                         0.20s  
+  ✓ an unknown role is sent to the profile instead of looping on /accueil                                        0.02s  
+  ✓ every dashboard route name used by the role mapping exists                                                   0.01s  
+  ✓ the profile page links back to the role dashboard, not to the placeholder                                    0.04s  
+  ✓ an admin impersonating a user lands on that user dashboard                                                   0.04s  
+
+  Tests:    5 passed (26 assertions)
+  Duration: 0.51s
+
+
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

@@ -1,0 +1,60 @@
+1      <?php
+2      
+3      use Illuminate\Database\Migrations\Migration;
+4      use Illuminate\Database\Schema\Blueprint;
+5      use Illuminate\Support\Facades\Schema;
+6      
+7      return new class extends Migration
+8      {
+9          public function up(): void
+10         {
+11             Schema::create('demandes_inscription', function (Blueprint $table) {
+12                 $table->id();
+13                 $table->string('nom', 50);
+14                 $table->string('postnom', 50)->nullable();
+15                 $table->string('prenom', 50);
+16                 $table->enum('sexe', ['M', 'F']);
+17                 $table->date('date_naissance');
+18                 $table->string('lieu_naissance', 100)->nullable();
+19                 $table->foreignId('classe_id')->nullable()->constrained('classes')->nullOnDelete();
+20                 $table->foreignId('annee_scolaire_id')->nullable()->constrained('annees_scolaires')->nullOnDelete();
+21                 $table->string('nom_mere', 100);
+22                 $table->string('telephone_mere', 20);
+23                 $table->string('email_mere', 100)->nullable();
+24                 $table->text('adresse_mere')->nullable();
+25                 $table->string('nom_pere', 100)->nullable();
+26                 $table->string('telephone_pere', 20)->nullable();
+27                 $table->string('email_pere', 100)->nullable();
+28                 $table->string('statut', 20)->default('en_attente');
+29                 $table->foreignId('traite_par')->nullable()->constrained('users')->nullOnDelete();
+30                 $table->timestamp('traite_le')->nullable();
+31                 $table->text('motif_refus')->nullable();
+32                 $table->timestamps();
+33                 $table->index(['statut', 'created_at']);
+34             });
+35     
+36             Schema::create('demandes_comptes', function (Blueprint $table) {
+37                 $table->id();
+38                 $table->string('nom', 50);
+39                 $table->string('postnom', 50)->nullable();
+40                 $table->string('prenom', 50);
+41                 $table->string('username', 50);
+42                 $table->string('email', 100);
+43                 $table->string('telephone', 20)->nullable();
+44                 $table->string('role_souhaite', 20);
+45                 $table->string('mot_de_passe')->nullable();
+46                 $table->string('statut', 20)->default('en_attente');
+47                 $table->foreignId('traite_par')->nullable()->constrained('users')->nullOnDelete();
+48                 $table->timestamp('traite_le')->nullable();
+49                 $table->text('motif_refus')->nullable();
+50                 $table->timestamps();
+51                 $table->index(['statut', 'created_at']);
+52             });
+53         }
+54     
+55         public function down(): void
+56         {
+57             Schema::dropIfExists('demandes_comptes');
+58             Schema::dropIfExists('demandes_inscription');
+59         }
+60     };

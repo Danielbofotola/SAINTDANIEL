@@ -1,0 +1,21 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\b493c9bc81dc\20261008-015744-bash-call_01a119045f797180bcc5a986.txt (870 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+[powershell — Windows side]
+=== periode : values de statut ===
+EvaluationController.php:40: 'periodes' => Periode::anneeEnCours()->where('statut', 'actif')->orderBy('id')->get(),
+EvaluationController.php:58: 'periode_id' => ['required', Rule::exists('periodes', 'id')->where('annee_scolaire_id', $annee->id)->where('statut', 'actif')],
+PaieController.php:65: 'totalMois' => (float) Paie::where('statut', 'actif')->where('periode', $moisCourant)->sum('montant_net'),
+PaieController.php:66: 'totalAnnee
+
+... 812 chars truncated ...
+
+'Désactiver' : 'Activer' }}"><i class="fa fa-power-off"></i></button>
+=== bulletin : statut + pdf ===
+BulletinController.php:120: ->route('admin.bulletins.index', ['periode_id' => $periode->id, 'classe_id' => $classe->id])
+EleveInscriptionController.php:67: foreach (['acte_naissance', 'bulletin', 'certificat_medical'] as $type) if ($request->hasFile($type)) DB::table('documents_eleves')->insert(['eleve_id' => $eleve->id, 'type_document' => $type, 'chemin_fichier' => $request->file($type)->store('eleves/documents', 'public'), 'statut' => 'actif', 'created_at' => now()]);
+=== routes bulletins ===
+24: use App\Http\Controllers\BulletinController;
+102: Route::get('/admin/bulletins', [BulletinController::class, 'index'])->middleware('role:admin')->name('admin.bulletins.index');
+103: Route::post('/admin/bulletins/generer', [BulletinController::class, 'generate'])->middleware('role:admin')->name('admin.bulletins.generate');
+104: Route::get('/admin/bulletins/{inscription}/document', [BulletinController::class, 'document'])->middleware('role:admin')->name('admin.bulletins.document');
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

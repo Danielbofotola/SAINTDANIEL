@@ -1,0 +1,39 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\e1ce9c26600a\20261004-222620-bash-call_01a108cfb7a17115a13c3fa2.txt (660 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+[powershell — Windows side]
+INFO  Blade templates cached successfully.  
+
+==viewcache 0==
+   INFO  Running migrations.  
+
+  2026_10_06_000000_add_est_inscription_to_types_frais_table ............................................ 17.35ms DONE
+
+==migrate 0==
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\InscriptionValidationTest > the enrolment form creates a pending inscriptio…  QueryException   
+  
+
+... 53 chars truncated ...
+
+column named pin_code (Connection: sqlite, Database: :memory:, SQL: insert into "users" ("username", "email", "password", "pin_code", "role", "statut", "remember_token", "updated_at", "created_at") values (little.alexzander, ckshlerin@example.net, $2y$04$q/.RnkA65zzCrDZNjrU.A.dXq7GJAc4yzdOO.9BjR7DnlJQGJoopa, $2y$04$xC8r5liK7buMgKSTi12VYOYLWRI.2qQHriiDmXKBp8vmH6j356I4C, admin, actif, X95LziF00j, 2026-10-04 21:26:20, 2026-10-04 21:26:20))
+
+  at vendor\laravel\framework\src\Illuminate\Database\Connection.php:578
+    574▕             if ($this->pretending()) {
+    575▕                 return true;
+    576▕             }
+    577▕ 
+  ➜ 578▕             $statement = $this->getPdo()->prepare($query);
+    579▕ 
+    580▕             $this->bindValues($statement, $this->prepareBindings($bindings));
+    581▕ 
+    582▕             $this->recordsHaveBeenModified();
+
+  1   vendor\laravel\framework\src\Illuminate\Database\Connection.php:578
+  2   vendor\laravel\framework\src\Illuminate\Database\Connection.php:827
+
+
+  Tests:    4 failed, 1 passed (3 assertions)
+  Duration: 0.35s
+
+==exit 2==
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

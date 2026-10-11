@@ -1,0 +1,32 @@
+296    
+297            return view('prefecture.eleves', [
+298                'user' => $request->user(),
+299                'schoolYear' => AnneeScolaire::enCours(),
+300                'recherche' => $recherche,
+301                'eleves' => $eleves,
+302            ]);
+303        }
+304    
+305        /**
+306         * Fiche d'un élève : inscription, santé, assiduité, tuteur et comptes parents.
+307         */
+308        public function eleveFiche(Request $request, Eleve $eleve): View
+309        {
+310            $eleve->load(['tuteur', 'sante', 'parents', 'documents', 'inscriptions.classe']);
+311    
+312            return view('prefecture.eleve-fiche', [
+313                'user' => $request->user(),
+314                'schoolYear' => AnneeScolaire::enCours(),
+315                'eleve' => $eleve,
+316                'documentLabels' => [
+317                    'acte_naissance' => 'Acte de naissance',
+318                    'bulletin' => 'Bulletin',
+319                    'certificat_medical' => 'Certificat médical',
+320                    'autre' => 'Autre document',
+321                ],
+322                'presences' => Presence::query()
+323                    ->where('eleve_id', $eleve->id)
+324                    ->orderByDesc('date_seance')
+325                    ->limit(40)
+
+[showing lines 296-325 of 462; read again with offset=326 for more]

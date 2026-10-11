@@ -1,0 +1,39 @@
+Applied patch: 1 file changed (1 updated)
+Updated app/Http/Controllers/AnneeScolaireController.php (4 hunks applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 4: context matched at lines 66-68 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 102-113:
+102    
+103        /**
+104         * Règles de validation communes à la création et à la modification.
+105         */
+106        private function validateData(Request $request, ?AnneeScolaire $annee = null): array
+107        {
+108            return $request->validate([
+109                'libelle' => ['required', 'string', 'max:20', Rule::unique('annees_scolaires', 'libelle')->ignore($annee?->id)],
+110                'date_debut' => ['required', 'date'],
+111                'date_fin' => ['required', 'date', 'after:date_debut'],
+112            ]);
+113        }
+Landed at lines 9-9 (the file's new text; no re-read needed):
+9      use Illuminate\Validation\Rule;
+Landed at lines 31-31 (the file's new text; no re-read needed):
+31             $data = $this->validateData($request);
+Landed at lines 42-78 (the file's new text; no re-read needed):
+42     
+43         /**
+44          * Formulaire de modification d'une année scolaire.
+45          */
+46         public function edit(AnneeScolaire $annee): View
+47         {
+48             return view('admin.annees.edit', compact('annee'));
+49         }
+      … 21 lines omitted …
+71     
+72             $libelle = $annee->libelle;
+73             $annee->delete();
+74     
+75             return redirect()
+76                 ->route('admin.annees.index')
+77                 ->with('success', "L'année scolaire « {$libelle} » a été supprimée.");
+78         }

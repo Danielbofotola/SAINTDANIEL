@@ -1,0 +1,6 @@
+446                ->assertRedirect(route('admin.evaluations.index'));
+447    
+448            $evaluation = DB::table('evaluations')->where('titre', 'Eval '.$type)->first();
+449            expect((float) $evaluation->max_note)->toBe($attendu);
+450        }
+451    });

@@ -1,0 +1,7 @@
+Applied patch: 1 file changed (1 updated)
+Updated routes/web.php (2 hunks applied)
+Landed at lines 26-26 (the file's new text; no re-read needed):
+26     use App\Http\Controllers\ComptablePaiementController;
+Landed at lines 173-174 (the file's new text; no re-read needed):
+173        Route::get('/comptable/paiements', [ComptablePaiementController::class, 'index'])->middleware('role:comptable')->name('comptable.paiements.index');
+174        Route::post('/comptable/paiements', [ComptablePaiementController::class, 'store'])->middleware('role:comptable')->name('comptable.paiements.store');

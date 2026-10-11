@@ -1,0 +1,12 @@
+[harness: offset clamped — requested offset 100000 is 99842 past the end of resources/views/prefecture/dashboard.blade.php (158 lines); the requested 10-line window was slid back to start at line 149. Line numbers below are the file's REAL numbers — re-target any pending edit against them]
+
+149                                </div>
+150                            </section>
+151                            <p class="footer-note"><span class="school-brand">{{ $systemSettings->nom_court }}</span> <span aria-hidden="true">·</span> Espace préfecture · consultation seule</p>
+152                        </div>
+153                    </div>
+154                </div>
+155            </main>
+156        </div>
+157    </body>
+158    </html>

@@ -1,0 +1,13 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\b493c9bc81dc\20261008-004712-bash-call_01a118c3cfab729aa17d8ba6.txt (736 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+[powershell — Windows side]
+=== recent timestamped entries (non-stack) ===
+[2026-10-07 17:08:02] testing.ERROR: SQLSTATE[HY000]: General error: 1 no such table: parametres_systeme (Connection: sqlite, Database: :memory:, SQL: select * from "parametres_systeme" limit 1) {"userId":1,"exception":"[object] (Illuminate\\Database\\QueryException(code: HY000): SQLSTATE[HY000]: General error: 1 no such table: parametres_systeme (Connection: sqlite, Database: :memory:, SQL: select * from \"parametres_sys
+
+... 416 chars truncated ...
+
+g/Composer/vendor/bin/ecole/app/Providers/AppServiceProvider.php:70)
+[2026-10-07 23:13:57] local.ERROR: Cannot redeclare App\Providers\AppServiceProvider::boot() {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot redeclare App\\Providers\\AppServiceProvider::boot() at C:/Users/danie/AppData/Roaming/Composer/vendor/bin/ecole/app/Providers/AppServiceProvider.php:70)
+[2026-10-07 23:14:50] local.ERROR: Cannot redeclare App\Providers\AppServiceProvider::boot() {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot redeclare App\\Providers\\AppServiceProvider::boot() at C:/Users/danie/AppData/Roaming/Composer/vendor/bin/ecole/app/Providers/AppServiceProvider.php:32)
+[2026-10-07 23:45:47] local.NOTICE: Admin started account impersonation {"admin_id":1,"user_id":2} 
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

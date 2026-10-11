@@ -1,0 +1,27 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\e1ce9c26600a\20261004-234944-bash-call_01a1091c122c7028999c8351.txt (514 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+[powershell — Windows side]
+FAIL  Tests\Feature\AdminUserManagementTest
+  ⨯ a professor without an assigned teacher record can open the professor dashboard                              0.20s  
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\AdminUserManagementTest > a professor without an assigned teacher record can open the profe…   
+  Expected: <!DOCTYPE html>\n
+<html lang="fr">\n
+<head>\n
+    <meta charset="utf-8">\n
+    <meta name="viewport" content="width=device-width, initial-scale=1">\n
+    <title>Vue générale | C.S. Moty</title>\n
+\n
+    <link rel="preconnect" href="https://fonts.googleapis.com">\n
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">\n
+\n
+    <link rel="stylesheet" href="http://localhost:8000/boostrap/css/font-awesome/css/fontawesome.css">\n
+    <link rel="stylesheet" href="http://localhost:8000/boostrap/css/font-awesome/css/fa-solid.css">\n
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">\n
+    <link rel="stylesheet" href="http://localhost:8000/boostrap/css/css/main.css">\n
+\n
+    <style>\n
+        :root {\n
+            --able-primary: #4680ff;\n
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

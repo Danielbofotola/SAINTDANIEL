@@ -1,0 +1,10 @@
+59                                     <td><span class="badge badge-{{ $professeur->statut === 'actif' ? 'success' : 'secondary' }}">{{ ucfirst($professeur->statut) }}</span></td>
+60                                     <td class="text-nowrap">
+61                                         <a href="{{ route('admin.professeurs.show', $professeur) }}" class="btn btn-sm btn-info" title="Voir le dossier"><i class="fa fa-folder-open"></i></a>
+62                                         <form class="d-inline" method="POST" action="{{ route('admin.professeurs.toggle-status', $professeur) }}">
+63                                             @csrf
+64                                             @method('PATCH')
+65                                             <button class="btn btn-sm btn-{{ $professeur->statut === 'actif' ? 'warning' : 'success' }}" type="submit" title="{{ $professeur->statut === 'actif' ? 'Désactiver' : 'Activer' }}"><i class="fa fa-power-off"></i></button>
+66                                         </form>
+
+[showing lines 59-66 of 82; read again with offset=67 for more]

@@ -1,0 +1,32 @@
+55             $professeurId = EspaceProfesseur::professeurId($request->user());
+56             $schoolYear = EspaceProfesseur::annee();
+57     
+58             if (! $schoolYear) {
+59                 return back()->withInput()->with('error', 'Aucune année scolaire en cours : impossible de créer une évaluation.');
+60             }
+61     
+62             $affectations = EspaceProfesseur::affectations($professeurId, $schoolYear->id);
+63     
+64             $data = $request->validate([
+65                 'affectation_id' => ['required', Rule::in($affectations->pluck('id')->all())],
+66                 'periode_id' => ['required', Rule::exists('periodes', 'id')->where('annee_scolaire_id', $schoolYear->id)],
+67                 'titre' => ['required', 'string', 'max:100'],
+68                 'type_evaluation' => ['required', Rule::in(array_keys(self::TYPES))],
+69                 'max_note' => ['required', 'numeric', 'min:1', 'max:100'],
+70                 'date_evaluation' => ['required', 'date'],
+71             ], [
+72                 'affectation_id.required' => 'Choisissez le cours concerné.',
+73                 'affectation_id.in' => 'Ce cours ne vous est pas affecté.',
+74                 'periode_id.required' => 'Choisissez la période.',
+75                 'titre.required' => 'Le titre de l’évaluation est obligatoire.',
+76                 'max_note.min' => 'La note maximale doit être supérieure à zéro.',
+77             ]);
+78     
+79             $evaluation = Evaluation::create($data + ['statut' => 'actif']);
+80     
+81             return redirect()
+82                 ->route('professeur.notes', $evaluation)
+83                 ->with('success', 'Évaluation « '.$data['titre'].' » créée : vous pouvez saisir les notes.');
+84         }
+
+[showing lines 55-84 of 187; read again with offset=85 for more]

@@ -1,0 +1,20 @@
+Applied patch: 1 file changed (1 updated)
+Updated resources/views/messagerie/_espace.blade.php (1 hunk applied)
+Landed at lines 526-553 (the file's new text; no re-read needed):
+526            if (FLUX_URL) {
+527                // Réception quasi instantanée : on interroge le fil chaque seconde
+528                // (au lieu de 4 s) et immédiatement dès que l'onglet redevient actif.
+529                const attendre = ms => new Promise(r => setTimeout(r, ms));
+530                const recuperer = async () => {
+531                    try {
+532                        const rep = await fetch(FLUX_URL + '?apres=' + dernierId, {
+533                            headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+      … 12 lines omitted …
+546                        if (document.hidden) continue;
+547                        await recuperer();
+548                    }
+549                })();
+550    
+551                window.addEventListener('focus', recuperer);
+552                document.addEventListener('visibilitychange', () => { if (!document.hidden) recuperer(); });
+553            }

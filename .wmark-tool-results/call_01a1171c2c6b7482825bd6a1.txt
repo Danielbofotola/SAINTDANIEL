@@ -1,0 +1,24 @@
+96         .reply-bar__close { background: transparent; border: none; color: var(--chat-muted); cursor: pointer; }
+97     
+98         .sticker-picker { display: none; position: absolute; bottom: 62px; left: 10px; right: 10px; background: var(--chat-card);
+99             border: 1px solid var(--chat-divider); border-radius: 12px; padding: 12px; box-shadow: 0 -6px 22px rgba(0,0,0,.5); z-index: 100; }
+100        .sticker-picker.on { display: block; }
+101        .sticker-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; font-size: 1.6rem; text-align: center; }
+102        .sticker-grid span { cursor: pointer; padding: 5px; border-radius: 8px; }
+103        .sticker-grid span:hover { background: var(--chat-hover); }
+104    
+105        .reaction-pop { display: none; position: fixed; z-index: 1100; background: var(--chat-card); border: 1px solid var(--chat-divider);
+106            border-radius: 999px; padding: 6px 10px; gap: 6px; box-shadow: 0 6px 20px rgba(0,0,0,.5); }
+107        .reaction-pop.on { display: flex; }
+108        .reaction-pop span { cursor: pointer; font-size: 1.3rem; }
+109        .reaction-pop span:hover { transform: scale(1.2); }
+110    
+111        /* ===== Bulles (partial _bulle) ===== */
+112        .msg-thread__body .bulle-container { display: flex; align-items: flex-end; gap: 8px; max-width: 84%; }
+113        .msg-thread__body .bulle-container--moi { align-self: flex-end; flex-direction: row-reverse; }
+114        .msg-thread__body .bulle-container--autre { align-self: flex-start; }
+115        .msg-thread__body .bulle-colonne { display: flex; flex-direction: column; min-width: 0; }
+116        .msg-thread__body .bulle-container--moi .bulle-colonne { align-items: flex-end; }
+117        .msg-thread__body .bulle-auteur { color: var(--chat-muted); font-size: .7rem; margin: 0 0 2px 6px; }
+
+[showing lines 96-117 of 729; read again with offset=118 for more]

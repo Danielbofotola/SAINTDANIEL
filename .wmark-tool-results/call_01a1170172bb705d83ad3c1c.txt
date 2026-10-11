@@ -1,0 +1,53 @@
+1      <?php
+2      
+3      use Illuminate\Database\Migrations\Migration;
+4      use Illuminate\Database\Schema\Blueprint;
+5      use Illuminate\Support\Facades\Schema;
+6      
+7      return new class extends Migration
+8      {
+9          /**
+10          * Run the migrations.
+11          */
+12         public function up(): void
+13         {
+14             Schema::create('users', function (Blueprint $table) {
+15                 $table->id();
+16                 // La contrainte est ajoutée après la création de la table professeurs.
+17                 $table->foreignId('professeur_id')->nullable()->unique();
+18                 $table->string('username', 50)->unique();
+19                 $table->string('email', 100)->unique();
+20                 $table->string('password', 255);
+21                 $table->string('pin_code', 255)->nullable();
+22                 $table->enum('role', ['admin', 'prefetture', 'titulaire', 'professeur', 'comptable'])->default('professeur');
+23                 $table->enum('statut', ['actif', 'inactif'])->default('actif');
+24                 $table->dateTime('last_login')->nullable();
+25                 $table->timestamps();
+26             });
+27     
+28             Schema::create('password_reset_tokens', function (Blueprint $table) {
+29                 $table->string('email')->primary();
+30                 $table->string('token');
+31                 $table->timestamp('created_at')->nullable();
+32             });
+33     
+34             Schema::create('sessions', function (Blueprint $table) {
+35                 $table->string('id')->primary();
+36                 $table->foreignId('user_id')->nullable()->index();
+37                 $table->string('ip_address', 45)->nullable();
+38                 $table->text('user_agent')->nullable();
+39                 $table->longText('payload');
+40                 $table->integer('last_activity')->index();
+41             });
+42         }
+43     
+44         /**
+45          * Reverse the migrations.
+46          */
+47         public function down(): void
+48         {
+49             Schema::dropIfExists('users');
+50             Schema::dropIfExists('password_reset_tokens');
+51             Schema::dropIfExists('sessions');
+52         }
+53     };

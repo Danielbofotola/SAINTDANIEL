@@ -1,0 +1,37 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\aba9102c187c\20261011-155116-bash-call_01a12b72550f76f4a52510de.txt (693 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+[powershell — Windows side]
+> app\Models\Classe.php:12:    public function suivante(): ?self
+  app\Models\Classe.php:13:    {
+  app\Models\Classe.php:14:        if ($this->ordre === null) {
+  app\Models\Classe.php:15:            return null;
+  app\Models\Classe.php:16:        }
+  app\Models\Classe.php:17:
+  app\Models\Classe.php:18:        return static::query()
+  app\Models\Classe.php:19:            ->where('cycle_id', $this->cycle_id)
+  app\Models\Classe.php:20:            ->where('statut', 'a
+
+... 191 chars truncated ...
+
+
+  app\Models\Classe.php:25:    public function cycle()
+  app\Models\Classe.php:26:    {
+  app\Models\Classe.php:27:        return $this->belongsTo(Cycle::class);
+  app\Models\Classe.php:28:    }
+  app\Models\Classe.php:29:
+  app\Models\Classe.php:30:    public function inscriptions()
+  app\Models\Classe.php:31:    {
+  app\Models\Classe.php:32:        return $this->hasMany(Inscription::class);
+  app\Models\Classe.php:33:    }
+  app\Models\Classe.php:34:
+  app\Models\Classe.php:35:    public function salle()
+  app\Models\Classe.php:36:    {
+  app\Models\Classe.php:37:        return $this->belongsTo(Salle::class);
+  app\Models\Classe.php:38:    }
+  app\Models\Classe.php:39:
+  app\Models\Classe.php:40:    public function section()
+  app\Models\Classe.php:41:    {
+  app\Models\Classe.php:42:        return $this->belongsTo(Section::class);
+
+
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">2</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

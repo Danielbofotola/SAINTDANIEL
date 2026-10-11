@@ -1,0 +1,109 @@
+131            $table->id();
+132            $table->string('num_recu')->unique();
+133            $table->unsignedBigInteger('inscription_id');
+134            $table->unsignedBigInteger('frais_scolaire_id');
+135            $table->decimal('montant_paye', 10, 2);
+136            $table->dateTime('date_paiement');
+137            $table->string('mode_paiement')->default('especes');
+138            $table->string('statut')->default('actif');
+139            $table->timestamps();
+140        });
+141    
+142        // Année en cours
+143        DB::table('annees_scolaires')->insert([
+144            'id' => 1, 'libelle' => '2026-2027', 'date_debut' => '2026-09-01', 'date_fin' => '2027-07-01',
+145            'is_encours' => true, 'statut' => 'actif',
+146        ]);
+147    
+148        DB::table('cycles')->insert(['id' => 1, 'nom' => 'Primaire', 'statut' => 'actif']);
+149        DB::table('salles')->insert(['id' => 1, 'nom' => 'Salle A']);
+150        DB::table('classes')->insert([
+151            'id' => 1, 'nom' => '3e primaire', 'cycle_id' => 1, 'salle_id' => 1, 'statut' => 'actif',
+152        ]);
+153    
+154        DB::table('eleves')->insert([
+155            ['id' => 1, 'matricule' => 'ELV-001', 'nom' => 'Banzolo', 'postnom' => 'Bofotola', 'prenom' => 'Daniel', 'sexe' => 'M', 'date_naissance' => '2017-05-12', 'statut' => 'actif'],
+156            ['id' => 2, 'matricule' => 'ELV-002', 'nom' => 'Bokonde', 'postnom' => 'Nsombola', 'prenom' => 'Annie', 'sexe' => 'F', 'date_naissance' => '2016-08-23', 'statut' => 'actif'],
+157        ]);
+158    
+159        DB::table('inscriptions')->insert([
+160            ['id' => 1, 'eleve_id' => 1, 'classe_id' => 1, 'annee_scolaire_id' => 1, 'date_inscription' => '2026-09-05', 'statut' => 'actif'],
+161            ['id' => 2, 'eleve_id' => 2, 'classe_id' => 1, 'annee_scolaire_id' => 1, 'date_inscription' => '2026-09-06', 'statut' => 'actif'],
+162        ]);
+163    
+164        DB::table('types_frais')->insert(['id' => 1, 'nom' => 'Minerval']);
+165        DB::table('frais_scolaires')->insert([
+166            ['id' => 1, 'type_frais_id' => 1, 'classe_id' => 1, 'annee_scolaire_id' => 1, 'montant_exige' => 100, 'date_echeance' => '2026-10-05', 'statut' => 'actif'],
+167            ['id' => 2, 'type_frais_id' => 1, 'classe_id' => 1, 'annee_scolaire_id' => 1, 'montant_exige' => 100, 'date_echeance' => '2026-11-05', 'statut' => 'actif'],
+168        ]);
+169        DB::table('paiements')->insert([
+170            'id' => 1, 'num_recu' => 'REC-0001', 'inscription_id' => 1, 'frais_scolaire_id' => 1,
+171            'montant_paye' => 50, 'date_paiement' => '2026-10-02 09:30:00', 'mode_paiement' => 'especes', 'statut' => 'actif',
+172        ]);
+173    
+174        // Titulaire : professeur lié + une affectation sur la classe 1
+175        DB::table('professeurs')->insert([
+176            'id' => 1, 'matricule' => 'PRF-001', 'nom' => 'Mwamba', 'postnom' => 'Kabila', 'prenom' => 'Jean',
+177            'specialite' => 'Mathématiques', 'statut' => 'actif',
+178        ]);
+179        DB::table('cours')->insert(['id' => 1, 'code' => 'MATH6', 'intitule' => 'Mathématiques 6']);
+180        DB::table('affectations_cours')->insert([
+181            'id' => 1, 'professeur_id' => 1, 'cours_id' => 1, 'classe_id' => 1, 'annee_scolaire_id' => 1, 'statut' => 'actif',
+182        ]);
+183    });
+184    
+185    test('the accountant dashboard shows the current year finances', function () {
+186        $comptable = User::factory()->create(['role' => 'comptable']);
+187    
+188        $this->actingAs($comptable)
+189            ->get(route('comptable.dashboard'))
+190            ->assertOk()
+191            ->assertSee('Espace comptable')
+192            ->assertSee('2026-2027')
+193            ->assertSee('Recouvrement par classe')
+194            ->assertSee('3e primaire')
+195            ->assertSee('25 %')      // 50 encaissés sur 200 définis
+196            ->assertSee('Reste à percevoir')
+197            ->assertSee('REC-0001');
+198    });
+199    
+200    test('the accountant dashboard warns when no school year is current', function () {
+201        DB::table('annees_scolaires')->update(['is_encours' => false]);
+202        $comptable = User::factory()->create(['role' => 'comptable']);
+203    
+204        $this->actingAs($comptable)
+205            ->get(route('comptable.dashboard'))
+206            ->assertOk()
+207            ->assertSee('Aucune année scolaire en cours');
+208    });
+209    
+210    test('the homeroom dashboard shows the classes and pupils of the current year', function () {
+211        $titulaire = User::factory()->create(['role' => 'titulaire', 'professeur_id' => 1]);
+212    
+213        $this->actingAs($titulaire)
+214            ->get(route('titulaire.dashboard'))
+215            ->assertOk()
+216            ->assertSee('Espace titulaire')
+217            ->assertSee('3e primaire')
+218            ->assertSee('2 élève(s)')
+219            ->assertSee('Banzolo')
+220            ->assertSee('Annie');
+221    });
+222    
+223    test('the homeroom dashboard warns when the account is not linked to a teacher record', function () {
+224        $titulaire = User::factory()->create(['role' => 'titulaire', 'professeur_id' => null]);
+225    
+226        $this->actingAs($titulaire)
+227            ->get(route('titulaire.dashboard'))
+228            ->assertOk()
+229            ->assertSee('Aucune fiche enseignant');
+230    });
+231    
+232    test('each role space is closed to the other roles', function () {
+233        $comptable = User::factory()->create(['role' => 'comptable']);
+234        $titulaire = User::factory()->create(['role' => 'titulaire', 'professeur_id' => 1]);
+235    
+236        $this->actingAs($comptable)->get(route('titulaire.dashboard'))->assertForbidden();
+237        $this->actingAs($titulaire)->get(route('comptable.dashboard'))->assertForbidden();
+238        $this->actingAs($titulaire)->get(route('professeur.dashboard'))->assertForbidden();
+239    });

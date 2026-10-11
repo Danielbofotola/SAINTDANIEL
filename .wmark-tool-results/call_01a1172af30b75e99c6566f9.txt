@@ -1,0 +1,47 @@
+515                    sendBtn.disabled = false;
+516                    if (input) input.focus();
+517                }
+518            };
+519    
+520            if (input) {
+521                input.addEventListener('keydown', e => {
+522                    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); window.envoyerTexte(); }
+523                });
+524            }
+525    
+526            if (FLUX_URL) {
+527                const attendre = ms => new Promise(r => setTimeout(r, ms));
+528                (async function boucle() {
+529                    while (true) {
+530                        await attendre(4000);
+531                        if (document.hidden) continue;
+532                        try {
+533                            const rep = await fetch(FLUX_URL + '?apres=' + dernierId, {
+534                                headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+535                                credentials: 'same-origin',
+536                            });
+537                            if (!rep.ok) continue;
+538                            const json = await rep.json();
+539                            (json.messages || []).forEach(m => ajouter(m.html, m.id));
+540                            majBadges(json.non_lus);
+541                        } catch (e) { /* réessai */ }
+542                    }
+543                })();
+544            }
+545        })();
+546    
+547        window.toggleStickers = function () {
+548            document.getElementById('stickerPicker').classList.toggle('on');
+549        };
+550    
+551        window.envoyerSticker = function (sticker) {
+552            window.toggleStickers();
+553            window.envoyerTexte(sticker);
+554        };
+555    
+556        /* ---------- Message vocal ---------- */
+557        let mediaRecorder = null;
+558        let morceaux = [];
+559        let minuteurRec = null;
+
+[showing lines 515-559 of 812; read again with offset=560 for more]

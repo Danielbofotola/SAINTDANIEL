@@ -1,0 +1,7 @@
+183        Route::get('/comptable/paiements/{paiement}/recu', [RecuController::class, 'show'])->middleware('role:comptable')->name('comptable.paiements.recu');
+184        Route::get('/comptable/recouvrement', [ComptableRecouvrementController::class, 'index'])->middleware('role:comptable')->name('comptable.recouvrement.index');
+185        Route::get('/comptable/depenses', [ComptableDepenseController::class, 'index'])->middleware('role:comptable')->name('comptable.depenses.index');
+186        Route::post('/comptable/depenses', [ComptableDepenseController::class, 'store'])->middleware('role:comptable')->name('comptable.depenses.store');
+187        Route::post('/comptable/depenses/natures', [ComptableDepenseController::class, 'storeNature'])->middleware('role:comptable')->name('comptable.depenses.natures.store');
+188        Route::delete('/comptable/depenses/{depense}', [ComptableDepenseController::class, 'destroy'])->middleware('role:comptable')->name('comptable.depenses.destroy');
+189    });

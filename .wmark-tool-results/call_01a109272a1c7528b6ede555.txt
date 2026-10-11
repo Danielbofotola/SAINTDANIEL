@@ -1,0 +1,7 @@
+Applied patch: 1 file changed (1 updated)
+Updated resources/views/admin/profile/show.blade.php (1 hunk applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 291-291 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 292-293:
+292                         <!-- Modèle fourni : barre d’action orange -->
+293                         <div class="profile-actions d-flex flex-wrap align-items-center w-100">

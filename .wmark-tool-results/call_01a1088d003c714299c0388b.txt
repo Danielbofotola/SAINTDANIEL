@@ -1,0 +1,11 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\e1ce9c26600a\20261004-211327-bash-call_01a1088d003c714299c0388b.txt (595 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+[powershell — Windows side]
+dashboard.blade.php:291: <a class="app-sidebar__toggle fa fa-bars" href="#" data-toggle="sidebar" aria-label="Afficher ou masquer le menu"></a>
+dashboard.blade.php:294: <a class="app-nav__item d-flex align-items-center" href="#" data-toggle="dropdown" aria-label="Menu profil">
+dashboard.blade.php:332: <li><a class="app-menu__item active" href="{{ route('professeur.dashboard') }}" aria-current="page"><i class="app-menu__icon fa fa-dashboard"></i><span class="a
+dashboard.blade.php:333: <li><a class="app-menu__item" href="#planning"><i class="app-menu__icon fa fa-calendar-o"></i><span class="app-menu__label">Mon planning</span></a></li>
+dashboard.blade.php:334: <li><a class="app-menu__item" href="#enseignements"><i class="app-menu__icon fa fa-book"></i><span class="app-menu__label">Mes cours</span></a></li>
+dashboard.blade.php:335: <li><a class="app-menu__item" href="#evaluations"><i class="app-menu__icon fa fa-pencil-square-o"></i><span class="app-menu__label">�valuations</span></a></li>
+dashboard.blade.php:337: <li><a class="app-menu__item" href="{{ route('profile.show') }}"><i class="app-menu__icon fa fa-user"></i><span class="app-menu__label">Mon profil</span></a></l
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

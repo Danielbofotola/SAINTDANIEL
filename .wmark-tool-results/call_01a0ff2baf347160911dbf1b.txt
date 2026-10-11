@@ -1,0 +1,49 @@
+1      <?php
+2      
+3      namespace App\Models;
+4      
+5      use Illuminate\Database\Eloquent\Factories\HasFactory;
+6      use Illuminate\Database\Eloquent\Model;
+7      
+8      class Eleve extends Model
+9      {
+10         use HasFactory;
+11     
+12         protected $fillable = [
+13             'nom',
+14             'matricule',
+15             'postnom',
+16             'prenom',
+17             'sexe',
+18             'date_naissance',
+19             'lieu_naissance',
+20             'tuteur_id',
+21             'photo',
+22             'statut',
+23         ];
+24     
+25         protected function casts(): array
+26         {
+27             return ['date_naissance' => 'date'];
+28         }
+29     
+30         public function tuteur()
+31         {
+32             return $this->belongsTo(Tuteur::class);
+33         }
+34     
+35         public function inscriptions()
+36         {
+37             return $this->hasMany(Inscription::class);
+38         }
+39     
+40         public function sante()
+41         {
+42             return $this->hasOne(EleveSante::class);
+43         }
+44     
+45         public function documents()
+46         {
+47             return $this->hasMany(DocumentEleve::class);
+48         }
+49     }

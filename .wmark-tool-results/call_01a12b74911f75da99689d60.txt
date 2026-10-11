@@ -1,0 +1,175 @@
+292            ->and($analyse($s['eleves']['D'])['decision_proposee'])->toBe('redouble');
+293    });
+294    
+295    test('un plafond de cours en échec bloque l’admission', function () {
+296        $s = scenarioDeliberation();
+297        ParametreSysteme::current()->update(['deliberation_max_cours_echoues' => 0]);
+298    
+299        // L'élève A a 90 % mais sa branche unique est… réussie : il reste admis.
+300        $analyseA = Jury::regles()->analyser(Inscription::where('eleve_id', $s['eleves']['A']->id)->firstOrFail());
+301        expect($analyseA['decision_proposee'])->toBe('admis');
+302    
+303        // Avec un plafond de 0 cours en échec, un élève à 50 % avec une branche
+304        // sous le seuil doit être bloqué : on abaisse sa note d'examen.
+305        $eleveB = $s['eleves']['B'];
+306        DB::table('notes')->where('eleve_id', $eleveB->id)->update(['note_obtenue' => 4]);
+307        $analyse = Jury::regles()->analyser(Inscription::where('eleve_id', $eleveB->id)->firstOrFail());
+308        expect($analyse['cours_echoues'])->toBe(1)
+309            ->and($analyse['decision_proposee'])->not->toBe('admis');
+310    });
+311    
+312    test('l’écran de délibération liste les élèves et leurs propositions', function () {
+313        $s = scenarioDeliberation();
+314    
+315        $this->actingAs($s['alice'])
+316            ->get(route('admin.deliberations.index'))
+317            ->assertOk()
+318            ->assertSee('Délibération')
+319            ->assertSee('3e primaire')
+320            ->assertSee('4e primaire')       // classe suivante annoncée
+321            ->assertSee('NomA')
+322            ->assertSee('Admis');
+323    });
+324    
+325    test('l’enregistrement des décisions est persisté et marqué manuel si forcé', function () {
+326        $s = scenarioDeliberation();
+327        $inscriptionA = Inscription::where('eleve_id', $s['eleves']['A']->id)->firstOrFail();
+328        $inscriptionD = Inscription::where('eleve_id', $s['eleves']['D']->id)->firstOrFail();
+329    
+330        $this->actingAs($s['alice'])
+331            ->post(route('admin.deliberations.enregistrer'), [
+332                'annee_scolaire_id' => $s['annee']->id,
+333                'decisions' => [
+334                    $inscriptionA->id => 'admis',
+335                    $inscriptionD->id => 'ajourne',   // forcé : la proposition était « redouble »
+336                ],
+337            ])
+338            ->assertRedirect()
+339            ->assertSessionHas('success', fn ($m) => str_contains($m, '2 décision'));
+340    
+341        $a = Deliberation::where('inscription_id', $inscriptionA->id)->firstOrFail();
+342        $d = Deliberation::where('inscription_id', $inscriptionD->id)->firstOrFail();
+343    
+344        expect($a->decision)->toBe('admis')
+345            ->and((float) $a->pourcentage_general)->toBe(90.0)
+346            ->and($a->manuelle)->toBeFalse()
+347            ->and($a->classe_suivante_id)->toBe($s['classe2']->id)
+348            ->and($d->decision)->toBe('ajourne')
+349            ->and($d->manuelle)->toBeTrue();       // décision forcée à la main
+350    });
+351    
+352    test('la décision de fin d’année est notifiée aux comptes parents', function () {
+353        $s = scenarioDeliberation();
+354        $inscriptionA = Inscription::where('eleve_id', $s['eleves']['A']->id)->firstOrFail();
+355    
+356        $parent = User::factory()->create(['role' => 'parent', 'nom' => 'Mukendi', 'prenom' => 'Sarah']);
+357        $s['eleves']['A']->parents()->sync([$parent->id]);
+358    
+359        $this->actingAs($s['alice'])
+360            ->post(route('admin.deliberations.enregistrer'), [
+361                'annee_scolaire_id' => $s['annee']->id,
+362                'decisions' => [$inscriptionA->id => 'admis'],
+363            ])
+364            ->assertRedirect()
+365            ->assertSessionHas('success', fn ($m) => str_contains($m, '1 notification'));
+366    
+367        $notification = $parent->fresh()->notifications()->latest()->first();
+368    
+369        expect($notification)->not->toBeNull()
+370            ->and($notification->data['decision'])->toBe('admis')
+371            ->and($notification->data['niveau'])->toBe('success')
+372            ->and($notification->data['titre'])->toContain("fin d'année")
+373            ->and($notification->data['message'])->toContain('classe supérieure')
+374            ->and($notification->data['lien'])->toContain('/espace-parent/enfants');
+375    });
+376    
+377    test('l’application en masse promeut les admis et maintient les autres', function () {
+378        $s = scenarioDeliberation();
+379    
+380        $decisions = [];
+381        foreach (['A' => 'admis', 'B' => 'admis', 'C' => 'ajourne', 'D' => 'redouble'] as $cle => $decision) {
+382            $decisions[Inscription::where('eleve_id', $s['eleves'][$cle]->id)->value('id')] = $decision;
+383        }
+384    
+385        $this->actingAs($s['alice'])->post(route('admin.deliberations.enregistrer'), [
+386            'annee_scolaire_id' => $s['annee']->id, 'decisions' => $decisions,
+387        ])->assertRedirect();
+388    
+389        $this->actingAs($s['alice'])->post(route('admin.deliberations.appliquer'), [
+390            'annee_scolaire_id' => $s['annee']->id,
+391            'annee_cible_id' => $s['cible']->id,
+392        ])->assertRedirect()->assertSessionHas('success', fn ($m) => str_contains($m, '2 élève(s) promu(s)'));
+393    
+394        $classeDans = fn (string $cle) => Inscription::where('eleve_id', $s['eleves'][$cle]->id)
+395            ->where('annee_scolaire_id', $s['cible']->id)->first();
+396    
+397        // Admis → classe d'ordre supérieur, en attente de validation par la caisse.
+398        expect($classeDans('A'))->not->toBeNull()
+399            ->and($classeDans('A')->classe_id)->toBe($s['classe2']->id)
+400            ->and($classeDans('A')->statut)->toBe(Inscription::STATUT_EN_ATTENTE)
+401            ->and($classeDans('B')->classe_id)->toBe($s['classe2']->id)
+402            // Ajourné / redoublant → même classe.
+403            ->and($classeDans('C')->classe_id)->toBe($s['classe1']->id)
+404            ->and($classeDans('D')->classe_id)->toBe($s['classe1']->id);
+405    
+406        // Deuxième application : rien n'est dupliqué.
+407        $this->actingAs($s['alice'])->post(route('admin.deliberations.appliquer'), [
+408            'annee_scolaire_id' => $s['annee']->id, 'annee_cible_id' => $s['cible']->id,
+409        ])->assertSessionHas('success', fn ($m) => str_contains($m, '4 ignoré(s)'));
+410    
+411        expect(Inscription::where('annee_scolaire_id', $s['cible']->id)->count())->toBe(4);
+412    });
+413    
+414    test('la délibération est réservée à l’administration', function () {
+415        $s = scenarioDeliberation();
+416        $prof = User::factory()->create(['role' => 'professeur']);
+417    
+418        $this->actingAs($prof)->get(route('admin.deliberations.index'))->assertForbidden();
+419        $this->actingAs($prof)->post(route('admin.deliberations.appliquer'), [])->assertForbidden();
+420    });
+421    
+422    test('les critères sont enregistrés et le repêchage ne peut dépasser l’admission', function () {
+423        $s = scenarioDeliberation();
+424    
+425        $this->actingAs($s['alice'])->put(route('admin.deliberations.criteres'), [
+426            'deliberation_seuil_admission' => 55, 'deliberation_seuil_repechage' => 45,
+427            'deliberation_max_cours_echoues' => 1, 'deliberation_active' => 1,
+428        ])->assertRedirect()->assertSessionHas('success');
+429    
+430        $regles = ParametreSysteme::current();
+431        expect((float) $regles->deliberation_seuil_admission)->toBe(55.0)
+432            ->and($regles->deliberation_max_cours_echoues)->toBe(1)
+433            ->and($regles->deliberation_active)->toBeTrue();
+434    
+435        // Repêchage au-dessus de l'admission : refusé.
+436        $this->actingAs($s['alice'])->put(route('admin.deliberations.criteres'), [
+437            'deliberation_seuil_admission' => 40, 'deliberation_seuil_repechage' => 70,
+438        ])->assertSessionHas('error');
+439    
+440        expect((float) ParametreSysteme::current()->deliberation_seuil_admission)->toBe(55.0);
+441    });
+442    
+443    test('le formulaire de classe expose le niveau et la progression s’en déduit', function () {
+444        $s = scenarioDeliberation();
+445    
+446        // Le champ « niveau » est bien présent sur le formulaire de classe.
+447        $this->actingAs($s['alice'])
+448            ->get(route('admin.classes.create'))
+449            ->assertOk()
+450            ->assertSee('name="ordre"', false)
+451            ->assertSee('Niveau');
+452    
+453        // Il est enregistré, et la classe suivante se déduit du niveau.
+454        $this->actingAs($s['alice'])->post(route('admin.classes.store'), [
+455            'cycle_id' => $s['classe1']->cycle_id,
+456            'nom' => '5e primaire',
+457            'ordre' => 3,
+458            'statut' => 'actif',
+459        ])->assertRedirect(route('admin.classes.index'));
+460    
+461        $nouvelle = Classe::where('nom', '5e primaire')->firstOrFail();
+462    
+463        expect($nouvelle->ordre)->toBe(3)
+464            ->and($s['classe2']->suivante()?->id)->toBe($nouvelle->id)
+465            ->and($nouvelle->suivante())->toBeNull();   // plus rien au-dessus
+466    });

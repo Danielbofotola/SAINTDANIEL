@@ -1,0 +1,34 @@
+196    
+197            {{-- ============ MES ENFANTS ============ --}}
+198            <section id="tab-enfants" class="portail-panel">
+199                <div class="portail-card">
+200                    <h2><i class="fa-solid fa-graduation-cap text-info"></i> Mes enfants</h2>
+201                    @forelse ($enfants as $enfant)
+202                        @php($inscription = $enfant->inscriptions->first())
+203                        <div class="py-2" style="border-bottom:1px solid var(--divider)">
+204                            <div class="d-flex align-items-center gap-2">
+205                                <span class="portail-avatar" style="width:40px;height:40px;font-size:.9rem;background:var(--blue)">
+206                                    @if ($enfant->photo)
+207                                        <img src="{{ asset('storage/'.$enfant->photo) }}" alt="">
+208                                    @else
+209                                        {{ mb_strtoupper(mb_substr($enfant->prenom ?: $enfant->nom, 0, 1)) }}
+210                                    @endif
+211                                </span>
+212                                <div style="flex:1;min-width:0">
+213                                    <div style="color:#fff;font-weight:600">{{ trim($enfant->nom.' '.$enfant->postnom.' '.$enfant->prenom) }}</div>
+214                                    <div class="fs-7 text-muted-2">
+215                                        {{ $enfant->matricule }}@if ($inscription?->classe) · {{ $inscription->classe->nom }}@endif
+216                                    </div>
+217                                </div>
+218                            </div>
+219                        </div>
+220                    @empty
+221                        <p class="text-muted-2 mb-0 fs-7">Aucun enfant n’est encore rattaché à votre compte. Contactez l’administration.</p>
+222                    @endforelse
+223                </div>
+224            </section>
+225    
+226            {{-- ============ PROFIL ============ --}}
+227            <section id="tab-profil" class="portail-panel">
+
+[showing lines 196-227 of 266; read again with offset=228 for more]

@@ -1,0 +1,6 @@
+Applied patch: 1 file changed (1 updated)
+Updated routes/web.php (1 hunk applied)
+Landed at lines 293-295 (the file's new text; no re-read needed):
+293        // Le même reçu, imprimable depuis le dossier élève de l'administration et du préfet.
+294        Route::get('/admin/paiements/{paiement}/recu', [RecuController::class, 'show'])->middleware('role:admin')->name('admin.paiements.recu');
+295        Route::get('/prefecture/paiements/{paiement}/recu', [RecuController::class, 'show'])->middleware('role:prefetture')->name('prefecture.paiements.recu');

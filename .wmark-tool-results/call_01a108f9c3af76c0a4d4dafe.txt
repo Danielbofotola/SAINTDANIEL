@@ -1,0 +1,26 @@
+22                 </div>
+23                 <div class="no-print">
+24                     <a href="{{ route('admin.archives.index') }}" class="btn btn-secondary"><i class="fa fa-arrow-left"></i> Retour aux archives</a>
+25                     <button class="btn btn-primary" onclick="window.print()"><i class="fa fa-print"></i> Imprimer</button>
+26                 </div>
+27             </div>
+28     
+29             <div class="row">
+30                 <div class="col-md-3"><div class="widget-small primary coloured-icon"><i class="icon fa fa-users fa-3x"></i><div class="info"><h4>Élèves inscrits</h4><p><b>{{ $totalEleves }}</b></p></div></div></div>
+31                 <div class="col-md-3"><div class="widget-small info coloured-icon"><i class="icon fa fa-money fa-3x"></i><div class="info"><h4>Recettes</h4><p><b>{{ $fmt($archive->total_recettes) }}</b></p></div></div></div>
+32                 <div class="col-md-3"><div class="widget-small danger coloured-icon"><i class="icon fa fa-shopping-cart fa-3x"></i><div class="info"><h4>Dépenses</h4><p><b>{{ $fmt($archive->total_depenses) }}</b></p></div></div></div>
+33                 <div class="col-md-3"><div class="widget-small warning coloured-icon"><i class="icon fa fa-balance-scale fa-3x"></i><div class="info"><h4>Solde</h4><p><b>{{ $fmt($archive->solde_final) }}</b></p></div></div></div>
+34             </div>
+35     
+36             <div class="row">
+37                 <div class="col-md-6">
+38                     <div class="tile mb-4">
+39                         <h4 class="tile-title"><i class="fa fa-graduation-cap"></i> Effectifs par classe</h4>
+40                         <table class="table table-hover table-bordered mb-0">
+41                             <thead><tr><th>Classe</th><th class="text-right">Élèves</th></tr></thead>
+42                             <tbody>
+43                                 @forelse ($effectifs as $classe)
+44                                     <tr><td>{{ $classe->nom }}</td><td class="text-right">{{ $classe->eleves_count }}</td></tr>
+45                                 @empty
+
+[showing lines 22-45 of 148; read again with offset=46 for more]

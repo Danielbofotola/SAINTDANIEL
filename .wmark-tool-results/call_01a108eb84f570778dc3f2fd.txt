@@ -1,0 +1,20 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/ProfesseursPagesTest.php (1 hunk applied)
+Landed at lines 369-430 (the file's new text; no re-read needed):
+369    
+370    test('an admin can edit a professor profile from the file and attach documents', function () {
+371        Storage::fake('public');
+372        $professeurId = seedProfesseur();
+373        $admin = User::factory()->create(['role' => 'admin']);
+374    
+375        $this->actingAs($admin)
+376            ->get(route('admin.professeurs.show', $professeurId))
+      … 46 lines omitted …
+423        $this->actingAs($admin)
+424            ->put(route('admin.professeurs.update', $otherId), [
+425                'nom' => 'Kabila', 'postnom' => 'Mwamba', 'prenom' => 'Aline',
+426                'sexe' => 'F', 'specialite' => 'Maths', 'telephone' => '0990',
+427                'email' => 'aline.kabila@example.test', 'statut' => 'actif',
+428            ])
+429            ->assertSessionHasErrors('email');
+430    });

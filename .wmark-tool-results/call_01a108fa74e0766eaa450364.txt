@@ -1,0 +1,10 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/FinancesPagesTest.php (1 hunk applied)
+Landed at lines 383-389 (the file's new text; no re-read needed):
+383            ->and((float) $archive->solde_final)->toBe(110.0)
+384            ->and((float) $archive->total_attendu)->toBe(150.0)
+385            ->and((float) $archive->total_impayes)->toBe(0.0)
+386            ->and((int) $archive->eleves_garcons)->toBe(0)
+387            ->and((int) $archive->eleves_filles)->toBe(1)
+388            ->and((int) $archive->total_bulletins)->toBe(0)
+389            ->and((int) $archive->total_notes)->toBe(0);

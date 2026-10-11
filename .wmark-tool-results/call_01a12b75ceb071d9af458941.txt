@@ -1,0 +1,12 @@
+[powershell — Windows side]
+No syntax errors detected in database/migrations/2026_10_24_000000_add_classe_suivante_to_classes_table.php
+No syntax errors detected in app/Models/Classe.php
+No syntax errors detected in app/Http/Controllers/ClasseController.php
+
+   INFO  Running migrations.  
+
+  2026_10_24_000000_add_classe_suivante_to_classes_table .............................................................  
+  ⇂ select exists (select 1 from information_schema.tables where table_schema = schema() and table_name = 'classes' and table_type in ('BASE TABLE', 'SYSTEM VERSIONED')) as `exists`  
+
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

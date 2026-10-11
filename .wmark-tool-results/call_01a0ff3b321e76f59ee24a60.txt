@@ -1,0 +1,332 @@
+1      <?php
+2      
+3      namespace App\Http\Controllers;
+4      
+5      use App\Models\Classe;
+6      use App\Models\Eleve;
+7      use App\Models\Professeurs;
+8      use App\Models\Salle;
+9      use App\Models\User;
+10     use Illuminate\Http\RedirectResponse;
+11     use Illuminate\Http\Request;
+12     use Illuminate\Support\Facades\Hash;
+13     use Illuminate\Support\Facades\Log;
+14     use Illuminate\Support\Facades\Storage;
+15     use Illuminate\Validation\Rule;
+16     use Illuminate\View\View;
+17     
+18     class UserProfileController extends Controller
+19     {
+20         public function createAccount(): View
+21         {
+22             return view('admin.profile.account-create', [
+23                 'professeurs' => Professeurs::where('statut', 'actif')->orderBy('nom')->orderBy('prenom')->get(),
+24             ]);
+25         }
+26     
+27         public function storeAccount(Request $request): RedirectResponse
+28         {
+29             $data = $request->validate([
+30                 'nom' => ['nullable', 'string', 'max:50'],
+31                 'postnom' => ['nullable', 'string', 'max:50'],
+32                 'prenom' => ['nullable', 'string', 'max:50'],
+33                 'username' => ['required', 'string', 'max:50', 'unique:users,username'],
+34                 'email' => ['required', 'email', 'max:100', 'unique:users,email'],
+35                 'telephone' => ['nullable', 'string', 'max:20'],
+36                 'professeur_id' => [
+37                     'nullable',
+38                     'exists:professeurs,id',
+39                     Rule::unique('users', 'professeur_id'),
+40                     Rule::requiredIf(fn () => $request->input('role') === 'professeur'),
+41                 ],
+42                 'role' => ['required', 'in:admin,prefetture,titulaire,professeur,comptable'],
+43                 'statut' => ['required', 'in:actif,inactif'],
+44                 'password' => ['required', 'string', 'min:8', 'confirmed'],
+45                 'pin_code' => ['nullable', 'digits:4'],
+46             ], [
+47                 'username.unique' => "Ce nom d'utilisateur est déjà utilisé.",
+48                 'email.unique' => "Cette adresse e-mail est déjà utilisée.",
+49                 'password.min' => 'Le mot de passe doit contenir au moins 8 caractères.',
+50                 'password.confirmed' => 'La confirmation du mot de passe ne correspond pas.',
+51                 'pin_code.digits' => 'Le code PIN doit contenir exactement 4 chiffres.',
+52                 'professeur_id.required' => 'Un professeur doit être lié à un compte ayant le rôle professeur.',
+53                 'professeur_id.unique' => 'Ce professeur est déjà lié à un autre compte utilisateur.',
+54             ]);
+55     
+56             $data['pin_code'] = filled($data['pin_code'] ?? null) ? Hash::make($data['pin_code']) : null;
+57     
+58             User::create($data);
+59     
+60             return redirect()->route('admin.profile.accounts')->with('success', 'Le compte utilisateur a été créé.');
+61         }
+62     
+63         public function accounts(): View
+64         {
+65             return view('admin.profile.accounts', [
+66                 'users' => User::orderByRaw("CASE WHEN role = 'admin' THEN 0 ELSE 1 END")
+67                     ->orderBy('username')
+68                     ->get(),
+69             ]);
+70         }
+71     
+72         public function editAccount(User $user): View|RedirectResponse
+73         {
+74             if ($user->is(auth()->user())) {
+75                 return redirect()->route('admin.profile.edit');
+76             }
+77     
+78             return view('admin.profile.account-edit', [
+79                 'user' => $user,
+80                 'professeurs' => Professeurs::query()
+81                     ->where(function ($query) use ($user) {
+82                         $query->where('statut', 'actif')
+83                             ->when($user->professeur_id, fn ($query) => $query->orWhere('id', $user->professeur_id));
+84                     })
+85                     ->orderBy('nom')
+86                     ->orderBy('prenom')
+87                     ->get(),
+88             ]);
+89         }
+90     
+91         public function updateAccount(Request $request, User $user): RedirectResponse
+92         {
+93             if ($user->is($request->user())) {
+94                 return redirect()->route('admin.profile.edit');
+95             }
+96     
+97             $data = $request->validate([
+98                 'nom' => ['nullable', 'string', 'max:50'],
+99                 'postnom' => ['nullable', 'string', 'max:50'],
+100                'prenom' => ['nullable', 'string', 'max:50'],
+101                'date_naissance' => ['nullable', 'date', 'before:today'],
+102                'username' => ['required', 'string', 'max:50', Rule::unique('users', 'username')->ignore($user->id)],
+103                'email' => ['required', 'email', 'max:100', Rule::unique('users', 'email')->ignore($user->id)],
+104                'telephone' => ['nullable', 'string', 'max:20'],
+105                'adresse' => ['nullable', 'string', 'max:500'],
+106                'photo' => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:2048'],
+107                'role' => ['required', 'in:admin,prefetture,titulaire,professeur,comptable'],
+108                'statut' => ['required', 'in:actif,inactif'],
+109                'professeur_id' => [
+110                    'nullable',
+111                    'exists:professeurs,id',
+112                    Rule::unique('users', 'professeur_id')->ignore($user->id),
+113                    Rule::requiredIf(fn () => $request->input('role') === 'professeur'),
+114                ],
+115            ]);
+116    
+117            if ($request->hasFile('photo')) {
+118                if ($user->photo) {
+119                    Storage::disk('public')->delete($user->photo);
+120                }
+121    
+122                $data['photo'] = $request->file('photo')->store('users/photos', 'public');
+123            }
+124    
+125            $user->update($data);
+126    
+127            return redirect()->route('admin.profile.accounts')->with('success', 'Le profil utilisateur a été mis à jour.');
+128        }
+129    
+130        public function impersonate(Request $request, User $user): RedirectResponse
+131        {
+132            if ($request->session()->has('impersonating_admin_id')) {
+133                return back()->with('error', 'Une session de consultation est déjà en cours.');
+134            }
+135    
+136            if ($user->is($request->user()) || $user->role === 'admin' || $user->statut !== 'actif') {
+137                return back()->with('error', 'Seuls les autres comptes actifs non administrateurs peuvent être ouverts.');
+138            }
+139    
+140            $admin = $request->user();
+141            $request->session()->put('impersonating_admin_id', $admin->id);
+142            auth()->login($user);
+143            $request->session()->regenerate();
+144    
+145            Log::notice('Admin started account impersonation', [
+146                'admin_id' => $admin->id,
+147                'user_id' => $user->id,
+148            ]);
+149    
+150            $dashboard = match ($user->role) {
+151                'prefetture' => 'prefecture.dashboard',
+152                'titulaire' => 'titulaire.dashboard',
+153                'professeur' => 'professeur.dashboard',
+154                'comptable' => 'comptable.dashboard',
+155                default => 'home',
+156            };
+157    
+158            return redirect()->route($dashboard);
+159        }
+160    
+161        public function stopImpersonation(Request $request): RedirectResponse
+162        {
+163            $admin = User::query()
+164                ->whereKey($request->session()->get('impersonating_admin_id'))
+165                ->where('role', 'admin')
+166                ->where('statut', 'actif')
+167                ->first();
+168    
+169            if (! $admin) {
+170                auth()->logout();
+171                $request->session()->invalidate();
+172                $request->session()->regenerateToken();
+173    
+174                return redirect()->route('login')->with('error', 'La session administrateur d’origine n’est plus disponible.');
+175            }
+176    
+177            Log::notice('Admin stopped account impersonation', [
+178                'admin_id' => $admin->id,
+179                'user_id' => $request->user()->id,
+180            ]);
+181    
+182            auth()->login($admin);
+183            $request->session()->forget('impersonating_admin_id');
+184            $request->session()->regenerate();
+185    
+186            return redirect()->route('admin.dashboard')->with('success', 'Vous êtes de retour sur votre compte administrateur.');
+187        }
+188    
+189        public function show(Request $request): View
+190        {
+191            return view('admin.profile.show', [
+192                'user' => $request->user(),
+193                'users' => User::with('professeur')
+194                    ->orderByRaw("CASE WHEN role = 'admin' THEN 0 ELSE 1 END")
+195                    ->orderBy('username')
+196                    ->limit(5)
+197                    ->get(),
+198            ]);
+199        }
+200    
+201        public function statistics(Request $request): View
+202        {
+203            return view('admin.profile.statistics', [
+204                'user' => $request->user(),
+205                'administrationStats' => $this->administrationStats(),
+206            ]);
+207        }
+208    
+209        private function administrationStats(): array
+210        {
+211            $roleCounts = User::query()->selectRaw('role, COUNT(*) as total')->groupBy('role')->pluck('total', 'role');
+212    
+213            return [
+214                'labels' => ['Administrateurs', 'Préfecture', 'Titulaires', 'Professeurs', 'Comptables'],
+215                'roles' => [
+216                    $roleCounts->get('admin', 0),
+217                    $roleCounts->get('prefetture', 0),
+218                    $roleCounts->get('titulaire', 0),
+219                    $roleCounts->get('professeur', 0),
+220                    $roleCounts->get('comptable', 0),
+221                ],
+222                'modules' => [
+223                    Eleve::where('statut', 'actif')->count(),
+224                    Classe::where('statut', 'actif')->count(),
+225                    Professeurs::where('statut', 'actif')->count(),
+226                    Salle::where('statut', 'actif')->count(),
+227                ],
+228            ];
+229        }
+230    
+231        public function showPersonalProfile(Request $request): View
+232        {
+233            return view('profile.show', ['user' => $request->user()]);
+234        }
+235    
+236        public function editPersonalProfile(Request $request): View
+237        {
+238            return view('profile.edit', ['user' => $request->user()]);
+239        }
+240    
+241        public function edit(Request $request): View
+242        {
+243            return view('admin.profile.edit', ['user' => $request->user()]);
+244        }
+245    
+246        public function update(Request $request): RedirectResponse
+247        {
+248            $user = $request->user();
+249    
+250            $data = $request->validate([
+251                'nom' => ['nullable', 'string', 'max:50'],
+252                'postnom' => ['nullable', 'string', 'max:50'],
+253                'prenom' => ['nullable', 'string', 'max:50'],
+254                'date_naissance' => ['nullable', 'date', 'before:today'],
+255                'username' => ['required', 'string', 'max:50', Rule::unique('users', 'username')->ignore($user->id)],
+256                'email' => ['required', 'email', 'max:100', Rule::unique('users', 'email')->ignore($user->id)],
+257                'telephone' => ['nullable', 'string', 'max:20'],
+258                'adresse' => ['nullable', 'string', 'max:500'],
+259                'photo' => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:2048'],
+260            ], [
+261                'username.required' => "Le nom d'utilisateur est obligatoire.",
+262                'username.unique' => "Ce nom d'utilisateur est déjà utilisé.",
+263                'email.required' => "L'adresse e-mail est obligatoire.",
+264                'email.email' => "L'adresse e-mail n'est pas valide.",
+265                'email.unique' => "Cette adresse e-mail est déjà utilisée.",
+266            ]);
+267    
+268            if ($request->hasFile('photo')) {
+269                if ($user->photo) {
+270                    Storage::disk('public')->delete($user->photo);
+271                }
+272    
+273                $data['photo'] = $request->file('photo')->store('users/photos', 'public');
+274            }
+275    
+276            $user->update($data);
+277    
+278            return redirect()->route('profile.show')->with('success', 'Les propriétés du profil ont été modifiées.');
+279        }
+280    
+281        public function updatePassword(Request $request): RedirectResponse
+282        {
+283            $user = $request->user();
+284    
+285            $data = $request->validate([
+286                'current_password' => ['required', 'current_password'],
+287                'password' => ['required', 'string', 'min:8', 'confirmed'],
+288            ], [
+289                'current_password.required' => 'Le mot de passe actuel est obligatoire.',
+290                'current_password.current_password' => 'Le mot de passe actuel est incorrect.',
+291                'password.min' => 'Le nouveau mot de passe doit contenir au moins 8 caractères.',
+292                'password.confirmed' => 'La confirmation du mot de passe ne correspond pas.',
+293            ]);
+294    
+295            $user->update(['password' => Hash::make($data['password'])]);
+296    
+297            return back()->with('success', 'Le mot de passe a été réinitialisé.');
+298        }
+299    
+300        public function deactivate(Request $request): RedirectResponse
+301        {
+302            $request->user()->update(['statut' => 'inactif']);
+303    
+304            auth()->logout();
+305            $request->session()->invalidate();
+306            $request->session()->regenerateToken();
+307    
+308            return redirect()->route('login')->with('success', 'Votre compte administrateur a été désactivé.');
+309        }
+310    
+311        public function toggleAccount(User $user): RedirectResponse
+312        {
+313            if ($user->is(auth()->user())) {
+314                return back()->with('error', 'Vous ne pouvez pas désactiver votre propre compte depuis cette page.');
+315            }
+316    
+317            $user->update(['statut' => $user->statut === 'actif' ? 'inactif' : 'actif']);
+318    
+319            return back()->with('success', 'Le statut du compte a été mis à jour.');
+320        }
+321    
+322        public function destroyAccount(User $user): RedirectResponse
+323        {
+324            if ($user->is(auth()->user())) {
+325                return back()->with('error', 'Vous ne pouvez pas supprimer votre propre compte.');
+326            }
+327    
+328            $user->delete();
+329    
+330            return back()->with('success', 'Le compte a été supprimé définitivement.');
+331        }
+332    }

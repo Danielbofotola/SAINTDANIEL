@@ -1,0 +1,34 @@
+116            ->assertOk()
+117            ->assertSee($user->email)
+118            ->assertSee('Téléphone');
+119    
+120        $this->get(route('profile.edit'))
+121            ->assertOk()
+122            ->assertSee('Téléphone')
+123            ->assertSee('Enregistrer');
+124    
+125        $this->put(route('profile.update'), [
+126            'nom' => 'Kabila',
+127            'username' => $user->username,
+128            'email' => $user->email,
+129            'telephone' => '+243 900 000 000',
+130            'adresse' => 'Kinshasa',
+131            'role' => 'admin',
+132        ])->assertRedirect(route('profile.show'));
+133    
+134        $user->refresh();
+135        expect($user->nom)->toBe('Kabila')
+136            ->and($user->telephone)->toBe('+243 900 000 000')
+137            ->and($user->adresse)->toBe('Kinshasa')
+138            ->and($user->role)->toBe('comptable');
+139    });
+140    
+141    test('admin can edit a user while keeping their linked inactive professor selectable', function () {
+142        Schema::create('professeurs', function (Blueprint $table) {
+143            $table->id();
+144            $table->string('matricule');
+145            $table->string('nom');
+146            $table->string('postnom');
+147            $table->string('prenom');
+
+[showing lines 116-147 of 480; read again with offset=148 for more]

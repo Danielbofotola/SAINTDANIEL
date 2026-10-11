@@ -1,0 +1,5 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/PrefectureVieScolaireTest.php (1 hunk applied)
+Landed at lines 326-327 (the file's new text; no re-read needed):
+326            // La pièce jointe du dossier est visible et ouvrable.
+327            ->assertSee('Pièces du dossier')->assertSee('Certificat médical')

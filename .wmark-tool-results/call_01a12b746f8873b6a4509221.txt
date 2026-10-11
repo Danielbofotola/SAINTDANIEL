@@ -1,0 +1,44 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\aba9102c187c\20261011-155334-bash-call_01a12b746f8873b6a4509221.txt (722 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+[powershell — Windows side]
+tests\Pest.php
+tests\TestCase.php
+tests\Feature\ActiveAccountTest.php
+tests\Feature\AdminAccountCredentialsTest.php
+tests\Feature\AdminMessagerieTest.php
+tests\Feature\AdminUserManagementTest.php
+tests\Feature\AnneeEnCoursScopingTest.php
+tests\Feature\AnneeScolaireTest.php
+tests\Feature\AnnoncesTest.php
+tests\Feature\AppelsTest.php
+tests\Feature\BulletinDocumentTest.php
+tests\Feature\ClocheNotificationsTest.php
+tests\Feature\ComptabiliteTest.php
+tests\Feature\Comptabl
+
+... 418 chars truncated ...
+
+ture\MessagerieAccesTest.php
+tests\Feature\MessagerieSuppressionTest.php
+tests\Feature\MessagerieTest.php
+tests\Feature\ModuleSwitchTest.php
+tests\Feature\NotesClasseTest.php
+tests\Feature\PaieTest.php
+tests\Feature\ParentEnfantsTest.php
+tests\Feature\PortailParentTest.php
+tests\Feature\PrefectureDashboardTest.php
+tests\Feature\PrefectureVieScolaireTest.php
+tests\Feature\ProfesseursPagesTest.php
+tests\Feature\PublicSiteTest.php
+tests\Feature\RaccourcisTest.php
+tests\Feature\RegistrationRequestWorkflowTest.php
+tests\Feature\RoleDashboardsTest.php
+tests\Feature\ScolaritePagesTest.php
+tests\Feature\SectionOptionPagesTest.php
+tests\Feature\StatistiquesTest.php
+tests\Feature\SystemSettingsTest.php
+tests\Feature\TresorerieAlerteTest.php
+tests\Feature\UtilisateursEnLigneTest.php
+tests\Feature\YearScopedModelsTest.php
+tests\Unit\ExampleTest.php
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

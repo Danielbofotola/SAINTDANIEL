@@ -1,0 +1,12 @@
+159        // Messagerie interne : discussion directe ou diffusion à tous les utilisateurs.
+160        Route::get('/messagerie', [MessagerieController::class, 'index'])->middleware('auth')->name('messagerie.index');
+161        Route::post('/messagerie', [MessagerieController::class, 'store'])->middleware('auth')->name('messagerie.store');
+162        Route::post('/messagerie/{conversation}/messages', [MessagerieController::class, 'repondre'])->middleware('auth')->name('messagerie.repondre');
+163        Route::get('/messagerie/{conversation}/messages', [MessagerieController::class, 'messages'])->middleware('auth')->name('messagerie.messages');
+164        Route::post('/messagerie/demarrer', [MessagerieController::class, 'demarrer'])->middleware('auth')->name('messagerie.demarrer');
+165        Route::post('/messagerie/messages/{message}/reaction', [MessagerieController::class, 'reagir'])->middleware('auth')->name('messagerie.reagir');
+166        // Appels audio/vidéo (signalisation WebRTC, sans serveur temps réel).
+167        Route::post('/appels', [AppelController::class, 'store'])->middleware('auth')->name('appels.store');
+168        Route::get('/appels/entrant', [AppelController::class, 'entrant'])->middleware('auth')->name('appels.entrant');
+
+[showing lines 159-168 of 270; read again with offset=169 for more]

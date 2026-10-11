@@ -1,0 +1,19 @@
+Applied patch: 1 file changed (1 updated)
+Updated app/Models/TypeFrais.php (1 hunk applied)
+Landed at lines 11-26 (the file's new text; no re-read needed):
+11         protected $fillable = ['nom', 'description', 'est_inscription', 'statut'];
+12     
+13         protected function casts(): array
+14         {
+15             return ['est_inscription' => 'boolean'];
+16         }
+17     
+18         /**
+19          * Ce type de frais déclenche-t-il la validation de l'inscription ?
+20          * (explicitement coché, ou nommé « frais d'inscription »).
+21          */
+22         public function estFraisInscription(): bool
+23         {
+24             return $this->est_inscription
+25                 || str_contains(mb_strtolower((string) $this->nom), 'inscription');
+26         }

@@ -1,0 +1,53 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\aba9102c187c\20261011-155403-apply_patch-call_01a12b74d66a74e6972e3d2d.txt (991 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Structured view (text):
+Applied patch: 4 files changed (1 created, 3 updated)
+Created database/migrations/2026_10_24_000000_add_classe_suivante_to_classes_table.php (34 lines)
+Updated app/Models/Classe.php (1 hunk applied)
+Updated app/Http/Controllers/ClasseController.php (2 hunks applied)
+Updated resources/views/admin/classes/create.blade.php (2 hunks applied)
+Landed at lines 9-37 (the file's new text; no re-read needed):
+9          protected $fillable = ['cycle_id', 'salle_id', 'nom', 'ordre', 'classe_suivante_id', 'section_id', 'option_id', 'statut'];
+10     
+11         /**
+12          * Classe de destination en fin d'année : le passage explicite configuré
+13          * (`classe_suivante_id`) s'il existe — il peut franchir un cycle —, sinon la
+14          * classe d'ordre immédiatement supérieur dans le même cycle.
+15          */
+16         public function suivante(): ?self
+      … 13 lines omitted …
+30                 ->first();
+31         }
+32     
+33         /** Passage configuré explicitement vers une autre classe (même cycle ou non). */
+34         public function classeSuivante()
+35         {
+36             return $this->belongsTo(Classe::class, 'classe_suivante_id');
+37         }
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 100-103 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+  ⚠ hunk 2: context matched at lines 115-117 only after leading-whitespace normalization; inserted lin
+… 244 chars elided …
+        'classesSuivantes' => Classe::with('cycle')
+103                    ->where('statut', 'actif')
+104                    ->when($classe, fn ($query) => $query->where('id', '!=', $classe->id))
+105                    ->orderByRaw('ordre is null')
+106                    ->orderBy('ordre')
+107                    ->orderBy('nom')
+108                    ->get(),
+109            ];
+110        }
+Auto-corrected hunk landed at lines 122-130:
+122                // Niveau de progression dans le cycle (1, 2, 3…). Sert au passage
+123                // de classe : la classe suivante a le niveau immédiatement supérieur.
+124                'ordre' => ['nullable', 'integer', 'min:1', 'max:30'],
+125                // Passage explicite (peut franchir un cycle). Vide = niveau supérieur.
+126                '
+… 1,045 chars elided …
+ante_id', $classe->classe_suivante_id ?? null) == $candidat->id)>{{ $candidat->nom }}{{ $candidat->cycle ? ' — '.$candidat->cycle->nom : '' }}</option>
+97                                 @endforeach
+98                             </select>
+99                             <small class="text-muted">
+100                                Force la classe de destination en fin d'année — utile pour changer de cycle
+101                                (ex. 6e primaire → 1re secondaire). Vide = niveau immédiatement supérieur.
+102                            </small>
+103                            @error('classe_suivante_id')<div class="error">{{ $message }}</div>@enderror
+104                        </div>

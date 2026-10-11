@@ -1,0 +1,9 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/ElevesPagesTest.php (2 hunks applied)
+Landed at lines 207-207 (the file's new text; no re-read needed):
+207                'nom' => $nom, 'postnom' => 'Cas', 'prenom' => 'Cas', 'sexe' => $sexe,
+Landed at lines 223-224 (the file's new text; no re-read needed):
+223            ->assertSee('Acceptee Cas Cas')
+224            ->assertSee('Refusee Cas Cas')
+Landed at lines 226-226 (the file's new text; no re-read needed):
+226            ->assertDontSee('EnAttente Cas Cas');

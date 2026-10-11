@@ -1,0 +1,3 @@
+392            ->assertSee(route('admin.professeurs.index'), false)
+393            ->assertSee(route('admin.emplois-du-temps.index'), false);
+394    });

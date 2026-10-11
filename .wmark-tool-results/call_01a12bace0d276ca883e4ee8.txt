@@ -1,0 +1,22 @@
+Applied patch: 1 file changed (1 updated)
+Updated app/Http/Controllers/AffectationCoursController.php (3 hunks applied)
+Landed at lines 12-12 (the file's new text; no re-read needed):
+12     use Illuminate\Support\Facades\DB;
+Landed at lines 96-170 (the file's new text; no re-read needed):
+96     
+97         /**
+98          * Mutation : réaffecte une affectation existante (professeur / cours / classe).
+99          */
+100        public function muter(Request $request, AffectationCours $affectation): RedirectResponse
+101        {
+102            $data = $request->validate([
+103                'professeur_id' => ['required', Rule::exists('professeurs', 'id')->where('statut', 'actif')],
+      … 59 lines omitted …
+163            DB::transaction(function () use ($a, $b): void {
+164                $professeurA = $a->professeur_id;
+165                $a->update(['professeur_id' => $b->professeur_id]);
+166                $b->update(['professeur_id' => $professeurA]);
+167            });
+168    
+169            return back()->with('success', 'Les professeurs des deux affectations ont été permutés.');
+170        }

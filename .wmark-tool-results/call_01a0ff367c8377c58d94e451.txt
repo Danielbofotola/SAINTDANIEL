@@ -1,0 +1,3 @@
+1      @include('partials.impersonation-banner')
+2      <h1>Bienvenue {{ auth()->user()->prenom ?: auth()->user()->username }}</h1>
+3      <p><a href="{{ route('profile.show') }}">Voir mon profil et mes coordonnées</a></p>

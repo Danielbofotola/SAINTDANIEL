@@ -1,0 +1,47 @@
+1      <?php
+2      
+3      namespace Database\Factories;
+4      
+5      use App\Models\User;
+6      use Illuminate\Database\Eloquent\Factories\Factory;
+7      use Illuminate\Support\Facades\Hash;
+8      use Illuminate\Support\Str;
+9      
+10     /**
+11      * @extends Factory<User>
+12      */
+13     class UserFactory extends Factory
+14     {
+15         /**
+16          * The current password being used by the factory.
+17          */
+18         protected static ?string $password;
+19     
+20         /**
+21          * Define the model's default state.
+22          *
+23          * @return array<string, mixed>
+24          */
+25         public function definition(): array
+26         {
+27             return [
+28                 'username' => fake()->unique()->userName(),
+29                 'email' => fake()->unique()->safeEmail(),
+30                 'password' => static::$password ??= Hash::make('password'),
+31                 'pin_code' => Hash::make('1234'),
+32                 'role' => 'professeur',
+33                 'statut' => 'actif',
+34                 'remember_token' => Str::random(10),
+35             ];
+36         }
+37     
+38         /**
+39          * Indicate that the model's email address should be unverified.
+40          */
+41         public function unverified(): static
+42         {
+43             return $this->state(fn (array $attributes) => [
+44                 'statut' => 'inactif',
+45             ]);
+46         }
+47     }

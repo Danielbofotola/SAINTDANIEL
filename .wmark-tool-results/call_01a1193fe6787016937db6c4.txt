@@ -1,0 +1,117 @@
+104                                        <button class="dropdown-item" type="submit">Déconnexion</button>
+105                                    </form>
+106                                </li>
+107                            </ul>
+108                        </li>
+109                    </ul>
+110                </div>
+111            </nav>
+112        </div>
+113    
+114        {{-- Menu latéral --}}
+115        <div class="sidebar">
+116            <div class="sidebar-background"></div>
+117            <div class="sidebar-wrapper scrollbar-inner">
+118                <div class="sidebar-content">
+119                    <div class="user">
+120                        <div class="avatar-sm float-left mr-2">
+121                            @if ($user->photo)
+122                                <img src="{{ asset('storage/'.$user->photo) }}" alt="" class="avatar-img rounded-circle">
+123                            @else
+124                                <span class="avatar-title rounded-circle bg-primary">{{ $initial }}</span>
+125                            @endif
+126                        </div>
+127                        <div class="info">
+128                            <a data-toggle="collapse" href="#collapseExample" aria-expanded="true">
+129                                <span>
+130                                    {{ $displayName }}
+131                                    <span class="user-level">Préfecture</span>
+132                                    <span class="caret"></span>
+133                                </span>
+134                            </a>
+135                            <div class="clearfix"></div>
+136                            <div class="collapse in" id="collapseExample">
+137                                <ul class="nav">
+138                                    <li><a href="{{ route('prefecture.profil') }}"><span class="link-collapse">Mon profil</span></a></li>
+139                                </ul>
+140                            </div>
+141                        </div>
+142                    </div>
+143                    <ul class="nav">
+144                        <li class="nav-item {{ request()->routeIs('prefecture.dashboard') ? 'active' : '' }}">
+145                            <a href="{{ route('prefecture.dashboard') }}">
+146                                <i class="fas fa-home"></i>
+147                                <p>Tableau de bord</p>
+148                            </a>
+149                        </li>
+150                        <li class="nav-section">
+151                            <span class="sidebar-mini-icon"><i class="fa fa-ellipsis-h"></i></span>
+152                            <h4 class="text-section">Supervision</h4>
+153                        </li>
+154                        <li class="nav-item {{ request()->routeIs('prefecture.effectifs') ? 'active' : '' }}">
+155                            <a href="{{ route('prefecture.effectifs') }}">
+156                                <i class="fas fa-chart-bar"></i>
+157                                <p>Effectifs par cycle</p>
+158                            </a>
+159                        </li>
+160                        <li class="nav-item {{ request()->routeIs('prefecture.classes') ? 'active' : '' }}">
+161                            <a href="{{ route('prefecture.classes') }}">
+162                                <i class="fas fa-table"></i>
+163                                <p>Classes</p>
+164                            </a>
+165                        </li>
+166                        <li class="nav-item {{ request()->routeIs('prefecture.personnel') ? 'active' : '' }}">
+167                            <a href="{{ route('prefecture.personnel') }}">
+168                                <i class="fas fa-users"></i>
+169                                <p>Personnel</p>
+170                            </a>
+171                        </li>
+172                        <li class="nav-section">
+173                            <span class="sidebar-mini-icon"><i class="fa fa-ellipsis-h"></i></span>
+174                            <h4 class="text-section">Vie scolaire</h4>
+175                        </li>
+176                        <li class="nav-item {{ request()->routeIs('prefecture.presences') ? 'active' : '' }}">
+177                            <a href="{{ route('prefecture.presences') }}">
+178                                <i class="fas fa-user-clock"></i>
+179                                <p>Présence &amp; ponctualité</p>
+180                            </a>
+181                        </li>
+182                        <li class="nav-item {{ request()->routeIs('prefecture.horaires') ? 'active' : '' }}">
+183                            <a href="{{ route('prefecture.horaires') }}">
+184                                <i class="far fa-clock"></i>
+185                                <p>Horaire des cours</p>
+186                            </a>
+187                        </li>
+188                        <li class="nav-item {{ request()->routeIs('prefecture.evaluations') ? 'active' : '' }}">
+189                            <a href="{{ route('prefecture.evaluations') }}">
+190                                <i class="fas fa-clipboard-check"></i>
+191                                <p>Évaluations</p>
+192                            </a>
+193                        </li>
+194                        <li class="nav-item {{ request()->routeIs('prefecture.eleves*') ? 'active' : '' }}">
+195                            <a href="{{ route('prefecture.eleves') }}">
+196                                <i class="fas fa-folder-open"></i>
+197                                <p>Dossiers élèves</p>
+198                            </a>
+199                        </li>
+200                        <li class="nav-item {{ request()->routeIs('prefecture.tuteurs') ? 'active' : '' }}">
+201                            <a href="{{ route('prefecture.tuteurs') }}">
+202                                <i class="fas fa-user-friends"></i>
+203                                <p>Tuteurs &amp; parents</p>
+204                            </a>
+205                        </li>
+206                        <li class="nav-item {{ request()->routeIs('prefecture.bulletins*') ? 'active' : '' }}">
+207                            <a href="{{ route('prefecture.bulletins') }}">
+208                                <i class="fas fa-file-alt"></i>
+209                                <p>Résultats &amp; bulletins</p>
+210                            </a>
+211                        </li>
+212                        <li class="nav-item {{ request()->routeIs('prefecture.periodes*') ? 'active' : '' }}">
+213                            <a href="{{ route('prefecture.periodes') }}">
+214                                <i class="far fa-calendar-check"></i>
+215                                <p>Périodes</p>
+216                            </a>
+217                        </li>
+218                        <li class="nav-item {{ request()->routeIs('notifications.*') ? 'active' : '' }}">
+
+[showing lines 104-218 of 299; read again with offset=219 for more]

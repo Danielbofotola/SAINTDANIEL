@@ -1,0 +1,16 @@
+218        window.appelRaccrocher = function (silencieux) {
+219            if (actif) {
+220                poster(u(URLS.terminer, actif.id), {}).catch(() => {});
+221                try { actif.pc.close(); } catch (e) {}
+222                try { actif.flux.getTracks().forEach(t => t.stop()); } catch (e) {}
+223            }
+224            actif = null;
+225            clearInterval(boucleAppel); boucleAppel = null;
+226            clearInterval(window.__appelMinuteur);
+227            fermerEcran();
+228            if (!silencieux) ecran('Appel terminé');
+229        };
+230    
+231        window.appelMuet = function (bouton) {
+
+[showing lines 218-231 of 295; read again with offset=232 for more]

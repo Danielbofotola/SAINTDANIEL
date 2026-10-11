@@ -1,0 +1,30 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\e1ce9c26600a\20261004-212324-bash-call_01a1089617377328a5dc61c4.txt (614 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+[powershell — Windows side]
+INFO  Blade templates cached successfully.  
+
+==exit 0==
+
+  GET|HEAD   admin/frais ................................................... admin.frais.index › FraisController@index
+  POST       admin/frais/tarifs ................................ admin.frais.tarifs.store › FraisController@storeTarif
+  DELETE     admin/frais/tarifs/{fraisScolaire} ............ admin.frais.tarifs.destroy › FraisController@destroyTarif
+  POST       admin/frais/types ..........................
+
+... 1,005 chars truncated ...
+
+ntroller@index
+  POST       admin/depenses ........................................... admin.depenses.store › DepenseController@store
+  POST       admin/depenses/categories ............ admin.depenses.categories.store › DepenseController@storeCategorie
+  DELETE     admin/depenses/categories/{categorieDepense} admin.depenses.categories.destroy › DepenseController@destr…
+  DELETE     admin/depenses/{depense} ............................. admin.depenses.destroy › DepenseController@destroy
+
+                                                                                                    Showing [5] routes
+
+
+  GET|HEAD   admin/archives ...................................... admin.archives.index › ArchiveAnneeController@index
+  POST       admin/archives ...................................... admin.archives.store › ArchiveAnneeController@store
+  DELETE     admin/archives/{archiveAnnee} ................... admin.archives.destroy › ArchiveAnneeController@destroy
+
+                                                                                                    Showing [3] routes
+
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

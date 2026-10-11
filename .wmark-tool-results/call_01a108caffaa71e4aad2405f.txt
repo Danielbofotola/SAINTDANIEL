@@ -1,0 +1,16 @@
+246        ]);
+247        $comptable = User::factory()->create(['role' => 'comptable']);
+248    
+249        $this->actingAs($comptable)
+250            ->get(route('comptable.recouvrement.index'))
+251            ->assertOk()
+252            ->assertSee('Recouvrement')
+253            ->assertSee('Taux de recouvrement')
+254            ->assertSee('100 %')
+255            ->assertSee('3e A');
+256    
+257        $this->actingAs($comptable)
+258            ->get(route('comptable.recouvrement.index', ['periode_id' => 1]))
+259            ->assertOk()
+
+[showing lines 246-259 of 261; read again with offset=260 for more]

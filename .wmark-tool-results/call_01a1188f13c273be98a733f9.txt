@@ -1,0 +1,20 @@
+[powershell — Windows side]
+downloaded
+
+Name                      Length
+----                      ------
+fontawesome-webfont.eot   165742
+fontawesome-webfont.svg   444379
+fontawesome-webfont.ttf   165548
+fontawesome-webfont.woff   98024
+fontawesome-webfont.woff2  77160
+/*!
+ *  Font Awesome 4.7.0 by @davegandy - http://fontawesome.io - @fontawesome
+ *  License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License
+=== url refs ===
+url('../fonts/fontawesome-webfont.eot?v=4.7.0')
+url('../fonts/fontawesome-webfont.eot?#iefix&v=4.7.0')
+url('../fonts/fontawesome-webfont.woff2?v=4.7.0')
+url('../fonts/fontawesome-webfont.woff?v=4.7.0')
+url('../fonts/fontawesome-webfont.ttf?v=4.7.0')
+url('../fonts/fontawesome-webfont.svg?v=4.7.0#fontawesomeregular')

@@ -1,0 +1,18 @@
+[powershell — Windows side]
+PASS  Tests\Feature\FinancesPagesTest
+  ✓ an admin can manage fee types and class tariffs                                                              0.18s  
+  ✓ a payment is recorded with a receipt and must match the student class                                        0.03s  
+  ✓ expenses and categories are managed per school year                                                          0.02s  
+  ✓ closing a school year computes the summary and can be reopened                                               0.03s  
+  ✓ the payments page offers a student filter and shows the remaining balance                                    0.03s  
+  ✓ the finance menu links point to the new modules                                                              0.02s  
+  ✓ the admin profile sidebar links to the management modules                                                    0.02s  
+  ✓ a closed school year can be browsed in read-only                                                             0.03s  
+  ✓ an admin can open the receipt of a payment                                                                   0.03s  
+
+  Tests:    9 passed (83 assertions)
+  Duration: 0.54s
+
+==exit 0==
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

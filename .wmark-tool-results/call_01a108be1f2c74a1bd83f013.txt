@@ -1,0 +1,15 @@
+1      <?php
+2      
+3      namespace App\Http\Controllers;
+4      
+5      use App\Models\AnneeScolaire;
+6      use App\Models\Classe;
+7      use App\Models\FraisScolaire;
+8      use App\Models\Inscription;
+9      use App\Models\Paiement;
+10     use Illuminate\Http\RedirectResponse;
+11     use Illuminate\Http\Request;
+12     use Illuminate\Validation\Rule;
+13     use Illuminate\View\View;
+
+[showing lines 1-14 of 132; read again with offset=15 for more]

@@ -1,0 +1,1 @@
+Updated resources/views/parent/portail.blade.php: replaced 3 lines with 23 lines

@@ -1,0 +1,22 @@
+1      <?php
+2      
+3      use Illuminate\Support\Facades\Route;
+4      use App\Http\Controllers\AuthController;
+5      use App\Http\Controllers\AdminDashboardController;
+6      use App\Http\Controllers\EleveController;
+7      use App\Http\Controllers\EleveInscriptionController;
+8      use App\Http\Controllers\SalleController;
+9      use App\Http\Controllers\ClasseController;
+10     use App\Http\Controllers\UserProfileController;
+11     use App\Http\Controllers\ProfesseurController;
+12     use App\Http\Controllers\ProfesseurDashboardController;
+13     use App\Http\Controllers\AffectationCoursController;
+14     use App\Http\Controllers\CoursController;
+15     use App\Http\Controllers\EmploiDuTempsController;
+16     use App\Http\Controllers\PeriodeController;
+17     use App\Http\Controllers\EvaluationController;
+18     use App\Http\Controllers\BulletinController;
+19     use App\Http\Controllers\SectionOptionController;
+20     use App\Http\Controllers\RegistrationRequestController;
+
+[showing lines 1-20 of 137; read again with offset=21 for more]

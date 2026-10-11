@@ -1,0 +1,1 @@
+Updated app/Providers/AppServiceProvider.php: replaced 5 lines with 12 lines

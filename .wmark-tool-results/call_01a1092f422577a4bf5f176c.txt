@@ -1,0 +1,1 @@
+Wrote resources/views/notifications/index.blade.php (71 lines)

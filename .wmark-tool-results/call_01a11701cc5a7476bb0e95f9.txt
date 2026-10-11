@@ -1,0 +1,333 @@
+392                            <div class="destinataire-search-wrapper">
+393                                <input type="text" id="destSearchInput" class="form-control form-control-sm" placeholder="Filtrer les utilisateurs...">
+394                                <i class="fa fa-search"></i>
+395                            </div>
+396    
+397                            <select class="form-control select-destinataires" id="destinatairesSelect" name="destinataires[]" multiple required>
+398                                <option value="tous" @selected(in_array('tous', old('destinataires', []), true))>
+399                                    📢 — Tous les utilisateurs ({{ $totalUtilisateurs }}) —
+400                                </option>
+401                                @foreach ($destinataires as $compte)
+402                                    @php($nom = trim(($compte->nom.' '.$compte->postnom.' '.$compte->prenom)) ?: $compte->username)
+403                                    <option value="{{ $compte->id }}" 
+404                                            data-text="{{ strtolower($nom.' '.$compte->role) }}"
+405                                            @selected(in_array((string) $compte->id, array_map('strval', old('destinataires', [])), true))>
+406                                        {{ $nom }} — {{ ucfirst($compte->role) }}
+407                                    </option>
+408                                @endforeach
+409                            </select>
+410    
+411                            <div class="d-flex justify-content-between align-items-center mt-1">
+412                                <small class="text-muted" style="font-size: 10px;">Ctrl / Cmd pour choix multiple.</small>
+413                                <div class="quick-actions-btn">
+414                                    <button type="button" class="btn-xs-dark" id="btnSelectAll">Tous</button>
+415                                    <button type="button" class="btn-xs-dark" id="btnDeselectAll">Effacer</button>
+416                                </div>
+417                            </div>
+418                        </div>
+419    
+420                        <!-- Objet & Corps -->
+421                        <div class="col-12 col-md-7">
+422                            <div class="form-group mb-3">
+423                                <label class="form-label">Objet / Sujet *</label>
+424                                <input class="form-control" name="sujet" maxlength="150" value="{{ old('sujet') }}" required placeholder="Ex. Reunion d'équipe">
+425                            </div>
+426                            <div class="form-group mb-3">
+427                                <label class="form-label">Message *</label>
+428                                <textarea class="form-control" name="corps" rows="3" maxlength="2000" required placeholder="Votre message…">{{ old('corps') }}</textarea>
+429                            </div>
+430                            <div class="text-right">
+431                                <button class="btn-submit-message" type="submit">
+432                                    <i class="fa-solid fa-paper-plane"></i> Envoyer
+433                                </button>
+434                            </div>
+435                        </div>
+436                    </div>
+437                </form>
+438            </div>
+439    
+440            <!-- ================= INTERFACE CHAT RESPONSIVE ================= -->
+441            <div class="messagerie-card">
+442                <div class="messagerie {{ $active ? 'has-active-conv' : '' }}">
+443                    
+444                    <!-- Colonne Gauche (Liste) -->
+445                    <div class="messagerie__liste">
+446                        <div class="chat-search-box">
+447                            <input type="text" id="chatSearchInput" class="chat-search-input" placeholder="Search">
+448                            <i class="fa fa-search chat-search-icon"></i>
+449                        </div>
+450    
+451                        <div class="conv-container" id="convContainer">
+452                            @forelse ($conversations as $conversation)
+453                                @php($correspondant = $conversation->participants->firstWhere('id', '!=', $user->id))
+454                                @php($nomAffiche = $correspondant && $conversation->type === 'directe' ? (trim($correspondant->nom.' '.$correspondant->prenom) ?: $correspondant->username) : $conversation->sujet)
+455                                
+456                                <a class="conv {{ $active && $active->id === $conversation->id ? 'active' : '' }}" 
+457                                   href="{{ route('messagerie.index', ['conversation' => $conversation->id]) }}"
+458                                   data-search="{{ strtolower($nomAffiche) }}">
+459                                    
+460                                    <div class="msg-avatar-container">
+461                                        @if ($conversation->type !== 'directe' || ! $correspondant)
+462                                            <span class="msg-avatar msg-avatar--group"><i class="fa fa-bullhorn"></i></span>
+463                                        @elseif ($correspondant->photo)
+464                                            <img class="msg-avatar" src="{{ asset('storage/'.$correspondant->photo) }}" alt="{{ $nomAffiche }}">
+465                                        @else
+466                                            <span class="msg-avatar">
+467                                                {{ mb_strtoupper(mb_substr($correspondant->prenom ?: $correspondant->username, 0, 1)) }}
+468                                            </span>
+469                                        @endif
+470                                        <span class="status-dot"></span>
+471                                    </div>
+472    
+473                                    <div style="flex: 1; min-width: 0;">
+474                                        <div class="d-flex justify-content-between align-items-baseline">
+475                                            <strong>{{ $nomAffiche }}</strong>
+476                                            <span class="conv-time">{{ $conversation->derniere_activite_at?->diffForHumans() }}</span>
+477                                        </div>
+478                                        <div class="d-flex justify-content-between align-items-center mt-1">
+479                                            <small class="text-truncate" style="max-width: 150px; display: inline-block;">
+480                                                @if ($conversation->dernierMessage) 
+481                                                    {{ $conversation->dernierMessage->corps }} 
+482                                                @endif
+483                                            </small>
+484                                            @if ($conversation->non_lus > 0)
+485                                                <span class="badge-nonlu">{{ $conversation->non_lus }}</span>
+486                                            @endif
+487                                        </div>
+488                                    </div>
+489                                </a>
+490                            @empty
+491                                <p class="text-muted p-3 mb-0 text-center">Aucune conversation.</p>
+492                            @endforelse
+493                        </div>
+494                    </div>
+495    
+496                    <!-- Colonne Droite (Discussion) -->
+497                    <div class="messagerie__fil">
+498                        @if (! $active)
+499                            <div class="p-4 text-center text-muted my-auto">
+500                                <i class="fa-regular fa-paper-plane fa-3x mb-3" style="color: var(--chat-text-muted);"></i>
+501                                <p>Choisissez une conversation pour commencer à échanger.</p>
+502                            </div>
+503                        @else
+504                            <!-- Header Smartphone -->
+505                            <div class="chat-mobile-header">
+506                                <a href="{{ route('messagerie.index') }}" class="btn-back-convs" title="Retour">
+507                                    <i class="fa-solid fa-arrow-left"></i>
+508                                </a>
+509                                @php($correspondantActive = $active->participants->firstWhere('id', '!=', $user->id))
+510                                <strong style="font-size: 14px; color: var(--chat-accent);">
+511                                    {{ $correspondantActive && $active->type === 'directe' ? (trim($correspondantActive->nom.' '.$correspondantActive->prenom) ?: $correspondantActive->username) : $active->sujet }}
+512                                </strong>
+513                            </div>
+514    
+515                            <!-- Messages -->
+516                            <div class="messagerie__messages" id="messagesContainer" data-flux="{{ route('messagerie.messages', $active) }}">
+517                                @foreach ($messages as $message)
+518                                    @include('messagerie._bulle', ['message' => $message, 'active' => $active])
+519                                @endforeach
+520                            </div>
+521    
+522                            <!-- Saisie -->
+523                            <form class="messagerie__saisie" id="chatReplyForm" method="POST" action="{{ route('messagerie.repondre', $active) }}" enctype="multipart/form-data">
+524                                @csrf
+525                                
+526                                @php($monAvatar = $user->photo)
+527                                @if ($monAvatar)
+528                                    <img class="msg-avatar msg-avatar--sm" src="{{ asset('storage/'.$monAvatar) }}" alt="Mon Avatar">
+529                                @else
+530                                    <span class="msg-avatar msg-avatar--sm">
+531                                        {{ mb_strtoupper(mb_substr($user->prenom ?: $user->username, 0, 1)) }}
+532                                    </span>
+533                                @endif
+534    
+535                                <input type="text" class="form-control" name="corps" id="messageInput" maxlength="2000" placeholder="Type message" autocomplete="off">
+536                                
+537                                <div class="saisie-actions">
+538                                    <label for="fileAttachment" title="Joindre une image ou un fichier (5 Mo max)">
+539                                        <i class="fa fa-paperclip"></i>
+540                                        <input type="file" id="fileAttachment" name="piece_jointe" style="display: none;"
+541                                               accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv,.zip">
+542                                    </label>
+543                                    <span class="file-choisi" id="fileChoisi" style="font-size:12px;color:var(--chat-text-muted);margin-left:6px;"></span>
+544                                    <i class="far fa-smile" title="Emoji"></i>
+545                                    <button class="btn-send" type="submit">
+546                                        <i class="fa fa-paper-plane"></i>
+547                                    </button>
+548                                </div>
+549                            </form>
+550                        @endif
+551                    </div>
+552    
+553                </div>
+554            </div>
+555        </main>
+556    
+557        <!-- JavaScript Mobile & Interactivité -->
+558        <script>
+559            document.addEventListener("DOMContentLoaded", function () {
+560                // Scroll automatique vers le bas
+561                const msgContainer = document.getElementById("messagesContainer");
+562                if (msgContainer) {
+563                    msgContainer.scrollTop = msgContainer.scrollHeight;
+564                }
+565    
+566                // Filtre des conversations
+567                const searchInput = document.getElementById("chatSearchInput");
+568                if (searchInput) {
+569                    searchInput.addEventListener("keyup", function () {
+570                        const filter = this.value.toLowerCase().trim();
+571                        const conversations = document.querySelectorAll("#convContainer .conv");
+572                        conversations.forEach(function (conv) {
+573                            const text = conv.getAttribute("data-search") || "";
+574                            conv.style.display = text.includes(filter) ? "flex" : "none";
+575                        });
+576                    });
+577                }
+578    
+579                // Filtre destinataires
+580                const destSearchInput = document.getElementById("destSearchInput");
+581                const selectDest = document.getElementById("destinatairesSelect");
+582                if (destSearchInput && selectDest) {
+583                    destSearchInput.addEventListener("keyup", function () {
+584                        const filter = this.value.toLowerCase().trim();
+585                        const options = selectDest.querySelectorAll("option");
+586                        options.forEach(function (opt) {
+587                            const text = opt.getAttribute("data-text") || opt.textContent.toLowerCase();
+588                            opt.style.display = (opt.value === 'tous' || text.includes(filter)) ? "" : "none";
+589                        });
+590                    });
+591                }
+592    
+593                // Boutons Tout choisir / effacer
+594                const btnSelectAll = document.getElementById("btnSelectAll");
+595                const btnDeselectAll = document.getElementById("btnDeselectAll");
+596                if (btnSelectAll && btnDeselectAll && selectDest) {
+597                    btnSelectAll.addEventListener("click", () => Array.from(selectDest.options).forEach(o => o.selected = true));
+598                    btnDeselectAll.addEventListener("click", () => Array.from(selectDest.options).forEach(o => o.selected = false));
+599                }
+600    
+601                // ---------- Messagerie instantanée (aucun rechargement) ----------
+602                const messageInput = document.getElementById("messageInput");
+603                const replyForm = document.getElementById("chatReplyForm");
+604                const filMessages = document.getElementById("messagesContainer");
+605                const urlFlux = filMessages ? filMessages.getAttribute("data-flux") : null;
+606                let dernierId = 0;
+607    
+608                if (filMessages) {
+609                    const dernieres = filMessages.querySelectorAll("[data-message-id]");
+610                    if (dernieres.length) dernierId = Number(dernieres[dernieres.length - 1].getAttribute("data-message-id")) || 0;
+611                }
+612    
+613                const allerEnBas = function () {
+614                    if (filMessages) filMessages.scrollTop = filMessages.scrollHeight;
+615                };
+616    
+617                const ajouter = function (html, id) {
+618                    if (!filMessages || !html) return;
+619                    filMessages.insertAdjacentHTML("beforeend", html);
+620                    if (id) dernierId = Math.max(dernierId, Number(id));
+621                    allerEnBas();
+622                };
+623    
+624                const majBadges = function (total) {
+625                    document.querySelectorAll("[data-non-lus]").forEach(function (el) {
+626                        if (!el.classList.contains("messagerie-flottante__badge") && el.tagName === "A") return;
+627                        if (total > 0) {
+628                            el.textContent = total > 99 ? "99+" : total;
+629                            el.style.display = "";
+630                        } else if (el.classList.contains("messagerie-flottante__badge")) {
+631                            el.style.display = "none";
+632                        } else {
+633                            el.textContent = "";
+634                            el.style.display = "none";
+635                        }
+636                    });
+637                };
+638    
+639                const fichierAJoindre = document.getElementById("fileAttachment");
+640                const majNomFichier = function () {
+641                    const zone = document.getElementById("fileChoisi");
+642                    if (zone) zone.textContent = (fichierAJoindre && fichierAJoindre.files.length) ? fichierAJoindre.files[0].name : "";
+643                };
+644                if (fichierAJoindre) fichierAJoindre.addEventListener("change", majNomFichier);
+645    
+646                const rienAEnvoyer = function () {
+647                    const texteVide = !messageInput || messageInput.value.trim() === "";
+648                    const fichierVide = !fichierAJoindre || !fichierAJoindre.files || fichierAJoindre.files.length === 0;
+649                    return texteVide && fichierVide;
+650                };
+651    
+652                const envoyer = function () {
+653                    if (!replyForm || rienAEnvoyer()) return;
+654                    const bouton = replyForm.querySelector(".btn-send");
+655                    if (bouton) bouton.disabled = true;
+656    
+657                    fetch(replyForm.action, {
+658                        method: "POST",
+659                        headers: { "X-Requested-With": "XMLHttpRequest", "Accept": "application/json" },
+660                        body: new FormData(replyForm),
+661                        credentials: "same-origin",
+662                    })
+663                        .then(function (reponse) {
+664                            return reponse.json().then(function (donnees) {
+665                                if (!reponse.ok) throw donnees;
+666                                return donnees;
+667                            });
+668                        })
+669                        .then(function (donnees) {
+670                            ajouter(donnees.message.html, donnees.message.id);
+671                            messageInput.value = "";
+672                            if (fichierAJoindre) fichierAJoindre.value = "";
+673                            majNomFichier();
+674                            majBadges(donnees.non_lus);
+675                        })
+676                        .catch(function (erreur) {
+677                            const texte = (erreur && (erreur.message || (erreur.errors && erreur.errors.corps && erreur.errors.corps[0]))) || "Envoi impossible.";
+678                            alert(texte);
+679                        })
+680                        .finally(function () {
+681                            if (bouton) bouton.disabled = false;
+682                            messageInput.focus();
+683                        });
+684                };
+685    
+686                if (replyForm && messageInput) {
+687                    replyForm.addEventListener("submit", function (e) {
+688                        e.preventDefault();
+689                        envoyer();
+690                    });
+691                    messageInput.addEventListener("keydown", function (e) {
+692                        if (e.key === "Enter" && !e.shiftKey) {
+693                            e.preventDefault();
+694                            envoyer();
+695                        }
+696                    });
+697                }
+698    
+699                // Nouveau message : envoi instantané puis ouverture de la conversation créée.
+700                const formNouveau = document.getElementById("chatNouveauForm");
+701                if (formNouveau) {
+702                    formNouveau.addEventListener("submit", function (e) {
+703                        e.preventDefault();
+704                        fetch(formNouveau.action, {
+705                            method: "POST",
+706                            headers: { "X-Requested-With": "XMLHttpRequest", "Accept": "application/json" },
+707                            body: new FormData(formNouveau),
+708                            credentials: "same-origin",
+709                        })
+710                            .then(function (reponse) { return reponse.json(); })
+711                            .then(function (donnees) {
+712                                if (donnees.url) window.location.assign(donnees.url);
+713                            })
+714                            .catch(function () { alert("Envoi impossible."); });
+715                    });
+716                }
+717    
+718                // Rafraîchissement automatique du fil (et des compteurs), sans rechargement.
+719                if (urlFlux) {
+720                    const attendre = function (ms) { return new Promise(function (r) { setTimeout(r, ms); }); };
+721    
+722                    (async function boucle() {
+
+[lines 392-746 of 746 exceed the 4000-token delivery ceiling; showing lines 392-722. Continue with offset=723 — each windowed read arrives in full]

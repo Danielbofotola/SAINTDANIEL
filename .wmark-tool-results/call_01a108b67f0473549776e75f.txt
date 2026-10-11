@@ -1,0 +1,10 @@
+320                <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-pencil-square-o"></i><span class="app-menu__label">Évaluations &amp; Bulletins</span><i class="treeview-indicator fa fa-angle-right"></i></a>
+321                    <ul class="treeview-menu">
+322                        <li><a class="treeview-item" href="{{ route('admin.periodes.index') }}"><i class="icon fa fa-calendar"></i> Périodes</a></li>
+323                        <li><a class="treeview-item" href="{{ route('admin.evaluations.index') }}"><i class="icon fa fa-pencil"></i> Évaluations</a></li>
+324                        <li><a class="treeview-item" href="{{ route('admin.bulletins.index') }}"><i class="icon fa fa-file-text-o"></i> Bulletins</a></li>
+325                    </ul>
+326                </li>
+327                <li class="menu-section">Personnel enseignant</li>
+
+[showing lines 320-327 of 722; read again with offset=328 for more]

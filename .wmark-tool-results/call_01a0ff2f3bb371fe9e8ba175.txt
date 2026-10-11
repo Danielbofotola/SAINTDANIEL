@@ -1,0 +1,8 @@
+Applied patch: 1 file changed (1 updated)
+Updated app/Http/Controllers/AnneeScolaireController.php (1 hunk applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 90-93 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 92-94:
+92                 // Mise à jour par requête : `$annee->update()` serait ignoré
+93                 // si sa valeur en mémoire vaut déjà $activation (dirty tracking).
+94                 AnneeScolaire::whereKey($annee->id)->update(['is_encours' => $activation]);

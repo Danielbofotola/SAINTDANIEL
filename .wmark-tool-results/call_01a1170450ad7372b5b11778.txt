@@ -1,0 +1,50 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\144c63540b62\20261007-163828-bash-call_01a1170450ad7372b5b11778.txt (1,500 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Structured view (text):
+[powershell — Windows side]
+#69 [internal function]: P\Tests\Feature\PortailParentTest->Pest\Factories\{closure}()
+#70 C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\vendor\pestphp\pest\src\Concerns\Testable.php(419): call_user_func_array(Object(Closure), Array)
+#71 C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\vendor\pestphp\pest\src\Support\ExceptionTrace.php(26): P\Tests\Feature\PortailParentTest->Pest\Concerns\{closure}()
+#72 C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\vendor\pestphp\pest\src\Concerns\Testable.php(419): Pest\Support\ExceptionTrace::ensure(Object(Closure))
+#73 C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\vendor\pestphp\pest\src\Concerns\Testable.php(321): P\Tests\Feature\PortailParentTest->__callClosure(Object(Closure), Array)
+#74 C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\vendor\pestphp\pest\src\Factories\TestCaseFactory.php(173) : eval()'d code(17): P\Tests\Feature\PortailParentTest->__runTest(Object(Closure))
+#75 C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\vendor\phpunit\phpunit\src\Framework\TestCase.php(1667): P\Tests\Feature\PortailParentTest->__pest_evaluable_un_parent_accède_à_son_espace_quand_le_module_est_ouvert()
+#76 C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\vendor\phpunit\phpunit\src\Framework\TestCase.php(519): PHPUnit\Framework\TestCase->runTest()
+#77 C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\vendor\phpunit\phpunit\src\Framework\TestRunner\T
+… 1,842 chars elided …
+
+    112▕     $this->actingAs($parent)
+    113▕         ->get(route('parent.dashboard'))
+  ➜ 114▕         ->assertOk()
+    115▕         ->assertSee('Espace Parent')
+    116▕         ->assertSee('Bienvenue sur le portail')
+    117▕         ->assertSee('Mapika');
+    118▕ });
+
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\PortailParentTest > un message vocal est enregistré et rendu par un lecteur audio              
+  Session has unexpected errors: 
+
+{
+    "default": [
+        "Format de pièce jointe non autorisé (images, PDF, documents Office, audio, zip)."
+    ]
+}
+Failed asserting that true is false.
+
+  at tests\Feature\PortailParentTest.php:169
+    165▕     $this->actingAs($parent)
+    166▕
+… 155 chars elided …
+webm', 40, 'audio/webm'),
+    168▕         ])
+  ➜ 169▕         ->assertSessionHasNoErrors()
+    170▕         ->assertRedirect();
+    171▕ 
+    172▕     $message = $conversation->messages()->latest('id')->first();
+    173▕
+
+
+  Tests:    2 failed, 13 passed (69 assertions)
+  Duration: 2.41s
+
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

@@ -1,0 +1,24 @@
+1      @extends('professeur.layout')
+2      
+3      @section('titre', 'Faire l’appel')
+4      @section('titre-page')<i class="fa fa-check-square-o mr-2"></i> Faire l’appel @endsection
+5      @section('sous-titre')
+6          @if ($affectation)
+7              {{ $affectation->cours_nom }} · {{ $affectation->classe_nom }} · séance du {{ \Carbon\Carbon::parse($date)->format('d/m/Y') }}
+8          @else
+9              Choisissez un cours pour enregistrer les présences.
+10         @endif
+11         @endif
+12     @endsection
+13     
+14     @section('content')
+15         @if ($errors->any())
+16             <div class="alert alert-danger"><ul class="mb-0">@foreach ($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul></div>
+17         @endif
+18     
+19         @if ($affectations->isEmpty())
+20             <div class="tile">
+21                 <div class="empty"><i class="fa fa-check-square-o" aria-hidden="true"></i><strong>Aucun cours à appeler</strong>L’appel sera disponible dès que l’administration vous aura affecté des cours.</div>
+22             </div>
+
+[showing lines 1-22 of 115; read again with offset=23 for more]

@@ -1,0 +1,12 @@
+[powershell — Windows side]
+PASS  Tests\Feature\PrefectureVieScolaireTest
+  ✓ le préfet dispose des pages de vie scolaire                                                                  0.25s  
+  ✓ la fiche élève regroupe identité, santé, inscriptions et assiduité                                           0.03s  
+  ✓ la recherche d’élève filtre par nom ou matricule                                                             0.04s  
+  ✓ les pages de vie scolaire sont fermées aux autres rôles                                                      0.07s  
+
+  Tests:    4 passed (40 assertions)
+  Duration: 0.57s
+
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

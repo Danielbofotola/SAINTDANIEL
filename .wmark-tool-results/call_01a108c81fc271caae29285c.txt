@@ -1,0 +1,5 @@
+455            ->get(route('admin.paiements.recu', $paiementId))
+456            ->assertOk()
+457            ->assertSee('REC-2026-2027-0001')
+458            ->assertSee('Généré automatiquement');
+459    });

@@ -1,0 +1,11 @@
+53                         <div class="col-md-6 form-group"><label class="form-label" for="annee_scolaire_id">Année scolaire *</label>
+54                             @if ($anneeEnCours)
+55                                 <input class="form-control" id="annee_scolaire_id" value="{{ $anneeEnCours->libelle }}" disabled>
+56                                 <input type="hidden" name="annee_scolaire_id" value="{{ $anneeEnCours->id }}">
+57                             @else
+58                                 <div class="alert alert-warning py-2 mb-0">Aucune année scolaire n'est ouverte pour le moment.</div>
+59                             @endif
+60                         </div>
+61                     </div>
+
+[showing lines 53-61 of 75; read again with offset=62 for more]

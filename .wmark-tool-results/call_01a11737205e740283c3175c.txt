@@ -1,0 +1,15 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/MessagerieTest.php (1 hunk applied)
+Landed at lines 383-394 (the file's new text; no re-read needed):
+383    
+384        // Appels audio / vidéo : boutons réels, bannière de sonnerie et écran d'appel.
+385        expect($html)
+386            ->toContain("onclick=\"appelDemarrer('audio')\"")
+387            ->toContain("onclick=\"appelDemarrer('video')\"")
+388            ->toContain('id="appelBanniere"')
+389            ->toContain('id="appelOverlay"')
+390            ->toContain('id="appelDistant"')
+391            ->toContain('id="appelLocal"')
+392            ->toContain('window.appelAccepter')
+393            ->toContain('window.appelRaccrocher')
+394            ->toContain("stun:stun.l.google.com:19302");

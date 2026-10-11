@@ -1,0 +1,15 @@
+[powershell — Windows side]
+PASS  Tests\Feature\AdminAccountCredentialsTest
+  ✓ an admin can reset another account password                                                                  0.20s  
+  ✓ an admin can set and then remove the login PIN                                                               0.02s  
+  ✓ leaving the credential fields empty keeps the current password and PIN                                       0.02s  
+  ✓ a weak password or a wrong confirmation is rejected                                                          0.02s  
+  ✓ a PIN that is not four digits is rejected                                                                    0.02s  
+  ✓ the account edit page shows the linked professor even when inactive                                          0.06s  
+
+  Tests:    6 passed (25 assertions)
+  Duration: 0.54s
+
+
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

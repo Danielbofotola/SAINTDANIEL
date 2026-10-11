@@ -1,0 +1,122 @@
+1      <?php
+2      
+3      namespace App\Http\Controllers;
+4      
+5      use App\Models\Classe;
+6      use App\Models\Eleve;
+7      use App\Models\Professeurs;
+8      use App\Models\Salle;
+9      use App\Models\User;
+10     use App\Support\PresenceUtilisateurs;
+11     use Illuminate\Http\RedirectResponse;
+12     use Illuminate\Http\Request;
+13     use Illuminate\Support\Facades\Hash;
+14     use Illuminate\Support\Facades\DB;
+15     use Illuminate\Support\Facades\Log;
+16     use Illuminate\Support\Facades\Schema;
+17     use Illuminate\Support\Facades\Storage;
+18     use Illuminate\Validation\Rule;
+19     use Illuminate\View\View;
+20     
+21     class UserProfileController extends Controller
+22     {
+23         public function createAccount(): View
+24         {
+25             return view('admin.profile.account-create', [
+26                 'professeurs' => Professeurs::where('statut', 'actif')->orderBy('nom')->orderBy('prenom')->get(),
+27             ]);
+28         }
+29     
+30         public function storeAccount(Request $request): RedirectResponse
+31         {
+32             $data = $request->validate([
+33                 'nom' => ['nullable', 'string', 'max:50'],
+34                 'postnom' => ['nullable', 'string', 'max:50'],
+35                 'prenom' => ['nullable', 'string', 'max:50'],
+36                 'username' => ['required', 'string', 'max:50', 'unique:users,username'],
+37                 'email' => ['required', 'email', 'max:100', 'unique:users,email'],
+38                 'telephone' => ['nullable', 'string', 'max:20'],
+39                 'professeur_id' => [
+40                     'nullable',
+41                     'exists:professeurs,id',
+42                     Rule::unique('users', 'professeur_id'),
+43                     Rule::requiredIf(fn () => $request->input('role') === 'professeur'),
+44                 ],
+45                 'role' => ['required', 'in:admin,prefetture,titulaire,professeur,comptable'],
+46                 'statut' => ['required', 'in:actif,inactif'],
+47                 'password' => ['required', 'string', 'min:8', 'confirmed'],
+48                 'pin_code' => ['nullable', 'digits:4'],
+49             ], [
+50                 'username.unique' => "Ce nom d'utilisateur est déjà utilisé.",
+51                 'email.unique' => "Cette adresse e-mail est déjà utilisée.",
+52                 'password.min' => 'Le mot de passe doit contenir au moins 8 caractères.',
+53                 'password.confirmed' => 'La confirmation du mot de passe ne correspond pas.',
+54                 'pin_code.digits' => 'Le code PIN doit contenir exactement 4 chiffres.',
+55                 'professeur_id.required' => 'Un professeur doit être lié à un compte ayant le rôle professeur.',
+56                 'professeur_id.unique' => 'Ce professeur est déjà lié à un autre compte utilisateur.',
+57             ]);
+58     
+59             $data['pin_code'] = filled($data['pin_code'] ?? null) ? Hash::make($data['pin_code']) : null;
+60     
+61             User::create($data);
+62     
+63             return redirect()->route('admin.profile.accounts')->with('success', 'Le compte utilisateur a été créé.');
+64         }
+65     
+66         public function accounts(): View
+67         {
+68             return view('admin.profile.accounts', [
+69                 'users' => User::orderByRaw("CASE WHEN role = 'admin' THEN 0 ELSE 1 END")
+70                     ->orderBy('username')
+71                     ->get(),
+72             ]);
+73         }
+74     
+75         public function editAccount(User $user): View|RedirectResponse
+76         {
+77             if ($user->is(auth()->user())) {
+78                 return redirect()->route('admin.profile.edit');
+79             }
+80     
+81             return view('admin.profile.account-edit', [
+82                 'user' => $user,
+83                 'professeurs' => Professeurs::query()
+84                     ->where(function ($query) use ($user) {
+85                         $query->where('statut', 'actif')
+86                             ->when($user->professeur_id, fn ($query) => $query->orWhere('id', $user->professeur_id));
+87                     })
+88                     ->orderBy('nom')
+89                     ->orderBy('prenom')
+90                     ->get(),
+91             ]);
+92         }
+93     
+94         public function updateAccount(Request $request, User $user): RedirectResponse
+95         {
+96             if ($user->is($request->user())) {
+97                 return redirect()->route('admin.profile.edit');
+98             }
+99     
+100            $data = $request->validate([
+101                'nom' => ['nullable', 'string', 'max:50'],
+102                'postnom' => ['nullable', 'string', 'max:50'],
+103                'prenom' => ['nullable', 'string', 'max:50'],
+104                'date_naissance' => ['nullable', 'date', 'before:today'],
+105                'username' => ['required', 'string', 'max:50', Rule::unique('users', 'username')->ignore($user->id)],
+106                'email' => ['required', 'email', 'max:100', Rule::unique('users', 'email')->ignore($user->id)],
+107                'telephone' => ['nullable', 'string', 'max:20'],
+108                'adresse' => ['nullable', 'string', 'max:500'],
+109                'photo' => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:2048'],
+110                'role' => ['required', 'in:admin,prefetture,titulaire,professeur,comptable'],
+111                'statut' => ['required', 'in:actif,inactif'],
+112                'professeur_id' => [
+113                    'nullable',
+114                    'exists:professeurs,id',
+115                    Rule::unique('users', 'professeur_id')->ignore($user->id),
+116                    Rule::requiredIf(fn () => $request->input('role') === 'professeur'),
+117                ],
+118            ]);
+119    
+120            if ($request->hasFile('photo')) {
+
+[showing lines 1-120 of 416; read again with offset=121 for more]

@@ -1,0 +1,32 @@
+114    
+115            $data = $request->validate([
+116                'inscription_id' => ['required', Rule::exists('inscriptions', 'id')->where(fn ($query) => $query->where('annee_scolaire_id', $annee->id)->whereIn('statut', ['actif', 'en_attente']))],
+117                'frais_scolaire_id' => ['required', Rule::exists('frais_scolaires', 'id')->where('annee_scolaire_id', $annee->id)->where('statut', 'actif')],
+118                'periode_id' => ['nullable', Rule::exists('periodes', 'id')->where('annee_scolaire_id', $annee->id)],
+119                'montant_paye' => ['required', 'numeric', 'min:0.01'],
+120                'devise' => ['nullable', Rule::in(array_keys(Monnaie::DEVISES))],
+121                'taux' => ['nullable', 'numeric', 'min:0'],
+122                'mode_paiement' => ['required', Rule::in(array_keys(self::MODES))],
+123                'reference_transaction' => ['nullable', 'string', 'max:100'],
+124                'date_paiement' => ['nullable', 'date'],
+125                'classe_id' => ['nullable', Rule::exists('classes', 'id')],
+126            ], [
+127                'inscription_id.required' => 'Sélectionnez un élève.',
+128                'frais_scolaire_id.required' => 'Sélectionnez un tarif.',
+129                'montant_paye.required' => 'Le montant encaissé est obligatoire.',
+130                'montant_paye.min' => 'Le montant doit être supérieur à zéro.',
+131            ]);
+132    
+133            try {
+134                $paiement = Caisse::enregistrer($annee, $data);
+135            } catch (RuntimeException) {
+136                return back()->withInput()->with('error', 'Ce tarif ne correspond pas à la classe de l’élève.');
+137            }
+138    
+139            $message = 'Paiement encaissé — reçu '.$paiement->num_recu.'.';
+140            if ($paiement->fraisScolaire?->typeFrais?->estFraisInscription()
+141                && Inscription::whereKey($data['inscription_id'])->value('statut') === Inscription::STATUT_ACTIF) {
+142                $message .= ' L’inscription de l’élève a été validée automatiquement (frais d’inscription réglé).';
+143            }
+
+[showing lines 114-143 of 149; read again with offset=144 for more]

@@ -1,0 +1,29 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\e1ce9c26600a\20261004-224446-bash-call_01a108e0943a7287ba1cd0a8.txt (1,995 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Structured view (text):
+[powershell — Windows side]
+FAIL  Tests\Feature\ComptableCaisseTest
+  ⨯ the cashier payment page only lists the tariffs of the selected class                                        1.74s  
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\ComptableCaisseTest > the cashier payment page only lists the tariffs of the selected class    
+  Expected response status code [200] but received 500.
+Failed asserting that 500 is identical to 200.
+
+The following exception occurred during the last request:
+
+ParseError: syntax error, unexpected token "{" in C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\storage\framework\views\7853f6f9f835978b5ffd08a6c646ecad.php:128
+Stack trace:
+#0 C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\vendor\laravel\framework\src\Illuminate\Filesystem\Filesystem.php(124): Illuminate\Filesystem\Filesystem::Illuminate\Filesystem\{closure}()
+#1 C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\vendor\laravel\framework\src\Illuminate\View\Engines\PhpEngine.php(57): Illuminate\Filesystem\Filesystem->getRequire('C:\\Users\\danie\\...', Array)
+#2 C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\vendor\laravel\framework\src\Illuminate\View\Engines\CompilerEngine.php(76): Illuminate\View\Engines\PhpEngine->evaluatePath('C:\\Users\\danie\\...', Array)
+#3 C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\vendor\laravel\framework\src\Illumi
+… 1,794 chars elided …
+line\{closure}(Object(Illuminate\Http\Request))
+#13 C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): App\Http\Middleware\EnsureUserHasRole->handle(Object(Illuminate\Http\Request), Object(Closure), 'comptable')
+#14 C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\vendor\laravel\framework\src\Illuminate\Routing\Middleware\SubstituteBindings.php(50): Illuminate\Pipeline\Pipeline->Illuminate\Pipeline\{closure}(Object(Illuminate\Http\Request))
+#15 C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php(219): Illuminate\Routing\Middleware\SubstituteBindings->handle(Object(Illuminate\Http\Request), Object(Closure))
+#16 C:\Users\danie\AppData\Roaming\Co
+… 2,594 chars elided …
+Illuminate\Http\Request), Object(Closure))
+#27 C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\vendor\laravel\framework\src\Illuminate\Cookie\Middleware\EncryptCookies.php(74): Illuminate\Pipeline\Pipeline->Illuminate\Pipeline\{closure}(Object(Illuminate\Http\Request))
+==exit -1==
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

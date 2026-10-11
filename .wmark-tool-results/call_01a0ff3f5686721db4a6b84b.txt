@@ -1,0 +1,8 @@
+Applied patch: 3 files changed (1 updated, 2 deleted)
+Updated routes/web.php (1 hunk applied)
+Deleted resources/views/admin/sections/create.blade.php
+Deleted resources/views/admin/options/create.blade.php
+Landed at lines 83-83 (the file's new text; no re-read needed):
+83         Route::get('/admin/sections', [SectionOptionController::class, 'indexSections'])->middleware('role:admin')->name('admin.sections.index');
+Landed at lines 86-86 (the file's new text; no re-read needed):
+86         Route::get('/admin/options', [SectionOptionController::class, 'indexOptions'])->middleware('role:admin')->name('admin.options.index');

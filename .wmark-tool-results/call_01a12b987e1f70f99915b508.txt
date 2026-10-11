@@ -1,0 +1,63 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\aba9102c187c\20261011-163304-apply_patch-call_01a12b987e1f70f99915b508.txt (1,139 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Structured view (text):
+Applied patch: 6 files changed (2 created, 4 updated)
+Created database/migrations/2026_10_25_000000_add_devises_et_taux_de_change.php (74 lines)
+Created app/Support/Monnaie.php (65 lines)
+Updated app/Models/Paiement.php (3 hunks applied)
+Updated app/Models/FraisScolaire.php (1 hunk applied)
+Updated app/Models/ParametreSysteme.php (4 hunks applied)
+Updated app/Support/Caisse.php (2 hunks applied)
+Landed at lines 5-5 (the file's new text; no re-read needed):
+5      use App\Support\Monnaie;
+Landed at lines 14-15 (the file's new text; no re-read needed):
+14             'devise', 'taux', 'montant_recu',
+15             'date_paiement', 'mode_paiement', 'reference_transaction', 'statut',
+Landed at lines 22-23 (the file's new text; no re-read needed):
+22                 'taux' => 'decimal:2',
+23                 'montant_recu' => 'decimal:2',
+Landed at lines 27-38 (the file's new text; no re-read needed):
+27     
+28         /** Devise réellement encaissée (USD ou CDF). */
+29         public function deviseRecue(): string
+30         {
+31             return Monnaie::normaliser($this->devise);
+32         }
+33     
+34         /** Montant remis par le payeur (retombe sur le montant crédité si absent). */
+35         public function montantRecu(): float
+36         {
+37             return (float) ($this->montant_recu ?? $this->montant_paye);
+38         }
+Landed at lines 14-14 (the file's new text; no re-read needed):
+14         protected $fillable = ['type_frais_id', 'classe_id', 'annee_scolai
+… 80 chars elided …
+ctions (review — object if wrong):
+  ⚠ hunk 2: context matched at lines 20-22 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 23-23:
+23             'devise', 'taux_change',
+Landed at lines 5-5 (the file's new text; no re-read needed):
+5      use App\Support\Monnaie;
+Landed at lines 39-39 (the file's new text; no re-read needed):
+39                 'taux_change' => 'decimal:2',
+Landed at lines 42-49 (the file's new text; no re-read needed):
+42     
+43         /** Taux de change par défaut : CDF pour 1 USD (2800 si non configuré). */
+44         public static function tauxChange(): float
+45         {
+46             $taux = (float) (static::current()->taux_change ?? 0);
+47     
+48          
+… 880 chars elided …
+] ?? $deviseTarif);
+39             $taux = (float) ($data['taux'] ?? 0) ?: ParametreSysteme::tauxChange();
+40             $montantRecu = round((float) $data['montant_paye'], 2);
+41             $montantPaye = Monnaie::convertir($montantRecu, $deviseRecue, $deviseTarif, $taux);
+42     
+Landed at lines 48-49 (the file's new text; no re-read needed):
+48     
+49             $paiement = Paiement::create(self::colonnesPaiement([
+Landed at lines 54-57 (the file's new text; no re-read needed):
+54                 'montant_paye' => $montantPaye,
+55                 'devise' => $deviseRecue,
+56                 'taux' => $taux,
+57                 'montant_recu' => $montantRecu,
+… 3 more hunks not echoed …

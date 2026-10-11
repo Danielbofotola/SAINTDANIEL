@@ -1,0 +1,18 @@
+226    
+227        Schema::create('notes', function (Blueprint $table) {
+228            $table->id();
+229            $table->unsignedBigInteger('evaluation_id');
+230            $table->unsignedBigInteger('eleve_id');
+231            $table->decimal('note', 5, 2)->nullable();
+232            $table->timestamps();
+233        });
+234    
+235        Schema::create('presences', function (Blueprint $table) {
+236            $table->id();
+237            $table->unsignedBigInteger('affectation_id')->nullable();
+238            $table->unsignedBigInteger('eleve_id');
+239            $table->string('date_seance');
+240            $table->string('statut_presence')->default('present');
+241            $table->string('motif')->nullable();
+
+[showing lines 226-241 of 407; read again with offset=242 for more]

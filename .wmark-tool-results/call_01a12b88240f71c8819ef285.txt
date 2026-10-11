@@ -1,0 +1,12 @@
+Applied patch: 1 file changed (1 updated)
+Updated app/Http/Controllers/DeliberationController.php (1 hunk applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 101-111 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 106-112:
+106                if ($ligne['eleve']?->sexe === 'M') {
+107                    $decisions[$decision]['g']++;
+108                    $garcons++;
+109                } elseif ($ligne['eleve']?->sexe === 'F') {
+110                    $decisions[$decision]['f']++;
+111                    $filles++;
+112                }

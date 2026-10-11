@@ -1,0 +1,4 @@
+Applied patch: 1 file changed (1 updated)
+Updated routes/web.php (1 hunk applied)
+Landed at lines 202-202 (the file's new text; no re-read needed):
+202        Route::get('/professeur/profil', [ProfesseurEspaceController::class, 'profil'])->middleware('role:professeur')->name('professeur.profil');

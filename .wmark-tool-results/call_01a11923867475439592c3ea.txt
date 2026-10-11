@@ -1,0 +1,24 @@
+27                         @if (session('success'))<div class="alert alert-success">{{ session('success') }}</div>@endif
+28                         @if (session('error'))<div class="alert alert-danger">{{ session('error') }}</div>@endif
+29                         <thead><tr><th>#</th><th>Classe</th><th>Niveau</th><th>Cycle</th><th>Section</th><th>Option</th><th>Salle</th><th>Élèves @if($anneeEnCours)<small>{{ $anneeEnCours->libelle }}</small>@endif</th><th>Statut</th><th>Actions</th></tr></thead>
+30                         <tbody>
+31                             @forelse ($classes as $classe)
+32                                 <tr>
+33                                     <td>{{ $loop->iteration }}</td>
+34                                     <td><a href="{{ route('admin.classes.students', $classe) }}"><strong>{{ $classe->nom }}</strong></a>@if ($classe->section_id)<br><small class="text-muted">Section {{ $classe->section?->nom }}</small>@endif</td>
+35                                     <td>{{ $classe->ordre ?? '—' }}</td>
+36                                     <td>{{ $classe->cycle?->nom ?? 'Non renseigné' }}</td>
+37                                     <td>{{ $classe->section?->nom ?? 'Non renseignée' }}</td>
+38                                     <td>{{ $classe->option?->nom ?? 'Non renseignée' }}</td>
+39                                     <td>{{ $classe->salle?->nom ?? 'Non attribuée' }}</td>
+40                                     <td><a href="{{ route('admin.classes.students', $classe) }}" class="badge badge-info">{{ $classe->eleves_count }} élève(s)</a></td>
+41                                     <td><span class="badge badge-{{ $classe->statut === 'actif' ? 'success' : 'secondary' }}">{{ $classe->statut === 'actif' ? 'Active' : 'Inactive' }}</span></td>
+42                                     <td class="text-nowrap">
+43                                         <a href="{{ route('admin.classes.edit', $classe) }}" class="btn btn-sm btn-info" title="Modifier"><i class="fa fa-pencil"></i></a>
+44                                         <form class="d-inline" method="POST" action="{{ route('admin.classes.toggle-status', $classe) }}">
+45                                             @csrf
+46                                             @method('PATCH')
+47                                             <button class="btn btn-sm btn-{{ $classe->statut === 'actif' ? 'warning' : 'success' }}" type="submit" title="{{ $classe->statut === 'actif' ? 'Désactiver' : 'Activer' }}"><i class="fa fa-power-off"></i></button>
+48                                         </form>
+
+[showing lines 27-48 of 65; read again with offset=49 for more]

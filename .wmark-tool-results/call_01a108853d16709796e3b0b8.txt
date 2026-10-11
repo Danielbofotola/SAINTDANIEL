@@ -1,0 +1,1 @@
+Wrote app/Http/Controllers/CoursController.php (39 lines)

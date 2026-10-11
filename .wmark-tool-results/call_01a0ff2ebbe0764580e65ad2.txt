@@ -1,0 +1,35 @@
+1      <?php
+2      
+3      namespace App\Models;
+4      
+5      use Illuminate\Database\Eloquent\Model;
+6      
+7      class Classe extends Model
+8      {
+9          protected $fillable = ['cycle_id', 'salle_id', 'nom', 'section_id', 'option_id', 'statut'];
+10     
+11         public function cycle()
+12         {
+13             return $this->belongsTo(Cycle::class);
+14         }
+15     
+16         public function inscriptions()
+17         {
+18             return $this->hasMany(Inscription::class);
+19         }
+20     
+21         public function salle()
+22         {
+23             return $this->belongsTo(Salle::class);
+24         }
+25     
+26         public function section()
+27         {
+28             return $this->belongsTo(Section::class);
+29         }
+30     
+31         public function option()
+32         {
+33             return $this->belongsTo(Option::class);
+34         }
+35     }

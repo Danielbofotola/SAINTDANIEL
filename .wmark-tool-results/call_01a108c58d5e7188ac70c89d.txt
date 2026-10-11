@@ -1,0 +1,6 @@
+Applied patch: 1 file changed (1 updated)
+Updated app/Support/Caisse.php (2 hunks applied)
+Landed at lines 18-18 (the file's new text; no re-read needed):
+18          * @param  array{inscription_id: int|string, frais_scolaire_id: int|string, montant_paye: float|string, mode_paiement: string, periode_id?: int|string|null, reference_transaction?: string|null, date_paiement?: string|null}  $data
+Landed at lines 41-41 (the file's new text; no re-read needed):
+41                 'periode_id' => $data['periode_id'] ?? null,

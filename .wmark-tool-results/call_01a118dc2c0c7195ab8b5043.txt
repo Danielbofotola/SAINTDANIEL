@@ -1,0 +1,14 @@
+188                    'espaceUrl' => route('parent.dashboard'),
+189                    'avecFichier' => false,
+190                    'composeMultiple' => false,
+191                ])
+192            </section>
+193    
+194            {{-- ============ PROFIL ============ --}}
+195            <section id="tab-profil" class="portail-panel">
+196                <div class="portail-card text-center">
+197                    <span class="portail-avatar mx-auto mb-2" style="width:96px;height:96px;font-size:2rem;background:var(--blue)">
+198                        @if ($user->photo)
+199                            <img src="{{ asset('storage/'.$user->photo) }}" alt="{{ $nomUtilisateur }}">
+
+[showing lines 188-199 of 234; read again with offset=200 for more]

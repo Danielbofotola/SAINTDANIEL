@@ -1,0 +1,239 @@
+1      <?php
+2      
+3      use App\Models\User;
+4      use App\Support\Messagerie;
+5      use Illuminate\Database\Schema\Blueprint;
+6      use Illuminate\Support\Facades\DB;
+7      use Illuminate\Support\Facades\Schema;
+8      use Illuminate\Support\Facades\Storage;
+9      
+10     beforeEach(function () {
+11         Schema::disableForeignKeyConstraints();
+12         foreach (['notifications', 'messages', 'conversation_user', 'conversations', 'parametres_systeme', 'professeurs', 'users'] as $table) {
+13             Schema::dropIfExists($table);
+14         }
+15         Schema::enableForeignKeyConstraints();
+16     
+17         Schema::create('users', function (Blueprint $table) {
+18             $table->id();
+19             $table->unsignedBigInteger('professeur_id')->nullable()->unique();
+20             $table->string('nom', 50)->nullable();
+21             $table->string('postnom', 50)->nullable();
+22             $table->string('prenom', 50)->nullable();
+23             $table->string('photo')->nullable();
+24             $table->string('username')->unique();
+25             $table->string('email')->unique();
+26             $table->string('telephone', 20)->nullable();
+27             $table->string('adresse', 100)->nullable();
+28             $table->string('password');
+29             $table->string('pin_code')->nullable();
+30             $table->string('role');
+31             $table->string('statut');
+32             $table->rememberToken();
+33             $table->timestamps();
+34         });
+35     
+36         Schema::create('professeurs', function (Blueprint $table) {
+37             $table->id();
+38             $table->string('matricule')->unique();
+39             $table->string('nom');
+40             $table->string('postnom')->nullable();
+41             $table->string('prenom');
+42             $table->string('statut')->default('actif');
+43             $table->timestamps();
+44         });
+45     
+46         Schema::create('parametres_systeme', function (Blueprint $table) {
+47             $table->id();
+48             $table->string('nom_etablissement', 150)->default('Etablissement');
+49             $table->string('nom_court', 60)->default('Ecole');
+50             $table->boolean('saisie_notes_active')->default(true);
+51             $table->boolean('portail_parents_actif')->default(false);
+52             $table->timestamps();
+53         });
+54     
+55         Schema::create('conversations', function (Blueprint $table) {
+56             $table->id();
+57             $table->string('sujet', 150);
+58             $table->string('type', 20)->default('directe');
+59             $table->unsignedBigInteger('createur_id')->nullable();
+60             $table->timestamp('derniere_activite_at')->nullable();
+61             $table->timestamps();
+62         });
+63         Schema::create('conversation_user', function (Blueprint $table) {
+64             $table->id();
+65             $table->unsignedBigInteger('conversation_id');
+66             $table->unsignedBigInteger('user_id');
+67             $table->timestamp('dernier_lu_at')->nullable();
+68             $table->unsignedBigInteger('dernier_message_id')->nullable();
+69             $table->timestamps();
+70             $table->unique(['conversation_id', 'user_id']);
+71         });
+72         Schema::create('messages', function (Blueprint $table) {
+73             $table->id();
+74             $table->unsignedBigInteger('conversation_id');
+75             $table->unsignedBigInteger('auteur_id')->nullable();
+76             $table->text('corps');
+77             $table->string('piece_jointe')->nullable();
+78             $table->string('piece_jointe_nom')->nullable();
+79             $table->unsignedBigInteger('reponse_a_id')->nullable();
+80             $table->string('reaction', 16)->nullable();
+81             $table->unsignedBigInteger('appel_id')->nullable();
+82             $table->timestamps();
+83         });
+84     
+85         Schema::create('notifications', function (Blueprint $table) {
+86             $table->uuid('id')->primary();
+87             $table->string('type');
+88             $table->morphs('notifiable');
+89             $table->text('data');
+90             $table->timestamp('read_at')->nullable();
+91             $table->timestamps();
+92         });
+93     
+94         Schema::create('annonces', function (Blueprint $table) {
+95             $table->id();
+96             $table->string('titre', 150);
+97             $table->text('message');
+98             $table->string('niveau', 20)->default('info');
+99             $table->string('lien', 255)->nullable();
+100            $table->string('cible', 30)->default('tous');
+101            $table->unsignedBigInteger('envoye_par')->nullable();
+102            $table->unsignedInteger('destinataires')->default(0);
+103            $table->timestamps();
+104        });
+105    });
+106    
+107    /** Ouvre (ou ferme) le module Portail Parents. */
+108    function reglerPortailParents(bool $actif): void
+109    {
+110        DB::table('parametres_systeme')->insert([
+111            'nom_court' => 'Ecole Test',
+112            'portail_parents_actif' => $actif,
+113            'saisie_notes_active' => true,
+114            'created_at' => now(),
+115            'updated_at' => now(),
+116        ]);
+117    }
+118    
+119    test('un parent accède à son espace quand le module est ouvert', function () {
+120        reglerPortailParents(true);
+121    
+122        $parent = User::factory()->create(['role' => 'parent', 'nom' => 'Bofotola', 'prenom' => 'Daniel']);
+123        $prof = User::factory()->create(['role' => 'professeur', 'nom' => 'Mapika', 'prenom' => 'Joseph']);
+124    
+125        Messagerie::creer($prof, [$parent->id], 'Bienvenue', 'Bonjour, bienvenue sur le portail.');
+126    
+127        $this->actingAs($parent)
+128            ->get(route('parent.dashboard'))
+129            ->assertOk()
+130            ->assertSee('Espace Parent')
+131            ->assertSee('bienvenue sur le portail')
+132            ->assertSee('Mapika')
+133            // L'interface partagée est bien câblée pour ce rôle.
+134            ->assertSee('id="msgShell"', false)
+135            ->assertSee('id="voiceBtn"', false)
+136            ->assertSee('id="sendBtn"', false)
+137            ->assertSee('id="stickerPicker"', false)
+138            ->assertSee('onclick="ouvrirCompose()"', false)
+139            ->assertSee('onclick="toggleStickers()"', false)
+140            ->assertSee('onclick="toggleVoice()"', false)
+141            ->assertSee('onclick="envoyerTexte()"', false)
+142            // Liste des correspondants actifs + action « écrire ».
+143            ->assertSee('id="contactsContainer"', false)
+144            ->assertSee('onclick="ouvrirDiscussion(', false)
+145            // Les parents n'ont pas le trombone ni la diffusion « tous ».
+146            ->assertDontSee('id="fileAttachment"', false)
+147            ->assertDontSee('value="tous"', false);
+148    });
+149    
+150    test('l’espace parent répond 404 quand le module est fermé', function () {
+151        reglerPortailParents(false);
+152    
+153        $parent = User::factory()->create(['role' => 'parent']);
+154    
+155        $this->actingAs($parent)->get(route('parent.dashboard'))->assertNotFound();
+156    });
+157    
+158    test('l’espace parent est interdit aux autres rôles', function () {
+159        reglerPortailParents(true);
+160    
+161        $comptable = User::factory()->create(['role' => 'comptable']);
+162        $professeur = User::factory()->create(['role' => 'professeur']);
+163    
+164        $this->actingAs($comptable)->get(route('parent.dashboard'))->assertForbidden();
+165        $this->actingAs($professeur)->get(route('parent.dashboard'))->assertForbidden();
+166    });
+167    
+168    test('un parent envoie un message au personnel depuis le portail', function () {
+169        reglerPortailParents(true);
+170    
+171        $parent = User::factory()->create(['role' => 'parent']);
+172        $prof = User::factory()->create(['role' => 'professeur']);
+173    
+174        $this->actingAs($parent)
+175            ->post(route('messagerie.store'), [
+176                'destinataires' => [(string) $prof->id],
+177                'sujet' => 'Question minerval',
+178                'corps' => 'Bonjour, quel est le solde restant ?',
+179            ])
+180            ->assertRedirect()
+181            ->assertSessionHas('success', fn (string $m) => str_contains($m, '1 destinataire'));
+182    
+183        expect(DB::table('messages')->count())->toBe(1);
+184        expect(Messagerie::nonLus($prof->fresh()))->toBe(1);
+185    });
+186    
+187    test('un message vocal est enregistré et rendu par un lecteur audio', function () {
+188        Storage::fake('public');
+189        reglerPortailParents(true);
+190    
+191        $parent = User::factory()->create(['role' => 'parent']);
+192        $prof = User::factory()->create(['role' => 'professeur']);
+193        $conversation = Messagerie::creer($prof, [$parent->id], 'Vocal', 'Envoyez-moi un vocal.');
+194    
+195        $this->actingAs($parent)
+196            ->post(route('messagerie.repondre', $conversation), [
+197                'piece_jointe' => fichierAudioDeTest('vocal.wav'),
+198            ])
+199            ->assertSessionHasNoErrors()
+200            ->assertRedirect();
+201    
+202        $message = $conversation->messages()->latest('id')->first();
+203    
+204        expect($message->piece_jointe)->not->toBeNull()
+205            ->and($message->estAudio())->toBeTrue();
+206    
+207        $html = view('messagerie._bulle', ['message' => $message, 'user' => $parent, 'active' => $conversation])->render();
+208    
+209        expect($html)->toContain('bulle__audio')->toContain('<audio');
+210    });
+211    
+212    test('les stickers (emojis seuls) reçoivent un habillage dédié', function () {
+213        $parent = User::factory()->create(['role' => 'parent']);
+214        $prof = User::factory()->create(['role' => 'professeur']);
+215        $conversation = Messagerie::creer($prof, [$parent->id], 'Réaction', 'Merci !');
+216    
+217        Messagerie::envoyer($conversation, $parent, '👍');
+218        $message = $conversation->messages()->latest('id')->first();
+219    
+220        expect($message->estSticker())->toBeTrue();
+221    
+222        $html = view('messagerie._bulle', ['message' => $message, 'user' => $parent, 'active' => $conversation])->render();
+223        expect($html)->toContain('bulle--sticker');
+224    });
+225    
+226    /**
+227     * Petit fichier audio WAVE valide, pour tester les pièces jointes vocales sans
+228     * dépendre d'un encodeur : la règle « mimes » détecte le type par le contenu.
+229     */
+230    function fichierAudioDeTest(string $nom = 'vocal.wav'): \Illuminate\Http\UploadedFile
+231    {
+232        $entete = 'RIFF'.pack('V', 36).'WAVEfmt '.pack('V', 16).pack('v', 1).pack('v', 1)
+233            .pack('V', 8000).pack('V', 8000).pack('v', 1).pack('v', 8).'data'.pack('V', 0);
+234    
+235        $chemin = tempnam(sys_get_temp_dir(), 'wmark_').'.wav';
+236        file_put_contents($chemin, $entete);
+237    
+238        return new \Illuminate\Http\UploadedFile($chemin, $nom, 'audio/wav', null, true);
+239    }

@@ -1,0 +1,24 @@
+Applied patch: 2 files changed (2 updated)
+Updated app/Http/Controllers/AdminDashboardController.php (2 hunks applied)
+Updated app/Http/Controllers/ClasseController.php (2 hunks applied)
+Landed at lines 6-6 (the file's new text; no re-read needed):
+6      use App\Models\AnneeScolaire;
+Landed at lines 17-18 (the file's new text; no re-read needed):
+17             $anneeId = AnneeScolaire::enCours()?->id;
+18     
+Landed at lines 20-23 (the file's new text; no re-read needed):
+20                 'eleves' => Eleve::with(['inscriptions.classe.cycle'])
+21                     ->inscritAnneeEnCours()
+22                     ->latest()
+23                     ->get(),
+Landed at lines 25-26 (the file's new text; no re-read needed):
+25                     'garcons' => Eleve::inscritAnneeEnCours()->where('statut', 'actif')->where('sexe', 'M')->count(),
+26                     'filles' => Eleve::inscritAnneeEnCours()->where('statut', 'actif')->where('sexe', 'F')->count(),
+… 2 more hunks not echoed …
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 20-23 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+  ⚠ hunk 2: context matched at lines 31-33 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 21-21:
+21                     ->withCount(['inscriptions as eleves_count' => fn ($query) => $query->anneeEnCours()->where('statut', 'actif')])
+Auto-corrected hunk landed at lines 32-32:
+32                 ->anneeEnCours()

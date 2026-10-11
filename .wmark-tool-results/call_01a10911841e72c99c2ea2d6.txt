@@ -1,0 +1,10 @@
+232    
+233    test('a balanced manual entry is stored and an unbalanced one is refused', function () {
+234        $admin = User::factory()->create(['role' => 'admin']);
+235    
+236        $this->actingAs($admin)
+237            ->get(route('admin.comptabilite.index'))
+238            ->assertOk()
+239            ->assertSee('Comptabilité OHADA');
+
+[showing lines 232-239 of 354; read again with offset=240 for more]

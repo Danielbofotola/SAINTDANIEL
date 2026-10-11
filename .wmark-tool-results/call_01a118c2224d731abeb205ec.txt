@@ -1,0 +1,30 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\b493c9bc81dc\20261008-004522-bash-call_01a118c2224d731abeb205ec.txt (3,035 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Structured view (text):
+[powershell — Windows side]
+53: Route::middleware('guest')->group(function () {
+54: Route::get('/', [AuthController::class, 'showLoginForm'])->name('login');
+55: Route::post('/login', [AuthController::class, 'login'])->name('login.store');
+56: Route::get('/connexion-pin', [AuthController::class, 'showPinForm'])->name('login.pin');
+57: Route::post('/connexion-pin', [AuthController::class, 'loginWithPin'])->name('login.pin.store');
+60: Route::get('/demande-inscription', [RegistrationRequestController::class, 'createStudentRequest'])->name('registration.student.create');
+61: Route::post('/demande-inscription', [RegistrationRequestController::class, 'storeStudentRequest'])->middleware('throttle:5,1')->name('registration.student.store');
+62: Route::get('/demande-compte', [RegistrationRequestController::class, 'createAccountRequest'])->name('registration.account.create');
+63: Route::post('/demande-compte', [RegistrationRequestController::class, 'storeAccountRequest'])->middleware('throttle:5,1')->name('registration.account.store');
+65: Route::post('/deconnexion', [AuthController::class, 'logout'])->middleware('auth')->name('logout');
+67: Route::middleware('auth')->group(function () {
+68: Route::get('/accueil', [HomeController::class, 'index'])->name('home');
+69: Route::get('/mon-profil', [UserProfileController::class, 'showPersonalProfile'])->name('profile.show');
+70: Route::get('/mon-profil/modifier', [UserProfileController::class, 'editPersonalProfile'])->name('profile.edit');
+71
+… 3,938 chars elided …
+er::class, 'notes'])->middleware('role:admin')->name('admin.evaluations.notes');
+98: Route::post('/admin/evaluations/{evaluation}/notes', [EvaluationController::class, 'storeNotes'])->middleware('role:admin')->name('admin.evaluations.notes.store');
+99: Route::delete('/admin/evaluations/{evaluation}', [EvaluationController::class, 'destroy'])->middleware('role:admin')->name('admin.evaluations.destroy');
+100: Route::get('/admin/notes', [NotesController::class, 'index'])->middleware('role:admin')->name('admin.notes.index');
+101: Route::post('/admin/notes', [NotesController::class, 'store'])->middleware('role:admin')->name('admin.notes.store');
+102: Route::get('/admin/bulletins', [BulletinController::class, 'index'])->middleware('role:admin')->name('admin.bulletins.index');
+103: Route::post('/
+… 4,739 chars elided …
+135: Route::post('/admin/archives', [ArchiveAnneeController::class, 'store'])->middleware('role:admin')->name('admin.archives.store');
+136: Route::delete('/admin/archives/{archiveAnnee}', [ArchiveAnneeController::class, 'destroy'])->middleware('role:admin')->name('admin.archives.destroy');
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

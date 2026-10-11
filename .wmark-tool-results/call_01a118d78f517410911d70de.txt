@@ -1,0 +1,32 @@
+188         * Ouvre (ou retrouve) la conversation directe avec un correspondant, puis
+189         * renvoie son identifiant : le client recharge la page sur ce fil.
+190         */
+191        public function demarrer(Request $request): JsonResponse
+192        {
+193            $data = $request->validate([
+194                'destinataire' => ['required', 'integer', 'exists:users,id'],
+195            ]);
+196    
+197            $destinataire = Messagerie::correspondantsQuery($request->user())
+198                ->findOrFail($data['destinataire']);
+199    
+200            $conversation = Messagerie::ouvrirDirecte($request->user(), $destinataire);
+201    
+202            return response()->json(['conversation_id' => $conversation->id]);
+203        }
+204    
+205        /**
+206         * Pose (ou retire, avec une réaction vide) une réaction émoji sur un
+207         * message, et renvoie la bulle mise à jour.
+208         */
+209        public function reagir(Request $request, Message $message): JsonResponse
+210        {
+211            $this->autoriser($message->conversation, $request);
+212    
+213            $data = $request->validate([
+214                'reaction' => ['nullable', 'string', 'max:16'],
+215            ]);
+216    
+217            $message->forceFill(['reaction' => $data['reaction'] ?: null])->save();
+
+[showing lines 188-217 of 245; read again with offset=218 for more]

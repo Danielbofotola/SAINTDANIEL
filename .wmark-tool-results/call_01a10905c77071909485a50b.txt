@@ -1,0 +1,1 @@
+Wrote app/Models/CompteComptable.php (33 lines)

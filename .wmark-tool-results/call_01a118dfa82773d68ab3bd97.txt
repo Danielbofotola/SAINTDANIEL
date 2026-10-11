@@ -1,0 +1,19 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\b493c9bc81dc\20261008-011738-bash-call_01a118dfa82773d68ab3bd97.txt (527 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+[powershell — Windows side]
+candidats trouves : 10 -> 9, 10, 11, 12, 13, 14, 15, 16, 17, 19
+
+rattaches au compte parent #2 : 10
+  #15 BOKONDE MBULA PATRICIA [ELV-2026-0008]
+  #16 BOKONDE SOMBOLA ANNIE [ELV-2026-0009]
+  #10 DIMBU N'LABA RINEL [ELV-2026-0003]
+  #9 DIMBU BANZOLO ROCIA [ELV-2026-0002]
+  #12 EKOFO BOFOTOLA ANNIE [ELV-2026-0005]
+  #11 EKOFO BOFOTOLA DANIELLA [ELV-2026-0004]
+  #17 JEREMIE MIANDA NLABA [ELV-2026-0010]
+  #19 MAKENGO MBULU JAENCY [ELV-2026-0011]
+  #13 MAKENGO MBULU JANCY [ELV-2026-0006]
+  #14 NLABA BANZOLO DIVIN [ELV-2026-0007]
+
+lignes eleve_user : 10
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

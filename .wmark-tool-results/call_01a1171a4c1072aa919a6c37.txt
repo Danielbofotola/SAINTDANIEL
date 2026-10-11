@@ -1,0 +1,8 @@
+[powershell — Windows side]
+INFO  Running migrations.  
+
+  2026_10_16_000000_add_parent_role_to_users_table ...................................................... 41.99ms DONE
+  2026_10_17_000000_add_reponse_et_reaction_to_messages_table ........................................... 59.53ms DONE
+
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

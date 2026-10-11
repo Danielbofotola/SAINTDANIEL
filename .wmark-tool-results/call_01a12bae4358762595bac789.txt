@@ -1,0 +1,11 @@
+Applied patch: 2 files changed (2 updated)
+Updated tests/Feature/ProfesseursPagesTest.php (1 hunk applied)
+Updated tests/Feature/BulletinDocumentTest.php (1 hunk applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 248-250 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 250-250:
+250            ->assertRedirect(route('admin.cours.index'));
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 323-328 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 328-328:
+328            ->assertRedirect(route('admin.cours.index'));

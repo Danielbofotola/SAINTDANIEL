@@ -1,0 +1,38 @@
+1      <?php
+2      
+3      namespace App\Models;
+4      
+5      use App\Models\Concerns\BelongsToAnneeScolaire;
+6      use Illuminate\Database\Eloquent\Model;
+7      
+8      class Inscription extends Model
+9      {
+10         use BelongsToAnneeScolaire;
+11     
+12         protected $fillable = ['eleve_id', 'classe_id', 'annee_scolaire_id', 'date_inscription', 'statut'];
+13     
+14         protected function casts(): array
+15         {
+16             return ['date_inscription' => 'date'];
+17         }
+18     
+19         public function eleve()
+20         {
+21             return $this->belongsTo(Eleve::class);
+22         }
+23     
+24         public function classe()
+25         {
+26             return $this->belongsTo(Classe::class);
+27         }
+28     
+29         public function bulletins()
+30         {
+31             return $this->hasMany(Bulletin::class);
+32         }
+33     
+34         public function paiements()
+35         {
+36             return $this->hasMany(Paiement::class);
+37         }
+38     }

@@ -1,0 +1,1 @@
+Wrote app/Models/Paie.php (34 lines)

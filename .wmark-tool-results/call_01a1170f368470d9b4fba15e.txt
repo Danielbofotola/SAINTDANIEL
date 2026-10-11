@@ -1,0 +1,87 @@
+95             .msg-shell:not(.show-thread) .msg-thread { display: none; }
+96             .msg-shell.show-thread .msg-list { display: none; }
+97         }
+98     </style>
+99     @endonce
+100    
+101    <div class="msg-shell {{ $active ? 'show-thread' : '' }}" id="msgShell">
+102        <aside class="msg-list">
+103            <div class="msg-list__head">
+104                <button class="btn-compose" type="button" onclick="ouvrirCompose()">
+105                    <i class="fa-solid fa-pen-to-square"></i> Nouveau message
+106                </button>
+107                <input type="text" id="convSearch" placeholder="Rechercher une conversation…">
+108            </div>
+109            <div class="conv-scroll" id="convContainer">
+110                @forelse ($conversations as $conversation)
+111                    @php($corr = $conversation->participants->firstWhere('id', '!=', $user->id))
+112                    <a class="conv {{ $active && $active->id === $conversation->id ? 'active' : '' }}"
+113                       href="{{ $espaceUrl.'?conversation='.$conversation->id }}"
+114                       data-search="{{ mb_strtolower($nomConversation($conversation)) }}">
+115                        <span class="msg-avatar">
+116                            @if ($conversation->type !== 'directe' || ! $corr)
+117                                <i class="fa-solid fa-bullhorn"></i>
+118                            @elseif ($corr->photo)
+119                                <img class="msg-avatar" src="{{ asset('storage/'.$corr->photo) }}" alt="{{ $nomConversation($conversation) }}">
+120                            @else
+121                                {{ mb_strtoupper(mb_substr($corr->prenom ?: $corr->username, 0, 1)) }}
+122                            @endif
+123                        </span>
+124                        <div style="flex:1; min-width:0">
+125                            <div class="d-flex justify-content-between align-items-baseline">
+126                                <span class="conv__name text-truncate">{{ $nomConversation($conversation) }}</span>
+127                                <span class="conv__meta">{{ $conversation->derniere_activite_at?->diffForHumans() }}</span>
+128                            </div>
+129                            <div class="d-flex justify-content-between align-items-center">
+130                                <span class="conv__meta text-truncate" style="max-width:170px">{{ $conversation->dernierMessage?->corps }}</span>
+131                                @if ($conversation->non_lus > 0)
+132                                    <span class="conv__badge">{{ $conversation->non_lus }}</span>
+133                                @endif
+134                            </div>
+135                        </div>
+136                    </a>
+137                @empty
+138                    <p class="p-3 text-center mb-0" style="color:var(--chat-muted);font-size:.8rem">Aucune conversation. Créez-en une.</p>
+139                @endforelse
+140            </div>
+141        </aside>
+142    
+143        <section class="msg-thread">
+144            @if (! $active)
+145                <div class="msg-thread__empty">
+146                    <i class="fa-regular fa-paper-plane fa-3x mb-3"></i>
+147                    <p class="mb-0">Choisissez une conversation ou créez-en une nouvelle.</p>
+148                </div>
+149            @else
+150                <div class="msg-thread__head">
+151                    <div class="d-flex align-items-center gap-2">
+152                        <a class="icon-btn d-inline-flex d-md-none" href="{{ $espaceUrl }}" title="Retour">
+153                            <i class="fa-solid fa-arrow-left"></i>
+154                        </a>
+155                        <div>
+156                            <div style="color:#fff; font-weight:700">{{ $nomConversation($active) }}</div>
+157                            <div style="color:var(--chat-muted); font-size:.78rem">{{ $active->libelleType() }} · {{ $active->sujet }}</div>
+158                        </div>
+159                    </div>
+160                </div>
+161    
+162                <div class="msg-thread__body" id="messagesContainer" data-flux="{{ route('messagerie.messages', $active) }}">
+163                    @foreach ($messages as $message)
+164                        @include('messagerie._bulle', ['message' => $message, 'active' => $active])
+165                    @endforeach
+166                </div>
+167    
+168                <div class="chat-input-wrap">
+169                    <div class="sticker-picker" id="stickerPicker">
+170                        <div class="d-flex justify-content-between mb-2" style="font-size:.78rem;color:var(--chat-muted)">
+171                            <span>Stickers & réactions</span>
+172                            <i class="fa-solid fa-xmark" style="cursor:pointer" onclick="toggleStickers()"></i>
+173                        </div>
+174                        <div class="sticker-grid">
+175                            @foreach (['📚','🎓','📝','✅','👍','👏','💯','⭐','🏫','❤️','😀','🙏'] as $sticker)
+176                                <span onclick="envoyerSticker('{{ $sticker }}')">{{ $sticker }}</span>
+177                            @endforeach
+178                        </div>
+179                    </div>
+
+[showing lines 95-179 of 457; read again with offset=180 for more]

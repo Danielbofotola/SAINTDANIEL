@@ -1,0 +1,38 @@
+1      <?php
+2      
+3      namespace App\Http\Middleware;
+4      
+5      use Closure;
+6      use Illuminate\Http\Request;
+7      use Illuminate\Support\Facades\Auth;
+8      use Symfony\Component\HttpFoundation\Response;
+9      
+10     /**
+11      * Un compte non « actif » ne peut jamais naviguer connecté : le statut est
+12      * vérifié à chaque requête (et pas seulement au moment du login). Si un
+13      * administrateur désactive un compte pendant que l'utilisateur est en ligne,
+14      * sa session est immédiatement invalidée.
+15      */
+16     class EnsureUserIsActive
+17     {
+18         public function handle(Request $request, Closure $next): Response
+19         {
+20             $user = $request->user();
+21     
+22             if ($user && $user->statut !== 'actif') {
+23                 Auth::logout();
+24                 $request->session()->invalidate();
+25                 $request->session()->regenerateToken();
+26     
+27                 $message = 'Votre compte a été désactivé. Contactez un administrateur pour le réactiver.';
+28     
+29                 if ($request->expectsJson()) {
+30                     return response()->json(['message' => $message], 403);
+31                 }
+32     
+33                 return redirect()->route('login')->withErrors(['login' => $message]);
+34             }
+35     
+36             return $next($request);
+37         }
+38     }

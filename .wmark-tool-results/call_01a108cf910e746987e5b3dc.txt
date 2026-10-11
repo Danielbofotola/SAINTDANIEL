@@ -1,0 +1,1 @@
+Wrote tests/Feature/InscriptionValidationTest.php (246 lines)

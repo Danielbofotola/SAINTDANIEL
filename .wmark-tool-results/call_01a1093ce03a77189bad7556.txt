@@ -1,0 +1,8 @@
+145                <li><a class="app-menu__item {{ request()->routeIs('professeur.evaluations', 'professeur.notes') ? 'active' : '' }}" href="{{ route('professeur.evaluations') }}"><i class="app-menu__icon fa fa-pencil-square-o"></i><span class="app-menu__label">Évaluations &amp; notes</span></a></li>
+146                <li><a class="app-menu__item {{ request()->routeIs('professeur.eleves', 'professeur.eleves.show') ? 'active' : '' }}" href="{{ route('professeur.eleves') }}"><i class="app-menu__icon fa fa-users"></i><span class="app-menu__label">Mes élèves</span></a></li>
+147                <li><a class="app-menu__item {{ request()->routeIs('professeur.presences') ? 'active' : '' }}" href="{{ route('professeur.presences') }}"><i class="app-menu__icon fa fa-check-square-o"></i><span class="app-menu__label">Faire l’appel</span></a></li>
+148                <li class="menu-section">Compte</li>
+149                <li><a class="app-menu__item {{ request()->routeIs('professeur.profil') ? 'active' : '' }}" href="{{ route('professeur.profil') }}"><i class="app-menu__icon fa fa-user"></i><span class="app-menu__label">Mon profil</span></a></li>
+150            </ul>
+
+[showing lines 145-150 of 181; read again with offset=151 for more]

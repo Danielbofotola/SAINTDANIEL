@@ -1,0 +1,42 @@
+10     use App\Http\Controllers\UserProfileController;
+11     use App\Http\Controllers\ProfesseurController;
+12     use App\Http\Controllers\ProfesseurDashboardController;
+13     use App\Http\Controllers\SectionOptionController;
+14     use App\Http\Controllers\RegistrationRequestController;
+15     use App\Http\Controllers\AdminRegistrationRequestController;
+16     use App\Http\Controllers\ParametreSystemeController;
+17     use App\Http\Controllers\AnneeScolaireController;
+18     use App\Http\Controllers\ComptableDashboardController;
+19     use App\Http\Controllers\TitulaireDashboardController;
+20     use App\Http\Controllers\HomeController;
+21     use App\Http\Controllers\PrefectureDashboardController;
+22     
+23     Route::middleware('guest')->group(function () {
+24         Route::get('/', [AuthController::class, 'showLoginForm'])->name('login');
+25         Route::post('/login', [AuthController::class, 'login'])->name('login.store');
+26         Route::get('/connexion-pin', [AuthController::class, 'showPinForm'])->name('login.pin');
+27         Route::post('/connexion-pin', [AuthController::class, 'loginWithPin'])->name('login.pin.store');
+28     });
+29     
+30     Route::get('/demande-inscription', [RegistrationRequestController::class, 'createStudentRequest'])->name('registration.student.create');
+31     Route::post('/demande-inscription', [RegistrationRequestController::class, 'storeStudentRequest'])->middleware('throttle:5,1')->name('registration.student.store');
+32     Route::get('/demande-compte', [RegistrationRequestController::class, 'createAccountRequest'])->name('registration.account.create');
+33     Route::post('/demande-compte', [RegistrationRequestController::class, 'storeAccountRequest'])->middleware('throttle:5,1')->name('registration.account.store');
+34     
+35     Route::post('/deconnexion', [AuthController::class, 'logout'])->middleware('auth')->name('logout');
+36     
+37     Route::middleware('auth')->group(function () {
+38         Route::get('/accueil', [HomeController::class, 'index'])->name('home');
+39         Route::get('/mon-profil', [UserProfileController::class, 'showPersonalProfile'])->name('profile.show');
+40         Route::get('/mon-profil/modifier', [UserProfileController::class, 'editPersonalProfile'])->name('profile.edit');
+41         Route::put('/mon-profil', [UserProfileController::class, 'update'])->name('profile.update');
+42         Route::get('/admin/tableau-de-bord', [AdminDashboardController::class, 'index'])->middleware('role:admin')->name('admin.dashboard');
+43         Route::get('/admin/professeurs/nouveau', [ProfesseurController::class, 'create'])->middleware('role:admin')->name('admin.professeurs.create');
+44         Route::post('/admin/professeurs', [ProfesseurController::class, 'store'])->middleware('role:admin')->name('admin.professeurs.store');
+45         Route::get('/admin/profil', [UserProfileController::class, 'show'])->middleware('role:admin')->name('admin.profile.show');
+46         Route::get('/admin/profil/parametres', [ParametreSystemeController::class, 'edit'])->middleware('role:admin')->name('admin.profile.settings');
+47         Route::put('/admin/profil/parametres', [ParametreSystemeController::class, 'update'])->middleware('role:admin')->name('admin.profile.settings.update');
+48         Route::get('/admin/demandes/inscriptions', [AdminRegistrationRequestController::class, 'studentRequests'])->middleware('role:admin')->name('admin.registration.students');
+49         Route::get('/admin/demandes/inscriptions/historique', [AdminRegistrationRequestController::class, 'studentHistory'])->middleware('role:admin')->name('admin.registration.students.history');
+
+[showing lines 10-49 of 109; read again with offset=50 for more]

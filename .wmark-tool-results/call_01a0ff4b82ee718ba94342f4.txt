@@ -1,0 +1,8 @@
+58         Route::post('/admin/comptes', [UserProfileController::class, 'storeAccount'])->middleware('role:admin')->name('admin.profile.accounts.store');
+59         Route::get('/admin/profil/modifier', [UserProfileController::class, 'edit'])->middleware('role:admin')->name('admin.profile.edit');
+60         Route::put('/admin/profil', [UserProfileController::class, 'update'])->middleware('role:admin')->name('admin.profile.update');
+61         Route::patch('/admin/profil/mot-de-passe', [UserProfileController::class, 'updatePassword'])->middleware('role:admin')->name('admin.profile.password');
+62         Route::patch('/admin/profil/desactiver', [UserProfileController::class, 'deactivate'])->middleware('role:admin')->name('admin.profile.deactivate');
+63         Route::patch('/admin/comptes/{user}/statut', [UserProfileController::class, 'toggleAccount'])->middleware('role:admin')->name('admin.profile.accounts.toggle');
+
+[showing lines 58-63 of 103; read again with offset=64 for more]

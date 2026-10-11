@@ -1,0 +1,12 @@
+24             <div class="col-md-6 mb-3"><label class="form-label">Année scolaire *</label>
+25                 @if ($anneeEnCours)
+26                     <input class="form-control" value="{{ $anneeEnCours->libelle }}" disabled>
+27                     <input type="hidden" name="annee_scolaire_id" value="{{ $anneeEnCours->id }}">
+28                     <small class="text-muted">Année en cours — modifiable dans « Années scolaires ».</small>
+29                 @else
+30                     <div class="alert alert-warning py-2 mb-0">Aucune année scolaire n'est en cours. <a href="{{ route('admin.annees.index') }}">En définir une</a>.</div>
+31                 @endif
+32                 @error('annee_scolaire_id')<div class="error">{{ $message }}</div>@enderror</div>
+33         </div></div>
+
+[showing lines 24-33 of 44; read again with offset=34 for more]

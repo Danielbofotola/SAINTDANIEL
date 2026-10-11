@@ -1,0 +1,26 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\aba9102c187c\20261011-161813-bash-call_01a12b8b03ae705a827442a2.txt (628 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+[powershell — Windows side]
+PrefectureDashboardTest.php
+RoleDashboardsTest.php
+
+LineNumber Line                                                                                   
+---------- ----                                                                                   
+       144         ->get(route('prefecture.dashboard'))                                           
+       168         ->get(route('prefecture.dashboard'))                                           
+       178         ->get
+
+... 812 chars truncated ...
+
+rofil'))                                              
+       225         $this->actingAs($comptable)->get(route($route))->assertForbidden();            
+       189         ->get(route('comptable.dashboard'))                                            
+       205         ->get(route('comptable.dashboard'))                                            
+       214         ->get(route('titulaire.dashboard'))                                            
+       227         ->get(route('titulaire.dashboard'))                                            
+       236     $this->actingAs($comptable)->get(route('titulaire.dashboard'))->assertForbidden(); 
+       237     $this->actingAs($titulaire)->get(route('comptable.dashboard'))->assertForbidden(); 
+       238     $this->actingAs($titulaire)->get(route('professeur.dashboard'))->assertForbidden();
+
+
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

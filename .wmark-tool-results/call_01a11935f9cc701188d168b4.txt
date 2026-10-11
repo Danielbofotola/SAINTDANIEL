@@ -1,0 +1,24 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/PrefectureVieScolaireTest.php (2 hunks applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 16-16 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 16-16:
+16             'paiements', 'frais_scolaires', 'type_frais', 'bulletins', 'documents_eleves', 'presences', 'notes', 'evaluations', 'periodes', 'emplois_du_temps', 'affectations_cours', 'cours',
+Landed at lines 227-258 (the file's new text; no re-read needed):
+227        Schema::create('type_frais', function (Blueprint $table) {
+228            $table->id();
+229            $table->string('libelle')->nullable();
+230            $table->string('nom')->nullable();
+231        });
+232    
+233        Schema::create('frais_scolaires', function (Blueprint $table) {
+234            $table->id();
+      … 16 lines omitted …
+251            $table->timestamp('date_paiement')->nullable();
+252            $table->string('mode_paiement')->nullable();
+253            $table->string('reference_transaction')->nullable();
+254            $table->string('statut')->default('actif');
+255            $table->timestamps();
+256        });
+257    
+258        Schema::create('notes', function (Blueprint $table) {

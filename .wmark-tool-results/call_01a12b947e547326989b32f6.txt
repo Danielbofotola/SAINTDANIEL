@@ -1,0 +1,6 @@
+The user selected, one answer per question:
+- 'Devise de référence de la comptabilité (celle des tarifs/frais et des totaux)': Dépend du tarif — Chaque ligne de frais porte sa propre devise ; les totaux sont séparés par devise.
+- 'Où fixer le taux de change CDF/USD ?': Réglage global, ajustable au paiement — Un taux par défaut dans les Paramètres, pré-rempli et modifiable au moment d'encaisser.
+- 'Comment afficher les montants ?': USD : 2 décimales · CDF : sans décimale — Ex. 50 $ et 140 000 FC (on retire les « ,00 » du franc).
+- 'Un paiement fait en CDF : comment le compter dans les totaux ?': Convertir en devise de référence — On enregistre le montant reçu en CDF + le taux, et le montant converti (référence) alimente les totaux.
+Act on these choices directly and continue working autonomously — do NOT restate the selections back to the user.

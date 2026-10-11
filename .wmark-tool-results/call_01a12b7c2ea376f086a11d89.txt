@@ -1,0 +1,19 @@
+495    
+496        $this->actingAs($s['alice'])->post(route('admin.classes.store'), [
+497            'cycle_id' => $s['classe1']->cycle_id,
+498            'nom' => 'Classe test',
+499            'classe_suivante_id' => $s['classe2']->id,
+500            'statut' => 'actif',
+501        ])->assertRedirect(route('admin.classes.index'));
+502    
+503        $nouvelle = Classe::where('nom', 'Classe test')->firstOrFail();
+504        expect($nouvelle->classe_suivante_id)->toBe($s['classe2']->id);
+505    
+506        // Une classe ne peut pas être sa propre suivante.
+507        $this->actingAs($s['alice'])->put(route('admin.classes.update', $nouvelle), [
+508            'cycle_id' => $nouvelle->cycle_id,
+509            'nom' => $nouvelle->nom,
+510            'classe_suivante_id' => $nouvelle->id,
+511            'statut' => 'actif',
+512        ])->assertSessionHasErrors('classe_suivante_id');
+513    });

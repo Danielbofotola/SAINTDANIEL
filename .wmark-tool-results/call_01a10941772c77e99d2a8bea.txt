@@ -1,0 +1,6 @@
+100            <a class="app-header__logo" href="{{ route('professeur.dashboard') }}">{{ $systemSettings->nom_court }}</a>
+101            <a class="app-sidebar__toggle fa fa-bars" href="#" data-toggle="sidebar" aria-label="Afficher ou masquer le menu"></a>
+102            <ul class="app-nav">
+103                <li class="dropdown">
+
+[showing lines 100-103 of 183; read again with offset=104 for more]

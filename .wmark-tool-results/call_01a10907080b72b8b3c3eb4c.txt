@@ -1,0 +1,22 @@
+[powershell — Windows side]
+INFO  Blade templates cached successfully.  
+
+==viewcache 0==
+   INFO  Running migrations.  
+
+  2026_10_11_000000_create_comptabilite_tables .......................................................... 79.74ms DONE
+
+==migrate 0==
+
+   PASS  Tests\Feature\ComptabiliteTest
+  ✓ a balanced manual entry is stored and an unbalanced one is refused                                           0.25s  
+  ✓ payments, expenses and salaries are posted once and never duplicated                                         0.03s  
+  ✓ the general balance totals debits and credits per account                                                    0.03s  
+  ✓ a custom account can be added to the chart and a used one cannot be removed                                  0.03s  
+
+  Tests:    4 passed (33 assertions)
+  Duration: 0.47s
+
+==exit 0==
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

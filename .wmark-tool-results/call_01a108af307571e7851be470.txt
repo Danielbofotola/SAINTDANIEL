@@ -1,0 +1,22 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/BulletinDocumentTest.php (1 hunk applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 257-265 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 266-303:
+266    
+267    test('the reference maximum of a branch is displayed even without any note', function () {
+268        $inscriptionId = seedBulletinEleve();
+269        // Barème de la branche : T.J. 20 + Examen 40 = 60 par période.
+270        DB::table('cours')->where('id', 1)->update(['max_travaux_journaliers' => 20, 'max_examen' => 40]);
+271    
+272        $data = BulletinRdc::for(Inscription::find($inscriptionId))->build();
+273    
+      … 22 lines omitted …
+296                'max_travaux_journaliers' => 10, 'max_examen' => 20,
+297            ])
+298            ->assertRedirect(route('admin.affectations.index'));
+299    
+300        $cours = DB::table('cours')->where('code', 'GEO')->first();
+301        expect((int) $cours->max_travaux_journaliers)->toBe(10)
+302            ->and((int) $cours->max_examen)->toBe(20);
+303    });

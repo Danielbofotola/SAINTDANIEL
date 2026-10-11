@@ -1,0 +1,6 @@
+119        Route::delete('/admin/comptabilite/plan/{compte}', [ComptabiliteController::class, 'destroyCompte'])->middleware('role:admin')->name('admin.comptabilite.plan.destroy');
+120        Route::get('/admin/comptabilite/balance', [ComptabiliteController::class, 'balance'])->middleware('role:admin')->name('admin.comptabilite.balance');
+121        Route::get('/admin/archives', [ArchiveAnneeController::class, 'index'])->middleware('role:admin')->name('admin.archives.index');
+122        Route::get('/admin/archives/{archiveAnnee}', [ArchiveAnneeController::class, 'show'])->middleware('role:admin')->name('admin.archives.show');
+
+[showing lines 119-122 of 206; read again with offset=123 for more]

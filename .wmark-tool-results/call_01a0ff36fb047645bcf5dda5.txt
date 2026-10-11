@@ -1,0 +1,62 @@
+190    </head>
+191    <body>
+192        @php
+193            $displayName = $professor ? trim($professor->prenom.' '.$professor->nom) : ($user->prenom ?: $user->username);
+194            $initial = strtoupper(substr($displayName, 0, 1));
+195            $photo = $user->photo ?: $professor?->photo;
+196            $evaluationMonths = ['janv.', 'févr.', 'mars', 'avr.', 'mai', 'juin', 'juil.', 'août', 'sept.', 'oct.', 'nov.', 'déc.'];
+197            $evaluationTypes = ['interro' => 'Interrogation', 'devoir' => 'Devoir', 'examen' => 'Examen', 'autre' => 'Évaluation'];
+198            $todayLabel = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'][now()->dayOfWeek];
+199        @endphp
+200        <div class="teacher-shell">
+201            <aside class="teacher-sidebar" aria-label="Navigation principale">
+202                <a class="brand" href="{{ route('professeur.dashboard') }}">
+203                    <span class="brand-mark">M</span>
+204                    <span class="brand-copy"><span class="brand-name">{{ $systemSettings->nom_court }}</span><span class="brand-caption">Espace scolaire</span></span>
+205                </a>
+206                <div class="nav-caption">Espace enseignant</div>
+207                <nav class="teacher-nav">
+208                    <a class="active" href="{{ route('professeur.dashboard') }}" aria-current="page"><i class="fa fa-th-large"></i><span class="nav-label">Vue générale</span></a>
+209                    <a href="#planning"><i class="fa fa-calendar-o"></i><span class="nav-label">Mon planning</span></a>
+210                    <a href="#enseignements"><i class="fa fa-book"></i><span class="nav-label">Mes cours</span></a>
+211                    <a href="#evaluations"><i class="fa fa-pencil-square-o"></i><span class="nav-label">Évaluations</span></a>
+212                </nav>
+213                <div class="sidebar-bottom">
+214                    <a class="profile-shortcut" href="{{ route('profile.show') }}" title="Ouvrir mon profil">
+215                        <span class="avatar">@if ($photo)<img src="{{ asset('storage/'.$photo) }}" alt="">@else{{ $initial }}@endif</span>
+216                        <span><span class="profile-name">{{ $displayName }}</span><span class="profile-role">Professeur</span></span>
+217                    </a>
+218                    <form method="POST" action="{{ route('logout') }}">@csrf<button class="sidebar-logout" type="submit"><i class="fa fa-sign-out"></i> <span class="logout-label">Déconnexion</span></button></form>
+219                </div>
+220            </aside>
+221    
+222            <main class="teacher-main">
+223                @include('partials.impersonation-banner')
+224                <header class="topbar">
+225                    <div class="breadcrumb"><span class="school-brand">{{ $systemSettings->nom_court }}</span> <span aria-hidden="true">/</span> <strong>Espace enseignant</strong></div>
+226                    <div class="topbar-actions">
+227                        <a class="icon-link" href="{{ route('profile.show') }}" aria-label="Mon profil" title="Mon profil"><i class="fa fa-user-o"></i></a>
+228                        <a class="top-avatar" href="{{ route('profile.show') }}">
+229                            <span class="avatar">@if ($photo)<img src="{{ asset('storage/'.$photo) }}" alt="">@else{{ $initial }}@endif</span>
+230                            <span class="top-avatar-copy"><span class="top-avatar-name">{{ $displayName }}</span><span class="top-avatar-role">Enseignant</span></span>
+231                        </a>
+232                    </div>
+233                </header>
+234    
+235                <div class="dashboard-content">
+236                    <section class="page-intro">
+237                        <div><p class="eyebrow">Votre espace de travail</p><h1>Bonjour, {{ $professor?->prenom ?: $user->prenom ?: $user->username }}</h1><p class="intro-subtitle">{{ $schoolYear?->libelle ? 'Année scolaire '.$schoolYear->libelle : 'Année scolaire non définie' }}@if ($professor?->specialite) <span aria-hidden="true">·</span> {{ $professor->specialite }}@endif</p></div>
+238                        <time class="date-stamp" datetime="{{ now()->toDateString() }}"><i class="fa fa-calendar-o" aria-hidden="true"></i> {{ now()->format('d/m/Y') }}</time>
+239                    </section>
+240    
+241                    <section class="welcome-banner" aria-label="Bienvenue dans votre espace enseignant">
+242                        <div class="welcome-copy">
+243                            <span class="welcome-tag"><i class="fa fa-circle" aria-hidden="true"></i> {{ $schoolYear?->libelle ?: 'Espace enseignant' }}</span>
+244                            <h2>{{ $professor?->specialite ?: 'Votre espace pédagogique' }}</h2>
+245                            <p>{{ $professor ? 'Bonjour '.$displayName.', heureux de vous retrouver.' : 'Retrouvez ici vos informations pédagogiques et votre profil.' }}</p>
+246                            <a class="banner-action" href="{{ route('profile.show') }}">Mon profil <i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+247                        </div>
+248                        <span class="banner-art" aria-hidden="true"><i class="fa fa-book"></i></span>
+249                    </section>
+
+[showing lines 190-249 of 319; read again with offset=250 for more]

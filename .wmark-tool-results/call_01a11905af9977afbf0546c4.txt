@@ -1,0 +1,20 @@
+118                        @endif
+119                    </div>
+120                </div>
+121            </div>
+122        </div>
+123    
+124        <div class="row">
+125            <div class="col-md-6">
+126                <div class="card">
+127                    <div class="card-header"><div class="card-title"><i class="fas fa-user-friends text-info"></i> Tuteur &amp; contacts</div></div>
+128                    <div class="card-body">
+129                        @if ($eleve->tuteur)
+130                            <table class="table table-borderless mb-0">
+131                                <tr><th style="width:45%">Père</th><td>{{ $eleve->tuteur->nom_pere ?: '—' }}</td></tr>
+132                                <tr><th>Téléphone père</th><td>{{ $eleve->tuteur->telephone_pere ?: '—' }}</td></tr>
+133                                <tr><th>Mère</th><td>{{ $eleve->tuteur->nom_mere ?: '—' }}</td></tr>
+134                                <tr><th>Téléphone mère</th><td>{{ $eleve->tuteur->telephone_mere ?: '—' }}</td></tr>
+135                                <tr><th>Adresse</th><td>{{ $eleve->tuteur->adresse_pere ?: ($eleve->tuteur->adresse_mere ?: '—') }}</td></tr>
+
+[showing lines 118-135 of 245; read again with offset=136 for more]

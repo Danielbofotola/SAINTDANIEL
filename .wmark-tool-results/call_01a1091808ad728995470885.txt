@@ -1,0 +1,20 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\e1ce9c26600a\20261004-234517-bash-call_01a1091808ad728995470885.txt (824 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+[powershell — Windows side]
+Route::get('/titulaire/tableau-de-bord', [TitulaireDashboardController::class, 'index'])->middleware('role:titulaire')->name('titulaire.dashboard');
+    Route::get('/professeur/tableau-de-bord', [ProfesseurDashboardController::class, 'index'])->middleware('role:professeur')->name('professeur.dashboard');
+    Route::get('/comptable/tableau-de-bord', [ComptableDashboardController::class, 'index'])->middleware('role:comptable')->name('comptable.dashboard');
+    Route::ge
+
+... 894 chars truncated ...
+
+es.store');
+    Route::post('/comptable/depenses/natures', [ComptableDepenseController::class, 'storeNature'])->middleware('role:comptable')->name('comptable.depenses.natures.store');
+    Route::delete('/comptable/depenses/{depense}', [ComptableDepenseController::class, 'destroy'])->middleware('role:comptable')->name('comptable.depenses.destroy');
+    Route::get('/comptable/paies', [PaieController::class, 'index'])->middleware('role:comptable')->name('comptable.paies.index');
+    Route::post('/comptable/paies/salaires', [PaieController::class, 'storeSalaire'])->middleware('role:comptable')->name('comptable.paies.salaires.store');
+    Route::post('/comptable/paies', [PaieController::class, 'storePaie'])->middleware('role:comptable')->name('comptable.paies.store');
+});
+===== MIGRATIONS =====
+2026_10_04_010000_add_maxima_to_cours_table.php
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

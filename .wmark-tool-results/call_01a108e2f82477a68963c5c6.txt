@@ -1,0 +1,17 @@
+1      <?php
+2      
+3      namespace App\Models;
+4      
+5      use Illuminate\Database\Eloquent\Model;
+6      
+7      class DocumentProfesseur extends Model
+8      {
+9          protected $table = 'documents_professeurs';
+10     
+11         protected $fillable = ['professeur_id', 'titre', 'type_document', 'chemin_fichier', 'taille_ko', 'statut'];
+12     
+13         public function professeur()
+14         {
+15             return $this->belongsTo(Professeurs::class, 'professeur_id');
+16         }
+17     }

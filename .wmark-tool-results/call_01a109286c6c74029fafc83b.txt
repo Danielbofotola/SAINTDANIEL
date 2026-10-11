@@ -1,0 +1,20 @@
+1      @extends('professeur.layout')
+2      
+3      @push('styles')
+4          <style>
+5              .profile-top { background:#0d0c0f; color:#fff; border-radius:12px; }
+6              .profile-top h5 { color:#fff; margin:0; }
+7              .profile-actions { background:#b26111; border-radius:10px; }
+8              .profile-actions a { color:#fff; padding:8px 12px; font-size:13px; font-weight:500; text-decoration:none; }
+9              .profile-actions a:hover { color:#fff; background:rgba(255,255,255,.15); }
+10             .detail-row { display:flex; margin-bottom:12px; font-size:14px; }
+11             .detail-label { width:190px; font-weight:600; color:var(--able-text-main); }
+12             .detail-value { color:#323130; }
+13             .avatar-lg { width:82px; height:82px; border-radius:50%; background:#795548; color:#fff; display:inline-flex; align-items:center; justify-content:center; font-size:30px; font-weight:600; object-fit:cover; }
+14         </style>
+15     @endpush
+16     
+17     @section('titre', 'Mon profil')
+18     @section('titre-page')<i class="fa fa-user mr-2"></i> Mon profil @endsection
+
+[showing lines 1-18 of 153; read again with offset=19 for more]

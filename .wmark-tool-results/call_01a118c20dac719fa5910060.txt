@@ -1,0 +1,35 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\b493c9bc81dc\20261008-004517-bash-call_01a118c20dac719fa5910060.txt (754 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+[powershell — Windows side]
+app\Http\Controllers\AdminDashboardController.php
+app\Http\Controllers\AdminMessagerieController.php
+app\Http\Controllers\AdminRegistrationRequestController.php
+app\Http\Controllers\AffectationCoursController.php
+app\Http\Controllers\AnneeScolaireController.php
+app\Http\Controllers\AnnonceController.php
+app\Http\Controllers\AppelController.php
+app\Http\Controllers\ArchiveAnneeController.php
+app\Http\Controllers\AuthController.php
+app\Http\Controllers\BulletinControlle
+
+... 1,213 chars truncated ...
+
+trollers\PrefectureDashboardController.php
+app\Http\Controllers\ProfesseurController.php
+app\Http\Controllers\ProfesseurDashboardController.php
+app\Http\Controllers\ProfesseurEspaceController.php
+app\Http\Controllers\ProfesseurEvaluationController.php
+app\Http\Controllers\ProfesseurPresenceController.php
+app\Http\Controllers\ProfesseursController.php
+app\Http\Controllers\RecuController.php
+app\Http\Controllers\RegistrationRequestController.php
+app\Http\Controllers\SalleController.php
+app\Http\Controllers\SectionOptionController.php
+app\Http\Controllers\StatistiquesController.php
+app\Http\Controllers\TitulaireDashboardController.php
+app\Http\Controllers\UserProfileController.php
+app\Http\Middleware\AccessMessagerie.php
+app\Http\Middleware\EnsureUserHasRole.php
+app\Http\Middleware\EnsureUserIsActive.php
+app\Http\Middleware\FlashGlobal.php
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

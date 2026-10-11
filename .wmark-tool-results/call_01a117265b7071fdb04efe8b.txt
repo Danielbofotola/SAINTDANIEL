@@ -1,0 +1,20 @@
+408            let dernierId = 0;
+409    
+410            const bulles = fil.querySelectorAll('[data-message-id]');
+411            if (bulles.length) dernierId = Number(bulles[bulles.length - 1].getAttribute('data-message-id')) || 0;
+412    
+413            const bas = () => { fil.scrollTop = fil.scrollHeight; };
+414            bas();
+415    
+416            const ajouter = (html, id) => {
+417                if (!html) return;
+418                fil.insertAdjacentHTML('beforeend', html);
+419                if (id) dernierId = Math.max(dernierId, Number(id));
+420                bas();
+421            };
+422    
+423            const majBadges = (total) => {
+424                document.querySelectorAll('[data-non-lus]').forEach(el => {
+425                    if (total > 0) { el.textContent = total > 99 ? '99+' : total; el.style.display = ''; }
+
+[showing lines 408-425 of 776; read again with offset=426 for more]

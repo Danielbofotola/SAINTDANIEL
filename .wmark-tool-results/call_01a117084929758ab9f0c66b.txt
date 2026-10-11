@@ -1,0 +1,36 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\144c63540b62\20261007-164301-bash-call_01a117084929758ab9f0c66b.txt (580 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+[powershell — Windows side]
+PASS  Tests\Feature\UtilisateursEnLigneTest
+  ✓ the admin sees the accounts currently online, not the stale sessions                                         0.25s  
+  ✓ online users page is reserved to the admin role                                                              0.12s  
+  ✓ the device label is derived from the user agent                                                              0.15s  
+
+   PASS  Tests\Feature\YearScopedModelsTest
+  ✓ the new models m
+
+... 277 chars truncated ...
+
+                                                          0.08s  
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\MessagerieAccesTest > no duplicate on a page that already offers the messenger                 
+  Expecting '<!DOCTYPE html><html lang="…tml>' not to contain '<a class="messagerie-flottante'.
+
+  at tests\Feature\MessagerieAccesTest.php:129
+    125▕ 
+    126▕     // La page /messagerie contient déjà ses propres liens : pas d'injection.
+    127▕     $html = $this->actingAs($compte)->get(route('messagerie.index'))->assertOk()->getContent();
+    128▕ 
+  ➜ 129▕     expect($html)->not->toContain('<a class="messagerie-flottante');
+    130▕ 
+    131▕     // Un visiteur non connecté n'obtient aucun bouton.
+    132▕     $this->post(route('logout'));
+    133▕     $this->get(route('login'))->assertOk()->assertDontSee('<a class="messagerie-flottante', false);
+
+  1   tests\Feature\MessagerieAccesTest.php:129
+
+
+  Tests:    1 failed, 196 passed (1154 assertions)
+  Duration: 14.37s
+
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

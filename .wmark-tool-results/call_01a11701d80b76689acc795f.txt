@@ -1,0 +1,24 @@
+723                        while (true) {
+724                            await attendre(4000);
+725                            if (document.hidden) continue;
+726                            try {
+727                                const reponse = await fetch(urlFlux + "?apres=" + dernierId, {
+728                                    headers: { "Accept": "application/json", "X-Requested-With": "XMLHttpRequest" },
+729                                    credentials: "same-origin",
+730                                });
+731                                if (!reponse.ok) continue;
+732                                const donnees = await reponse.json();
+733                                (donnees.messages || []).forEach(function (m) { ajouter(m.html, m.id); });
+734                                majBadges(donnees.non_lus);
+735                            } catch (e) {
+736                                // Réseau momentanément indisponible : on réessaiera au tour suivant.
+737                            }
+738                        }
+739                    })();
+740                }
+741            });
+742        </script>
+743            });
+744        </script>
+745    </body>
+746    </html>

@@ -1,0 +1,10 @@
+Applied patch: 1 file changed (1 updated)
+Updated app/Http/Controllers/AdminDashboardController.php (3 hunks applied)
+Landed at lines 31-37 (the file's new text; no re-read needed):
+31                 'repartitionCycles' => Cycle::query()
+32                     ->where('statut', 'actif')
+33                     ->withCount(['inscriptions as total' => fn ($query) => $query
+34                         ->anneeEnCours()
+35                         ->where('inscriptions.statut', 'actif')])
+36                     ->orderBy('nom')
+37                     ->get(),

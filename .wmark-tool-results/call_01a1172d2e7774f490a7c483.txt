@@ -1,0 +1,11 @@
+[powershell — Windows side]
+35: .msg-shell { display: grid; grid-template-columns: 360px minmax(0, 1fr); gap: 0; height: 76vh; min-height: 480px;
+39: .msg-list { display: flex; flex-direction: column; min-width: 0; border-right: 1px solid var(--chat-divider); }
+53: .conv-scroll { flex: 1; overflow-y: auto; }
+68: .msg-thread { display: flex; flex-direction: column; min-width: 0; position: relative; }
+74: .msg-thread__body { flex: 1; overflow-y: auto; padding: 14px; display: flex; flex-direction: column; gap: 10px; }
+161: .msg-shell { grid-template-columns: 1fr; height: auto; min-height: 0; }
+162: .msg-list { border-right: none; height: 58vh; }
+163: .msg-thread { min-height: 0; }
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

@@ -1,0 +1,20 @@
+303    
+304        $this->actingAs($prefet)->get(route('prefecture.evaluations'))->assertOk()
+305            ->assertSee('Interro 1')->assertSee('Interrogation')->assertSee('1er trimestre');
+306    
+307        $this->actingAs($prefet)->get(route('prefecture.eleves'))->assertOk()
+308            ->assertSee('Aicha')->assertSee('ELV-001')->assertSee('3e primaire');
+309    
+310        $this->actingAs($prefet)->get(route('prefecture.tuteurs'))->assertOk()
+311            ->assertSee('Bofotola Daniel')->assertSee('0898272942')->assertSee('Comptes parents');
+312    });
+313    
+314    test('la fiche élève regroupe identité, santé, inscriptions et assiduité', function () {
+315        $prefet = User::where('role', 'prefetture')->first();
+316        DB::table('eleve_sante')->insert([
+317            'eleve_id' => 1, 'groupe_sanguin' => 'O+', 'allergies_pathologies' => 'Asthme', 'medecin_referent' => 'Dr Mukala',
+318        ]);
+319    
+320        $eleve = Eleve::find(1);
+
+[showing lines 303-320 of 407; read again with offset=321 for more]

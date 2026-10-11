@@ -1,0 +1,32 @@
+384    test('closing a school year computes the summary and can be reopened', function () {
+385        $inscriptionId = seedInscription();
+386        $fraisId = seedFrais();
+387        DB::table('paiements')->insert([
+388            'num_recu' => 'REC-2026-2027-0001', 'inscription_id' => $inscriptionId, 'frais_scolaire_id' => $fraisId,
+389            'montant_paye' => 150, 'date_paiement' => now(), 'mode_paiement' => 'especes', 'statut' => 'actif',
+390            'created_at' => now(), 'updated_at' => now(),
+391        ]);
+392        $categorieId = DB::table('categories_depenses')->insertGetId(['nom' => 'Entretien', 'statut' => 'actif', 'created_at' => now(), 'updated_at' => now()]);
+393        DB::table('depenses')->insert([
+394            'annee_scolaire_id' => 1, 'category_id' => $categorieId, 'motif' => 'Réparations', 'montant' => 40,
+395            'date_depense' => '2026-10-03', 'statut' => 'actif', 'created_at' => now(), 'updated_at' => now(),
+396        ]);
+397        $admin = User::factory()->create(['role' => 'admin']);
+398    
+399        $this->actingAs($admin)
+400            ->post(route('admin.archives.store'), ['annee_scolaire_id' => 1, 'remarques' => 'Clôture de test'])
+401            ->assertRedirect(route('admin.archives.index'));
+402    
+403        $archive = DB::table('archives_annees')->first();
+404        expect($archive)->not->toBeNull()
+405            ->and((int) $archive->total_eleves_inscrits)->toBe(1)
+406            ->and((float) $archive->total_recettes)->toBe(150.0)
+407            ->and((float) $archive->total_depenses)->toBe(40.0)
+408            ->and((float) $archive->solde_final)->toBe(110.0)
+409            ->and((float) $archive->total_attendu)->toBe(150.0)
+410            ->and((float) $archive->total_impayes)->toBe(0.0)
+411            ->and((int) $archive->eleves_garcons)->toBe(0)
+412            ->and((int) $archive->eleves_filles)->toBe(1)
+413            ->and((int) $archive->total_bulletins)->toBe(0)
+
+[showing lines 384-413 of 536; read again with offset=414 for more]

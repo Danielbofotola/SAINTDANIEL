@@ -1,0 +1,24 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/ElevesPagesTest.php (2 hunks applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 11-11 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 11-11:
+11             'paiements', 'frais_scolaires', 'type_frais', 'documents_eleves', 'eleve_sante', 'demandes_inscription', 'inscriptions', 'eleves', 'tuteurs', 'classes',
+Landed at lines 29-58 (the file's new text; no re-read needed):
+29         Schema::create('type_frais', function (Blueprint $table) {
+30             $table->id();
+31             $table->string('libelle')->nullable();
+32             $table->string('nom')->nullable();
+33         });
+34         Schema::create('frais_scolaires', function (Blueprint $table) {
+35             $table->id();
+36             $table->unsignedBigInteger('type_frais_id')->nullable();
+      … 14 lines omitted …
+51             $table->timestamp('date_paiement')->nullable();
+52             $table->string('mode_paiement')->nullable();
+53             $table->string('reference_transaction')->nullable();
+54             $table->string('statut')->default('actif');
+55             $table->timestamps();
+56         });
+57     
+58         Schema::create('eleve_sante', function (Blueprint $table) {

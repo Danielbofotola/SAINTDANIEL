@@ -1,0 +1,38 @@
+156                        </a>
+157                    </li>
+158                    <li class="treeview">
+159                        <a class="waves-effect waves-dark" href="{{ route('admin.profile.settings') }}">
+160                            <i class="icon-settings"></i><span> Paramètres Établissement</span>
+161                        </a>
+162                    </li>
+163                    <li class="treeview">
+164                        <a class="waves-effect waves-dark" href="">
+165                            <i class="icon-settings"></i><span> Professeur & attachement</span>
+166                        </a>
+167                    </li>
+168                    <li class="treeview">
+169                        <a class="waves-effect waves-dark" href="">
+170                            <i class="icon-settings"></i><span> Emplois du Temps</span>
+171                        </a>
+172                    </li>
+173                    <li class="treeview">
+174                        <a class="waves-effect waves-dark" href="">
+175                            <i class="icon-settings"></i><span>Validation Finale des 
+176                               <p>Bulletins Trimestriels</p>
+177                            </span>
+178                        </a>
+179                    </li>
+180                    <li class="treeview">
+181                        <a class="waves-effect waves-dark" href="">
+182                            <i class="icon-settings"></i><span>Commuter les modules 
+183                               <p>(Saisie
+184                               Notes, Portail Parents) </p>
+185                            </span>
+186                        </a>
+187                    </li>
+188    
+189                    <li class="nav-level">--- Gestion Administrative</li>
+190                    <li class="treeview">
+191                        <a class="waves-effect waves-dark" href="#!">
+
+[showing lines 156-191 of 378; read again with offset=192 for more]

@@ -1,0 +1,11 @@
+55         Schema::create('cours', function (Blueprint $table) {
+56             $table->id();
+57             $table->string('code', 20)->unique();
+58             $table->string('intitule', 100);
+59             $table->unsignedInteger('ponderation')->default(1);
+60             $table->enum('statut', ['actif', 'inactif'])->default('actif');
+61             $table->timestamps();
+62         });
+63         Schema::create('annees_scolaires', function (Blueprint $table) {
+
+[showing lines 55-63 of 339; read again with offset=64 for more]

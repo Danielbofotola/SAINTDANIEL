@@ -1,0 +1,22 @@
+Applied patch: 1 file changed (1 updated)
+Updated resources/views/parent/notifications.blade.php (1 hunk applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 8-19 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 8-25:
+8              @php($libelles = ['info' => 'Information', 'success' => 'Réussite', 'warning' => 'À suivre', 'danger' => 'Important'])
+9              @forelse ($notifications as $notification)
+10                 @php($donnees = $notification->data)
+11                 @php($niveau = $donnees['niveau'] ?? 'info')
+12                 {{-- Chaque ligne ouvre le détail de la notification. --}}
+13                 <a href="{{ route('parent.notification', $notification->id) }}" style="text-decoration:none;color:inherit">
+14                     <div class="py-2 d-flex align-items-start gap-2" style="border-bottom:1px solid var(--divider); {{ $notification->read_at ? '' : 'font-weight:600;' }}">
+15                         <div style="flex:1;min-width:0">
+      … 2 lines omitted …
+18                             <div class="fs-7 text-muted-2 mt-1">{{ \Illuminate\Support\Str::limit($donnees['message'] ?? '', 120) }}</div>
+19                             <div class="fs-7 text-muted-2 mt-1">
+20                                 De {{ $donnees['auteur'] ?? 'administration' }} · {{ $notification->created_at?->format('d/m/Y H:i') }}
+21                             </div>
+22                         </div>
+23                         <span class="fs-7" style="color:var(--blue);white-space:nowrap">Détail ›</span>
+24                     </div>
+25                 </a>

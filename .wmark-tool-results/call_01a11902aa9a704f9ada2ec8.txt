@@ -1,0 +1,32 @@
+228        // --- Données de test ---
+229        DB::table('annees_scolaires')->insert([
+230            'id' => 1, 'libelle' => '2026-2027', 'date_debut' => '2026-09-01', 'date_fin' => '2027-07-01',
+231            'is_encours' => true, 'statut' => 'actif',
+232        ]);
+233        DB::table('cycles')->insert(['id' => 1, 'nom' => 'Primaire', 'statut' => 'actif']);
+234        DB::table('salles')->insert(['id' => 1, 'nom' => 'Salle A', 'capacite' => 40, 'statut' => 'actif']);
+235        DB::table('classes')->insert(['id' => 1, 'nom' => '3e primaire', 'cycle_id' => 1, 'salle_id' => 1, 'statut' => 'actif']);
+236        DB::table('professeurs')->insert(['id' => 1, 'matricule' => 'PRF-001', 'nom' => 'Mwamba', 'prenom' => 'Jean', 'statut' => 'actif']);
+237        DB::table('cours')->insert(['id' => 1, 'code' => 'MATH', 'intitule' => 'Mathématiques', 'ponderation' => 4, 'statut' => 'actif']);
+238        DB::table('affectations_cours')->insert(['id' => 1, 'professeur_id' => 1, 'cours_id' => 1, 'classe_id' => 1, 'annee_scolaire_id' => 1, 'statut' => 'actif']);
+239        DB::table('emplois_du_temps')->insert([
+240            'id' => 1, 'affectation_id' => 1, 'salle_id' => 1, 'jour' => 'lundi',
+241            'heure_debut' => '08:00', 'heure_fin' => '09:00', 'statut' => 'actif',
+242        ]);
+243        DB::table('periodes')->insert(['id' => 1, 'annee_scolaire_id' => 1, 'nom' => '1er trimestre', 'statut' => 'actif']);
+244        DB::table('evaluations')->insert([
+245            'id' => 1, 'affectation_id' => 1, 'periode_id' => 1, 'titre' => 'Interro 1',
+246            'type_evaluation' => 'interro', 'max_note' => 10, 'date_evaluation' => '2026-10-01', 'statut' => 'actif',
+247        ]);
+248        DB::table('tuteurs')->insert(['id' => 1, 'nom_pere' => 'Bofotola Daniel', 'telephone_pere' => '0898272942', 'statut' => 'actif']);
+249        DB::table('eleves')->insert([
+250            'id' => 1, 'tuteur_id' => 1, 'matricule' => 'ELV-001', 'nom' => 'Banzolo', 'prenom' => 'Aicha',
+251            'sexe' => 'F', 'date_naissance' => '2017-05-12', 'statut' => 'actif',
+252        ]);
+253        DB::table('inscriptions')->insert(['id' => 1, 'eleve_id' => 1, 'classe_id' => 1, 'annee_scolaire_id' => 1, 'date_inscription' => '2026-09-05', 'statut' => 'actif']);
+254        DB::table('presences')->insert([
+255            'id' => 1, 'affectation_id' => 1, 'eleve_id' => 1, 'date_seance' => now()->toDateString(),
+256            'statut_presence' => 'retard', 'motif' => 'Transport',
+257        ]);
+
+[showing lines 228-257 of 316; read again with offset=258 for more]

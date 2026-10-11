@@ -1,0 +1,32 @@
+1      <!DOCTYPE html>
+2      <html lang="fr">
+3      <head>
+4          <meta charset="UTF-8">
+5          <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+6          <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
+7          <meta name="csrf-token" content="{{ csrf_token() }}">
+8          <title>@yield('titre', 'Espace préfecture') — {{ $systemSettings->nom_court }}</title>
+9          <link rel="icon" href="{{ asset('azzara/img/icon.ico') }}" type="image/x-icon" />
+10     
+11         {{-- Fonts & icônes (Flaticon + Font Awesome 5) --}}
+12         <script src="{{ asset('azzara/js/plugin/webfont/webfont.min.js') }}"></script>
+13         <script>
+14             WebFont.load({
+15                 google: { families: ['Open+Sans:300,400,600,700'] },
+16                 custom: {
+17                     families: ['Flaticon', 'Font Awesome 5 Solid', 'Font Awesome 5 Regular', 'Font Awesome 5 Brands'],
+18                     urls: ['{{ asset('azzara/css/fonts.css') }}']
+19                 },
+20                 active: function () { sessionStorage.fonts = true; }
+21             });
+22         </script>
+23     
+24         <link rel="stylesheet" href="{{ asset('azzara/css/bootstrap.min.css') }}">
+25         <link rel="stylesheet" href="{{ asset('azzara/css/azzara.min.css') }}">
+26         @stack('styles')
+27     </head>
+28     <body>
+29     @php
+30         $displayName = trim(($user->prenom ?? '').' '.($user->nom ?? '')) ?: $user->username;
+
+[showing lines 1-30 of 254; read again with offset=31 for more]

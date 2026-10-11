@@ -1,0 +1,72 @@
+1      <?php
+2      
+3      namespace App\Http\Controllers;
+4      
+5      use App\Models\AnneeScolaire;
+6      use App\Models\Classe;
+7      use App\Models\Eleve;
+8      use App\Models\Tuteur;
+9      use Illuminate\Http\RedirectResponse;
+10     use Illuminate\Http\Request;
+11     use Illuminate\Support\Facades\DB;
+12     use Illuminate\Support\Str;
+13     use Illuminate\Validation\Rule;
+14     use Illuminate\View\View;
+15     
+16     class EleveInscriptionController extends Controller
+17     {
+18         public function create(): View
+19         {
+20             return view('admin.eleves.create', [
+21                 'classes' => Classe::with('cycle')->where('statut', 'actif')->whereHas('cycle', fn ($query) => $query->where('statut', 'actif'))->orderBy('nom')->get(),
+22                 'annees' => AnneeScolaire::where('statut', 'actif')->orderByDesc('is_encours')->orderByDesc('date_debut')->get(),
+23             ]);
+24         }
+25     
+26         public function store(Request $request): RedirectResponse
+27         {
+28             $data = $request->validate([
+29                 'classe_id' => ['required', Rule::exists('classes', 'id')->where(fn ($query) => $query
+30                     ->where('statut', 'actif')
+31                     ->whereIn('cycle_id', DB::table('cycles')->where('statut', 'actif')->select('id')))],
+32                 'nom' => ['required', 'string', 'max:50'], 'postnom' => ['required', 'string', 'max:50'], 'prenom' => ['required', 'string', 'max:50'],
+33                 'sexe' => ['required', 'in:M,F'], 'date_naissance' => ['required', 'date', 'before:today'], 'lieu_naissance' => ['nullable', 'string', 'max:100'],
+34                 'photo' => ['nullable', 'image', 'max:2048'],
+35                 'nom_mere' => ['required', 'string', 'max:100'], 'telephone_mere' => ['required', 'string', 'max:20'], 'profession_mere' => ['nullable', 'string', 'max:100'], 'email_mere' => ['nullable', 'email', 'max:100'], 'adresse_mere' => ['nullable', 'string'],
+36                 'nom_pere' => ['nullable', 'string', 'max:100'], 'telephone_pere' => ['nullable', 'string', 'max:20'], 'profession_pere' => ['nullable', 'string', 'max:100'], 'email_pere' => ['nullable', 'email', 'max:100'], 'adresse_pere' => ['nullable', 'string'],
+37                 'groupe_sanguin' => ['nullable', 'string', 'max:5'], 'allergies_pathologies' => ['nullable', 'string'], 'traitements_urgences' => ['nullable', 'string'], 'medecin_referent' => ['nullable', 'string', 'max:150'],
+38                 'acte_naissance' => ['nullable', 'file', 'mimes:pdf,jpg,jpeg,png', 'max:4096'], 'bulletin' => ['nullable', 'file', 'mimes:pdf,jpg,jpeg,png', 'max:4096'], 'certificat_medical' => ['nullable', 'file', 'mimes:pdf,jpg,jpeg,png', 'max:4096'],
+39             ], [
+40                 'photo.max' => 'La photo ne doit pas dépasser 2 Mo.',
+41                 'acte_naissance.max' => "L'acte de naissance ne doit pas dépasser 4 Mo.",
+42                 'bulletin.max' => 'Le bulletin ne doit pas dépasser 4 Mo.',
+43                 'certificat_medical.max' => 'Le certificat médical ne doit pas dépasser 4 Mo.',
+44                 '*.mimes' => 'Le fichier doit être au format PDF, JPG, JPEG ou PNG.',
+45             ]);
+46     
+47             // L'année de l'inscription est imposée par le serveur : l'année en cours.
+48             $anneeEnCours = AnneeScolaire::enCours();
+49     
+50             if (! $anneeEnCours) {
+51                 return back()->withInput()->withErrors([
+52                     'annee_scolaire_id' => "Aucune année scolaire n'est en cours. Définissez d'abord une année en cours avant d'inscrire un élève.",
+53                 ]);
+54             }
+55     
+56             $data['annee_scolaire_id'] = $anneeEnCours->id;
+57     
+58             $eleve = DB::transaction(function () use ($request, $data) {
+59                 $tuteur = Tuteur::create(collect($data)->only(['nom_mere','telephone_mere','profession_mere','email_mere','adresse_mere','nom_pere','telephone_pere','profession_pere','email_pere','adresse_pere'])->all());
+60                 $photo = $request->file('photo')?->store('eleves/photos', 'public');
+61                 $annee = AnneeScolaire::findOrFail($data['annee_scolaire_id']);
+62                 $numero = str_pad((string) (Eleve::count() + 1), 4, '0', STR_PAD_LEFT);
+63                 $eleve = Eleve::create(collect($data)->only(['nom','postnom','prenom','sexe','date_naissance','lieu_naissance'])->merge(['matricule' => 'ELV-'.Str::before($annee->libelle, '-').'-'.$numero, 'tuteur_id' => $tuteur->id, 'photo' => $photo, 'statut' => 'actif'])->all());
+64                 DB::table('inscriptions')->insert(['eleve_id' => $eleve->id, 'classe_id' => $data['classe_id'], 'annee_scolaire_id' => $data['annee_scolaire_id'], 'date_inscription' => now()->toDateString(), 'statut' => 'actif', 'created_at' => now(), 'updated_at' => now()]);
+65                 if (collect($data)->only(['groupe_sanguin','allergies_pathologies','traitements_urgences','medecin_referent'])->filter()->isNotEmpty()) DB::table('eleve_sante')->insert(array_merge(['eleve_id' => $eleve->id, 'created_at' => now(), 'updated_at' => now()], collect($data)->only(['groupe_sanguin','allergies_pathologies','traitements_urgences','medecin_referent'])->all()));
+66                 foreach (['acte_naissance', 'bulletin', 'certificat_medical'] as $type) if ($request->hasFile($type)) DB::table('documents_eleves')->insert(['eleve_id' => $eleve->id, 'type_document' => $type, 'chemin_fichier' => $request->file($type)->store('eleves/documents', 'public'), 'statut' => 'actif', 'created_at' => now()]);
+67                 return $eleve;
+68             });
+69     
+70             return redirect()->route('admin.eleves.show', $eleve)->with('success', 'L’inscription de l’élève a été enregistrée.');
+71         }
+72     }

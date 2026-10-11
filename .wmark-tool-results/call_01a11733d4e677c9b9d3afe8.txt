@@ -1,0 +1,24 @@
+1      @php
+2          /**
+3           * Interface de messagerie partagée par tous les espaces, au modèle
+4           * « Facebook Lite » : liste de conversations, chat plein écran, réponses
+5           * citées, réactions émoji et pouce d'envoi rapide.
+6           *
+7           * Variables attendues :
+8           *  - $user, $conversations, $active, $messages, $destinataires, $nonLus
+9           *  - $espaceUrl      : URL de la page hôte (rechargée avec ?conversation=ID)
+10          *  - $avecFichier    : afficher le trombone (pièces jointes)
+11          *  - $composeMultiple: autoriser plusieurs destinataires + diffusion « tous »
+12          */
+13         $avecFichier = $avecFichier ?? false;
+14         $composeMultiple = $composeMultiple ?? false;
+15         // Sans discussion en cours : on ouvre sur la liste des correspondants.
+16         $vueParDefaut = $conversations->isEmpty() ? 'correspondants' : 'discussions';
+17     
+18         $nomConversation = function ($conversation) use ($user) {
+19             $correspondant = $conversation->participants->firstWhere('id', '!=', $user->id);
+20             if ($conversation->type === 'directe' && $correspondant) {
+21                 return trim(($correspondant->nom ?? '').' '.($correspondant->prenom ?? '')) ?: $correspondant->username;
+22             }
+
+[showing lines 1-22 of 836; read again with offset=23 for more]

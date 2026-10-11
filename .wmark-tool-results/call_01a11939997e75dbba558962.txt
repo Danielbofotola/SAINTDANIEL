@@ -1,0 +1,39 @@
+Applied patch: 2 files changed (2 updated)
+Updated resources/views/prefecture/eleve-fiche.blade.php (1 hunk applied)
+Updated resources/views/admin/eleves/show.blade.php (1 hunk applied)
+Landed at lines 421-490 (the file's new text; no re-read needed):
+421        {{-- ==================== DÉTAIL DES FRAIS ==================== --}}
+422        @if ($courant && $courant['frais']['totaux']['exige'] > 0)
+423            <div class="row">
+424                <div class="col-12">
+425                    <div class="card">
+426                        <div class="card-header">
+427                            <div class="card-head-row">
+428                                <div class="card-title section-titre">
+      … 54 lines omitted …
+483                            @endif
+484                        </div>
+485                    </div>
+486                </div>
+487            </div>
+488        @endif
+489    
+490        {{-- ==================== ASSIDUITÉ ==================== --}}
+Landed at lines 312-377 (the file's new text; no re-read needed):
+312            {{-- ==================== DÉTAIL DES FRAIS ==================== --}}
+313            @if ($courant && $courant['frais']['totaux']['exige'] > 0)
+314                <div class="row">
+315                    <div class="col-md-12">
+316                        <div class="dossier-carte">
+317                            <h4 class="dossier-carte__titre">
+318                                <i class="fa fa-list-alt" style="color:var(--dossier)"></i> Détail des frais —
+319                                {{ $courant['inscription']->anneeScolaire?->libelle ?? 'année de référence' }}
+      … 50 lines omitted …
+370                                </p>
+371                            @endif
+372                        </div>
+373                    </div>
+374                </div>
+375            @endif
+376    
+377            {{-- ==================== DOCUMENTS ==================== --}}

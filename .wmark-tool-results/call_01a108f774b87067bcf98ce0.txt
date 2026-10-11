@@ -1,0 +1,8 @@
+Applied patch: 1 file changed (1 updated)
+Updated resources/views/comptable/dashboard.blade.php (1 hunk applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 326-328 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 329-331:
+329                                  <div class="mt-1">
+330                                      <a href="{{ route('comptable.depenses.index') }}" class="btn btn-outline-danger bg-white fw-bold w-100"><i class="bi bi-cart-dash me-1"></i> Dépenses de la caisse</a>
+331                                  </div>

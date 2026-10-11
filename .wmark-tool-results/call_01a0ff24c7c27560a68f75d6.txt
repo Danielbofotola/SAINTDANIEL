@@ -1,0 +1,37 @@
+140            $table->string('role_souhaite');
+141            $table->string('mot_de_passe')->nullable();
+142            $table->string('statut')->default('en_attente');
+143            $table->unsignedBigInteger('traite_par')->nullable();
+144            $table->timestamp('traite_le')->nullable();
+145            $table->text('motif_refus')->nullable();
+146            $table->timestamps();
+147        });
+148    
+149        DB::table('cycles')->insert(['id' => 1, 'nom' => 'Secondaire', 'statut' => 'actif']);
+150        DB::table('classes')->insert(['id' => 1, 'cycle_id' => 1, 'nom' => '3e A', 'statut' => 'actif']);
+151        DB::table('annees_scolaires')->insert([
+152            'id' => 1,
+153            'libelle' => '2026-2027',
+154            'date_debut' => '2026-09-01',
+155            'date_fin' => '2027-07-01',
+156            'is_encours' => true,
+157            'statut' => 'actif',
+158        ]);
+159    });
+160    
+161    function makeAdminForRegistrationRequests(): User
+162    {
+163        return User::create([
+164            'username' => 'registration-admin',
+165            'email' => 'registration-admin@example.test',
+166            'password' => 'admin-password',
+167            'role' => 'admin',
+168            'statut' => 'actif',
+169        ]);
+170    }
+171    
+172    function validStudentRequest(): array
+173    {
+174        return [
+
+[showing lines 140-174 of 294; read again with offset=175 for more]

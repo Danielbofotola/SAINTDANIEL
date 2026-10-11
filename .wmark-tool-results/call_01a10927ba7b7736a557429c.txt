@@ -1,0 +1,15 @@
+232    
+233    test('every teacher page answers and shows its own data', function () {
+234        $user = professeur();
+235    
+236        $this->actingAs($user)->get(route('professeur.planning'))->assertOk()->assertSee('Emploi du temps hebdomadaire')->assertSee('Mathématiques');
+237        $this->actingAs($user)->get(route('professeur.cours'))->assertOk()->assertSee('Mes enseignements')->assertSee('3e A');
+238        $this->actingAs($user)->get(route('professeur.cours.show', 1))->assertOk()->assertSee('Élèves de la classe')->assertSee('Mwamba');
+239        $this->actingAs($user)->get(route('professeur.evaluations'))->assertOk()->assertSee('Nouvelle évaluation');
+240        $this->actingAs($user)->get(route('professeur.eleves'))->assertOk()->assertSee('Mes élèves')->assertSee('Kanku');
+241        $this->actingAs($user)->get(route('professeur.eleves.show', 2))->assertOk()->assertSee('Fiche');
+242        $this->actingAs($user)->get(route('professeur.presences'))->assertOk()->assertSee('Feuille d’appel');
+243        $this->actingAs($user)->get(route('professeur.dashboard'))->assertOk()->assertSee('Vue générale', false)->assertSee('Accès rapides');
+244    });
+
+[showing lines 232-245 of 325; read again with offset=246 for more]

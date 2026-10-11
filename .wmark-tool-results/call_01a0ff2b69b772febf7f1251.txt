@@ -1,0 +1,141 @@
+1      <?php
+2      
+3      namespace App\Http\Controllers;
+4      
+5      use App\Models\AnneeScolaire;
+6      use Carbon\Carbon;
+7      use Illuminate\Http\Request;
+8      use Illuminate\Support\Collection;
+9      use Illuminate\Support\Facades\DB;
+10     use Illuminate\View\View;
+11     
+12     class ProfesseurDashboardController extends Controller
+13     {
+14         public function index(Request $request): View
+15         {
+16             $user = $request->user();
+17             $professor = $user->professeur;
+18             $schoolYear = $professor
+19                 ? AnneeScolaire::query()->where('is_encours', true)->where('statut', 'actif')->first()
+20                 : null;
+21     
+22             $assignments = collect();
+23             $weeklySchedule = collect();
+24             $upcomingEvaluations = collect();
+25             $studentCount = 0;
+26     
+27             if ($professor && $schoolYear) {
+28                 $assignments = DB::table('affectations_cours')
+29                     ->join('cours', 'cours.id', '=', 'affectations_cours.cours_id')
+30                     ->join('classes', 'classes.id', '=', 'affectations_cours.classe_id')
+31                     ->leftJoin('cycles', 'cycles.id', '=', 'classes.cycle_id')
+32                     ->leftJoin('sections', 'sections.id', '=', 'classes.section_id')
+33                     ->leftJoin('options', 'options.id', '=', 'classes.option_id')
+34                     ->where('affectations_cours.professeur_id', $professor->id)
+35                     ->where('affectations_cours.annee_scolaire_id', $schoolYear->id)
+36                     ->where('affectations_cours.statut', 'actif')
+37                     ->orderBy('classes.nom')
+38                     ->orderBy('cours.intitule')
+39                     ->select([
+40                         'affectations_cours.id',
+41                         'affectations_cours.classe_id',
+42                         'cours.code as cours_code',
+43                         'cours.intitule as cours_nom',
+44                         'classes.nom as classe_nom',
+45                         'cycles.nom as cycle_nom',
+46                         'sections.nom as section_nom',
+47                         'options.nom as option_nom',
+48                     ])
+49                     ->get();
+50     
+51                 $classIds = $assignments->pluck('classe_id')->unique()->values();
+52     
+53                 if ($classIds->isNotEmpty()) {
+54                     $studentCount = DB::table('inscriptions')
+55                         ->where('annee_scolaire_id', $schoolYear->id)
+56                         ->where('statut', 'actif')
+57                         ->whereIn('classe_id', $classIds)
+58                         ->distinct()
+59                         ->count('eleve_id');
+60     
+61                     $assignmentIds = $assignments->pluck('id');
+62                     $weeklySchedule = DB::table('emplois_du_temps')
+63                         ->join('affectations_cours', 'affectations_cours.id', '=', 'emplois_du_temps.affectation_id')
+64                         ->join('cours', 'cours.id', '=', 'affectations_cours.cours_id')
+65                         ->join('classes', 'classes.id', '=', 'affectations_cours.classe_id')
+66                         ->leftJoin('salles', 'salles.id', '=', 'emplois_du_temps.salle_id')
+67                         ->whereIn('affectations_cours.id', $assignmentIds)
+68                         ->where('emplois_du_temps.statut', 'actif')
+69                         ->orderByRaw("CASE emplois_du_temps.jour WHEN 'lundi' THEN 1 WHEN 'mardi' THEN 2 WHEN 'mercredi' THEN 3 WHEN 'jeudi' THEN 4 WHEN 'vendredi' THEN 5 WHEN 'samedi' THEN 6 ELSE 7 END")
+70                         ->orderBy('emplois_du_temps.heure_debut')
+71                         ->select([
+72                             'emplois_du_temps.jour',
+73                             'emplois_du_temps.heure_debut',
+74                             'emplois_du_temps.heure_fin',
+75                             'cours.intitule as cours_nom',
+76                             'classes.nom as classe_nom',
+77                             'salles.nom as salle_nom',
+78                         ])
+79                         ->get();
+80     
+81                     $upcomingEvaluations = DB::table('evaluations')
+82                         ->join('affectations_cours', 'affectations_cours.id', '=', 'evaluations.affectation_id')
+83                         ->join('cours', 'cours.id', '=', 'affectations_cours.cours_id')
+84                         ->join('classes', 'classes.id', '=', 'affectations_cours.classe_id')
+85                         ->whereIn('affectations_cours.id', $assignmentIds)
+86                         ->where('evaluations.statut', 'actif')
+87                         ->whereDate('evaluations.date_evaluation', '>=', today())
+88                         ->orderBy('evaluations.date_evaluation')
+89                         ->limit(4)
+90                         ->select([
+91                             'evaluations.titre',
+92                             'evaluations.type_evaluation',
+93                             'evaluations.date_evaluation',
+94                             'cours.intitule as cours_nom',
+95                             'classes.nom as classe_nom',
+96                         ])
+97                         ->get();
+98                 }
+99             }
+100    
+101            $now = now();
+102            $weekdayNames = [1 => 'lundi', 2 => 'mardi', 3 => 'mercredi', 4 => 'jeudi', 5 => 'vendredi', 6 => 'samedi', 7 => 'dimanche'];
+103            $todaySchedule = $weeklySchedule
+104                ->where('jour', $weekdayNames[$now->dayOfWeekIso])
+105                ->filter(fn (object $item): bool => $item->heure_debut >= $now->format('H:i:s'))
+106                ->values();
+107    
+108            $nextClass = $this->findNextClass($weeklySchedule, $now, $weekdayNames);
+109    
+110            return view('professeur.dashboard', [
+111                'user' => $user,
+112                'professor' => $professor,
+113                'schoolYear' => $schoolYear,
+114                'assignments' => $assignments,
+115                'weeklySchedule' => $weeklySchedule,
+116                'todaySchedule' => $todaySchedule,
+117                'nextClass' => $nextClass,
+118                'upcomingEvaluations' => $upcomingEvaluations,
+119                'studentCount' => $studentCount,
+120            ]);
+121        }
+122    
+123        private function findNextClass(Collection $schedule, Carbon $now, array $weekdayNames): ?object
+124        {
+125            for ($dayOffset = 0; $dayOffset < 7; $dayOffset++) {
+126                $weekdayIndex = (($now->dayOfWeekIso - 1 + $dayOffset) % 7) + 1;
+127                $weekday = $weekdayNames[$weekdayIndex];
+128                $nextClass = $schedule->first(fn (object $item): bool =>
+129                    $item->jour === $weekday && ($dayOffset > 0 || $item->heure_debut > $now->format('H:i:s'))
+130                );
+131    
+132                if ($nextClass) {
+133                    $nextClass->day_offset = $dayOffset;
+134    
+135                    return $nextClass;
+136                }
+137            }
+138    
+139            return null;
+140        }
+141    }

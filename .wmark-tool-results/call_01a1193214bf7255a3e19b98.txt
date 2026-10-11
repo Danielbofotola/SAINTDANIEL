@@ -1,0 +1,9 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/ElevesPagesTest.php (1 hunk applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 208-209 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 208-211:
+208        // Son dossier reste consultable : le suivi administratif continue.
+209        $this->actingAs($admin)->get(route('admin.eleves.show', $eleveId))->assertOk()
+210            ->assertSee("Dossier de l'élève")
+211            ->assertSee('Responsables légaux');

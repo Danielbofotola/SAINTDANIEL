@@ -1,0 +1,6 @@
+Applied patch: 1 file changed (1 updated)
+Updated resources/views/professeur/profil.blade.php (2 hunks applied)
+Landed at lines 75-77 (the file's new text; no re-read needed):
+75                     <p class="text-muted mb-0" style="font-size:12px">
+76                         <i class="fa fa-lock"></i> Vos coordonnées et votre mot de passe sont gérés par l’administration.
+77                     </p>

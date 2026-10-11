@@ -1,0 +1,103 @@
+1      <?php
+2      
+3      namespace App\Http\Controllers;
+4      
+5      use App\Models\DocumentEleve;
+6      use App\Models\Eleve;
+7      use Illuminate\Http\RedirectResponse;
+8      use Illuminate\Http\Request;
+9      use Illuminate\Support\Facades\DB;
+10     use Illuminate\View\View;
+11     
+12     class EleveController extends Controller
+13     {
+14         public function edit(Eleve $eleve): View
+15         {
+16             $eleve->load(['tuteur', 'sante', 'documents' => fn ($query) => $query->latest('created_at')]);
+17     
+18             return view('admin.eleves.edit', compact('eleve'));
+19         }
+20     
+21         public function update(Request $request, Eleve $eleve): RedirectResponse
+22         {
+23             $data = $request->validate([
+24                 'nom' => ['required', 'string', 'max:50'],
+25                 'postnom' => ['required', 'string', 'max:50'],
+26                 'prenom' => ['required', 'string', 'max:50'],
+27                 'sexe' => ['required', 'in:M,F'],
+28                 'date_naissance' => ['required', 'date', 'before:today'],
+29                 'lieu_naissance' => ['nullable', 'string', 'max:100'],
+30                 'statut' => ['required', 'in:actif,inactif,suspendu,exclu'],
+31                 'photo' => ['nullable', 'image', 'max:2048'],
+32                 'nom_mere' => ['required', 'string', 'max:100'],
+33                 'telephone_mere' => ['required', 'string', 'max:20'],
+34                 'profession_mere' => ['nullable', 'string', 'max:100'],
+35                 'email_mere' => ['nullable', 'email', 'max:100'],
+36                 'adresse_mere' => ['nullable', 'string'],
+37                 'nom_pere' => ['nullable', 'string', 'max:100'],
+38                 'telephone_pere' => ['nullable', 'string', 'max:20'],
+39                 'profession_pere' => ['nullable', 'string', 'max:100'],
+40                 'email_pere' => ['nullable', 'email', 'max:100'],
+41                 'adresse_pere' => ['nullable', 'string'],
+42                 'groupe_sanguin' => ['nullable', 'string', 'max:5'],
+43                 'allergies_pathologies' => ['nullable', 'string'],
+44                 'traitements_urgences' => ['nullable', 'string'],
+45                 'medecin_referent' => ['nullable', 'string', 'max:150'],
+46             ], $this->messages());
+47     
+48             DB::transaction(function () use ($request, $eleve, $data) {
+49                 $photo = $request->file('photo')?->store('eleves/photos', 'public');
+50                 $eleve->update(collect($data)->only(['nom', 'postnom', 'prenom', 'sexe', 'date_naissance', 'lieu_naissance', 'statut'])->merge($photo ? ['photo' => $photo] : [])->all());
+51                 $eleve->tuteur()->update(collect($data)->only(['nom_mere', 'telephone_mere', 'profession_mere', 'email_mere', 'adresse_mere', 'nom_pere', 'telephone_pere', 'profession_pere', 'email_pere', 'adresse_pere'])->all());
+52                 $eleve->sante()->updateOrCreate([], collect($data)->only(['groupe_sanguin', 'allergies_pathologies', 'traitements_urgences', 'medecin_referent'])->all());
+53             });
+54     
+55             return redirect()->route('admin.eleves.show', $eleve)->with('success', 'Le profil de l’élève a été modifié.');
+56         }
+57     
+58         public function storeDocument(Request $request, Eleve $eleve): RedirectResponse
+59         {
+60             $data = $request->validate([
+61                 'type_document' => ['required', 'in:acte_naissance,bulletin,certificat_medical,autre'],
+62                 'document' => ['required', 'file', 'mimes:pdf,jpg,jpeg,png', 'max:4096'],
+63             ], [
+64                 'document.required' => 'Veuillez sélectionner un fichier.',
+65                 'document.max' => 'Le fichier ne doit pas dépasser 4 Mo.',
+66                 'document.mimes' => 'Le fichier doit être au format PDF, JPG, JPEG ou PNG.',
+67             ]);
+68     
+69             DocumentEleve::create([
+70                 'eleve_id' => $eleve->id,
+71                 'type_document' => $data['type_document'],
+72                 'chemin_fichier' => $request->file('document')->store('eleves/documents', 'public'),
+73                 'statut' => 'actif',
+74                 'created_at' => now(),
+75             ]);
+76     
+77             return back()->with('success', 'Le document a été ajouté au dossier.');
+78         }
+79     
+80         public function show(Eleve $eleve): View
+81         {
+82             $eleve->load([
+83                 'tuteur',
+84                 'sante',
+85                 'documents' => fn ($query) => $query->where('statut', 'actif')->latest('created_at'),
+86                 'inscriptions.classe.cycle',
+87                 'inscriptions.classe.section',
+88                 'inscriptions.classe.option',
+89             ]);
+90     
+91             return view('admin.eleves.show', compact('eleve'));
+92         }
+93     
+94         private function messages(): array
+95         {
+96             return [
+97                 '*.required' => 'Ce champ est obligatoire.',
+98                 'date_naissance.before' => 'La date de naissance doit être antérieure à aujourd’hui.',
+99                 'photo.max' => 'La photo ne doit pas dépasser 2 Mo.',
+100                '*.email' => 'Veuillez saisir une adresse e-mail valide.',
+101            ];
+102        }
+103    }

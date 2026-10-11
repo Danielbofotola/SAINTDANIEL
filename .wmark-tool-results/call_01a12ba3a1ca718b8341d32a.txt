@@ -1,0 +1,35 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\aba9102c187c\20261011-164510-apply_patch-call_01a12ba3a1ca718b8341d32a.txt (811 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Structured view (text):
+Applied patch: 2 files changed (2 updated)
+Updated app/Http/Controllers/PaiementController.php (1 hunk applied)
+Updated resources/views/admin/paiements/index.blade.php (3 hunks applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 84-87 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 87-87:
+87                 'deviseParFrais' => $tarifs->mapWithKeys(fn ($tarif) => [$tarif->id => Monnaie::normaliser($tarif->devise)]),
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 49-51 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+  ⚠ hunk 2: context matched at lines 55-55 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+  ⚠ hunk 3: context matched at lines 142-157 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 49-58:
+49                             <div class="col-md-2 form-group"><label class="form-label">Période · auto</label>
+50                                 @if ($periodeCourante)
+51                                     <input type="hidden" name="periode_id" value="{{ $periodeCourante->id }}">
+52                                     <input class="form-control" v
+… 0 chars elided …
+alue="{{ $periodeCourante->nom }}" readonly>
+53                                 @else
+54                                     <select class="form-control" name="periode_id"><option value="">Non précisée</option>@foreach ($periodes as $periode)<option value="{{ $periode->id }}">{{ $periode->nom }}</option>@endforeach</select>
+55                                 @endif
+56                             </div>
+57                             <div class="col-md-2 form-group"><label class="form-label">Montant reçu *</label><input class="form-control" type="number" step="0.01" min="0.01" id="montantRecu" name="montant_paye" value="{{ old('montant_paye') }}" required></div>
+58                             <div class="col-md-2 form-group"><label class="form-label">Devise *</label><select class="form-cont
+… 388 chars elided …
+"N° de reçu" readonly title="Générée automatiquement à partir du numéro de reçu"></div>
+Auto-corrected hunk landed at lines 164-170:
+164    
+165                     // Pré-remplissage automatique : devise du tarif et montant = reste à payer.
+166                     var deviseParFrais = @json($deviseParFrais ?? []);
+167                     var deviseSelect = document.getElementById('deviseSelect');
+168                     var montantInput = document.getElementById('montantRecu');
+169                     if (deviseSelect && deviseParFrais[frais]) { deviseSelect.value = deviseParFrais[frais]; }
+170                     if (montantInput) { montantInput.value = reste > 0 ? reste.toFixed(2) : ''; }

@@ -1,0 +1,23 @@
+1      <?php
+2      
+3      namespace App\Models;
+4      
+5      use Illuminate\Database\Eloquent\Model;
+6      
+7      class Cycle extends Model
+8      {
+9          protected $fillable = ['nom', 'statut'];
+10     
+11         public function classes()
+12         {
+13             return $this->hasMany(Classe::class);
+14         }
+15     
+16         /**
+17          * Les inscriptions des élèves passées dans les classes de ce cycle.
+18          */
+19         public function inscriptions()
+20         {
+21             return $this->hasManyThrough(Inscription::class, Classe::class);
+22         }
+23     }

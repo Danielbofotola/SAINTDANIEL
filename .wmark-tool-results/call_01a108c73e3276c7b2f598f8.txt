@@ -1,0 +1,32 @@
+112        Schema::create('paiements', function (Blueprint $table) {
+113            $table->id();
+114            $table->string('num_recu', 50)->unique();
+115            $table->unsignedBigInteger('inscription_id');
+116            $table->unsignedBigInteger('frais_scolaire_id');
+117            $table->decimal('montant_paye', 10, 2);
+118            $table->dateTime('date_paiement')->nullable();
+119            $table->string('mode_paiement')->default('especes');
+120            $table->string('reference_transaction', 100)->nullable();
+121            $table->string('statut')->default('actif');
+122            $table->timestamps();
+123        });
+124    
+125        DB::table('annees_scolaires')->insert([
+126            'id' => 1, 'libelle' => '2026-2027', 'date_debut' => '2026-09-01',
+127            'date_fin' => '2027-07-01', 'is_encours' => true, 'statut' => 'actif',
+128        ]);
+129        DB::table('cycles')->insert(['id' => 1, 'nom' => 'Secondaire', 'statut' => 'actif']);
+130        DB::table('classes')->insert(['id' => 1, 'cycle_id' => 1, 'nom' => '3e A', 'statut' => 'actif']);
+131        $tuteurId = DB::table('tuteurs')->insertGetId(['nom_mere' => 'Marie', 'telephone_mere' => '0990', 'statut' => 'actif', 'created_at' => now(), 'updated_at' => now()]);
+132        $eleveId = DB::table('eleves')->insertGetId([
+133            'matricule' => 'ELV-2026-0001', 'nom' => 'Mwamba', 'postnom' => 'T', 'prenom' => 'Aline', 'sexe' => 'F',
+134            'date_naissance' => '2014-05-12', 'tuteur_id' => $tuteurId, 'statut' => 'actif', 'created_at' => now(), 'updated_at' => now(),
+135        ]);
+136        DB::table('inscriptions')->insert([
+137            'id' => 1, 'eleve_id' => $eleveId, 'classe_id' => 1, 'annee_scolaire_id' => 1,
+138            'date_inscription' => '2026-09-05', 'statut' => 'actif', 'created_at' => now(), 'updated_at' => now(),
+139        ]);
+140        $typeId = DB::table('types_frais')->insertGetId(['nom' => 'Frais scolaires', 'statut' => 'actif', 'created_at' => now(), 'updated_at' => now()]);
+141        DB::table('frais_scolaires')->insert([
+
+[showing lines 112-141 of 196; read again with offset=142 for more]

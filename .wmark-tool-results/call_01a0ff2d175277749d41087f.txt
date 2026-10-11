@@ -1,0 +1,21 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\e8f943213216\20261003-013206-bash-call_01a0ff2d175277749d41087f.txt (875 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+[powershell — Windows side]
+resources\views\admin\eleves\show.blade.php:18:    @php
+> resources\views\admin\eleves\show.blade.php:19:        $inscription = $eleve->inscriptions->firstWhere('statut', 'actif') ?? $eleve->inscriptions->first();
+  resources\views\admin\eleves\show.blade.php:20:        $documentLabels = ['acte_naissance' => 'Acte de naissance', 'bulletin' => 'Bulletin scolaire', 'certificat_medical' => 'Certificat m�dical', 'autre' => 'Autre 
+document'];
+  resources\views\admin\eleve
+
+... 542 chars truncated ...
+
+nscription?->classe?->option?->nom ?? 'Non renseign�e' 
+}}</td></tr><tr><th>Inscription</th><td>{{ $inscription?->date_inscription?->format('d/m/Y') ?? 'Non renseign�e' }}</td></tr></tbody></table></div>
+  resources\views\admin\eleves\show.blade.php:39:            <div class="tile mb-4"><h4 class="tile-title"><i class="fa fa-heartbeat"></i> Sant�</h4><table class="table table-bordered"><tbody><tr><th>Groupe 
+sanguin</th><td>{{ $eleve->sante?->groupe_sanguin ?: 'Non renseign�' }}</td></tr><tr><th>Allergies/pathologies</th><td>{{ $eleve->sante?->allergies_pathologies ?: 'Aucune information' 
+}}</td></tr><tr><th>Traitements/urgences</th><td>{{ $eleve->sante?->traitements_urgences ?: 'Aucune information' }}</td></tr><tr><th>M�decin r�f�rent</th><td>{{ $eleve->sante?->medecin_referent ?: 'Non renseign�' 
+}}</td></tr></tbody></table></div>
+
+
+
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">2</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

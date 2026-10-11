@@ -1,0 +1,1 @@
+Wrote database/migrations/2026_10_06_000000_add_est_inscription_to_types_frais_table.php (26 lines)

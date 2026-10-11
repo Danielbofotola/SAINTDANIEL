@@ -1,0 +1,14 @@
+[powershell — Windows side]
+66: .conv { display: flex; align-items: center; gap: 12px; padding: 10px 14px; cursor: pointer; color: var(--chat-text); }
+72: .conv__badge { background: #e41e3f; color: #fff; border-radius: 999px; font-size: .7rem; font-weight: 700; padding: 1px 7px; }
+73: .conv__vu { color: var(--chat-blue); font-size: .95rem; flex: none; }
+280: <span class="conv__badge">{{ $conversation->non_lus }}</span>
+288: <i class="fa-solid fa-circle-check conv__vu"></i>
+313: <i class="fa-solid fa-comment-dots conv__vu"></i>
+469: const CSRF = document.querySelector('meta[name="csrf-token"]').content;
+473: const DEMARRER_URL = @json(route('messagerie.demarrer'));
+475: const ESPACE_URL = @json($espaceUrl);
+867: window.reprendreConversation = function () {
+890: window.ouvrirDiscussion = async function (id) {
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

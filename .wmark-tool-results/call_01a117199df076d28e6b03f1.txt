@@ -1,0 +1,38 @@
+Applied patch: 1 file changed (1 updated)
+Updated resources/views/messagerie/_espace.blade.php (2 hunks applied)
+Landed at lines 413-444 (the file's new text; no re-read needed):
+413                if (!texte && !joint) return;
+414    
+415                // Aucun fil ouvert : on démarre une conversation avec le destinataire choisi.
+416                if (!REPONDRE_URL) {
+417                    const sel = document.getElementById('nouveauDest');
+418                    const dest = sel ? sel.value : null;
+419                    if (!dest) { alert('Choisissez d’abord un destinataire.'); return; }
+420                    sendBtn.disabled = true;
+      … 16 lines omitted …
+437                    } catch (e) {
+438                        alert('Envoi impossible. Vérifiez le destinataire.');
+439                    } finally {
+440                        sendBtn.disabled = false;
+441                    }
+442                    return;
+443                }
+444    
+Landed at lines 508-598 (the file's new text; no re-read needed):
+508    
+509        /* ---------- Message vocal ---------- */
+510        let mediaRecorder = null;
+511        let morceaux = [];
+512        let minuteurRec = null;
+513    
+514        window.toggleVoice = async function () {
+515            const bouton = document.getElementById('voiceBtn');
+      … 75 lines omitted …
+591                });
+592                const json = await rep.json();
+593                if (!rep.ok) throw json;
+594                if (fil) { fil.insertAdjacentHTML('beforeend', json.message.html); fil.scrollTop = fil.scrollHeight; }
+595            } catch (e) {
+596                alert('Envoi du vocal impossible.');
+597            }
+598        }

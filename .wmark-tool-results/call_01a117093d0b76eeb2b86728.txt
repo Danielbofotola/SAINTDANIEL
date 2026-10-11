@@ -1,0 +1,25 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\144c63540b62\20261007-164349-bash-call_01a117093d0b76eeb2b86728.txt (535 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+[powershell — Windows side]
+PASS  Tests\Feature\PortailParentTest
+  ✓ un parent accède à son espace quand le module est ouvert                                                     0.25s  
+  ✓ l’espace parent répond 404 quand le module est fermé                                                         0.03s  
+  ✓ l’espace parent est interdit aux autres rôles                                                                0.03s  
+  ✓ un parent envoie un message au personnel depuis le portail         
+
+... 509 chars truncated ...
+
+                                                        0.03s  
+  ✓ a participant answers and only the others get an unread message                                              0.03s  
+  ✓ an outsider cannot write into a conversation he does not belong to                                           0.03s  
+  ✓ the messaging page is reserved to authenticated users                                                        0.02s  
+  ✓ a message without recipient or without text is refused                                                       0.03s  
+  ✓ the picture of the correspondent is displayed in the thread and the list                                     0.05s  
+  ✓ an image can be attached to a reply and is shown in the thread                                               0.03s  
+  ✓ an image can be sent without text, the size and the format are checked                                       0.08s  
+  ✓ la page de messagerie du personnel expose le modèle partagé (vocaux, stickers, pièces jointes, diffusion)    0.05s  
+
+  Tests:    16 passed (100 assertions)
+  Duration: 1.10s
+
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

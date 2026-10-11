@@ -1,0 +1,6 @@
+Applied patch: 1 file changed (1 updated)
+Updated app/Http/Controllers/ComptablePaiementController.php (1 hunk applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 40-46 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 44-44:
+44                     ->when($classeId, fn ($query) => $query->where('classe_id', $classeId))

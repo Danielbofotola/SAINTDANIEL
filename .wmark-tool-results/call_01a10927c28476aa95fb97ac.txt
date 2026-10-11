@@ -1,0 +1,10 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/EspaceProfesseurTest.php (1 hunk applied)
+Landed at lines 244-250 (the file's new text; no re-read needed):
+244        // Profil enseignant (design « panel » : bandeau, barre d’action, tableau d’affectations).
+245        $this->actingAs($user)->get(route('professeur.profil'))
+246            ->assertOk()
+247            ->assertSee('Informations de l’enseignant')
+248            ->assertSee('Mes enseignements')
+249            ->assertSee('Mathématiques')
+250            ->assertSee('3e A');

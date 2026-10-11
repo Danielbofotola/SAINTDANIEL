@@ -1,0 +1,8 @@
+350                <li class="menu-section">Finances</li>
+351                <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-money"></i><span class="app-menu__label">Paiements et frais</span><i class="treeview-indicator fa fa-angle-right"></i></a>
+352                    <ul class="treeview-menu">
+353                        <li><a class="treeview-item" href="{{ route('admin.frais.index') }}"><i class="icon fa fa-tags"></i> Types de frais &amp; tarifs</a></li>
+354                        <li><a class="treeview-item" href="{{ route('admin.paiements.index') }}"><i class="icon fa fa-credit-card"></i> Paiements</a></li>
+355                        <li><a class="treeview-item" href="{{ route('admin.depenses.index') }}"><i class="icon fa fa-shopping-cart"></i> Dépenses</a></li>
+
+[showing lines 350-355 of 723; read again with offset=356 for more]

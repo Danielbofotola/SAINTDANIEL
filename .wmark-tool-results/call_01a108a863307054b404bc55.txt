@@ -1,0 +1,11 @@
+62     
+63             $periode = Periode::anneeEnCours()->find($data['periode_id']);
+64             $classe = Classe::find($data['classe_id']);
+65     
+66             if (! $periode || ! $classe) {
+67                 return back()->withInput()->with('error', 'Période ou classe introuvable pour l’année en cours.');
+68             }
+69     
+70             $rows = $this->computeForClasse($classe, $periode);
+
+[showing lines 62-71 of 164; read again with offset=72 for more]

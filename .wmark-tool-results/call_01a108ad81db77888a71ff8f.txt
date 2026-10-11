@@ -1,0 +1,42 @@
+57                         <hr>
+58                         <h5>Cours enregistrés</h5>
+59                         @forelse ($cours as $coursItem)
+60                             <div class="border-bottom py-2 d-flex justify-content-between align-items-center">
+61                                 <span><strong>{{ $coursItem->code }}</strong> — {{ $coursItem->intitule }} <small class="text-muted">(pondération {{ $coursItem->ponderation }})</small></span>
+62                                 <form method="POST" action="{{ route('admin.cours.destroy', $coursItem) }}" onsubmit="return confirm('Supprimer ce cours ?');">
+63                                     @csrf
+64                                     @method('DELETE')
+65                                     <button class="btn btn-sm btn-danger" type="submit" title="Supprimer"><i class="fa fa-trash"></i></button>
+66                                 </form>
+67                             </div>
+68                         @empty
+69                             <p class="text-muted mb-0">Aucun cours enregistré.</p>
+70                         @endforelse
+71                     </div>
+72                 </div>
+73             </div>
+74     
+75             <div class="tile">
+76                 <h4 class="tile-title"><i class="fa fa-th-list"></i> Affectations @if($annee)<small class="text-muted">{{ $annee->libelle }}</small>@endif</h4>
+77                 <form class="row mb-3" method="GET" action="{{ route('admin.affectations.index') }}">
+78                     <div class="col-md-7 form-group mb-md-0"><input class="form-control" type="search" name="q" value="{{ $search }}" placeholder="Rechercher par professeur, cours ou classe…"></div>
+79                     <div class="col-md-3 form-group mb-md-0"><select class="form-control" name="classe_id"><option value="">Toutes les classes</option>@foreach ($classes as $classe)<option value="{{ $classe->id }}" @selected((string) $classeId === (string) $classe->id)>{{ $classe->nom }}</option>@endforeach</select></div>
+80                     <div class="col-md-2"><button class="btn btn-info btn-block" type="submit"><i class="fa fa-filter"></i> Filtrer</button></div>
+81                 </form>
+82                 <div class="table-responsive">
+83                     <table class="table table-hover table-bordered">
+84                         <thead><tr><th>#</th><th>Professeur</th><th>Cours</th><th>Classe</th><th>Statut</th><th>Actions</th></tr></thead>
+85                         <tbody>
+86                             @forelse ($affectations as $affectation)
+87                                 <tr>
+88                                     <td>{{ $affectations->firstItem() + $loop->index }}</td>
+89                                     <td>{{ $affectation->professeur?->nom }} {{ $affectation->professeur?->prenom }}</td>
+90                                     <td>{{ $affectation->cours?->code }} — {{ $affectation->cours?->intitule }}</td>
+91                                     <td>{{ $affectation->classe?->nom }}</td>
+92                                     <td><span class="badge badge-{{ $affectation->statut === 'actif' ? 'success' : 'secondary' }}">{{ ucfirst($affectation->statut) }}</span></td>
+93                                     <td>
+94                                         <form class="d-inline" method="POST" action="{{ route('admin.affectations.destroy', $affectation) }}" onsubmit="return confirm('Supprimer cette affectation ?');">
+95                                             @csrf
+96                                             @method('DELETE')
+
+[showing lines 57-96 of 114; read again with offset=97 for more]

@@ -1,0 +1,47 @@
+225    
+226          <!-- Main Content -->
+227          <div class="content-wrapper">
+228             <div class="container-fluid">
+229                
+230                <div class="row">
+231                   <div class="main-header">
+232                      <h4>Profil Administrateur : <b>{{ strtoupper(trim(($user->nom.' '.$user->postnom.' '.$user->prenom) ?: $user->username)) }}</b></h4>
+233                      <p class="text-muted">Consultez et mettez à jour vos informations personnelles, la sécurité et la gestion des accès.</p>
+234                   </div>
+235                </div>
+236    
+237                <!-- Profile Action Quick Bar -->
+238                <div class="row">
+239                   <div class="col-12">
+240                      <div class="profile-actions-bar d-flex flex-wrap align-items-center">
+241                         <a href="{{ route('admin.profile.edit') }}"><i class="fa fa-user"></i> Modifier les propriétés</a>
+242                         <a href="{{ route('admin.profile.settings') }}"><i class="fa fa-cog"></i> Paramètres de l’établissement</a>
+243                         <a href="{{ route('admin.profile.accounts') }}"><i class="fa fa-users"></i> Gérer les comptes</a>
+244                         <a href="{{ route('admin.profile.statistics') }}"><i class="fa fa-bar-chart"></i> Statistiques</a>
+245                         <a href="{{ route('admin.profile.show') }}"><i class="fa fa-refresh"></i> Actualiser</a>
+246                         <a href="#password"><i class="fa fa-key"></i> Réinitialiser le mot de passe</a>
+247                      </div>
+248                   </div>
+249                </div>
+250    
+251                @if (session('success'))
+252                   <div class="alert alert-success border-0">{{ session('success') }}</div>
+253                @endif
+254    
+255                <!-- User Info & Accounts Row -->
+256                <div class="row">
+257                   <!-- Details Profile -->
+258                   <div class="col-lg-6">
+259                      <div class="card p-20">
+260                         <div class="card-header border-0 p-0 mb-3">
+261                            <h5 class="card-header-text">Informations de l'administrateur</h5>
+262                         </div>
+263                         <div class="card-block p-0">
+264                            <div class="d-flex align-items-start mb-4">
+265                               @if ($user->photo)
+266                                  <img class="avatar mr-4" src="{{ asset('storage/'.$user->photo) }}" alt="Photo de profil">
+267                               @else
+268                                  <span class="avatar mr-4">{{ strtoupper(substr($user->prenom ?: $user->username, 0, 1)) }}</span>
+269                               @endif
+
+[showing lines 225-269 of 378; read again with offset=270 for more]

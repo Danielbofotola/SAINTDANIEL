@@ -1,0 +1,25 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\aba9102c187c\20261011-161214-bash-call_01a12b853e9273539f16da6e.txt (628 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+[powershell — Windows side]
+PASS  Tests\Feature\ElevesPagesTest
+  ✓ the student list page shows enrollments, class and statistics                                                0.18s  
+  ✓ désactiver un élève le rend invisible et l’activation le rétablit                                            0.03s  
+  ✓ the student list can be filtered by search term and by status                                                0.03s  
+  ✓ the enrollment history lists processed applications and hides pending
+
+... 872 chars truncated ...
+
+ les autres                                             0.04s  
+  ✓ la délibération est réservée à l’administration                                                              0.03s  
+  ✓ les critères sont enregistrés et le repêchage ne peut dépasser l’admission                                   0.03s  
+  ✓ le formulaire de classe expose le niveau et la progression s’en déduit                                       0.03s  
+  ✓ un passage explicite franchit les cycles et prime sur le niveau                                              0.02s  
+  ✓ le formulaire de classe fixe la classe suivante sans boucle sur elle-même                                    0.03s  
+  ✓ l’année suivante est déduite de l’année en cours et proposée au passage                                      0.03s  
+  ✓ le passage refuse une année cible antérieure à l’année délibérée                                             0.02s  
+  ✓ la liste des élèves d’une année montre le passage et les nouveaux inscrits                                   0.04s  
+
+  Tests:    19 passed (120 assertions)
+  Duration: 0.89s
+
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

@@ -1,0 +1,42 @@
+1      <?php
+2      
+3      use App\Models\User;
+4      use Illuminate\Database\Schema\Blueprint;
+5      use Illuminate\Support\Facades\DB;
+6      use Illuminate\Support\Facades\Schema;
+7      
+8      beforeEach(function () {
+9          Schema::disableForeignKeyConstraints();
+10         foreach ([
+11             'demandes_inscription', 'inscriptions', 'eleves', 'tuteurs', 'classes',
+12             'cycles', 'salles', 'annees_scolaires', 'professeurs', 'users',
+13         ] as $table) {
+14             Schema::dropIfExists($table);
+15         }
+16         Schema::enableForeignKeyConstraints();
+17     
+18         Schema::create('users', function (Blueprint $table) {
+19             $table->id();
+20             $table->string('username')->unique();
+21             $table->string('email')->unique();
+22             $table->string('password');
+23             $table->string('pin_code')->nullable();
+24             $table->string('role');
+25             $table->string('statut');
+26             $table->rememberToken();
+27             $table->timestamps();
+28         });
+29         Schema::create('annees_scolaires', function (Blueprint $table) {
+30             $table->id();
+31             $table->string('libelle');
+32             $table->date('date_debut');
+33             $table->date('date_fin');
+34             $table->boolean('is_encours')->default(false);
+35             $table->string('statut');
+36             $table->timestamps();
+37         });
+38         Schema::create('cycles', function (Blueprint $table) {
+39             $table->id();
+40             $table->string('nom');
+
+[showing lines 1-40 of 265; read again with offset=41 for more]

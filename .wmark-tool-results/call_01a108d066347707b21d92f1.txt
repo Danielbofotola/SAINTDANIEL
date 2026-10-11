@@ -1,0 +1,10 @@
+[powershell — Windows side]
+12: 'types_frais', 'inscriptions', 'periodes', 'eleves', 'tuteurs', 'classes', 'cycles', 'salles',
+110: Schema::create('types_frais', function (Blueprint $table) {
+206: $typeId = DB::table('types_frais')->insertGetId([
+223: $this->assertDatabaseHas('types_frais', ['nom' => 'Frais scolaires']);
+229: $typeId = (int) DB::table('types_frais')->where('nom', 'Frais scolaires')->value('id');
+250: expect(DB::table('types_frais')->count())->toBe(1);
+273: 'type_frais_id' => DB::table('types_frais')->value('id'), 'classe_id' => 2, 'annee_scolaire_id' => 1,
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

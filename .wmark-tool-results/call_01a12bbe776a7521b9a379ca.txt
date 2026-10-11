@@ -1,0 +1,52 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\aba9102c187c\20261011-171428-apply_patch-call_01a12bbe776a7521b9a379ca.txt (1,466 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Structured view (text):
+Applied patch: 4 files changed (4 updated)
+Updated app/Http/Controllers/SalleController.php (2 hunks applied)
+Updated resources/views/admin/salles/index.blade.php (4 hunks applied)
+Updated app/Http/Controllers/BulletinController.php (1 hunk applied)
+Updated resources/views/admin/bulletins/document.blade.php (2 hunks applied)
+Landed at lines 6-7 (the file's new text; no re-read needed):
+6      use App\Models\AnneeScolaire;
+7      use App\Support\OccupationSalles;
+Landed at lines 16-29 (the file's new text; no re-read needed):
+16             $annee = AnneeScolaire::enCours();
+17     
+18             // Effectif de chaque salle = inscriptions actives de l'année dans ses classes.
+19             $salles = Salle::query()
+20                 ->with(['classes' => fn ($query) => $query
+21                     ->where('statut', 'actif')
+22                     ->withCount(['inscriptions as effectif' => fn ($inscriptions) => $inscriptions
+23                         ->where('statut', 'actif')
+24                         ->when($annee, fn ($q) => $q->where('annee_scolaire_id', $annee->id))])])
+25                 ->orderBy('nom')
+26                 ->get();
+27     
+28             $occupations = $salles->mapWithKeys(fn (Salle $salle) => [$salle->id => OccupationSalles::evaluer($salle)]);
+29     
+Landed at lines 31-34 (the file's new text; no re-read needed):
+31                 'salles' => $salles,
+32                 'annee' => $annee,
+33                 'occupations' => $occupations,
+34         
+… 956 chars elided …
+ss="alert alert-warning">
+37                         <strong><i class="fa fa-exclamation-triangle"></i> Locaux à surveiller @if($annee)({{ $annee->libelle }})@endif :</strong>
+38                         @foreach ($sallesARisque as $salleRisque)
+39                             @php($o = $occupations[$salleRisque->id])
+40                             <span class="badge badge-{{ $o['niveau'] === 'saturee' ? 'danger' : 'warning' }} mr-1 mb-1">
+41                                 {{ $salleRisque->nom }} — {{ $o['effectif'] }}/{{ $o['capacite'] }} ({{ $o['taux'] }} %)
+42                             </span>
+43                         @endforeach
+44                     </div>
+45                 @endif
+Auto-corrected hunk landed at lines 50-50:
+50                             <tr><th>#</th><th>Nom</th>
+… 1,757 chars elided …
+: le cycle de la classe de l'élève (CTEB ou autre), sauf titre
+41         // imposé dans les Paramètres de l'établissement.
+42         $cycleNom = $classe?->cycle?->nom;
+43         $cycleLibelle = $cycleNom !== null && preg_match('/cteb|terminal/i', $cycleNom)
+44             ? 'Cycle terminal de l’éducation de base (CTEB)'
+45             : $cycleNom;
+46         $bulletinTitre = $systemSettings->bulletin_titre ?: ('Bulletin annuel'.($cycleLibelle ? ' — '.$cycleLibelle : ''));
+Auto-corrected hunk landed at lines 108-108:
+108                    {{ $bulletinTitre }} — ANNÉE SCOLAIRE {{ $inscription->anneeScolaire?->libelle ?? (\App\Models\AnneeScolaire::enCours()?->libelle ?? '20___ - 20___') }}

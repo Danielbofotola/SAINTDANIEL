@@ -1,0 +1,106 @@
+1      <?php
+2      
+3      namespace App\Support;
+4      
+5      use App\Models\Conversation;
+6      use App\Models\Message;
+7      use App\Models\User;
+8      use Illuminate\Support\Collection;
+9      
+10     /**
+11      * Messagerie interne : conversation directe (un ou plusieurs collègues) ou
+12      * diffusion à tous les utilisateurs.
+13      */
+14     class Messagerie
+15     {
+16         /**
+17          * Crée une conversation, y inscrit l'auteur et les destinataires, puis
+18          * dépose le premier message.
+19          *
+20          * @param  array<int, int>  $destinatairesIds
+21          */
+22         public static function creer(User $auteur, array $destinatairesIds, string $sujet, string $corps): Conversation
+23         {
+24             $destinataires = User::query()
+25                 ->whereIn('id', $destinatairesIds)
+26                 ->where('id', '!=', $auteur->id)
+27                 ->pluck('id');
+28     
+29             $conversation = Conversation::create([
+30                 'sujet' => $sujet,
+31                 'type' => $destinataires->count() > 1 ? 'diffusion' : 'directe',
+32                 'createur_id' => $auteur->id,
+33                 'derniere_activite_at' => now(),
+34             ]);
+35     
+36             $participants = collect([$auteur->id])->merge($destinataires)->unique()->values();
+37     
+38             $conversation->participants()->sync(
+39                 $participants->mapWithKeys(fn (int $id) => [
+40                     $id => ['dernier_lu_at' => $id === $auteur->id ? now() : null],
+41                 ])->all()
+42             );
+43     
+44             self::envoyer($conversation, $auteur, $corps);
+45     
+46             return $conversation;
+47         }
+48     
+49         /**
+50          * Ajoute un message à une conversation.
+51          */
+52         public static function envoyer(
+53             Conversation $conversation,
+54             User $auteur,
+55             string $corps,
+56             ?string $pieceJointe = null,
+57             ?string $pieceJointeNom = null,
+58         ): Message {
+59             $message = $conversation->messages()->create([
+60                 'auteur_id' => $auteur->id,
+61                 'corps' => $corps,
+62                 'piece_jointe' => $pieceJointe,
+63                 'piece_jointe_nom' => $pieceJointeNom,
+64             ]);
+65     
+66             $conversation->forceFill(['derniere_activite_at' => now()])->save();
+67     
+68             self::marquerLu($conversation, $auteur);
+69     
+70             return $message;
+71         }
+72     
+73         /**
+74          * Marque la conversation comme lue par cet utilisateur.
+75          */
+76         public static function marquerLu(Conversation $conversation, User $utilisateur): void
+77         {
+78             if ($conversation->participants()->where('user_id', $utilisateur->id)->exists()) {
+79                 $conversation->participants()->updateExistingPivot($utilisateur->id, [
+80                     'dernier_lu_at' => now(),
+81                     'dernier_message_id' => (int) $conversation->messages()->max('id'),
+82                 ]);
+83             }
+84         }
+85     
+86         /**
+87          * Conversations d'un utilisateur, avec le nombre de messages non lus.
+88          */
+89         public static function conversationsDe(User $utilisateur): Collection
+90         {
+91             return Conversation::query()
+92                 ->whereHas('participants', fn ($query) => $query->where('user_id', $utilisateur->id))
+93                 ->with(['dernierMessage.auteur', 'createur', 'participants'])
+94                 ->orderByDesc('derniere_activite_at')
+95                 ->get()
+96                 ->each(fn (Conversation $conversation) => $conversation->setAttribute('non_lus', $conversation->nonLusPour($utilisateur)));
+97         }
+98     
+99         /**
+100         * Total des messages non lus (badge du menu).
+101         */
+102        public static function nonLus(User $utilisateur): int
+103        {
+104            return (int) self::conversationsDe($utilisateur)->sum('non_lus');
+105        }
+106    }

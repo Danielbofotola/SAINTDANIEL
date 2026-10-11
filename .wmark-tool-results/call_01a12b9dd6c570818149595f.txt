@@ -1,0 +1,13 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/ComptableCaisseTest.php (1 hunk applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 229-245 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 232-233:
+232            'montant_paye' => 60, 'devise' => 'CDF', 'taux' => 2800, 'montant_recu' => 168000,
+233            'date_paiement' => now(), 'mode_paiement' => 'especes', 'statut' => 'actif',
+Auto-corrected hunk landed at lines 245-249:
+245            ->assertSee('1ère Période')
+246            // Encaissé en francs : le reçu montre la devise reçue et le taux appliqué.
+247            ->assertSee('168 000 FC')
+248            ->assertSee('taux 2 800,00')
+249            ->assertSee('60,00 $');   // montant crédité dans la devise du tarif (USD)

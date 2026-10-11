@@ -1,0 +1,16 @@
+70                                     <td>{{ $evaluation->affectation?->cours?->intitule }}</td>
+71                                     <td>{{ $evaluation->affectation?->professeur?->nom }} {{ $evaluation->affectation?->professeur?->prenom }}</td>
+72                                     <td>{{ $evaluation->periode?->nom }}</td>
+73                                     <td>{{ rtrim(rtrim(number_format((float) $evaluation->max_note, 2, '.', ''), '0'), '.') }}</td>
+74                                     <td><span class="badge badge-{{ $evaluation->notes_count > 0 ? 'success' : 'secondary' }}">{{ $evaluation->notes_count }}</span></td>
+75                                     <td class="text-nowrap">
+76                                         <a href="{{ route('admin.evaluations.notes', $evaluation) }}" class="btn btn-sm btn-info" title="Saisir les notes"><i class="fa fa-pencil-square-o"></i></a>
+77                                         <form class="d-inline" method="POST" action="{{ route('admin.evaluations.destroy', $evaluation) }}" onsubmit="return confirm('Supprimer cette évaluation ?');">
+78                                             @csrf
+79                                             @method('DELETE')
+80                                             <button class="btn btn-sm btn-danger" type="submit" title="Supprimer"><i class="fa fa-trash"></i></button>
+81                                         </form>
+82                                     </td>
+83                                 </tr>
+
+[showing lines 70-83 of 97; read again with offset=84 for more]

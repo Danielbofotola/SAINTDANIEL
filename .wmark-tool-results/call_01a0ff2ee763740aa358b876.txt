@@ -1,0 +1,1 @@
+Wrote database/migrations/2026_10_03_000000_enforce_single_current_school_year.php (49 lines)

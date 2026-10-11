@@ -1,0 +1,28 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\b493c9bc81dc\20261008-011604-bash-call_01a118dde42a76d28bbf6cfe.txt (546 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+[powershell — Windows side]
+✓ a student below the pass threshold is declared failed and listed for retake                                  0.02s
+FAILED  Tests\Feature\AdminAccountCredentialsTest > the profile update no longer touches the password or the PIN
+Failed asserting that false is true.
+FAILED  Tests\Feature\AdminAccountCredentialsTest > the account edit page links to the dedicated credentials page
+Failed asserting that 500 is identical to 200.
+FAILED  Tests\Feature\AdminUserManagementTes
+
+... 243 chars truncated ...
+
+is identical to 200.
+FAILED  Tests\Feature\MessagerieSuppressionTest > le parent retire sa discussion sans que le préfet perde les mes…
+Failed asserting that 500 is identical to 200.
+FAILED  Tests\Feature\PortailParentTest > un parent accède à son espace quand le module est ouvert
+Failed asserting that 500 is identical to 200.
+FAILED  Tests\Feature\PortailParentTest > un administrateur connecté peut ouvrir le portail parent
+Failed asserting that 500 is identical to 200.
+FAILED  Tests\Feature\PortailParentTest > un admin qui consulte un compte parent accède au portail
+Failed asserting that 500 is identical to 200.
+FAILED  Tests\Feature\PortailParentTest > le portail d’un parent ne propose que le préfet comme correspondant
+Failed asserting that 500 is identical to 200.
+FAILED  Tests\Feature\PortailParentTest > le portail propose au parent de démarrer la discussion en un clic
+Failed asserting that 500 is identical to 200.
+FAILED  Tests\Feature\PortailParentTest > un parent ne voit ni ne lit les discussions avec les autres services
+Failed asserting that 500 is identical to 200.
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

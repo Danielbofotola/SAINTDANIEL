@@ -1,0 +1,9 @@
+572            document.getElementById('stickerPicker').classList.toggle('on');
+573        };
+574    
+575        window.envoyerSticker = function (sticker) {
+576            window.toggleStickers();
+577            window.envoyerTexte(sticker);
+578        };
+
+[showing lines 572-579 of 836; read again with offset=580 for more]

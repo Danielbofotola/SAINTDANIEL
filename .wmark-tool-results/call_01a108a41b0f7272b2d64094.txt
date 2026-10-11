@@ -1,0 +1,7 @@
+Applied patch: 1 file changed (1 updated)
+Updated routes/web.php (2 hunks applied)
+Landed at lines 24-24 (the file's new text; no re-read needed):
+24     use App\Http\Controllers\ModuleSwitchController;
+Landed at lines 100-101 (the file's new text; no re-read needed):
+100        Route::get('/admin/modules', [ModuleSwitchController::class, 'index'])->middleware('role:admin')->name('admin.modules.index');
+101        Route::put('/admin/modules', [ModuleSwitchController::class, 'update'])->middleware('role:admin')->name('admin.modules.update');

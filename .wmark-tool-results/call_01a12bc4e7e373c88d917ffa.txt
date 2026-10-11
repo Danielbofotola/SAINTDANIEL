@@ -1,0 +1,68 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\aba9102c187c\20261011-172128-bash-call_01a12bc4e7e373c88d917ffa.txt (573 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+[powershell — Windows side]
+"section": "Primaire de base",
+        "option": "primaire"
+    },
+    {
+        "id": 12,
+        "classe": "6(eme primaire)",
+        "cycle": "Primaire",
+        "section": "Primaire de base",
+        "option": "primaire"
+    },
+    {
+        "id": 13,
+        "classe": "7(eme)",
+        "cycle": "E.d base",
+        "section": "Education de base",
+        "option": "E.B (education de base )"
+    },
+    {
+        "id": 14,
+        "classe": "8eme",
+        "cycle": 
+
+... 2 chars truncated ...
+
+.d base",
+        "section": "Education de base",
+        "option": "E.B (education de base )"
+    },
+    {
+        "id": 15,
+        "classe": "1(ere Annee commerciale)",
+        "cycle": "Humanité",
+        "section": "Commerciale et administrative",
+        "option": "Commerciale et administrative"
+    },
+    {
+        "id": 16,
+        "classe": "2(eme Anne commerciale)",
+        "cycle": "Humanité",
+        "section": "Commerciale et administrative",
+        "option": "Commerciale et administrative"
+    },
+    {
+        "id": 17,
+        "classe": "3(eme Anne commerciale)",
+        "cycle": "Humanité",
+        "section": "Commerciale et administrative",
+        "option": "Commerciale et administrative"
+    },
+    {
+        "id": 18,
+        "classe": "4(eme Annee commerciale)",
+        "cycle": "Humanité",
+        "section": "Commerciale et administrative",
+        "option": "Commerciale et administrative"
+    },
+    {
+        "id": 19,
+        "classe": "Maternelle",
+        "cycle": "Maternelle",
+        "section": "Maternelle",
+        "option": "Maternelle"
+    }
+]
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

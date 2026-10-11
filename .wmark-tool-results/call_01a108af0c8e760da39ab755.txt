@@ -1,0 +1,12 @@
+62         Schema::create('professeurs', function (Blueprint $table) {
+63             $table->id();
+64             $table->string('statut')->default('actif');
+65         });
+66         Schema::create('cours', function (Blueprint $table) {
+67             $table->id();
+68             $table->string('code', 20)->unique();
+69             $table->string('intitule', 100);
+70             $table->unsignedInteger('ponderation')->default(1);
+71             $table->string('statut')->default('actif');
+
+[showing lines 62-71 of 263; read again with offset=72 for more]

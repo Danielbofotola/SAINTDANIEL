@@ -1,0 +1,11 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/EspaceProfesseurTest.php (5 hunks applied)
+Landed at lines 204-204 (the file's new text; no re-read needed):
+204        DB::table('classes')->insert(['id' => 2, 'cycle_id' => 1, 'nom' => '4e B', 'statut' => 'actif']);
+Landed at lines 211-211 (the file's new text; no re-read needed):
+211        DB::table('affectations_cours')->insert(['id' => 3, 'professeur_id' => 2, 'cours_id' => 1, 'classe_id' => 2, 'annee_scolaire_id' => 1, 'statut' => 'actif']);
+Landed at lines 216-216 (the file's new text; no re-read needed):
+216        foreach ([['ELV-1', 'Mwamba', 'Aline', 'F', 1], ['ELV-2', 'Kanku', 'David', 'M', 1], ['ELV-3', 'Banza', 'Sarah', 'F', 2]] as [$matricule, $nom, $prenom, $sexe, $classeId]) {
+Landed at lines 223-223 (the file's new text; no re-read needed):
+223                'eleve_id' => $eleveId, 'classe_id' => $classeId, 'annee_scolaire_id' => 1,
+… 1 more hunks not echoed …

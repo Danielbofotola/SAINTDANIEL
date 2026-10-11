@@ -1,0 +1,16 @@
+[powershell — Windows side]
+4: use Illuminate\Database\Schema\Blueprint;
+5: use Illuminate\Support\Facades\DB;
+6: use Illuminate\Support\Facades\Schema;
+11: 'emplois_du_temps', 'evaluations', 'affectations_cours', 'documents_professeurs',
+31: Schema::create('professeurs', function (Blueprint $table) {
+45: Schema::create('documents_professeurs', function (Blueprint $table) {
+166: function seedProfesseur(array $overrides = []): int
+185: function seedAffectation(int $professeurId, int $coursId, int $classeId, int $anneeId = 1): int
+223: seedAffectation($professeurId, $coursId, 1);
+267: seedAffectation($professeurId, $coursId, 1);
+288: $affectationId = seedAffectation($professeurId, $coursId, 1);
+319: $affectationId = seedAffectation($professeurId, seedCours(), 1);
+345: $affectationId = seedAffectation($professeurId, seedCours(), 1);
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

@@ -1,0 +1,11 @@
+Applied patch: 1 file changed (1 updated)
+Updated resources/views/admin/archives/show.blade.php (1 hunk applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 42-44 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 44-49:
+44                 <div class="row mt-2">
+45                     <div class="col-md-3"><strong>Recettes :</strong> {{ $fmt($archive->total_recettes) }}</div>
+46                     <div class="col-md-3"><strong>Dépenses :</strong> {{ $fmt($archive->total_depenses) }}</div>
+47                     <div class="col-md-3"><strong>Salaires versés :</strong> <span class="text-danger">{{ $fmt($archive->total_salaires) }}</span> <small class="text-muted">({{ $archive->nombre_paies }} paie(s))</small></div>
+48                     <div class="col-md-3"><strong>Solde :</strong> {{ $fmt($archive->solde_final) }} <small class="text-muted">recettes − dépenses − salaires</small></div>
+49                 </div>

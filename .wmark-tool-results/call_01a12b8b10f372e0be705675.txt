@@ -1,0 +1,132 @@
+1      <?php
+2      
+3      use App\Models\User;
+4      use Illuminate\Database\Schema\Blueprint;
+5      use Illuminate\Support\Facades\DB;
+6      use Illuminate\Support\Facades\Schema;
+7      
+8      beforeEach(function () {
+9          $tables = [
+10             'paiements', 'frais_scolaires', 'types_frais', 'affectations_cours', 'cours',
+11             'inscriptions', 'eleves', 'classes', 'cycles', 'salles', 'professeurs', 'annees_scolaires', 'users',
+12         ];
+13     
+14         foreach ($tables as $table) {
+15             Schema::dropIfExists($table);
+16         }
+17     
+18         Schema::create('users', function (Blueprint $table) {
+19             $table->id();
+20             $table->unsignedBigInteger('professeur_id')->nullable();
+21             $table->string('nom', 50)->nullable();
+22             $table->string('prenom', 50)->nullable();
+23             $table->string('username', 50)->unique();
+24             $table->string('email', 100)->unique();
+25             $table->string('photo')->nullable();
+26             $table->string('password');
+27             $table->string('pin_code')->nullable();
+28             $table->string('role');
+29             $table->string('statut');
+30             $table->rememberToken();
+31             $table->timestamps();
+32         });
+33     
+34         Schema::create('professeurs', function (Blueprint $table) {
+35             $table->id();
+36             $table->string('matricule');
+37             $table->string('nom');
+38             $table->string('postnom')->nullable();
+39             $table->string('prenom');
+40             $table->string('specialite')->nullable();
+41             $table->string('photo')->nullable();
+42             $table->string('statut')->default('actif');
+43             $table->timestamps();
+44         });
+45     
+46         Schema::create('annees_scolaires', function (Blueprint $table) {
+47             $table->id();
+48             $table->string('libelle', 20)->unique();
+49             $table->date('date_debut');
+50             $table->date('date_fin');
+51             $table->boolean('is_encours')->default(false);
+52             $table->string('statut')->default('actif');
+53             $table->timestamps();
+54         });
+55     
+56         Schema::create('cycles', function (Blueprint $table) {
+57             $table->id();
+58             $table->string('nom');
+59             $table->string('statut')->default('actif');
+60         });
+61     
+62         Schema::create('salles', function (Blueprint $table) {
+63             $table->id();
+64             $table->string('nom')->nullable();
+65         });
+66     
+67         Schema::create('classes', function (Blueprint $table) {
+68             $table->id();
+69             $table->string('nom');
+70             $table->unsignedBigInteger('cycle_id')->nullable();
+71             $table->unsignedBigInteger('salle_id')->nullable();
+72             $table->string('statut')->default('actif');
+73             $table->timestamps();
+74         });
+75     
+76         Schema::create('eleves', function (Blueprint $table) {
+77             $table->id();
+78             $table->string('matricule')->unique();
+79             $table->string('nom');
+80             $table->string('postnom')->nullable();
+81             $table->string('prenom');
+82             $table->string('sexe');
+83             $table->date('date_naissance');
+84             $table->string('statut')->default('actif');
+85             $table->timestamps();
+86         });
+87     
+88         Schema::create('inscriptions', function (Blueprint $table) {
+89             $table->id();
+90             $table->unsignedBigInteger('eleve_id');
+91             $table->unsignedBigInteger('classe_id');
+92             $table->unsignedBigInteger('annee_scolaire_id');
+93             $table->date('date_inscription');
+94             $table->string('statut')->default('actif');
+95             $table->timestamps();
+96         });
+97     
+98         Schema::create('cours', function (Blueprint $table) {
+99             $table->id();
+100            $table->string('code');
+101            $table->string('intitule');
+102        });
+103    
+104        Schema::create('affectations_cours', function (Blueprint $table) {
+105            $table->id();
+106            $table->unsignedBigInteger('professeur_id');
+107            $table->unsignedBigInteger('cours_id');
+108            $table->unsignedBigInteger('classe_id');
+109            $table->unsignedBigInteger('annee_scolaire_id');
+110            $table->string('statut')->default('actif');
+111            $table->timestamps();
+112        });
+113    
+114        Schema::create('types_frais', function (Blueprint $table) {
+115            $table->id();
+116            $table->string('nom');
+117        });
+118    
+119        Schema::create('frais_scolaires', function (Blueprint $table) {
+120            $table->id();
+121            $table->unsignedBigInteger('type_frais_id');
+122            $table->unsignedBigInteger('classe_id');
+123            $table->unsignedBigInteger('annee_scolaire_id');
+124            $table->decimal('montant_exige', 10, 2);
+125            $table->date('date_echeance');
+126            $table->string('statut')->default('actif');
+127            $table->timestamps();
+128        });
+129    
+130        Schema::create('paiements', function (Blueprint $table) {
+
+[showing lines 1-130 of 239; read again with offset=131 for more]

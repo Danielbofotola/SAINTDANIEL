@@ -1,0 +1,16 @@
+122        (function () {
+123            var payeParPaire = <?php echo json_encode($soldePaye, 15, 512) ?>;
+124            var montantsFrais = <?php echo json_encode($montantsFrais, 15, 512) ?>;
+125            var classesParInscription = <?php echo json_encode($classesParInscription ?? [], 15, 512) ?>;
+126            var classesParFrais = <?php echo json_encode($classesParFrais ?? [], 15, 512) ?>;
+127            var tarifsDisponibles = <?php echo json_encode($tarifsDisponibles ?? [], 15, 512) ?>;
+128            var nomsClasses = <?php echo json_encode($nomsClasses ?? {}, 15, 512) ?>;
+129            var recherche = document.getElementById('eleveSearch');
+130            var inscriptionSelect = document.getElementById('inscriptionSelect');
+131            var fraisSelect = document.getElementById('fraisSelect');
+132            var soldeInfo = document.getElementById('soldeInfo');
+133    
+134            function filtrerEleves() {
+135                if (!recherche || !inscriptionSelect) { return; }
+
+[showing lines 122-135 of 208; read again with offset=136 for more]

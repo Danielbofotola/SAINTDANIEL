@@ -1,0 +1,7 @@
+Applied patch: 1 file changed (1 updated)
+Updated routes/web.php (2 hunks applied)
+Landed at lines 25-25 (the file's new text; no re-read needed):
+25     use App\Http\Controllers\NotesController;
+Landed at lines 79-80 (the file's new text; no re-read needed):
+79         Route::get('/admin/notes', [NotesController::class, 'index'])->middleware('role:admin')->name('admin.notes.index');
+80         Route::post('/admin/notes', [NotesController::class, 'store'])->middleware('role:admin')->name('admin.notes.store');

@@ -1,0 +1,17 @@
+1      <?php
+2      
+3      namespace App\Models;
+4      
+5      use Illuminate\Database\Eloquent\Model;
+6      
+7      class Cours extends Model
+8      {
+9          protected $table = 'cours';
+10     
+11         protected $fillable = ['code', 'intitule', 'ponderation', 'statut'];
+12     
+13         public function affectations()
+14         {
+15             return $this->hasMany(AffectationCours::class);
+16         }
+17     }

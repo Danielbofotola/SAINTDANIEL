@@ -1,0 +1,11 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/MessagerieTest.php (1 hunk applied)
+Landed at lines 329-336 (the file's new text; no re-read needed):
+329    
+330        // Retour (vue mobile) : on revient sur la liste des CORRESPONDANTS, sans
+331        // recharger, et la vue mobile ouvre d'abord sur cette liste.
+332        expect($html)
+333            ->toContain('onclick="retourListe()"')
+334            ->toContain('window.retourListe')
+335            ->toContain("matchMedia('(max-width: 820px)')")
+336            ->toContain('data-cible="correspondants"');

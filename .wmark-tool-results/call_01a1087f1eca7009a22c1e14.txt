@@ -1,0 +1,35 @@
+1      <?php
+2      
+3      namespace App\Models;
+4      
+5      use Illuminate\Database\Eloquent\Model;
+6      
+7      class DemandeInscription extends Model
+8      {
+9          protected $table = 'demandes_inscription';
+10     
+11         protected $fillable = [
+12             'nom', 'postnom', 'prenom', 'sexe', 'date_naissance', 'lieu_naissance',
+13             'classe_id', 'annee_scolaire_id', 'nom_mere', 'telephone_mere', 'email_mere',
+14             'adresse_mere', 'nom_pere', 'telephone_pere', 'email_pere', 'statut',
+15             'traite_par', 'traite_le', 'motif_refus',
+16         ];
+17     
+18         protected function casts(): array
+19         {
+20             return [
+21                 'date_naissance' => 'date',
+22                 'traite_le' => 'datetime',
+23             ];
+24         }
+25     
+26         public function classe()
+27         {
+28             return $this->belongsTo(Classe::class);
+29         }
+30     
+31         public function anneeScolaire()
+32         {
+33             return $this->belongsTo(AnneeScolaire::class);
+34         }
+35     }

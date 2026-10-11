@@ -1,0 +1,1 @@
+Wrote tests/Feature/ScolaritePagesTest.php (374 lines)

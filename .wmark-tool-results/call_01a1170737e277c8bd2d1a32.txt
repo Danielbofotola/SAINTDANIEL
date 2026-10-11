@@ -1,0 +1,134 @@
+1      <?php
+2      
+3      use App\Models\User;
+4      use Illuminate\Database\Schema\Blueprint;
+5      use Illuminate\Support\Facades\DB;
+6      use Illuminate\Support\Facades\Schema;
+7      
+8      beforeEach(function () {
+9          Schema::disableForeignKeyConstraints();
+10         foreach ([
+11             'messages', 'conversation_user', 'conversations', 'notifications', 'professeurs',
+12             'parametres_systeme', 'users',
+13         ] as $table) {
+14             Schema::dropIfExists($table);
+15         }
+16         Schema::enableForeignKeyConstraints();
+17     
+18         Schema::create('users', function (Blueprint $table) {
+19             $table->id();
+20             $table->unsignedBigInteger('professeur_id')->nullable()->unique();
+21             $table->string('nom', 50)->nullable();
+22             $table->string('postnom', 50)->nullable();
+23             $table->string('prenom', 50)->nullable();
+24             $table->string('photo')->nullable();
+25             $table->string('username')->unique();
+26             $table->string('email')->unique();
+27             $table->string('password');
+28             $table->string('pin_code')->nullable();
+29             $table->string('role');
+30             $table->string('statut');
+31             $table->rememberToken();
+32             $table->timestamps();
+33         });
+34         Schema::create('professeurs', function (Blueprint $table) {
+35             $table->id();
+36             $table->string('matricule')->unique();
+37             $table->string('nom');
+38             $table->string('postnom')->nullable();
+39             $table->string('prenom');
+40             $table->string('sexe');
+41             $table->string('statut')->default('actif');
+42             $table->timestamps();
+43         });
+44         Schema::create('parametres_systeme', function (Blueprint $table) {
+45             $table->id();
+46             $table->string('nom_etablissement', 150)->default('Etablissement');
+47             $table->string('nom_court', 60)->default('Ecole');
+48             $table->timestamps();
+49         });
+50         DB::table('parametres_systeme')->insert(['nom_court' => 'Ecole Test', 'created_at' => now(), 'updated_at' => now()]);
+51     
+52         Schema::create('conversations', function (Blueprint $table) {
+53             $table->id();
+54             $table->string('sujet', 150);
+55             $table->string('type', 20)->default('directe');
+56             $table->unsignedBigInteger('createur_id')->nullable();
+57             $table->timestamp('derniere_activite_at')->nullable();
+58             $table->timestamps();
+59         });
+60         Schema::create('conversation_user', function (Blueprint $table) {
+61             $table->id();
+62             $table->unsignedBigInteger('conversation_id');
+63             $table->unsignedBigInteger('user_id');
+64             $table->timestamp('dernier_lu_at')->nullable();
+65             $table->unsignedBigInteger('dernier_message_id')->nullable();
+66             $table->timestamps();
+67         });
+68         Schema::create('messages', function (Blueprint $table) {
+69             $table->id();
+70             $table->unsignedBigInteger('conversation_id');
+71             $table->unsignedBigInteger('auteur_id')->nullable();
+72             $table->text('corps');
+73             $table->string('piece_jointe')->nullable();
+74             $table->string('piece_jointe_nom')->nullable();
+75             $table->timestamps();
+76         });
+77         Schema::create('notifications', function (Blueprint $table) {
+78             $table->uuid('id')->primary();
+79             $table->string('type');
+80             $table->morphs('notifiable');
+81             $table->text('data');
+82             $table->timestamp('read_at')->nullable();
+83             $table->timestamps();
+84         });
+85     });
+86     
+87     test('every role gets a messenger button on a page that does not offer it', function () {
+88         foreach (['professeur', 'comptable', 'prefetture', 'titulaire', 'admin'] as $role) {
+89             $compte = User::factory()->create(['role' => $role]);
+90     
+91             $html = $this->actingAs($compte)
+92                 ->get(route('notifications.index'))
+93                 ->assertOk()
+94                 ->getContent();
+95     
+96             // Le bouton est injecté une seule fois, avec le lien vers la messagerie.
+97             expect(substr_count($html, '<a class="messagerie-flottante'))->toBe(1)
+98                 ->and($html)->toContain(route('messagerie.index'))
+99                 ->and($html)->toContain('aria-label="Messagerie"');
+100        }
+101    });
+102    
+103    test('the button carries the unread counter', function () {
+104        $alice = User::factory()->create(['role' => 'admin']);
+105        $bruno = User::factory()->create(['role' => 'comptable']);
+106    
+107        App\Support\Messagerie::creer($alice, [$bruno->id], 'Question', 'Bonjour Bruno.');
+108    
+109        $html = $this->actingAs($bruno)->get(route('notifications.index'))->assertOk()->getContent();
+110    
+111        expect($html)->toContain('data-non-lus')
+112            ->and(substr_count($html, '<a class="messagerie-flottante'))->toBe(1);
+113    
+114        // Une fois la messagerie consultée, le compteur disparaît du bouton.
+115        App\Support\Messagerie::marquerLu(App\Support\Messagerie::conversationsDe($bruno)->first(), $bruno);
+116    
+117        $html = $this->actingAs($bruno)->get(route('notifications.index'))->assertOk()->getContent();
+118    
+119        expect($html)->toContain('<a class="messagerie-flottante')
+120            ->not->toContain('data-non-lus');
+121    });
+122    
+123    test('no duplicate on a page that already offers the messenger', function () {
+124        $compte = User::factory()->create(['role' => 'comptable']);
+125    
+126        // La page /messagerie contient déjà ses propres liens : pas d'injection.
+127        $html = $this->actingAs($compte)->get(route('messagerie.index'))->assertOk()->getContent();
+128    
+129        expect($html)->not->toContain('<a class="messagerie-flottante');
+130    
+131        // Un visiteur non connecté n'obtient aucun bouton.
+132        $this->post(route('logout'));
+133        $this->get(route('login'))->assertOk()->assertDontSee('<a class="messagerie-flottante', false);
+134    });

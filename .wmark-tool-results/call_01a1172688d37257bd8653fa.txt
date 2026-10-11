@@ -1,0 +1,18 @@
+332        expect($html)
+333            ->toContain('onclick="retourListe()"')
+334            ->toContain('window.retourListe')
+335            ->toContain("matchMedia('(max-width: 820px)')")
+336            ->toContain('data-cible="correspondants"')
+337            // Et l'aller-retour : rouvrir la conversation depuis la liste.
+338            ->toContain('has-conv')
+339            ->toContain('onclick="reprendreConversation()"')
+340            ->toContain('window.reprendreConversation')
+341            ->toContain('Reprendre la discussion')
+342            ->toContain('only-mobile');
+343    });
+344    
+345    test('la barre d’écriture reste disponible même sans discussion ouverte', function () {
+346        $alice = User::factory()->create(['role' => 'admin', 'nom' => 'Mwamba', 'prenom' => 'Alice']);
+347        User::factory()->create(['role' => 'professeur', 'nom' => 'Kabila', 'prenom' => 'Bruno']);
+
+[showing lines 332-347 of 444; read again with offset=348 for more]

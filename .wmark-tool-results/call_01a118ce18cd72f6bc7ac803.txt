@@ -1,0 +1,34 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\b493c9bc81dc\20261008-005828-apply_patch-call_01a118ce18cd72f6bc7ac803.txt (756 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+Applied patch: 3 files changed (3 updated)
+Updated app/Support/Messagerie.php (2 hunks applied)
+Updated app/Http/Controllers/PortailParentController.php (1 hunk applied)
+Updated app/Http/Controllers/MessagerieController.php (3 hunks applied)
+Landed at lines 8-8 (the file's new text; no re-read needed):
+8      use Illuminate\Database\Eloquent\Builder;
+Landed at lines 18-37 (the file's new text; no re-read needed):
+18          * Comptes joignables par messagerie pour un utilisateur donné.
+19      
+
+... 1,099 chars truncated ...
+
+ context matched at lines 39-44 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+  ⚠ hunk 2: context matched at lines 63-70 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+  ⚠ hunk 3: context matched at lines 185-188 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 39-39:
+39                 'destinataires' => Messagerie::correspondantsQuery($utilisateur)->get(),
+Auto-corrected hunk landed at lines 58-69:
+58             $choix = (array) $data['destinataires'];
+59     
+60             // Les destinataires sont restreints aux correspondants autorisés :
+61             // un parent ne peut écrire qu'au préfet, même en forçant la requête.
+62             $correspondants = Messagerie::correspondantsQuery($request->user());
+63     
+64             $ids = in_array('tous', $choix, true)
+65                 ? $correspondants->pluck('id')->all()
+66                 : (clone $correspondants)
+67                     ->whereIn('id', array_values(array_filter($choix, fn ($valeur) => ctype_digit((string) $valeur))))
+68                     ->pluck('id')
+69                     ->all();
+Auto-corrected hunk landed at lines 184-185:
+184            $destinataire = Messagerie::correspondantsQuery($request->user())
+185                ->findOrFail($data['destinataire']);

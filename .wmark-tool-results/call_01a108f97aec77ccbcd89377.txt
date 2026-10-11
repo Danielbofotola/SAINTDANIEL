@@ -1,0 +1,32 @@
+86                 ->groupBy(fn (Depense $depense) => $depense->categorie?->nom ?? 'Autre')
+87                 ->map(fn ($groupe) => round((float) $groupe->sum('montant'), 2));
+88     
+89             return view('admin.archives.show', [
+90                 'archive' => $archiveAnnee,
+91                 'annee' => $archiveAnnee->anneeScolaire,
+92                 'effectifs' => $effectifs,
+93                 'totalEleves' => $effectifs->sum('eleves_count'),
+94                 'garcons' => $garcons,
+95                 'filles' => $filles,
+96                 'recettesParType' => $recettesParType,
+97                 'recettesParMode' => $recettesParMode,
+98                 'depensesParCategorie' => $depensesParCategorie,
+99                 'paiements' => Paiement::query()
+100                    ->where('statut', 'actif')
+101                    ->whereHas('inscription', fn ($query) => $query->where('annee_scolaire_id', $anneeId))
+102                    ->with(['inscription.eleve', 'inscription.classe', 'fraisScolaire.typeFrais'])
+103                    ->latest('date_paiement')
+104                    ->paginate(15, ['*'], 'paiements'),
+105                'depenses' => Depense::query()
+106                    ->where('annee_scolaire_id', $anneeId)
+107                    ->with('categorie')
+108                    ->latest('date_depense')
+109                    ->paginate(15, ['*'], 'depenses_page'),
+110                'modes' => ['especes' => 'Espèces', 'banque' => 'Banque', 'mobile_money' => 'Mobile Money'],
+111            ]);
+112        }
+113    
+114        public function store(Request $request): RedirectResponse
+115        {
+
+[showing lines 86-115 of 157; read again with offset=116 for more]

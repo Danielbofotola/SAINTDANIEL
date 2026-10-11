@@ -1,0 +1,39 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\e8f943213216\20261003-014740-bash-call_01a0ff3b55407048aa1accac.txt (976 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Structured view (text):
+[powershell — Windows side]
+> tests\Feature\AdminUserManagementTest.php:141:test('admin can edit a user while keeping their linked inactive professor selectable', function () {
+  tests\Feature\AdminUserManagementTest.php:142:    Schema::create('professeurs', function (Blueprint $table) {
+  tests\Feature\AdminUserManagementTest.php:143:        $table->id();
+  tests\Feature\AdminUserManagementTest.php:144:        $table->string('matricule');
+  tests\Feature\AdminUserManagementTest.php:145:        $table->string('nom');
+  tests\Feature\AdminUserManagementTest.php:146:        $table->string('postnom');
+  tests\Feature\AdminUserManagementTest.php:147:        $table->string('prenom');
+  tests\Feature\AdminUserManagementTest.php:148:        $table->string('statut');
+  tests\Feature\AdminUserManagementTest.php:149:    });
+  tests\Feature\AdminUserManagementTest.php:150:    DB::table('professeurs')->insert([
+  tests\Feature\AdminUserManagementTest.php:151:        'id' => 1,
+  tests\Feature\AdminUserManagementTest.php:152:        'matricule' => 'PROF-2026-0001',
+  tests\Feature\AdminUserManagementTest.php:153:        'nom' => 'Kabila',
+  tests\Feature\AdminUserManagementTest.php:154:        'postnom' => 'Mwamba',
+  tests\Feature\AdminUserManagementTest.php:155:        'prenom' => 'Aline',
+  tests\Feature\AdminUserManagementTest.php:156:        'statut' => 'inactif',
+  tests\Feature\AdminUserManagementTest.php:157:    ]);
+  tests\Feature\AdminUserManagementTest.php:158:
+  tests\Feature\
+… 0 chars elided …
+AdminUserManagementTest.php:159:    $admin = User::factory()->create(['role' => 'admin']);
+  tests\Feature\AdminUserManagementTest.php:160:    $user = User::factory()->create(['role' => 'professeur', 'professeur_id' => 1]);
+  tests\Feature\AdminUserManagementTest.php:161:
+  tests\Feature\AdminUserManagementTest.php:162:    $this->actingAs($admin)
+  tests\Feature\AdminUserManagementTest.php:163:        ->get(route('admin.profile.accounts.edit', $user))
+  tests\Feature\AdminUserManagementTest.php:164:        ->assertOk()
+  tests\Feature\AdminUserManagementTest.php:165:        ->assertSee('PROF-2026-0001');
+  tests\Feature\AdminUserManagementTest.php:166:});
+  tests\Feature\AdminUserManagementTest.php:167:
+  tests\Feature\AdminUserManagementTest.php:168:    test('a professor without an assign
+… 530 chars elided …
+n.profile.accounts.impersonate', $professor))
+
+
+
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">2</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

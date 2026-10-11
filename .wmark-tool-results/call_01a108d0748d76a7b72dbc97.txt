@@ -1,0 +1,10 @@
+110        Schema::create('types_frais', function (Blueprint $table) {
+111            $table->id();
+112            $table->string('nom', 100);
+113            $table->text('description')->nullable();
+114            $table->enum('statut', ['actif', 'inactif'])->default('actif');
+115            $table->timestamps();
+116        });
+117        Schema::create('frais_scolaires', function (Blueprint $table) {
+
+[showing lines 110-117 of 460; read again with offset=118 for more]

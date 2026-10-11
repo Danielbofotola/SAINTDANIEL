@@ -1,0 +1,39 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\e1ce9c26600a\20261004-231246-bash-call_01a108fa4228716ea147bf2a.txt (1,164 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Structured view (text):
+[powershell — Windows side]
+> tests\Feature\FinancesPagesTest.php:37:        $table->enum('sexe', ['M', 'F']);
+  tests\Feature\FinancesPagesTest.php:38:        $table->string('specialite', 100);
+  tests\Feature\FinancesPagesTest.php:39:        $table->string('telephone', 20);
+  tests\Feature\FinancesPagesTest.php:40:        $table->string('email', 100)->unique();
+  tests\Feature\FinancesPagesTest.php:41:        $table->string('statut')->default('actif');
+  tests\Feature\FinancesPagesTest.php:42:        $table->timestamps();
+  tests\Feature\FinancesPagesTest.php:43:    });
+  tests\Feature\FinancesPagesTest.php:44:    Schema::create('annees_scolaires', function (Blueprint $table) {
+  tests\Feature\FinancesPagesTest.php:45:        $table->id();
+> tests\Feature\FinancesPagesTest.php:93:        $table->string('sexe');
+  tests\Feature\FinancesPagesTest.php:94:        $table->date('date_naissance');
+  tests\Feature\FinancesPagesTest.php:95:        $table->string('lieu_naissance')->nullable();
+  tests\Feature\FinancesPagesTest.php:96:        $table->unsignedBigInteger('tuteur_id');
+  tests\Feature\FinancesPagesTest.php:97:        $table->string('photo')->nullable();
+  tests\Feature\FinancesPagesTest.php:98:        $table->string('statut');
+  tests\Feature\FinancesPagesTest.php:99:        $table->timestamps();
+  tests\Feature\FinancesPagesTest.php:100:    });
+  tests\Feature\FinancesPagesTest.php:101:    Schema::create('inscriptions', function (Blueprint $table) {
+> tests\Feature\Fina
+… 0 chars elided …
+ncesPagesTest.php:186:function seedInscription(): int
+  tests\Feature\FinancesPagesTest.php:187:{
+  tests\Feature\FinancesPagesTest.php:188:    $tuteurId = DB::table('tuteurs')->insertGetId([
+  tests\Feature\FinancesPagesTest.php:189:        'nom_mere' => 'Marie', 'telephone_mere' => '0990000000', 'statut' => 
+'actif',
+  tests\Feature\FinancesPagesTest.php:190:        'created_at' => now(), 'updated_at' => now(),
+  tests\Feature\FinancesPagesTest.php:191:    ]);
+  tests\Feature\FinancesPagesTest.php:192:    $eleveId = DB::table('eleves')->insertGetId([
+  tests\Feature\FinancesPagesTest.php:193:        'matricule' => 'ELV-2026-0001', 'nom' => 'Mwamba', 'postnom' => 
+'Test', 'prenom' => 'Aline',
+> tests\Feature\FinancesPagesTest.php:194:        'sexe' => 'F', 'date_naissance' => '2014-05-12'
+… 657 chars elided …
+ests\Feature\FinancesPagesTest.php:202:    ]);
+
+
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">2</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

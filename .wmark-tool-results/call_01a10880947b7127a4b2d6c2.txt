@@ -1,0 +1,161 @@
+1      <?php
+2      
+3      use App\Models\User;
+4      use Illuminate\Database\Schema\Blueprint;
+5      use Illuminate\Support\Facades\DB;
+6      use Illuminate\Support\Facades\Schema;
+7      
+8      beforeEach(function () {
+9          foreach (['options', 'sections', 'classes', 'cycles', 'users'] as $table) {
+10             Schema::dropIfExists($table);
+11         }
+12     
+13         Schema::create('users', function (Blueprint $table) {
+14             $table->id();
+15             $table->string('username', 50)->unique();
+16             $table->string('email', 100)->unique();
+17             $table->string('password');
+18             $table->string('pin_code')->nullable();
+19             $table->string('role');
+20             $table->string('statut');
+21             $table->rememberToken();
+22             $table->timestamps();
+23         });
+24     
+25         Schema::create('cycles', function (Blueprint $table) {
+26             $table->id();
+27             $table->string('nom');
+28             $table->string('statut')->default('actif');
+29         });
+30     
+31         // La table `sections` ne porte que le nom (colonnes code/description/statut retirées).
+32         Schema::create('sections', function (Blueprint $table) {
+33             $table->id();
+34             $table->string('nom');
+35             $table->timestamps();
+36         });
+37     
+38         Schema::create('options', function (Blueprint $table) {
+39             $table->id();
+40             $table->unsignedBigInteger('section_id');
+41             $table->string('nom');
+42             $table->timestamps();
+43         });
+44     
+45         Schema::create('classes', function (Blueprint $table) {
+46             $table->id();
+47             $table->string('nom');
+48             $table->unsignedBigInteger('cycle_id')->nullable();
+49             $table->unsignedBigInteger('section_id')->nullable();
+50             $table->unsignedBigInteger('option_id')->nullable();
+51             $table->string('statut')->default('actif');
+52             $table->timestamps();
+53         });
+54     
+55         DB::table('sections')->insert([
+56             ['id' => 1, 'nom' => 'Scientifique'],
+57             ['id' => 2, 'nom' => 'Littéraire'],
+58         ]);
+59         DB::table('options')->insert([
+60             ['id' => 1, 'section_id' => 1, 'nom' => 'Latin-Mathématiques'],
+61         ]);
+62         DB::table('classes')->insert([
+63             ['id' => 1, 'nom' => '1ère', 'section_id' => 1, 'option_id' => 1, 'statut' => 'actif'],
+64         ]);
+65     });
+66     
+67     test('the sections page lists the sections with their option and class counts', function () {
+68         $admin = User::factory()->create(['role' => 'admin']);
+69     
+70         $this->actingAs($admin)
+71             ->get(route('admin.sections.index'))
+72             ->assertOk()
+73             ->assertSee('Sections')
+74             ->assertSee('Scientifique')
+75             ->assertSee('Littéraire')
+76             ->assertSee('1 option(s)');
+77     });
+78     
+79     test('an admin can create a section', function () {
+80         $admin = User::factory()->create(['role' => 'admin']);
+81     
+82         $this->actingAs($admin)
+83             ->post(route('admin.sections.store'), ['nom' => 'Technique', 'retour' => 'gestion'])
+84             ->assertRedirect(route('admin.sections.index'));
+85     
+86         $this->assertDatabaseHas('sections', ['nom' => 'Technique']);
+87     });
+88     
+89     test('a duplicate section name is rejected', function () {
+90         $admin = User::factory()->create(['role' => 'admin']);
+91     
+92         $this->actingAs($admin)
+93             ->post(route('admin.sections.store'), ['nom' => 'Scientifique'])
+94             ->assertSessionHasErrors('nom');
+95     
+96         expect(DB::table('sections')->count())->toBe(2);
+97     });
+98     
+99     test('the options page lists the options with their section', function () {
+100        $admin = User::factory()->create(['role' => 'admin']);
+101    
+102        $this->actingAs($admin)
+103            ->get(route('admin.options.index'))
+104            ->assertOk()
+105            ->assertSee('Latin-Mathématiques')
+106            ->assertSee('Scientifique')
+107            ->assertSee('Nouvelle option');
+108    });
+109    
+110    test('an admin can create an option attached to a section', function () {
+111        $admin = User::factory()->create(['role' => 'admin']);
+112    
+113        $this->actingAs($admin)
+114            ->post(route('admin.options.store'), ['section_id' => 2, 'nom' => 'Grec-Latin', 'retour' => 'gestion'])
+115            ->assertRedirect(route('admin.options.index'));
+116    
+117        $this->assertDatabaseHas('options', ['nom' => 'Grec-Latin', 'section_id' => 2]);
+118    });
+119    
+120    test('an option name is unique inside its section but may exist elsewhere', function () {
+121        $admin = User::factory()->create(['role' => 'admin']);
+122    
+123        // Même nom dans la même section : refusé
+124        $this->actingAs($admin)
+125            ->post(route('admin.options.store'), ['section_id' => 1, 'nom' => 'Latin-Mathématiques'])
+126            ->assertSessionHasErrors('nom');
+127    
+128        // Même nom dans une autre section : accepté
+129        $this->post(route('admin.options.store'), ['section_id' => 2, 'nom' => 'Latin-Mathématiques', 'retour' => 'gestion'])
+130            ->assertRedirect(route('admin.options.index'));
+131    
+132        expect(DB::table('options')->where('nom', 'Latin-Mathématiques')->where('section_id', 2)->exists())->toBeTrue();
+133    });
+134    
+135    test('creating an option requires a section', function () {
+136        $admin = User::factory()->create(['role' => 'admin']);
+137    
+138        $this->actingAs($admin)
+139            ->post(route('admin.options.store'), ['nom' => 'Sans section'])
+140            ->assertSessionHasErrors('section_id');
+141    
+142        expect(DB::table('options')->count())->toBe(1);
+143    });
+144    
+145    test('the quick creation pages stay available and return to the class form', function () {
+146        $admin = User::factory()->create(['role' => 'admin']);
+147    
+148        $this->actingAs($admin)
+149            ->get(route('admin.sections.create'))
+150            ->assertOk()
+151            ->assertSee('Créer une section');
+152    
+153        $this->get(route('admin.options.create', ['section_id' => 2]))
+154            ->assertOk()
+155            ->assertSee('Créer une option')
+156            ->assertSee('Littéraire');
+157    
+158        // Sans marqueur « gestion », la création ramène au formulaire de classe.
+159        $this->post(route('admin.sections.store'), ['nom' => 'Technique'])
+160            ->assertRedirect(route('admin.classes.create', ['section_id' => 3]));
+161    });

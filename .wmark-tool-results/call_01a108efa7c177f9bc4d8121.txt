@@ -1,0 +1,28 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\e1ce9c26600a\20261004-230111-bash-call_01a108efa7c177f9bc4d8121.txt (587 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+[powershell — Windows side]
+> app\Http\Controllers\UserProfileController.php:360:    public function toggleAccount(User $user): RedirectResponse
+  app\Http\Controllers\UserProfileController.php:361:    {
+  app\Http\Controllers\UserProfileController.php:362:        if ($user->is(auth()->user())) {
+  app\Http\Controllers\UserProfileController.php:363:            return back()->with('error', 'Vous ne pouvez pas 
+désactiver votre propre compte depuis cette page.');
+  app\Http\Controllers\UserProfile
+
+... 215 chars truncated ...
+
+tif']);
+  app\Http\Controllers\UserProfileController.php:367:
+  app\Http\Controllers\UserProfileController.php:368:        return back()->with('success', 'Le statut du compte a été 
+mis à jour.');
+  app\Http\Controllers\UserProfileController.php:369:    }
+  app\Http\Controllers\UserProfileController.php:370:
+  app\Http\Controllers\UserProfileController.php:371:    public function destroyAccount(User $user): RedirectResponse
+  app\Http\Controllers\UserProfileController.php:372:    {
+  app\Http\Controllers\UserProfileController.php:373:        if ($user->is(auth()->user())) {
+  app\Http\Controllers\UserProfileController.php:374:            return back()->with('error', 'Vous ne pouvez pas 
+supprimer votre propre compte.');
+  app\Http\Controllers\UserProfileController.php:375:        }
+  app\Http\Controllers\UserProfileController.php:376:
+
+
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">2</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

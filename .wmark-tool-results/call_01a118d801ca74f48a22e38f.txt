@@ -1,0 +1,16 @@
+57             $table->timestamps();
+58         });
+59         Schema::create('conversation_user', function (Blueprint $table) {
+60             $table->id();
+61             $table->unsignedBigInteger('conversation_id');
+62             $table->unsignedBigInteger('user_id');
+63             $table->timestamp('dernier_lu_at')->nullable();
+64             $table->unsignedBigInteger('dernier_message_id')->nullable();
+65             $table->timestamps();
+66             $table->unique(['conversation_id', 'user_id']);
+67         });
+68         Schema::create('messages', function (Blueprint $table) {
+69             $table->id();
+70             $table->unsignedBigInteger('conversation_id');
+
+[showing lines 57-70 of 543; read again with offset=71 for more]

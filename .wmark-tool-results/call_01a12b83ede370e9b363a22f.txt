@@ -1,0 +1,38 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\aba9102c187c\20261011-161034-apply_patch-call_01a12b83ede370e9b363a22f.txt (680 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+Applied patch: 3 files changed (3 updated)
+Updated app/Models/AnneeScolaire.php (1 hunk applied)
+Updated app/Http/Controllers/EleveController.php (3 hunks applied)
+Updated resources/views/admin/eleves/index.blade.php (1 hunk applied)
+Landed at lines 62-80 (the file's new text; no re-read needed):
+62     
+63         /**
+64          * L'année scolaire qui précède celle donnée (ou l'année en cours), d'après la
+65          * date de début. Sert à retrouver la délibération d'où vient un élève.
+66    
+
+... 507 chars truncated ...
+
+\Models\AnneeScolaire;
+8      use App\Models\Deliberation;
+9      use App\Models\Inscription;
+Landed at lines 14-14 (the file's new text; no re-read needed):
+14     use Illuminate\Support\Facades\Schema;
+Landed at lines 39-45 (the file's new text; no re-read needed):
+39     
+40             // Année observée : celle choisie, sinon l'année en cours. Elle sert à
+41             // préparer l'année suivante — on y voit les élèves qui y seront (promus
+42             // et redoublants issus de la délibération) à côté des nouveaux inscrits.
+43             $anneeId = $request->integer('annee') ?: AnneeScolaire::enCours()?->id;
+44             $annee = $anneeId ? AnneeScolaire::find($anneeId) : null;
+45     
+Landed at lines 48-48 (the file's new text; no re-read needed):
+48                     ->when($annee, fn ($q) => $q->where('annee_scolaire_id', $annee->id), fn ($q) => $q->anneeEnCours())
+… 5 more hunks not echoed …
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 17-20 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 17-21:
+17                 <div>
+18                     <h1><i class="fa fa-users"></i> Liste des élèves</h1>
+19                     @php($anneeVue = $annee ?? $anneeEnCours)
+20                     <p>Effectif de l'établissement @if($anneeVue) — année <strong>{{ $anneeVue->libelle }}</strong>@endif.</p>
+21                 </div>

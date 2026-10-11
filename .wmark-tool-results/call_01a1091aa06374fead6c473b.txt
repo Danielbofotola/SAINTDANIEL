@@ -1,0 +1,28 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\e1ce9c26600a\20261004-234808-bash-call_01a1091aa06374fead6c473b.txt (550 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+[powershell — Windows side]
+✓ every teacher page answers and shows its own data                                                            0.23s 
+ 
+  ⨯ a teacher only reaches his own courses and classes                                                           0.04s 
+ 
+  ✓ a teacher creates an evaluation and records the marks                                                        0.04s 
+ 
+  ✓ a teacher records the roll call without duplicating and updates an existing one                              0.03s 
+ 
+   FAILED  Tests\Feature\EspaceProfesseurTest > a teacher only reaches his own courses and classes                     
+ 
+  Expected response status code [403] but received 200.
+Failed asserting that 200 is identical to 403.
+  at tests\Feature\EspaceProfesseurTest.php:238
+    234▕     $autre = professeur(2);
+    235▕ 
+    236▕     // L’affectation 1 appartient au professeur 1, pas au professeur 2.
+    237▕     $this->actingAs($autre)->get(route('professeur.cours.show', 1))->assertForbidden();
+    239▕ 
+    240▕     // Un rôle non enseignant n’accède pas à l’espace.
+    241▕     $admin = User::factory()->create(['role' => 'admin']);
+    242▕     $this->actingAs($admin)->get(route('professeur.planning'))->assertForbidden();
+  Tests:    1 failed, 3 passed (40 assertions)
+
+
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">2</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

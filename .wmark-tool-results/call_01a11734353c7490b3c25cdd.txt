@@ -1,0 +1,14 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/MessagerieTest.php (1 hunk applied)
+Landed at lines 372-382 (the file's new text; no re-read needed):
+372    
+373        // Panneau de stickers façon messagerie : onglets par pack, planche des
+374        // récents, et mémorisation locale.
+375        expect($html)
+376            ->toContain('id="stickerTabs"')
+377            ->toContain('id="grilleRecents"')
+378            ->toContain('data-pack="ecole"')
+379            ->toContain('data-pack="visages"')
+380            ->toContain('window.ouvrirPack')
+381            ->toContain('window.majGrilleRecents')
+382            ->toContain('wmark_stickers_recents');

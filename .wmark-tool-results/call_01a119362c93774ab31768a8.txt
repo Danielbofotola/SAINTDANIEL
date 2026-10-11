@@ -1,0 +1,18 @@
+133        {
+134            $eleve->load([
+135                'tuteur',
+136                'sante',
+137                'documents' => fn ($query) => $query->where('statut', 'actif')->latest('created_at'),
+138            ]);
+139    
+140            // Seule l'inscription de l'année en cours est présentée sur le dossier.
+141            $inscription = $eleve->inscriptions()
+142                ->anneeEnCours()
+143                ->whereIn('statut', ['actif', 'en_attente'])
+144                ->with(['classe.cycle', 'classe.section', 'classe.option'])
+145                ->latest('date_inscription')
+146                ->first();
+147    
+148            return view('admin.eleves.show', compact('eleve', 'inscription'));
+
+[showing lines 133-148 of 160; read again with offset=149 for more]

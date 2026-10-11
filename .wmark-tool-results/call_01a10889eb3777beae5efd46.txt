@@ -1,0 +1,11 @@
+Recorded verification for 'prof-index': Routes admin.professeurs.index/show/toggle-status (role:admin) + ProfesseurController@index/show/toggleStatus + views index/show ; relations User/affectationsCours/documents ajoutées au modèle Professeurs. Tests 'professor list...' et 'professor file...' PASS.
+Task 'prof-index': pending → verified
+Recorded verification for 'affectations': Routes admin.affectations.index/store/destroy + admin.cours.store/destroy (role:admin), AffectationCoursController + CoursController, vue admin/affectations/index.blade.php. Affectation rattachée à l'année en cours, doublon refusé, suppression d'un cours affecté bloquée. Tests 'an admin can create a cours...' et 'a duplicate affectation...' PASS.
+Task 'affectations': pending → verified
+Recorded verification for 'emplois': Routes admin.emplois-du-temps.index/store/destroy (role:admin) + EmploiDuTempsController, vue admin/emplois-du-temps/index.blade.php. Filtres classe/professeur, création de créneau, détection de conflit salle/classe/professeur, validation heure_fin > heure_debut. Tests '...schedule a timetable slot and conflicts are rejected' et '...refuses an end time before the start time' PASS.
+Task 'emplois': pending → verified
+Recorded verification for 'menu-p': dashboard.blade.php treeview-menu Professeurs : les 3 entrées pointent vers admin.professeurs.index, admin.affectations.index, admin.emplois-du-temps.index (plus aucun href vide). Test 'the professor menu links point to the new modules' PASS.
+Task 'menu-p': pending → verified
+Recorded verification for 'verify-p': php artisan route:list confirme les 11 routes ; php artisan view:cache = OK ; php artisan test = 86 passed (446 assertions), 0 échec.
+Task 'verify-p': pending → verified
+Progress: 5/5 done; all tasks complete

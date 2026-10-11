@@ -1,0 +1,1 @@
+Wrote resources/views/admin/affectations/index.blade.php (114 lines)

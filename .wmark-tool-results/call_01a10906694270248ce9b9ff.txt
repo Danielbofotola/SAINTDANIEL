@@ -1,0 +1,1 @@
+Wrote resources/views/admin/comptabilite/plan.blade.php (71 lines)

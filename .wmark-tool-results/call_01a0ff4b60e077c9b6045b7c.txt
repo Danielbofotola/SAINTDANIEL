@@ -1,0 +1,57 @@
+96     
+97             $data = $request->validate([
+98                 'nom' => ['nullable', 'string', 'max:50'],
+99                 'postnom' => ['nullable', 'string', 'max:50'],
+100                'prenom' => ['nullable', 'string', 'max:50'],
+101                'date_naissance' => ['nullable', 'date', 'before:today'],
+102                'username' => ['required', 'string', 'max:50', Rule::unique('users', 'username')->ignore($user->id)],
+103                'email' => ['required', 'email', 'max:100', Rule::unique('users', 'email')->ignore($user->id)],
+104                'telephone' => ['nullable', 'string', 'max:20'],
+105                'adresse' => ['nullable', 'string', 'max:500'],
+106                'photo' => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:2048'],
+107                'role' => ['required', 'in:admin,prefetture,titulaire,professeur,comptable'],
+108                'statut' => ['required', 'in:actif,inactif'],
+109                'professeur_id' => [
+110                    'nullable',
+111                    'exists:professeurs,id',
+112                    Rule::unique('users', 'professeur_id')->ignore($user->id),
+113                    Rule::requiredIf(fn () => $request->input('role') === 'professeur'),
+114                ],
+115                'password' => ['nullable', 'string', 'min:8', 'confirmed'],
+116                'pin_code' => ['nullable', 'digits:4'],
+117                'remove_pin' => ['nullable', 'boolean'],
+118            ], [
+119                'password.min' => 'Le mot de passe doit contenir au moins 8 caractères.',
+120                'password.confirmed' => 'La confirmation du mot de passe ne correspond pas.',
+121                'pin_code.digits' => 'Le code PIN doit contenir exactement 4 chiffres.',
+122            ]);
+123    
+124            unset($data['remove_pin']);
+125    
+126            // Champ laissé vide = identifiant inchangé.
+127            if (! filled($data['password'] ?? null)) {
+128                unset($data['password']); // le cast « hashed » du modèle se charge du hachage
+129            }
+130    
+131            if (filled($data['pin_code'] ?? null)) {
+132                $data['pin_code'] = Hash::make($data['pin_code']);
+133            } elseif ($request->boolean('remove_pin')) {
+134                $data['pin_code'] = null;
+135            } else {
+136                unset($data['pin_code']);
+137            }
+138    
+139            if ($request->hasFile('photo')) {
+140                if ($user->photo) {
+141                    Storage::disk('public')->delete($user->photo);
+142                }
+143    
+144                $data['photo'] = $request->file('photo')->store('users/photos', 'public');
+145            }
+146    
+147            $user->update($data);
+148    
+149            return redirect()->route('admin.profile.accounts')->with('success', 'Le profil utilisateur a été mis à jour.');
+150        }
+
+[showing lines 96-150 of 354; read again with offset=151 for more]

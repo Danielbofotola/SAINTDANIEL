@@ -1,0 +1,32 @@
+Applied patch: 1 file changed (1 updated)
+Updated app/Support/Messagerie.php (3 hunks applied)
+Landed at lines 10-10 (the file's new text; no re-read needed):
+10     use Illuminate\Support\Facades\DB;
+Landed at lines 125-130 (the file's new text; no re-read needed):
+125            // Un nouveau message « réveille » la discussion pour tous : celui qui
+126            // l'avait retirée de sa liste la revoit, donc aucun message n'est perdu.
+127            DB::table('conversation_user')
+128                ->where('conversation_id', $conversation->id)
+129                ->update(['supprime_at' => null]);
+130    
+Landed at lines 136-147 (the file's new text; no re-read needed):
+136        /**
+137         * Retire la discussion de la liste de cet utilisateur uniquement : les autres
+138         * participants conservent l'intégralité des messages. Tant qu'aucun nouveau
+139         * message n'est publié, la discussion reste masquée pour lui.
+140         */
+141        public static function masquer(Conversation $conversation, User $utilisateur): void
+142        {
+143            if ($conversation->participants()->where('user_id', $utilisateur->id)->exists()) {
+144                $conversation->participants()->updateExistingPivot($utilisateur->id, ['supprime_at' => now()]);
+145            }
+146        }
+147    
+Landed at lines 180-186 (the file's new text; no re-read needed):
+180                ->filter(function (Conversation $conversation) use ($utilisateur) {
+181                    // Discussion retirée de la liste par cet utilisateur (« pour soi »).
+182                    $pivot = $conversation->participants->firstWhere('id', $utilisateur->id)?->pivot;
+183    
+184                    return $pivot === null || $pivot->supprime_at === null;
+185                })
+186                ->values()

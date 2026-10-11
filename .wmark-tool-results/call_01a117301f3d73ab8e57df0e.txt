@@ -1,0 +1,21 @@
+Applied patch: 1 file changed (1 updated)
+Updated resources/views/messagerie/_espace.blade.php (2 hunks applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 444-450 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 446-451:
+446                // Anti-doublon : la même bulle (même identifiant) n'est jamais affichée
+447                // deux fois, même si deux requêtes la rapportent (ex. envoi + flux).
+448                if (id && fil.querySelector('[data-message-id="' + id + '"]')) {
+449                    dernierId = Math.max(dernierId, Number(id));
+450                    return;
+451                }
+Landed at lines 538-541 (the file's new text; no re-read needed):
+538                // Verrou : une seule requête de flux à la fois. Sans lui, le cycle
+539                // et les gestionnaires focus/visibilitychange partent avec le même
+540                // « après » et rapportent deux fois le même message (doublon).
+541                let requeteEnCours = false;
+Landed at lines 543-544 (the file's new text; no re-read needed):
+543                    if (requeteEnCours) return;
+544                    requeteEnCours = true;
+Landed at lines 555-555 (the file's new text; no re-read needed):
+555                    finally { requeteEnCours = false; }

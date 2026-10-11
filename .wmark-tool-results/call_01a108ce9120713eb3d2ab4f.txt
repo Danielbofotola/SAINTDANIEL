@@ -1,0 +1,9 @@
+Applied patch: 1 file changed (1 updated)
+Updated app/Http/Controllers/FraisController.php (2 hunks applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 37-40 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+  ⚠ hunk 2: context matched at lines 45-45 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 40-40:
+40                 'est_inscription' => ['nullable', 'boolean'],
+Auto-corrected hunk landed at lines 46-46:
+46             TypeFrais::create($data + ['est_inscription' => $request->boolean('est_inscription'), 'statut' => 'actif']);

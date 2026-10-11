@@ -1,0 +1,12 @@
+150                'libelle' => '2025-2026 bis',
+151                'date_debut' => '2025-10-01',
+152                'date_fin' => '2026-08-01',
+153            ])
+154            ->assertRedirect(route('admin.annees.index'));
+155    
+156        $this->assertDatabaseHas('annees_scolaires', [
+157            'id' => $annee->id,
+158            'libelle' => '2025-2026 bis',
+159        ]);
+
+[showing lines 150-159 of 189; read again with offset=160 for more]

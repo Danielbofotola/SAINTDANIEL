@@ -1,0 +1,10 @@
+82         Route::post('/admin/classes', [ClasseController::class, 'store'])->middleware('role:admin')->name('admin.classes.store');
+83         Route::get('/admin/sections/nouvelle', [SectionOptionController::class, 'createSection'])->middleware('role:admin')->name('admin.sections.create');
+84         Route::post('/admin/sections', [SectionOptionController::class, 'storeSection'])->middleware('role:admin')->name('admin.sections.store');
+85         Route::get('/admin/options/nouvelle', [SectionOptionController::class, 'createOption'])->middleware('role:admin')->name('admin.options.create');
+86         Route::post('/admin/options', [SectionOptionController::class, 'storeOption'])->middleware('role:admin')->name('admin.options.store');
+87         Route::get('/admin/classes', [ClasseController::class, 'index'])->middleware('role:admin')->name('admin.classes.index');
+88         Route::get('/admin/classes/{classe}/eleves', [ClasseController::class, 'students'])->middleware('role:admin')->name('admin.classes.students');
+89         Route::get('/admin/classes/{classe}/modifier', [ClasseController::class, 'edit'])->middleware('role:admin')->name('admin.classes.edit');
+
+[showing lines 82-89 of 101; read again with offset=90 for more]

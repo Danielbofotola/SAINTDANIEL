@@ -1,0 +1,26 @@
+Applied patch: 1 file changed (1 updated)
+Updated app/Providers/AppServiceProvider.php (1 hunk applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 26-50 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 29-29:
+29                     $settings = self::firstOrNull(fn () => ParametreSysteme::query()->first());
+Auto-corrected hunk landed at lines 37-39:
+37                     request()->attributes->set('annee_en_cours', self::firstOrNull(
+38                         fn () => AnneeScolaire::where('is_encours', true)->first()
+39                     ));
+Auto-corrected hunk landed at lines 45-59:
+45     
+46         /**
+47          * Exécute une lecture destinée à l'affichage et renvoie null en cas d'échec.
+48          *
+49          * Ces valeurs ne sont que du contexte d'affichage : une table absente ou
+50          * indisponible ne doit jamais faire échouer le rendu d'une page.
+51          */
+52         private static function firstOrNull(callable $query): mixed
+53         {
+54             try {
+55                 return $query();
+56             } catch (\Throwable) {
+57                 return null;
+58             }
+59         }

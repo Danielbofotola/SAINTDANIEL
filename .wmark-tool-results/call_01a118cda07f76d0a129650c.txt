@@ -1,0 +1,72 @@
+140                    <h2><i class="fa-solid fa-bell text-info"></i> Mes notifications</h2>
+141                    @forelse ($notifications as $notification)
+142                        @php($donnees = $notification->data)
+143                        <div class="py-2" style="border-bottom:1px solid var(--divider); {{ $notification->read_at ? '' : 'font-weight:600;' }}">
+144                            <span class="badge-niveau badge-{{ $donnees['niveau'] ?? 'info' }}">
+145                                {{ \App\Models\Annonce::NIVEAUX[$donnees['niveau'] ?? 'info'] ?? 'Information' }}
+146                            </span>
+147                            <strong class="ms-1" style="color:#fff">{{ $donnees['titre'] ?? 'Notification' }}</strong>
+148                            <div class="fs-7 text-muted-2 mt-1">{{ $donnees['message'] ?? '' }}</div>
+149                            <div class="fs-7 text-muted-2 mt-1">
+150                                De {{ $donnees['auteur'] ?? 'administration' }} · {{ $notification->created_at?->format('d/m/Y H:i') }}
+151                            </div>
+152                        </div>
+153                    @empty
+154                        <p class="text-muted-2 mb-0 fs-7">Aucune notification.</p>
+155                    @endforelse
+156                </div>
+157            </section>
+158    
+159            {{-- ============ MESSAGES ============ --}}
+160            <section id="tab-messages" class="portail-panel">
+161                @include('messagerie._espace', [
+162                    'user' => $user,
+163                    'conversations' => $conversations,
+164                    'active' => $active,
+165                    'messages' => $messages,
+166                    'destinataires' => $destinataires,
+167                    'nonLus' => $nonLus,
+168                    'espaceUrl' => route('parent.dashboard'),
+169                    'avecFichier' => false,
+170                    'composeMultiple' => false,
+171                ])
+172            </section>
+173    
+174            {{-- ============ PROFIL ============ --}}
+175            <section id="tab-profil" class="portail-panel">
+176                <div class="portail-card text-center">
+177                    <span class="portail-avatar mx-auto mb-2" style="width:96px;height:96px;font-size:2rem;background:var(--blue)">
+178                        @if ($user->photo)
+179                            <img src="{{ asset('storage/'.$user->photo) }}" alt="{{ $nomUtilisateur }}">
+180                        @else
+181                            {{ $initiales }}
+182                        @endif
+183                    </span>
+184                    <h2 class="mb-1">{{ $nomUtilisateur }}</h2>
+185                    <div class="fs-7 text-muted-2">Espace Parent · {{ \App\Models\User::libelleRole($user->role) }}</div>
+186                </div>
+187    
+188                <div class="portail-card">
+189                    <h2>Informations</h2>
+190                    <div class="info-row"><i class="fa-solid fa-user"></i> <span>{{ $user->username }}</span></div>
+191                    <div class="info-row"><i class="fa-solid fa-envelope"></i> <span>{{ $user->email }}</span></div>
+192                    <div class="info-row"><i class="fa-solid fa-phone"></i> <span>{{ $user->telephone ?: '—' }}</span></div>
+193                    <div class="info-row"><i class="fa-solid fa-location-dot"></i> <span>{{ $user->adresse ?: '—' }}</span></div>
+194                    <div class="info-row"><i class="fa-solid fa-building"></i> <span>{{ $parametres->nom_etablissement }}</span></div>
+195                    <div class="mt-3 d-flex flex-wrap gap-2">
+196                        <a class="btn-ghost" href="{{ route('profile.edit') }}"><i class="fa-solid fa-pen"></i> Modifier mon profil</a>
+197                        <a class="btn-ghost" href="{{ route('messagerie.index') }}"><i class="fa-solid fa-comments"></i> Messagerie interne</a>
+198                        <a class="btn-ghost" href="{{ route('notifications.index') }}"><i class="fa-solid fa-bell"></i> Notifications</a>
+199                    </div>
+200                </div>
+201            </section>
+202        </main>
+203    
+204        <script>
+205            function portailTab(nom, element) {
+206                document.querySelectorAll('.portail-panel').forEach(p => p.classList.remove('active'));
+207                document.querySelectorAll('.portail-nav__item').forEach(i => i.classList.remove('active'));
+208                const cible = document.getElementById('tab-' + nom);
+209                if (cible) cible.classList.add('active');
+
+[showing lines 140-209 of 214; read again with offset=210 for more]

@@ -1,0 +1,40 @@
+1      @php($estMoi = $message->auteur_id === $user->id)
+2      <div class="bulle-container {{ $estMoi ? 'bulle-container--moi' : 'bulle-container--autre' }}" data-message-id="{{ $message->id }}">
+3          @if ($message->auteur?->photo)
+4              <img class="msg-avatar msg-avatar--sm" src="{{ asset('storage/'.$message->auteur->photo) }}" alt="{{ $message->nomAuteur() }}">
+5          @else
+6              <span class="msg-avatar msg-avatar--sm">
+7                  {{ mb_strtoupper(mb_substr($message->auteur?->prenom ?: $message->nomAuteur(), 0, 1)) }}
+8              </span>
+9          @endif
+10     
+11         <div>
+12             <div class="bulle {{ $estMoi ? 'bulle--moi' : 'bulle--autre' }}">
+13                 @unless ($estMoi || ($active->type ?? 'directe') === 'directe')
+14                     <strong style="font-size: 11px; display: block; margin-bottom: 2px; color: var(--chat-accent);">
+15                         {{ $message->nomAuteur() }}
+16                     </strong>
+17                 @endunless
+18                 {{ $message->corps }}
+19                 @if ($message->piece_jointe)
+20                     <div class="bulle__piece">
+21                         @if ($message->estImage())
+22                             <a href="{{ $message->urlPieceJointe() }}" target="_blank" rel="noopener">
+23                                 <img src="{{ $message->urlPieceJointe() }}" alt="{{ $message->nomPieceJointe() }}" loading="lazy">
+24                             </a>
+25                         @else
+26                             <a href="{{ $message->urlPieceJointe() }}" target="_blank" rel="noopener">
+27                                 <i class="fa fa-paperclip"></i> {{ $message->nomPieceJointe() }}
+28                             </a>
+29                         @endif
+30                     </div>
+31                     <style>
+32                         .bulle__piece { margin-top: 6px; }
+33                         .bulle__piece img { max-width: 240px; max-height: 240px; border-radius: 8px; display: block; cursor: zoom-in; }
+34                         .bulle__piece a { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: inherit; text-decoration: underline; }
+35                     </style>
+36                 @endif
+37             </div>
+38             <span class="bulle__meta">{{ $message->created_at?->format('H:i | d M') }}</span>
+39         </div>
+40     </div>

@@ -1,0 +1,32 @@
+78         });
+79     
+80         Schema::create('inscriptions', function (Blueprint $table) {
+81             $table->id();
+82             $table->unsignedBigInteger('eleve_id');
+83             $table->unsignedBigInteger('classe_id');
+84             $table->unsignedBigInteger('annee_scolaire_id');
+85             $table->date('date_inscription');
+86             $table->string('statut')->default('actif');
+87             $table->timestamps();
+88         });
+89     
+90         DB::table('cycles')->insert(['id' => 1, 'nom' => 'Primaire', 'statut' => 'actif']);
+91         DB::table('classes')->insert(['id' => 1, 'nom' => '3e primaire', 'cycle_id' => 1, 'statut' => 'actif']);
+92     
+93         // Année 1 : ancienne (avec un élève déjà inscrit l'an dernier)
+94         DB::table('annees_scolaires')->insert([
+95             'id' => 1, 'libelle' => '2025-2026', 'date_debut' => '2025-09-01', 'date_fin' => '2026-07-01',
+96             'is_encours' => false, 'statut' => 'actif',
+97         ]);
+98         // Année 2 : année en cours
+99         DB::table('annees_scolaires')->insert([
+100            'id' => 2, 'libelle' => '2026-2027', 'date_debut' => '2026-09-01', 'date_fin' => '2027-07-01',
+101            'is_encours' => true, 'statut' => 'actif',
+102        ]);
+103    
+104        DB::table('eleves')->insert([
+105            ['id' => 1, 'matricule' => 'ELV-2025-001', 'nom' => 'Ancien', 'prenom' => 'Eleve', 'sexe' => 'M', 'date_naissance' => '2015-01-01', 'statut' => 'actif'],
+106            ['id' => 2, 'matricule' => 'ELV-2026-001', 'nom' => 'Courant', 'prenom' => 'Eleve', 'sexe' => 'F', 'date_naissance' => '2016-01-01', 'statut' => 'actif'],
+107        ]);
+
+[showing lines 78-107 of 149; read again with offset=108 for more]

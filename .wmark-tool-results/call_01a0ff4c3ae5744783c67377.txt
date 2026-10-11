@@ -1,0 +1,8 @@
+Applied patch: 1 file changed (1 updated)
+Updated resources/views/admin/profile/accounts.blade.php (1 hunk applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 240-242 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 243-245:
+243                                                 <a class="btn btn-sm btn-warning waves-effect" href="{{ route('admin.profile.accounts.password.edit', $user) }}" title="Réinitialiser le mot de passe / PIN">
+244                                                    <i class="icofont icofont-key"></i>
+245                                                 </a>

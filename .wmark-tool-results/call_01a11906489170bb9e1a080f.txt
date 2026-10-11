@@ -1,0 +1,32 @@
+300        ]);
+301    
+302        $eleve = Eleve::find(1);
+303    
+304        $this->actingAs($prefet)->get(route('prefecture.eleves.fiche', $eleve))->assertOk()
+305            ->assertSee('Aicha')->assertSee('Identité')->assertSee('Dossier médical')
+306            ->assertSee('Asthme')->assertSee('Inscriptions')->assertSee('Assiduité')
+307            ->assertSee('Transport')
+308            // Le document attaché au dossier est visible et ouvrable.
+309            ->assertSee('Documents attachés')->assertSee('Certificat médical')
+310            ->assertSee('eleves/documents/certificat.pdf', false);
+311    });
+312    
+313    test('la recherche d’élève filtre par nom ou matricule', function () {
+314        $prefet = User::where('role', 'prefetture')->first();
+315        DB::table('eleves')->insert(['id' => 2, 'matricule' => 'ELV-002', 'nom' => 'Zola', 'prenom' => 'Emile', 'sexe' => 'M', 'statut' => 'actif']);
+316    
+317        $this->actingAs($prefet)->get(route('prefecture.eleves', ['q' => 'Zola']))->assertOk()
+318            ->assertSee('Emile')->assertDontSee('Aicha');
+319    
+320        $this->actingAs($prefet)->get(route('prefecture.eleves', ['q' => 'ELV-001']))->assertOk()
+321            ->assertSee('Aicha')->assertDontSee('Emile');
+322    });
+323    
+324    test('les pages de vie scolaire sont fermées aux autres rôles', function () {
+325        $comptable = User::where('role', 'comptable')->first();
+326    
+327        foreach (['prefecture.presences', 'prefecture.horaires', 'prefecture.evaluations', 'prefecture.eleves', 'prefecture.tuteurs'] as $route) {
+328            $this->actingAs($comptable)->get(route($route))->assertForbidden();
+329        }
+
+[showing lines 300-329 of 332; read again with offset=330 for more]

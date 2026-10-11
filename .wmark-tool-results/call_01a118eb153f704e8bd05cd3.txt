@@ -1,0 +1,7 @@
+Applied patch: 1 file changed (1 updated)
+Updated routes/web.php (1 hunk applied)
+Landed at lines 243-246 (the file's new text; no re-read needed):
+243        Route::get('/prefecture/effectifs', [PrefectureDashboardController::class, 'effectifs'])->middleware('role:prefetture')->name('prefecture.effectifs');
+244        Route::get('/prefecture/classes', [PrefectureDashboardController::class, 'classes'])->middleware('role:prefetture')->name('prefecture.classes');
+245        Route::get('/prefecture/personnel', [PrefectureDashboardController::class, 'personnel'])->middleware('role:prefetture')->name('prefecture.personnel');
+246        Route::get('/prefecture/profil', [PrefectureDashboardController::class, 'profil'])->middleware('role:prefetture')->name('prefecture.profil');

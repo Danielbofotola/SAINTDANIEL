@@ -1,0 +1,5 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/AdminUserManagementTest.php (1 hunk applied)
+Landed at lines 291-292 (the file's new text; no re-read needed):
+291            // dayOfWeekIso va de 1 à 7 : le dimanche (7) retomberait hors du tableau (lundi→samedi).
+292            'jour' => ['lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'][min(now()->addDay()->dayOfWeekIso, 6) - 1],

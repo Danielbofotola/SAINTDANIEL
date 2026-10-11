@@ -1,0 +1,12 @@
+406                                        <td>{{ $paiement->periode?->nom ?? '—' }}</td>
+407                                        <td class="text-right fw-bold">{{ number_format((float) $paiement->montant_paye, 2) }}</td>
+408                                        <td><span class="badge {{ $paiement->statut === 'actif' ? 'badge-success' : 'badge-secondary' }}">{{ $paiement->statut }}</span></td>
+409                                    </tr>
+410                                @empty
+411                                    <tr><td colspan="6" class="text-center text-muted">Aucun paiement enregistré pour l'année en cours.</td></tr>
+412                                @endforelse
+413                            </tbody>
+414                        </table>
+415                    </div>
+
+[showing lines 406-415 of 502; read again with offset=416 for more]

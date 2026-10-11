@@ -1,0 +1,30 @@
+Applied patch: 1 file changed (1 updated)
+Updated resources/views/admin/profile/account-edit.blade.php (2 hunks applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 249-250 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+  ⚠ hunk 2: context matched at lines 292-293 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 249-261:
+249                                  <div class="col-md-4 form-group" id="blocEnfants" @if (old('role', $user->role) !== 'parent') style="display:none" @endif>
+250                                     <label for="enfants">Enfants rattachés</label>
+251                                     <select class="form-control" id="enfants" name="enfants[]" multiple size="6">
+252                                        @foreach ($eleves as $eleve)
+253                                           <option value="{{ $eleve->id }}" @selected(in_array($eleve->id, old('enfants', $enfantsSelectionnes)))>
+254                                              {{ trim($eleve->nom.' '.$eleve->postnom.' '.$eleve->prenom) }} — {{ $eleve->matricule }}
+255                                           </option>
+256                                        @endforeach
+257                                     </select>
+258                                     <small class="text-muted d-block mt-1">Un compte parent peut suivre plusieurs enfants (Ctrl/Cmd pour en sélectionner plusieurs).</small>
+259                                  </div>
+260                                  <div class="col-md-4 form-group">
+261                                     <label>Statut <span class="text-danger">*</span></label>
+Auto-corrected hunk landed at lines 304-313:
+304          // Le rattachement des enfants ne concerne que les comptes parents.
+305          (function () {
+306             var role = document.querySelector('select[name="role"]');
+307             var bloc = document.getElementById('blocEnfants');
+308             if (!role || !bloc) return;
+309             role.addEventListener('change', function () {
+310                bloc.style.display = role.value === 'parent' ? '' : 'none';
+311             });
+312          })();
+313

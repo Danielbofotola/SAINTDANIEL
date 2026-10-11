@@ -1,0 +1,17 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/FinancesPagesTest.php (2 hunks applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 12-12 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 12-12:
+12             'types_frais', 'inscriptions', 'periodes', 'eleves', 'tuteurs', 'classes', 'cycles', 'salles',
+Landed at lines 127-134 (the file's new text; no re-read needed):
+127        Schema::create('periodes', function (Blueprint $table) {
+128            $table->id();
+129            $table->unsignedBigInteger('annee_scolaire_id');
+130            $table->string('nom', 50);
+131            $table->string('statut')->default('actif');
+132            $table->timestamps();
+133        });
+134        Schema::create('paiements', function (Blueprint $table) {
+Landed at lines 139-139 (the file's new text; no re-read needed):
+139            $table->unsignedBigInteger('periode_id')->nullable();

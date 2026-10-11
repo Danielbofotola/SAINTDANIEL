@@ -1,0 +1,45 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\aba9102c187c\20261011-161107-bash-call_01a12b846e9376538421d251.txt (723 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+[powershell — Windows side]
+No syntax errors detected in app/Http/Controllers/EleveController.php
+No syntax errors detected in app/Models/AnneeScolaire.php
+                                    <a href="https://mon-app-ecole.loca.lt/admin/eleves/5/modifier" class="btn btn-sm btn-primary" title="Modifier"><i class="fa fa-pencil"></i></a>\n
+                                    \n
+                                    <form class="d-inline" method="POST" action="https://mon-app-ecole.loca.lt/admin/eleve
+
+... 626 chars truncated ...
+
+      </form>\n
+                                </td>\n
+                            </tr>\n
+                                            </tbody>\n
+                </table>\n
+            </div>\n
+            <div class="d-flex justify-content-between align-items-center flex-wrap">\n
+                <small class="text-muted">2 élève(s) — page 1 / 1</small>\n
+                \n
+            </div>\n
+        </div>\n
+    </main>\n
+</body>\n
+</html>\n
+
+
+  To contain: Nouveau Eleve
+
+  at tests\Feature\DeliberationTest.php:568
+    564▕         ->assertOk()
+    565▕         ->assertSee('2027-2028')
+    566▕         ->assertSee('NomA')          // l'élève promu par la délibération
+    567▕         ->assertSee('Passage')       // sa provenance
+  ➜ 568▕         ->assertSee('Nouveau Eleve'); // le nouvel inscrit
+    569▕ 
+    570▕     // Sans la délibération d'origine, le nouvel inscrit est marqué « Nouveau ».
+    571▕     expect(Inscription::where('annee_scolaire_id', $s['cible']->id)->count())->toBe(2);
+    572▕ });
+
+
+  Tests:    1 failed, 18 passed (118 assertions)
+  Duration: 0.95s
+
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

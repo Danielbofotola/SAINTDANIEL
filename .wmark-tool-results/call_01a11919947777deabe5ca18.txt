@@ -1,0 +1,8 @@
+Applied patch: 1 file changed (1 updated)
+Updated routes/web.php (1 hunk applied)
+Landed at lines 270-274 (the file's new text; no re-read needed):
+270        // Une page par rubrique : évite de tout charger sur une page unique.
+271        Route::get('/espace-parent/notifications', [PortailParentController::class, 'notifications'])->middleware('role:parent,admin')->name('parent.notifications');
+272        Route::get('/espace-parent/messages', [PortailParentController::class, 'messages'])->middleware('role:parent,admin')->name('parent.messages');
+273        Route::get('/espace-parent/enfants', [PortailParentController::class, 'enfants'])->middleware('role:parent,admin')->name('parent.enfants');
+274        Route::get('/espace-parent/profil', [PortailParentController::class, 'profil'])->middleware('role:parent,admin')->name('parent.profil');

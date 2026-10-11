@@ -1,0 +1,62 @@
+78         Schema::create('salles', function (Blueprint $table) {
+79             $table->id();
+80             $table->string('nom');
+81             $table->string('statut')->default('actif');
+82             $table->timestamps();
+83         });
+84         Schema::create('classes', function (Blueprint $table) {
+85             $table->id();
+86             $table->unsignedBigInteger('cycle_id')->nullable();
+87             $table->unsignedBigInteger('salle_id')->nullable();
+88             $table->string('nom');
+89             $table->string('statut');
+90             $table->timestamps();
+91         });
+92         Schema::create('professeurs', function (Blueprint $table) {
+93             $table->id();
+94             $table->string('statut')->default('actif');
+95         });
+96         Schema::create('cours', function (Blueprint $table) {
+97             $table->id();
+98             $table->string('code', 20)->unique();
+99             $table->string('intitule', 100);
+100            $table->unsignedInteger('ponderation')->default(1);
+101            $table->unsignedInteger('max_travaux_journaliers')->nullable();
+102            $table->unsignedInteger('max_examen')->nullable();
+103            $table->string('statut')->default('actif');
+104            $table->timestamps();
+105        });
+106        Schema::create('affectations_cours', function (Blueprint $table) {
+107            $table->id();
+108            $table->unsignedBigInteger('professeur_id');
+109            $table->unsignedBigInteger('cours_id');
+110            $table->unsignedBigInteger('classe_id');
+111            $table->unsignedBigInteger('annee_scolaire_id');
+112            $table->string('statut')->default('actif');
+113            $table->timestamps();
+114        });
+115        Schema::create('tuteurs', function (Blueprint $table) {
+116            $table->id();
+117            $table->string('nom_mere');
+118            $table->string('telephone_mere');
+119            $table->string('statut')->default('actif');
+120            $table->timestamps();
+121        });
+122        Schema::create('eleves', function (Blueprint $table) {
+123            $table->id();
+124            $table->string('matricule')->unique();
+125            $table->string('nom');
+126            $table->string('postnom')->nullable();
+127            $table->string('prenom');
+128            $table->string('sexe');
+129            $table->date('date_naissance');
+130            $table->string('lieu_naissance')->nullable();
+131            $table->unsignedBigInteger('tuteur_id');
+132            $table->string('statut');
+133            $table->timestamps();
+134        });
+135        Schema::create('inscriptions', function (Blueprint $table) {
+136            $table->id();
+137            $table->unsignedBigInteger('eleve_id');
+
+[showing lines 78-137 of 451; read again with offset=138 for more]

@@ -1,0 +1,22 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/PortailParentTest.php (1 hunk applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 403-406 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 403-422:
+403    test('chaque rubrique de l’espace parent a sa propre page', function () {
+404        reglerPortailParents(true);
+405    
+406        $parent = User::factory()->create(['role' => 'parent']);
+407    
+408        // L'accueil sert les annonces et ne charge pas la messagerie (plus d'embouteillage).
+409        $this->actingAs($parent)->get(route('parent.dashboard'))->assertOk()
+410            ->assertSee('Espace Parent')
+      … 4 lines omitted …
+415            $this->actingAs($parent)->get(route($route))->assertOk()->assertSee('Espace Parent');
+416        }
+417    });
+418    
+419    /**
+420     * Petit fichier audio WAVE valide, pour tester les pièces jointes vocales sans
+421     * dépendre d'un encodeur : la règle « mimes » détecte le type par le contenu.
+422     */

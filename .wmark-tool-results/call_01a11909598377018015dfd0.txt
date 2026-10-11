@@ -1,0 +1,24 @@
+94         Schema::create('professeurs', function (Blueprint $table) {
+95             $table->id();
+96             $table->string('matricule');
+97             $table->string('nom');
+98             $table->string('prenom');
+99             $table->string('statut')->default('actif');
+100            $table->timestamps();
+101        });
+102    
+103        Schema::create('notifications', function (Blueprint $table) {
+104            $table->uuid('id')->primary();
+105            $table->string('type');
+106            $table->morphs('notifiable');
+107            $table->text('data');
+108            $table->timestamp('read_at')->nullable();
+109            $table->timestamps();
+110        });
+111    
+112        DB::table('annees_scolaires')->insert([
+113            'id' => 1, 'libelle' => '2026-2027', 'date_debut' => '2026-09-01', 'date_fin' => '2027-07-01',
+114            'is_encours' => true, 'statut' => 'actif',
+115        ]);
+
+[showing lines 94-115 of 216; read again with offset=116 for more]

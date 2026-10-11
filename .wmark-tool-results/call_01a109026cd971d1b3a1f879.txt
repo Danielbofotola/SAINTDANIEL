@@ -1,0 +1,22 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/FinancesPagesTest.php (2 hunks applied)
+Landed at lines 11-11 (the file's new text; no re-read needed):
+11             'archives_annees', 'paies', 'salaires', 'bulletins', 'notes', 'evaluations', 'affectations_cours',
+Landed at lines 203-227 (the file's new text; no re-read needed):
+203        Schema::create('salaires', function (Blueprint $table) {
+204            $table->id();
+205            $table->string('beneficiaire_type', 20);
+206            $table->unsignedBigInteger('beneficiaire_id');
+207            $table->decimal('salaire_base', 12, 2);
+208            $table->string('devise', 10)->default('USD');
+209            $table->string('statut')->default('actif');
+210            $table->timestamps();
+      … 9 lines omitted …
+220            $table->decimal('montant_net', 12, 2);
+221            $table->date('date_paiement');
+222            $table->string('mode_paiement', 20)->default('especes');
+223            $table->string('reference', 100)->nullable();
+224            $table->string('observation')->nullable();
+225            $table->string('statut')->default('actif');
+226            $table->timestamps();
+227        });

@@ -1,0 +1,31 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\e1ce9c26600a\20261004-215025-apply_patch-call_01a108aed1d1708e9f94d05a.txt (757 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+Applied patch: 1 file changed (1 updated)
+Updated resources/views/admin/bulletins/document.blade.php (11 hunks applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 2: context matched at lines 100-105 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+  ⚠ hunk 6: context matched at lines 138-140 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+  ⚠ 
+
+... 927 chars truncated ...
+
+</th><th>TOT</th><th>%</th>
+Auto-corrected hunk landed at lines 142-142:
+142                    <td colspan="{{ 6 * $periodes->count() }}" class="bg-black"></td>
+Auto-corrected hunk landed at lines 147-147:
+147                    <td colspan="{{ 6 * $periodes->count() }}"></td>
+Auto-corrected hunk landed at lines 152-152:
+152                    <td colspan="{{ 6 * $periodes->count() }}"></td>
+… 3 more auto-corrected hunks not shown …
+Landed at lines 96-96 (the file's new text; no re-read needed):
+96                         <th colspan="6">{{ $periode->nom }}</th>
+Landed at lines 113-118 (the file's new text; no re-read needed):
+113                            <td>{{ $ligne ? $fmt($ligne['tj_max']) : '' }}</td>
+114                            <td>{{ $ligne ? $fmt($ligne['tj']) : '' }}</td>
+115                            <td>{{ $ligne ? $fmt($ligne['examen_max']) : '' }}</td>
+116                            <td>{{ $ligne ? $fmt($ligne['examen']) : '' }}</td>
+117                            <td>{{ $ligne ? $fmt($ligne['total']) : '' }}</td>
+118                            <td>{{ $ligne && $ligne['pourcentage'] !== null ? $fmt($ligne['pourcentage']) : '' }}</td>
+Landed at lines 125-125 (the file's new text; no re-read needed):
+125                    <tr><td colspan="{{ 6 * $periodes->count() + 4 }}" class="text-center">Aucune branche affectée à cette classe.</td></tr>
+Landed at lines 132-132 (the file's new text; no re-read needed):
+132                            <td colspan="6"></td>

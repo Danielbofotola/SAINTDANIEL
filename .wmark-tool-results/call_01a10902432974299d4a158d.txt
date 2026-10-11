@@ -1,0 +1,7 @@
+10         foreach ([
+11             'archives_annees', 'bulletins', 'notes', 'evaluations', 'affectations_cours',
+12             'depenses', 'categories_depenses', 'paiements', 'frais_scolaires',
+13             'types_frais', 'inscriptions', 'periodes', 'eleves', 'tuteurs', 'classes', 'cycles', 'salles',
+14             'professeurs', 'annees_scolaires', 'users',
+
+[showing lines 10-14 of 511; read again with offset=15 for more]

@@ -1,0 +1,12 @@
+94         Schema::create('professeurs', function (Blueprint $table) {
+95             $table->id();
+96             $table->string('matricule');
+97             $table->string('nom');
+98             $table->string('prenom');
+99             $table->string('statut')->default('actif');
+100            $table->timestamps();
+101        });
+102    
+103        DB::table('annees_scolaires')->insert([
+
+[showing lines 94-103 of 164; read again with offset=104 for more]

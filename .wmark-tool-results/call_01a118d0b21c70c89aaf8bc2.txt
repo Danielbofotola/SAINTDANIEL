@@ -1,0 +1,19 @@
+166        {
+167            abort_unless(
+168                $conversation->participants()->where('user_id', $request->user()->id)->exists(),
+169                403,
+170                'Cette conversation ne vous concerne pas.'
+171            );
+172        }
+173    
+174        /**
+175         * Ouvre (ou retrouve) la conversation directe avec un correspondant, puis
+176         * renvoie son identifiant : le client recharge la page sur ce fil.
+177         */
+178        public function demarrer(Request $request): JsonResponse
+179        {
+180            $data = $request->validate([
+181                'destinataire' => ['required', 'integer', 'exists:users,id'],
+182            ]);
+
+[showing lines 166-183 of 232; read again with offset=184 for more]

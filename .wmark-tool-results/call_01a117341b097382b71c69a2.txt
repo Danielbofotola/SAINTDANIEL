@@ -1,0 +1,67 @@
+1      @php($estMoi = $message->auteur_id === $user->id)
+2      @php($reponse = $message->reponseA)
+3      <div class="bulle-container {{ $estMoi ? 'bulle-container--moi' : 'bulle-container--autre' }}" data-message-id="{{ $message->id }}">
+4          @if ($message->auteur?->photo)
+5              <img class="msg-avatar msg-avatar--sm" src="{{ asset('storage/'.$message->auteur->photo) }}" alt="{{ $message->nomAuteur() }}">
+6          @else
+7              <span class="msg-avatar msg-avatar--sm">
+8                  {{ mb_strtoupper(mb_substr($message->auteur?->prenom ?: $message->nomAuteur(), 0, 1)) }}
+9              </span>
+10         @endif
+11     
+12         <div class="bulle-colonne">
+13             @unless ($estMoi || ($active->type ?? 'directe') === 'directe')
+14                 <strong class="bulle-auteur">{{ $message->nomAuteur() }}</strong>
+15             @endunless
+16     
+17             @if ($reponse)
+18                 <div class="bulle-citation">
+19                     <i class="fa-solid fa-reply"></i>
+20                     {{ \Illuminate\Support\Str::limit($reponse->corps ?: $reponse->nomPieceJointe(), 60) }}
+21                 </div>
+22             @endif
+23     
+24             <div class="bulle {{ $estMoi ? 'bulle--moi' : 'bulle--autre' }} {{ $message->estSticker() ? 'bulle--sticker' : '' }}">
+25                 {{ $message->corps }}
+26                 @if ($message->piece_jointe)
+27                     <div class="bulle__piece">
+28                         @if ($message->estAudio())
+29                             <audio class="bulle__audio" controls preload="metadata" src="{{ $message->urlPieceJointe() }}"></audio>
+30                         @elseif ($message->estImage())
+31                             <a href="{{ $message->urlPieceJointe() }}" target="_blank" rel="noopener">
+32                                 <img src="{{ $message->urlPieceJointe() }}" alt="{{ $message->nomPieceJointe() }}" loading="lazy">
+33                             </a>
+34                         @else
+35                             <a href="{{ $message->urlPieceJointe() }}" target="_blank" rel="noopener">
+36                                 <i class="fa fa-paperclip"></i> {{ $message->nomPieceJointe() }}
+37                             </a>
+38                         @endif
+39                     </div>
+40                 @endif
+41             </div>
+42     
+43             @if ($message->aReaction())
+44                 <span class="bulle-reaction">{{ $message->reaction }}</span>
+45             @endif
+46     
+47             <div class="bulle-pied">
+48                 <span class="bulle__meta">{{ $message->created_at?->format('H:i | d M') }}</span>
+49                 <button type="button" class="bulle-action" title="Répondre" onclick="repondreA({{ $message->id }})">
+50                     <i class="fa-solid fa-reply"></i>
+51                 </button>
+52                 <button type="button" class="bulle-action" title="Réagir" onclick="toggleReactions({{ $message->id }}, this)">
+53                     <i class="fa-regular fa-face-smile"></i>
+54                 </button>
+55             </div>
+56         </div>
+57     </div>
+58     
+59     @once
+60     <style>
+61         .bulle__piece { margin-top: 6px; }
+62         .bulle__piece img { max-width: 240px; max-height: 240px; border-radius: 8px; display: block; cursor: zoom-in; }
+63         .bulle__piece a { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: inherit; text-decoration: underline; }
+64         .bulle__audio { display: block; max-width: 260px; height: 38px; }
+65         .bulle--sticker { background: transparent !important; font-size: 2.25rem; line-height: 1; padding: 0 4px; }
+66     </style>
+67     @endonce

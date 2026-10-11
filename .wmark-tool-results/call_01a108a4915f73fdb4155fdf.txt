@@ -1,0 +1,13 @@
+Applied patch: 1 file changed (1 updated)
+Updated resources/views/admin/evaluations/index.blade.php (2 hunks applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 30-30 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+  ⚠ hunk 2: context matched at lines 75-76 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 31-31:
+31             @unless ($saisieNotesActive)<div class="alert alert-warning"><i class="fa fa-toggle-off"></i> La saisie des notes est désactivée (« Commuter les modules »).</div>@endunless
+Auto-corrected hunk landed at lines 77-81:
+77                                         @if ($saisieNotesActive)
+78                                             <a href="{{ route('admin.evaluations.notes', $evaluation) }}" class="btn btn-sm btn-info" title="Saisir les notes"><i class="fa fa-pencil-square-o"></i></a>
+79                                         @else
+80                                             <span class="btn btn-sm btn-secondary disabled" title="Saisie des notes désactivée"><i class="fa fa-pencil-square-o"></i></span>
+81                                         @endif

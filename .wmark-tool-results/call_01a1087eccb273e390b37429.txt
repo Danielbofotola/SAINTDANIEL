@@ -1,0 +1,1 @@
+Error: ripgrep (rg) is not available, so the grep tool cannot run. Use the bash tool with grep/find instead. environment: native Windows. Install ripgrep with 'winget install BurntSushi.ripgrep.MSVC' (or 'choco install ripgrep'). If wmark came from the official Windows binary, the bundled vendor\windows\rg.exe is missing — reinstall wmark.

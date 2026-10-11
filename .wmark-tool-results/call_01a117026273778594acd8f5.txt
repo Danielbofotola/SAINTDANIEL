@@ -1,0 +1,31 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\144c63540b62\20261007-163618-bash-call_01a117026273778594acd8f5.txt (2,140 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Structured view (text):
+[powershell — Windows side]
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\tests\Pest.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\tests\TestCase.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\tests\Feature\ActiveAccountTest.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\tests\Feature\AdminAccountCredentialsTest.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\tests\Feature\AdminUserManagementTest.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\tests\Feature\AnneeEnCoursScopingTest.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\tests\Feature\AnneeScolaireTest.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\tests\Feature\AnnoncesTest.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\tests\Feature\BulletinDocumentTest.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\tests\Feature\ClocheNotificationsTest.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\tests\Feature\ComptabiliteTest.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\tests\Feature\ComptableCaisseTest.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\tests\Feature\ComptableDepenseTest.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\tests\Feature\CyclesPagesTest.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\tests\Feature\ElevesPagesTest.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\tests\Feature\ErrorPagesTest.php
+… 1,463 chars elided …
+ests\Feature\RoleDashboardsTest.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\tests\Feature\ScolaritePagesTest.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\tests\Feature\SectionOptionPagesTest.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\tests\Feature\StatistiquesTest.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\tests\Feature\SystemSettingsTest.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\tests\Feature\TresorerieAlerteTest.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\tests\Feature\UtilisateursEnLigneTest.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\tests\Feature\YearScopedModelsTest.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\tests\Unit\ExampleTest.php
+=== phpunit
+… 2,264 chars elided …
+</T></TN><ToString>=== phpunit.xml ===</ToString><Props><S N="Message">=== phpunit.xml ===</S><B N="NoNewLine">false</B><S N="ForegroundColor">Gray</S><S N="BackgroundColor">Black</S></Props></Obj><S N="Source">Write-Host</S><DT N="TimeGenerated">2026-10-07T16:36:18.7248437+01:00</DT><Obj N="Tags" RefId="4"><TN RefId="3"><T>System.Collections.Generic.List`1[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</T><T>System.Object</T></TN><LST><S>PSHOST</S></LST></Obj><S N="User">DANIELBOFOTOLA\danie</S><S N="Computer">DanielBofotola</S><U32 N="ProcessId">21396</U32><U32 N="NativeThreadId">8440</U32><U32 N="ManagedThreadId">16</U32></Props></Obj></Objs>

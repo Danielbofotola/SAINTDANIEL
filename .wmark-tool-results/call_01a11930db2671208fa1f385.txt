@@ -1,0 +1,46 @@
+160    
+161        return $eleveId;
+162    }
+163    
+164    test('the student list page shows enrollments, class and statistics', function () {
+165        seedEleve();
+166        $admin = User::factory()->create(['role' => 'admin']);
+167    
+168        $this->actingAs($admin)
+169            ->get(route('admin.eleves.index'))
+170            ->assertOk()
+171            ->assertSee('Liste des élèves')
+172            ->assertSee('Mwamba Kabila Aline')
+173            ->assertSee('ELV-2026-0001')
+174            ->assertSee('3e A')
+175            ->assertSee('Inscrits cette année');
+176    });
+177    
+178    test('the student list can be filtered by search term and by status', function () {
+179        seedEleve();
+180        seedEleve(['matricule' => 'ELV-2026-0002', 'nom' => 'Ilunga', 'postnom' => 'Mukendi', 'prenom' => 'David', 'sexe' => 'M', 'statut' => 'inactif']);
+181        $admin = User::factory()->create(['role' => 'admin']);
+182    
+183        $this->actingAs($admin)
+184            ->get(route('admin.eleves.index', ['q' => 'Ilunga']))
+185            ->assertOk()
+186            ->assertSee('Ilunga Mukendi David')
+187            ->assertDontSee('Mwamba Kabila Aline');
+188    
+189        $this->actingAs($admin)
+190            ->get(route('admin.eleves.index', ['statut' => 'inactif']))
+191            ->assertOk()
+192            ->assertSee('Ilunga Mukendi David')
+193            ->assertDontSee('Mwamba Kabila Aline');
+194    });
+195    
+196    test('the enrollment history lists processed applications and hides pending ones', function () {
+197        $admin = User::factory()->create(['role' => 'admin']);
+198    
+199        $rows = [
+200            ['Acceptee', 'F', 'acceptee', 1, 1, null],
+201            ['Refusee', 'M', 'refusee', 1, 1, 'Dossier incomplet'],
+202            ['EnAttente', 'M', 'en_attente', null, null, null],
+203        ];
+
+[showing lines 160-204 of 243; read again with offset=205 for more]

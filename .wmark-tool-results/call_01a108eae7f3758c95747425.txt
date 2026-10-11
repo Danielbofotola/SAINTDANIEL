@@ -1,0 +1,8 @@
+59         Route::get('/admin/professeurs/nouveau', [ProfesseurController::class, 'create'])->middleware('role:admin')->name('admin.professeurs.create');
+60         Route::post('/admin/professeurs', [ProfesseurController::class, 'store'])->middleware('role:admin')->name('admin.professeurs.store');
+61         Route::get('/admin/professeurs', [ProfesseurController::class, 'index'])->middleware('role:admin')->name('admin.professeurs.index');
+62         Route::get('/admin/professeurs/{professeur}', [ProfesseurController::class, 'show'])->middleware('role:admin')->name('admin.professeurs.show');
+63         Route::get('/admin/professeurs/{professeur}/emploi-du-temps', [ProfesseurController::class, 'emploiDuTemps'])->middleware('role:admin')->name('admin.professeurs.emploi-du-temps');
+64         Route::patch('/admin/professeurs/{professeur}/statut', [ProfesseurController::class, 'toggleStatus'])->middleware('role:admin')->name('admin.professeurs.toggle-status');
+
+[showing lines 59-64 of 180; read again with offset=65 for more]

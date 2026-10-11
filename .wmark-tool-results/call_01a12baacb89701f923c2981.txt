@@ -1,0 +1,17 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/ComptableCaisseTest.php (3 hunks applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 11-12 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 12-12:
+12             'classes', 'cycles', 'salles', 'annees_scolaires', 'users', 'parametres_systeme',
+Landed at lines 136-143 (the file's new text; no re-read needed):
+136    
+137        Schema::create('parametres_systeme', function (Blueprint $table) {
+138            $table->id();
+139            $table->string('nom_court', 60)->nullable();
+140            $table->boolean('module_recus_actif')->default(true);
+141            $table->boolean('module_recouvrement_actif')->default(true);
+142            $table->timestamps();
+143        });
+Landed at lines 151-151 (the file's new text; no re-read needed):
+151        DB::table('parametres_systeme')->insert(['nom_court' => 'Ecole Test', 'module_recus_actif' => 1, 'module_recouvrement_actif' => 1, 'created_at' => now(), 'updated_at' => now()]);

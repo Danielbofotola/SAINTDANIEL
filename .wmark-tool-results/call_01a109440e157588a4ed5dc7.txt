@@ -1,0 +1,18 @@
+43             <main class="teacher-main">
+44                 @include('partials.impersonation-banner')
+45                 <header class="topbar">
+46                     <div class="breadcrumb"><span class="school-brand">{{ $systemSettings->nom_court }}</span> <span aria-hidden="true">/</span> <strong>Espace préfecture</strong></div>
+47                     <div class="topbar-actions">
+48                         <a class="icon-link" href="{{ route('profile.show') }}" aria-label="Mon profil" title="Mon profil"><i class="fa fa-user-o"></i></a>
+49                         <a class="top-avatar" href="{{ route('profile.show') }}">
+50                             <span class="avatar">@if ($user->photo)<img src="{{ asset('storage/'.$user->photo) }}" alt="">@else{{ $initial }}@endif</span>
+51                             <span class="top-avatar-copy"><span class="top-avatar-name">{{ $displayName }}</span><span class="top-avatar-role">Préfecture</span></span>
+52                         </a>
+53                     </div>
+54                 </header>
+55     
+56                 <div class="dashboard-content">
+57                     <section class="page-intro">
+58                         <div><p class="eyebrow">Supervision de l'établissement</p><h1>Bonjour, {{ $user->prenom ?: $user->username }}</h1><p class="intro-subtitle">{{ $schoolYear ? 'Année scolaire '.$schoolYear->libelle : 'Année scolaire non définie' }}</p></div>
+
+[showing lines 43-58 of 159; read again with offset=59 for more]

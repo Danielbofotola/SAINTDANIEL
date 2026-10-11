@@ -1,0 +1,47 @@
+200            ->assertForbidden();
+201    });
+202    
+203    test('un parent envoie un message au personnel depuis le portail', function () {
+204        reglerPortailParents(true);
+205    
+206        $parent = User::factory()->create(['role' => 'parent']);
+207        $prof = User::factory()->create(['role' => 'professeur']);
+208    
+209        $this->actingAs($parent)
+210            ->post(route('messagerie.store'), [
+211                'destinataires' => [(string) $prof->id],
+212                'sujet' => 'Question minerval',
+213                'corps' => 'Bonjour, quel est le solde restant ?',
+214            ])
+215            ->assertRedirect()
+216            ->assertSessionHas('success', fn (string $m) => str_contains($m, '1 destinataire'));
+217    
+218        expect(DB::table('messages')->count())->toBe(1);
+219        expect(Messagerie::nonLus($prof->fresh()))->toBe(1);
+220    });
+221    
+222    test('un message vocal est enregistré et rendu par un lecteur audio', function () {
+223        Storage::fake('public');
+224        reglerPortailParents(true);
+225    
+226        $parent = User::factory()->create(['role' => 'parent']);
+227        $prof = User::factory()->create(['role' => 'professeur']);
+228        $conversation = Messagerie::creer($prof, [$parent->id], 'Vocal', 'Envoyez-moi un vocal.');
+229    
+230        $this->actingAs($parent)
+231            ->post(route('messagerie.repondre', $conversation), [
+232                'piece_jointe' => fichierAudioDeTest('vocal.wav'),
+233            ])
+234            ->assertSessionHasNoErrors()
+235            ->assertRedirect();
+236    
+237        $message = $conversation->messages()->latest('id')->first();
+238    
+239        expect($message->piece_jointe)->not->toBeNull()
+240            ->and($message->estAudio())->toBeTrue();
+241    
+242        $html = view('messagerie._bulle', ['message' => $message, 'user' => $parent, 'active' => $conversation])->render();
+243    
+244        expect($html)->toContain('bulle__audio')->toContain('<audio');
+
+[showing lines 200-244 of 274; read again with offset=245 for more]

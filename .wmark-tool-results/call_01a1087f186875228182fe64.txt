@@ -1,0 +1,64 @@
+1      <!DOCTYPE html>
+2      <html lang="fr">
+3      <head>
+4          <meta charset="utf-8">
+5          <meta name="viewport" content="width=device-width, initial-scale=1">
+6          <title>Liste des classes</title>
+7          <link rel="stylesheet" href="{{ asset('boostrap/css/css/main.css') }}">
+8          <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+9              <link rel="stylesheet" href="{{ asset('boostrap/css/css/main.css') }}">
+10         <link rel="stylesheet" href="{{ asset('boostrap/css/font-awesome/css/fa-regular.min.css') }}">
+11         <link rel="stylesheet" href="{{ asset('boostrap/css/font-awesome/css/fontawesome.css') }}">
+12         <link rel="stylesheet" href="{{ asset('boostrap/css/font-awesome/css/fa-solid.css') }}">
+13         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+14         <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap4.min.css">
+15         <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+16     </head>
+17     <body class="app">
+18         <main class="app-content" style="margin-left:0">
+19             <div class="app-title">
+20                 <div><h1><i class="fa fa-graduation-cap"></i> Classes créées</h1><p>Consultez les classes et leur organisation scolaire @if($anneeEnCours) — année <strong>{{ $anneeEnCours->libelle }}</strong>@endif.</p></div>
+21                 <div><a href="{{ route('admin.dashboard') }}" class="btn btn-secondary">Retour</a> <a href="{{ route('admin.classes.create') }}" class="btn btn-primary"><i class="fa fa-plus"></i> Créer une classe</a></div>
+22             </div>
+23     
+24             <div class="tile">
+25                 <div class="table-responsive">
+26                     <table class="table table-hover table-bordered">
+27                         @if (session('success'))<div class="alert alert-success">{{ session('success') }}</div>@endif
+28                         @if (session('error'))<div class="alert alert-danger">{{ session('error') }}</div>@endif
+29                         <thead><tr><th>#</th><th>Classe</th><th>Cycle</th><th>Section</th><th>Option</th><th>Salle</th><th>Élèves @if($anneeEnCours)<small>{{ $anneeEnCours->libelle }}</small>@endif</th><th>Statut</th><th>Actions</th></tr></thead>
+30                         <tbody>
+31                             @forelse ($classes as $classe)
+32                                 <tr>
+33                                     <td>{{ $loop->iteration }}</td>
+34                                     <td><a href="{{ route('admin.classes.students', $classe) }}"><strong>{{ $classe->nom }}</strong></a>@if ($classe->section_id)<br><small class="text-muted">Section {{ $classe->section?->nom }}</small>@endif</td>
+35                                     <td>{{ $classe->cycle?->nom ?? 'Non renseigné' }}</td>
+36                                     <td>{{ $classe->section?->nom ?? 'Non renseignée' }}</td>
+37                                     <td>{{ $classe->option?->nom ?? 'Non renseignée' }}</td>
+38                                     <td>{{ $classe->salle?->nom ?? 'Non attribuée' }}</td>
+39                                     <td><a href="{{ route('admin.classes.students', $classe) }}" class="badge badge-info">{{ $classe->eleves_count }} élève(s)</a></td>
+40                                     <td><span class="badge badge-{{ $classe->statut === 'actif' ? 'success' : 'secondary' }}">{{ $classe->statut === 'actif' ? 'Active' : 'Inactive' }}</span></td>
+41                                     <td class="text-nowrap">
+42                                         <a href="{{ route('admin.classes.edit', $classe) }}" class="btn btn-sm btn-info" title="Modifier"><i class="fa fa-pencil"></i></a>
+43                                         <form class="d-inline" method="POST" action="{{ route('admin.classes.toggle-status', $classe) }}">
+44                                             @csrf
+45                                             @method('PATCH')
+46                                             <button class="btn btn-sm btn-{{ $classe->statut === 'actif' ? 'warning' : 'success' }}" type="submit" title="{{ $classe->statut === 'actif' ? 'Désactiver' : 'Activer' }}"><i class="fa fa-power-off"></i></button>
+47                                         </form>
+48                                         <form class="d-inline" method="POST" action="{{ route('admin.classes.destroy', $classe) }}" onsubmit="return confirm('Voulez-vous vraiment supprimer cette classe ?');">
+49                                             @csrf
+50                                             @method('DELETE')
+51                                             <button class="btn btn-sm btn-danger" type="submit" title="Supprimer"><i class="fa fa-trash"></i></button>
+52                                         </form>
+53                                     </td>
+54                                 </tr>
+55                             @empty
+56                                 <tr><td colspan="9" class="text-center text-muted">Aucune classe créée pour le moment.</td></tr>
+57                             @endforelse
+58                         </tbody>
+59                     </table>
+60                 </div>
+61             </div>
+62         </main>
+63     </body>
+64     </html>

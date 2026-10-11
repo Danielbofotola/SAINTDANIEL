@@ -1,0 +1,26 @@
+222    test('le portail propose au parent de démarrer la discussion en un clic', function () {
+223        reglerPortailParents(true);
+224    
+225        $parent = User::factory()->create(['role' => 'parent']);
+226        $prefet = User::factory()->create(['role' => 'prefetture', 'nom' => 'Kalala', 'prenom' => 'Pierre']);
+227    
+228        // Sans discussion : raccourci direct vers le préfet.
+229        $this->actingAs($parent)
+230            ->get(route('parent.dashboard'))
+231            ->assertOk()
+232            ->assertSee('Démarrer la discussion')
+233            ->assertSee('Écrire à Kalala');
+234    
+235        // Dès qu'une discussion existe, le raccourci disparaît (elle est dans la liste).
+236        Messagerie::creer($prefet, [$parent->id], 'Bonjour', 'Bienvenue.');
+237    
+238        $this->actingAs($parent)
+239            ->get(route('parent.dashboard'))
+240            ->assertOk()
+241            ->assertDontSee('Démarrer la discussion');
+242    });
+243    
+244    test('un parent écrit au préfet depuis le portail', function () {
+245        reglerPortailParents(true);
+
+[showing lines 222-245 of 367; read again with offset=246 for more]

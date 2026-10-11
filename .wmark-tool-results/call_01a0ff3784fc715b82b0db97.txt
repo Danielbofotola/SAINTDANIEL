@@ -1,0 +1,142 @@
+1      <!DOCTYPE html>
+2      <html lang="fr">
+3      <head>
+4          <meta charset="UTF-8">
+5          <meta name="viewport" content="width=device-width, initial-scale=1">
+6          <meta name="theme-color" content="#173f3b">
+7          <title>Espace enseignant | {{ $systemSettings->nom_court }}</title>
+8          <link rel="preconnect" href="https://fonts.googleapis.com">
+9          <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+10         <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+11         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+12         @include('partials.role-space-styles')
+13     </head>
+14     <body>
+15         @php
+16             $displayName = $professor ? trim($professor->prenom.' '.$professor->nom) : ($user->prenom ?: $user->username);
+17             $initial = strtoupper(substr($displayName, 0, 1));
+18             $photo = $user->photo ?: $professor?->photo;
+19             $evaluationMonths = ['janv.', 'févr.', 'mars', 'avr.', 'mai', 'juin', 'juil.', 'août', 'sept.', 'oct.', 'nov.', 'déc.'];
+20             $evaluationTypes = ['interro' => 'Interrogation', 'devoir' => 'Devoir', 'examen' => 'Examen', 'autre' => 'Évaluation'];
+21             $todayLabel = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'][now()->dayOfWeek];
+22         @endphp
+23         <div class="teacher-shell">
+24             <aside class="teacher-sidebar" aria-label="Navigation principale">
+25                 <a class="brand" href="{{ route('professeur.dashboard') }}">
+26                     <span class="brand-mark">M</span>
+27                     <span class="brand-copy"><span class="brand-name">{{ $systemSettings->nom_court }}</span><span class="brand-caption">Espace scolaire</span></span>
+28                 </a>
+29                 <div class="nav-caption">Espace enseignant</div>
+30                 <nav class="teacher-nav">
+31                     <a class="active" href="{{ route('professeur.dashboard') }}" aria-current="page"><i class="fa fa-th-large"></i><span class="nav-label">Vue générale</span></a>
+32                     <a href="#planning"><i class="fa fa-calendar-o"></i><span class="nav-label">Mon planning</span></a>
+33                     <a href="#enseignements"><i class="fa fa-book"></i><span class="nav-label">Mes cours</span></a>
+34                     <a href="#evaluations"><i class="fa fa-pencil-square-o"></i><span class="nav-label">Évaluations</span></a>
+35                 </nav>
+36                 <div class="sidebar-bottom">
+37                     <a class="profile-shortcut" href="{{ route('profile.show') }}" title="Ouvrir mon profil">
+38                         <span class="avatar">@if ($photo)<img src="{{ asset('storage/'.$photo) }}" alt="">@else{{ $initial }}@endif</span>
+39                         <span><span class="profile-name">{{ $displayName }}</span><span class="profile-role">Professeur</span></span>
+40                     </a>
+41                     <form method="POST" action="{{ route('logout') }}">@csrf<button class="sidebar-logout" type="submit"><i class="fa fa-sign-out"></i> <span class="logout-label">Déconnexion</span></button></form>
+42                 </div>
+43             </aside>
+44     
+45             <main class="teacher-main">
+46                 @include('partials.impersonation-banner')
+47                 <header class="topbar">
+48                     <div class="breadcrumb"><span class="school-brand">{{ $systemSettings->nom_court }}</span> <span aria-hidden="true">/</span> <strong>Espace enseignant</strong></div>
+49                     <div class="topbar-actions">
+50                         <a class="icon-link" href="{{ route('profile.show') }}" aria-label="Mon profil" title="Mon profil"><i class="fa fa-user-o"></i></a>
+51                         <a class="top-avatar" href="{{ route('profile.show') }}">
+52                             <span class="avatar">@if ($photo)<img src="{{ asset('storage/'.$photo) }}" alt="">@else{{ $initial }}@endif</span>
+53                             <span class="top-avatar-copy"><span class="top-avatar-name">{{ $displayName }}</span><span class="top-avatar-role">Enseignant</span></span>
+54                         </a>
+55                     </div>
+56                 </header>
+57     
+58                 <div class="dashboard-content">
+59                     <section class="page-intro">
+60                         <div><p class="eyebrow">Votre espace de travail</p><h1>Bonjour, {{ $professor?->prenom ?: $user->prenom ?: $user->username }}</h1><p class="intro-subtitle">{{ $schoolYear?->libelle ? 'Année scolaire '.$schoolYear->libelle : 'Année scolaire non définie' }}@if ($professor?->specialite) <span aria-hidden="true">·</span> {{ $professor->specialite }}@endif</p></div>
+61                         <time class="date-stamp" datetime="{{ now()->toDateString() }}"><i class="fa fa-calendar-o" aria-hidden="true"></i> {{ now()->format('d/m/Y') }}</time>
+62                     </section>
+63     
+64                     <section class="welcome-banner" aria-label="Bienvenue dans votre espace enseignant">
+65                         <div class="welcome-copy">
+66                             <span class="welcome-tag"><i class="fa fa-circle" aria-hidden="true"></i> {{ $schoolYear?->libelle ?: 'Espace enseignant' }}</span>
+67                             <h2>{{ $professor?->specialite ?: 'Votre espace pédagogique' }}</h2>
+68                             <p>{{ $professor ? 'Bonjour '.$displayName.', heureux de vous retrouver.' : 'Retrouvez ici vos informations pédagogiques et votre profil.' }}</p>
+69                             <a class="banner-action" href="{{ route('profile.show') }}">Mon profil <i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+70                         </div>
+71                         <span class="banner-art" aria-hidden="true"><i class="fa fa-book"></i></span>
+72                     </section>
+73     
+74                     @if (! $professor)
+75                         <div class="link-notice" role="status"><i class="fa fa-info-circle" aria-hidden="true"></i><div><strong>Aucune fiche enseignant n’est reliée à ce compte.</strong><p>Demandez à l’administration de l’établissement de relier votre compte à votre fiche professeur pour afficher vos cours et votre planning.</p></div></div>
+76                     @elseif (! $schoolYear)
+77                         <div class="link-notice" role="status"><i class="fa fa-info-circle" aria-hidden="true"></i><div><strong>Aucune année scolaire en cours n’est définie.</strong><p>Vos affectations pédagogiques apparaîtront ici lorsque l’administration aura activé l’année scolaire.</p></div></div>
+78                     @endif
+79     
+80                     <section class="stat-grid" aria-label="Mes indicateurs pédagogiques">
+81                         <article class="stat-card"><span class="stat-icon"><i class="fa fa-book" aria-hidden="true"></i></span><div><div class="stat-value">{{ $assignments->count() }}</div><div class="stat-label">Cours affectés</div></div></article>
+82                         <article class="stat-card"><span class="stat-icon"><i class="fa fa-university" aria-hidden="true"></i></span><div><div class="stat-value">{{ $assignments->pluck('classe_id')->unique()->count() }}</div><div class="stat-label">Classes suivies</div></div></article>
+83                         <article class="stat-card"><span class="stat-icon"><i class="fa fa-users" aria-hidden="true"></i></span><div><div class="stat-value">{{ $studentCount }}</div><div class="stat-label">Élèves concernés</div></div></article>
+84                         <article class="stat-card"><span class="stat-icon"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></span><div><div class="stat-value">{{ $upcomingEvaluations->count() }}</div><div class="stat-label">Évaluations à venir</div></div></article>
+85                     </section>
+86     
+87                     <div class="dashboard-grid">
+88                         <div>
+89                             <section class="content-section" id="planning">
+90                                 <div class="section-heading"><div><h2>Mon planning</h2><p>Les cours prévus aujourd’hui</p></div><span class="section-link">{{ ucfirst($todayLabel) }}</span></div>
+91                                 <div class="schedule-panel">
+92                                     <div class="schedule-day"><i class="fa fa-clock-o" aria-hidden="true"></i> Aujourd’hui · {{ ucfirst($todayLabel) }}</div>
+93                                     @forelse ($todaySchedule as $item)
+94                                         <article class="schedule-item">
+95                                             <div class="schedule-time">{{ substr($item->heure_debut, 0, 5) }}<small>{{ substr($item->heure_fin, 0, 5) }}</small></div>
+96                                             <span class="schedule-marker" aria-hidden="true"></span>
+97                                             <div><div class="schedule-course">{{ $item->cours_nom }}</div><div class="schedule-meta">{{ $item->classe_nom }}</div></div>
+98                                             <span class="room-chip">{{ $item->salle_nom ?: 'Salle à confirmer' }}</span>
+99                                         </article>
+100                                    @empty
+101                                        <div class="empty-state"><div><i class="fa fa-coffee" aria-hidden="true"></i><strong>Aucun cours prévu aujourd’hui</strong><span>{{ $nextClass ? 'Votre prochain cours est '.$nextClass->jour.' à '.substr($nextClass->heure_debut, 0, 5).'.' : 'Votre planning sera affiché ici dès que vos horaires seront disponibles.' }}</span></div></div>
+102                                    @endforelse
+103                                </div>
+104                            </section>
+105    
+106                            <section class="content-section" id="enseignements">
+107                                <div class="section-heading"><div><h2>Mes enseignements</h2><p>Répartition par classe et par cours</p></div><span class="section-link">{{ $assignments->count() }} affectation(s)</span></div>
+108                                @if ($assignments->isNotEmpty())
+109                                    <div class="course-list">
+110                                        @foreach ($assignments as $assignment)
+111                                            <article class="course-row"><div><div class="course-title">{{ $assignment->cours_nom }}</div><div class="course-details">{{ $assignment->classe_nom }}
+112                                                @if ($assignment->section_nom) · {{ $assignment->section_nom }}@endif
+113                                                @if ($assignment->option_nom) · {{ $assignment->option_nom }}@endif
+114                                            </div></div><span class="course-code">{{ $assignment->cours_code }}</span></article>
+115                                        @endforeach
+116                                    </div>
+117                                @else
+118                                    <div class="schedule-panel"><div class="empty-state"><div><i class="fa fa-book" aria-hidden="true"></i><strong>Aucun cours affecté pour le moment</strong><span>Les cours associés à votre fiche apparaîtront ici pour l’année scolaire en cours.</span></div></div></div>
+119                                @endif
+120                            </section>
+121                        </div>
+122    
+123                        <div class="right-column">
+124                            <section class="content-section" id="evaluations">
+125                                <div class="section-heading"><div><h2>À venir</h2><p>Vos prochaines évaluations</p></div></div>
+126                                <div class="evaluation-panel">
+127                                    @forelse ($upcomingEvaluations as $evaluation)
+128                                        @php($evaluationDate = \Carbon\Carbon::parse($evaluation->date_evaluation))
+129                                        <article class="evaluation-item"><time class="evaluation-date" datetime="{{ $evaluationDate->toDateString() }}"><strong>{{ $evaluationDate->format('d') }}</strong><span>{{ $evaluationMonths[(int) $evaluationDate->format('n') - 1] }}</span></time><div class="evaluation-copy"><div class="evaluation-title">{{ $evaluation->titre }}</div><div class="evaluation-meta">{{ $evaluationTypes[$evaluation->type_evaluation] ?? 'Évaluation' }} · {{ $evaluation->classe_nom }}</div></div></article>
+130                                    @empty
+131                                        <div class="empty-state"><div><i class="fa fa-check" aria-hidden="true"></i><strong>Rien de planifié pour l’instant</strong><span>Les évaluations à venir apparaîtront ici pour vos classes.</span></div></div>
+132                                    @endforelse
+133                                </div>
+134                            </section>
+135                            <p class="footer-note"><span class="school-brand">{{ $systemSettings->nom_court }}</span> <span aria-hidden="true">·</span> Espace enseignant</p>
+136                        </div>
+137                    </div>
+138                </div>
+139            </main>
+140        </div>
+141    </body>
+142    </html>

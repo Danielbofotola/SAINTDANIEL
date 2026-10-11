@@ -1,0 +1,96 @@
+250    test('le portail d’un parent ne propose que le préfet comme correspondant', function () {
+251        reglerPortailParents(true);
+252    
+253        $parent = User::factory()->create(['role' => 'parent']);
+254        $prefet = User::factory()->create(['role' => 'prefetture']);
+255        User::factory()->create(['role' => 'professeur']);
+256        User::factory()->create(['role' => 'comptable']);
+257    
+258        $reponse = $this->actingAs($parent)->get(route('parent.dashboard'))->assertOk();
+259    
+260        $correspondants = collect($reponse->viewData('destinataires'));
+261    
+262        expect($correspondants->pluck('id')->all())->toBe([$prefet->id])
+263            ->and($correspondants->pluck('role')->unique()->all())->toBe(['prefetture']);
+264    });
+265    
+266    test('le portail propose au parent de démarrer la discussion en un clic', function () {
+267        reglerPortailParents(true);
+268    
+269        $parent = User::factory()->create(['role' => 'parent']);
+270        $prefet = User::factory()->create(['role' => 'prefetture', 'nom' => 'Kalala', 'prenom' => 'Pierre']);
+271    
+272        // Sans discussion : raccourci direct vers le préfet.
+273        $this->actingAs($parent)
+274            ->get(route('parent.dashboard'))
+275            ->assertOk()
+276            ->assertSee('Démarrer la discussion')
+277            ->assertSee('Écrire à Kalala')
+278            ->assertSee('ouvrirDiscussion('.$prefet->id.')', false);
+279    
+280        // Le raccourci reste disponible et ouvre la discussion déjà existante.
+281        Messagerie::creer($prefet, [$parent->id], 'Bonjour', 'Bienvenue.');
+282    
+283        $this->actingAs($parent)
+284            ->get(route('parent.dashboard'))
+285            ->assertOk()
+286            ->assertSee('Écrire à Kalala')
+287            ->assertSee('Ouvrir la discussion')
+288            ->assertDontSee('Démarrer la discussion');
+289    });
+290    
+291    test('un parent écrit au préfet depuis le portail', function () {
+292        reglerPortailParents(true);
+293    
+294        $parent = User::factory()->create(['role' => 'parent']);
+295        $prefet = User::factory()->create(['role' => 'prefetture']);
+296    
+297        $this->actingAs($parent)
+298            ->post(route('messagerie.store'), [
+299                'destinataires' => [(string) $prefet->id],
+300                'sujet' => 'Question minerval',
+301                'corps' => 'Bonjour, quel est le solde restant ?',
+302            ])
+303            ->assertRedirect()
+304            ->assertSessionHas('success', fn (string $m) => str_contains($m, '1 destinataire'));
+305    
+306        expect(DB::table('messages')->count())->toBe(1);
+307        expect(Messagerie::nonLus($prefet->fresh()))->toBe(1);
+308    });
+309    
+310    test('un parent ne peut pas écrire à un professeur (destinataire hors périmètre)', function () {
+311        reglerPortailParents(true);
+312    
+313        $parent = User::factory()->create(['role' => 'parent']);
+314        $prof = User::factory()->create(['role' => 'professeur']);
+315    
+316        $this->actingAs($parent)
+317            ->post(route('messagerie.store'), [
+318                'destinataires' => [(string) $prof->id],
+319                'sujet' => 'Bonjour',
+320                'corps' => 'Test',
+321            ])
+322            ->assertRedirect()
+323            ->assertSessionHas('error', fn (string $m) => str_contains($m, 'Aucun destinataire'));
+324    
+325        expect(DB::table('messages')->count())->toBe(0);
+326        expect(DB::table('conversations')->count())->toBe(0);
+327    });
+328    
+329    test('un parent ne peut pas démarrer une discussion avec un professeur', function () {
+330        $parent = User::factory()->create(['role' => 'parent']);
+331        $prof = User::factory()->create(['role' => 'professeur']);
+332    
+333        $this->actingAs($parent)
+334            ->post(route('messagerie.demarrer'), ['destinataire' => $prof->id])
+335            ->assertNotFound();
+336    });
+337    
+338    test('un parent ne voit ni ne lit les discussions avec les autres services', function () {
+339        reglerPortailParents(true);
+340    
+341        $parent = User::factory()->create(['role' => 'parent']);
+342        $prefet = User::factory()->create(['role' => 'prefetture']);
+343        $comptable = User::factory()->create(['role' => 'comptable']);
+
+[showing lines 250-344 of 414; read again with offset=345 for more]

@@ -1,0 +1,15 @@
+[powershell — Windows side]
+✓ a student below the pass threshold is declared failed and listed for retake                                  0.02s 
+ 
+  Tests:    152 passed (835 assertions)
+PLAN_COMPTABLE=53 comptes (classes 1,2,3,4,5,6,7,8)
+SYNC: paiements=3 depenses=1 paies=0 | ecritures 0 -> 4
+BALANCE: lignes=3 debit=910 credit=910 equilibre=OUI
+  571 Caisse siège social               D=410.00     C=500.00     S=-90.00
+  605 Autres achats (fournitures, eau, é D=500.00     C=0.00       S=500.00
+  706 Services vendus (frais scolaires,  D=0.00       C=410.00     S=-410.00
+RESYNC=0 nouvelle(s) ecriture(s)
+
+
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">2</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

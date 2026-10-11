@@ -1,0 +1,15 @@
+[powershell — Windows side]
+=== DeliberationController : methodes ===
+25: public function index(Request $request): View
+65: 'decision' => $enregistree?->decision ?? $analyse['decision_proposee'],
+84: public function criteres(Request $request): RedirectResponse
+115: public function enregistrer(Request $request): RedirectResponse
+145: 'decision' => $choix,
+150: 'decide_le' => now(),
+165: public function appliquer(Request $request): RedirectResponse
+=== mecanisme de notification utilise dans l'app ===
+app\Http\Controllers\AnnonceController.php:64: Notification::send($destinataires, new AnnonceNotification($annonce));
+=== classes Notification ===
+  AnnonceNotification.php
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

@@ -1,0 +1,6 @@
+Applied patch: 1 file changed (1 updated)
+Updated resources/views/comptable/paiements.blade.php (1 hunk applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 73-73 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 73-73:
+73                                 <div class="col-md-6"><label class="form-label mb-1 fw-bold" id="tarifLabel">Tarif de la classe de l'élève *</label>

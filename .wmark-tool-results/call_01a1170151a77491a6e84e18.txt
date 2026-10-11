@@ -1,0 +1,40 @@
+1      <?php
+2      
+3      use Illuminate\Database\Migrations\Migration;
+4      use Illuminate\Database\Schema\Blueprint;
+5      use Illuminate\Support\Facades\Schema;
+6      
+7      /**
+8       * Pièces jointes des messages (images et documents) : chemin stocké sur le
+9       * disque « public » + nom d'origine du fichier, pour l'affichage et le
+10      * téléchargement.
+11      */
+12     return new class extends Migration
+13     {
+14         public function up(): void
+15         {
+16             if (! Schema::hasTable('messages')) {
+17                 return;
+18             }
+19     
+20             Schema::table('messages', function (Blueprint $table) {
+21                 if (! Schema::hasColumn('messages', 'piece_jointe')) {
+22                     $table->string('piece_jointe')->nullable();
+23                 }
+24                 if (! Schema::hasColumn('messages', 'piece_jointe_nom')) {
+25                     $table->string('piece_jointe_nom')->nullable();
+26                 }
+27             });
+28         }
+29     
+30         public function down(): void
+31         {
+32             if (! Schema::hasTable('messages')) {
+33                 return;
+34             }
+35     
+36             Schema::table('messages', function (Blueprint $table) {
+37                 $table->dropColumn(['piece_jointe', 'piece_jointe_nom']);
+38             });
+39         }
+40     };

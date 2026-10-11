@@ -1,0 +1,3 @@
+Updated resources/views/admin/dashboard.blade.php: replaced 1 lines with 1 lines (fuzzy match: indent-shift)
+Auto-corrected edit landed at lines 339-339:
+339                        <li><a class="treeview-item" href="{{ route('admin.cycles.index') }}"><i class="icon fa fa-sitemap"></i> Cycles</a></li>

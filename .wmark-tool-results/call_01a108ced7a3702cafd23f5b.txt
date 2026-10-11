@@ -1,0 +1,6 @@
+Applied patch: 1 file changed (1 updated)
+Updated resources/views/admin/eleves/index.blade.php (1 hunk applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 60-60 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 60-60:
+60                                     <td>{{ $inscription?->classe?->nom ?? 'Non inscrit' }}@if ($inscription && $inscription->statut === 'en_attente') <span class="badge badge-warning" title="En attente du frais d’inscription">Inscription en attente</span>@endif</td>

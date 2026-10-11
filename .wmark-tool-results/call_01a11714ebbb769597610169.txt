@@ -1,0 +1,30 @@
+92         public function repondre(Request $request, Conversation $conversation): RedirectResponse|JsonResponse
+93         {
+94             $this->autoriser($conversation, $request);
+95     
+96             $data = $request->validate([
+97                 'corps' => ['nullable', 'string', 'max:2000', 'required_without:piece_jointe'],
+98                 'piece_jointe' => ['nullable', 'file', 'max:5120', 'mimes:jpg,jpeg,png,gif,webp,bmp,svg,pdf,doc,docx,xls,xlsx,ppt,pptx,txt,csv,zip,webm,ogg,oga,mp3,m4a,mp4,wav,aac,opus', 'required_without:corps'],
+99             ], [
+100                'corps.required' => 'Écrivez votre message.',
+101                'piece_jointe.max' => 'La pièce jointe ne doit pas dépasser 5 Mo.',
+102                'piece_jointe.mimes' => 'Format de pièce jointe non autorisé (images, PDF, documents Office, audio, zip).',
+103            ]);
+104    
+105            [$cheminJoint, $nomJoint] = $this->stockerPieceJointe($request);
+106    
+107            Messagerie::envoyer($conversation, $request->user(), (string) ($data['corps'] ?? ''), $cheminJoint, $nomJoint);
+108    
+109            if ($request->wantsJson()) {
+110                $message = $conversation->messages()->with('auteur')->latest('id')->first();
+111    
+112                return response()->json([
+113                    'message' => [
+114                        'id' => $message->id,
+115                        'html' => view('messagerie._bulle', [
+116                            'message' => $message, 'user' => $request->user(), 'active' => $conversation,
+117                        ])->render(),
+118                    ],
+119                    'non_lus' => Messagerie::nonLus($request->user()),
+
+[showing lines 92-119 of 203; read again with offset=120 for more]

@@ -1,0 +1,14 @@
+53         Route::put('/mon-profil', [UserProfileController::class, 'update'])->name('profile.update');
+54         Route::get('/admin/tableau-de-bord', [AdminDashboardController::class, 'index'])->middleware('role:admin')->name('admin.dashboard');
+55         Route::get('/admin/professeurs/nouveau', [ProfesseurController::class, 'create'])->middleware('role:admin')->name('admin.professeurs.create');
+56         Route::post('/admin/professeurs', [ProfesseurController::class, 'store'])->middleware('role:admin')->name('admin.professeurs.store');
+57         Route::get('/admin/professeurs', [ProfesseurController::class, 'index'])->middleware('role:admin')->name('admin.professeurs.index');
+58         Route::get('/admin/professeurs/{professeur}', [ProfesseurController::class, 'show'])->middleware('role:admin')->name('admin.professeurs.show');
+59         Route::patch('/admin/professeurs/{professeur}/statut', [ProfesseurController::class, 'toggleStatus'])->middleware('role:admin')->name('admin.professeurs.toggle-status');
+60         Route::get('/admin/cours-affectations', [AffectationCoursController::class, 'index'])->middleware('role:admin')->name('admin.affectations.index');
+61         Route::post('/admin/affectations', [AffectationCoursController::class, 'store'])->middleware('role:admin')->name('admin.affectations.store');
+62         Route::delete('/admin/affectations/{affectation}', [AffectationCoursController::class, 'destroy'])->middleware('role:admin')->name('admin.affectations.destroy');
+63         Route::post('/admin/cours', [CoursController::class, 'store'])->middleware('role:admin')->name('admin.cours.store');
+64         Route::delete('/admin/cours/{cours}', [CoursController::class, 'destroy'])->middleware('role:admin')->name('admin.cours.destroy');
+
+[showing lines 53-64 of 167; read again with offset=65 for more]

@@ -1,0 +1,74 @@
+95         }
+96     
+97         public function storeNotes(Request $request, Evaluation $evaluation): RedirectResponse
+98         {
+99             if (! $this->saisieNotesActive()) {
+100                return back()->with('error', 'La saisie des notes est désactivée (« Commuter les modules »).');
+101            }
+102    
+103            $data = $request->validate([
+104                'notes' => ['array'],
+105                'notes.*' => ['nullable', 'numeric', 'min:0', 'max:'.$evaluation->max_note],
+106                'observations' => ['array'],
+107                'observations.*' => ['nullable', 'string', 'max:255'],
+108            ], [
+109                'notes.*.numeric' => 'Chaque note doit être un nombre.',
+110                'notes.*.min' => 'La note ne peut pas être négative.',
+111                'notes.*.max' => 'La note ne peut pas dépasser la note maximale ('.$evaluation->max_note.').',
+112            ]);
+113    
+114            $classe = $evaluation->affectation?->classe;
+115            $allowed = $classe
+116                ? array_map('intval', $classe->inscriptions()->anneeEnCours()->where('statut', 'actif')->pluck('eleve_id')->all())
+117                : [];
+118    
+119            foreach ($data['notes'] ?? [] as $eleveId => $value) {
+120                $eleveId = (int) $eleveId;
+121    
+122                if (! in_array($eleveId, $allowed, true)) {
+123                    continue;
+124                }
+125    
+126                if ($value === null || $value === '') {
+127                    Note::where('evaluation_id', $evaluation->id)->where('eleve_id', $eleveId)->delete();
+128    
+129                    continue;
+130                }
+131    
+132                Note::updateOrCreate(
+133                    ['evaluation_id' => $evaluation->id, 'eleve_id' => $eleveId],
+134                    [
+135                        'note_obtenue' => $value,
+136                        'observation' => $data['observations'][$eleveId] ?? null,
+137                        'statut' => 'actif',
+138                    ]
+139                );
+140            }
+141    
+142            return redirect()->route('admin.evaluations.notes', $evaluation)->with('success', 'Les notes ont été enregistrées.');
+143        }
+144    
+145        public function destroy(Evaluation $evaluation): RedirectResponse
+146        {
+147            if ($evaluation->notes()->exists()) {
+148                return back()->with('error', 'Cette évaluation contient déjà des notes : supprimez-les d’abord.');
+149            }
+150    
+151            $evaluation->delete();
+152    
+153            return redirect()->route('admin.evaluations.index')->with('success', 'L’évaluation a été supprimée.');
+154        }
+155    
+156        /**
+157         * L'accès à la saisie des notes dépend du commutateur « Commuter les modules ».
+158         * Si les réglages sont indisponibles (table absente), la saisie reste autorisée.
+159         */
+160        private function saisieNotesActive(): bool
+161        {
+162            try {
+163                return (bool) ParametreSysteme::current()->saisie_notes_active;
+164            } catch (\Throwable) {
+165                return true;
+166            }
+167        }
+168    }

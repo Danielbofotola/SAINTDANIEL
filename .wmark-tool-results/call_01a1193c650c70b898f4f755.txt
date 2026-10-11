@@ -1,0 +1,27 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\b493c9bc81dc\20261008-025855-bash-call_01a1193c650c70b898f4f755.txt (677 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+[powershell — Windows side]
+=== routes paiement ===
+26|use App\Http\Controllers\PaiementController;
+35|use App\Http\Controllers\ComptablePaiementController;
+113|Route::get('/admin/paiements', [PaiementController::class, 'index'])->middleware('role:admin')->name('admin.paiements.index');
+114|Route::post('/admin/paiements', [PaiementController::class, 'store'])->middleware('role:admin')->name('admin.paiements.store');
+115|Route::delete('/admin/paiements/{paiement}', [PaiementController::class, 'de
+
+... 260 chars truncated ...
+
+aiementController::class, 'index'])->middleware('role:comptable')->name('comptable.paiements.index');
+291|Route::post('/comptable/paiements', [ComptablePaiementController::class, 'store'])->middleware('role:comptable')->name('comptable.paiements.store');
+292|Route::get('/comptable/paiements/{paiement}/recu', [RecuController::class, 'show'])->middleware('role:comptable')->name('comptable.paiements.recu');
+=== vues recu ===
+resources\views\comptable\paiements.blade.php
+resources\views\paiements\recu.blade.php
+=== controleurs paiement ===
+ComptablePaiementController.php
+PaiementController.php
+=== parametres etablissement ===
+protected $fillable = [
+'nom_etablissement', 'nom_court', 'telephone', 'email', 'adresse', 'saisie_notes_active', 'portail_parents_actif',
+'nom_etablissement' => 'COMPLEXE SCOLAIRE BABAZIN',
+'nom_court' => 'C.S. Moty',
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

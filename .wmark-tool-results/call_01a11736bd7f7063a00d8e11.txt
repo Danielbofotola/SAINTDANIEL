@@ -1,0 +1,7 @@
+898            const filtre = this.value.toLowerCase().trim();
+899            document.querySelectorAll('#convContainer .conv, #contactsContainer .conv').forEach(conv => {
+900                conv.style.display = (conv.getAttribute('data-search') || '').includes(filtre) ? 'flex' : 'none';
+901            });
+902        });
+903    </script>
+904    @endonce

@@ -1,0 +1,12 @@
+Applied patch: 1 file changed (1 updated)
+Updated resources/views/admin/eleves/index.blade.php (1 hunk applied)
+Landed at lines 65-73 (the file's new text; no re-read needed):
+65                                         {{-- Activer / désactiver : un élève inactif disparaît des listes. --}}
+66                                         <form class="d-inline" method="POST" action="{{ route('admin.eleves.toggle', $eleve) }}">
+67                                             @csrf
+68                                             @method('PATCH')
+69                                             <button class="btn btn-sm btn-{{ $eleve->statut === 'actif' ? 'warning' : 'success' }}" type="submit"
+70                                                     title="{{ $eleve->statut === 'actif' ? "Désactiver (l'élève disparaît des listes et des effectifs)" : "Activer (l'élève redevient visible)" }}">
+71                                                 <i class="fa fa-power-off"></i>
+72                                             </button>
+73                                         </form>

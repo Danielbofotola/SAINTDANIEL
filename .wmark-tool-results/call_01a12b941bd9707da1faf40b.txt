@@ -1,0 +1,38 @@
+1      <?php
+2      
+3      namespace App\Models;
+4      
+5      use Illuminate\Database\Eloquent\Model;
+6      
+7      class Paiement extends Model
+8      {
+9          protected $table = 'paiements';
+10     
+11         protected $fillable = [
+12             'num_recu', 'inscription_id', 'frais_scolaire_id', 'periode_id', 'montant_paye',
+13             'date_paiement', 'mode_paiement', 'reference_transaction', 'statut',
+14         ];
+15     
+16         protected function casts(): array
+17         {
+18             return [
+19                 'montant_paye' => 'decimal:2',
+20                 'date_paiement' => 'datetime',
+21             ];
+22         }
+23     
+24         public function inscription()
+25         {
+26             return $this->belongsTo(Inscription::class);
+27         }
+28     
+29         public function fraisScolaire()
+30         {
+31             return $this->belongsTo(FraisScolaire::class);
+32         }
+33     
+34         public function periode()
+35         {
+36             return $this->belongsTo(Periode::class);
+37         }
+38     }

@@ -1,0 +1,11 @@
+Applied patch: 1 file changed (1 updated)
+Updated app/Http/Controllers/ComptablePaiementController.php (1 hunk applied)
+Landed at lines 118-123 (the file's new text; no re-read needed):
+118            $message = 'Paiement encaissé — reçu '.$paiement->num_recu.'.';
+119            if ($paiement->fraisScolaire?->typeFrais?->estFraisInscription()
+120                && Inscription::whereKey($data['inscription_id'])->value('statut') === Inscription::STATUT_ACTIF) {
+121                $message .= ' L’inscription de l’élève a été validée automatiquement (frais d’inscription réglé).';
+122            }
+123    
+Landed at lines 126-126 (the file's new text; no re-read needed):
+126                ->with('success', $message);

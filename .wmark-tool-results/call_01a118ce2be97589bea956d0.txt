@@ -1,0 +1,34 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\b493c9bc81dc\20261008-005831-bash-call_01a118ce2be97589bea956d0.txt (620 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+[powershell — Windows side]
+=== User usage in PortailParentController ===
+7: use App\Models\User;
+22: $utilisateur = $request->user();
+40: 'user' => $utilisateur,
+=== User usage in MessagerieController ===
+7: use App\Models\User;
+22: $utilisateur = $request->user();
+35: 'user' => $utilisateur,
+40: 'totalUtilisateurs' => User::where('statut', 'actif')->count(),
+62: $correspondants = Messagerie::correspondantsQuery($request->user());
+77: $conversation = Messagerie::creer($request->user(), $ids, $d
+
+... 66 chars truncated ...
+
+oint);
+83: 'non_lus' => Messagerie::nonLus($request->user()),
+113: Messagerie::envoyer($conversation, $request->user(), (string) ($data['corps'] ?? ''), $cheminJoint, $nomJoint, $reponseAId);
+122: 'message' => $message, 'user' => $request->user(), 'active' => $conversation,
+125: 'non_lus' => Messagerie::nonLus($request->user()),
+151: Messagerie::marquerLu($conversation, $request->user());
+157: 'message' => $message, 'user' => $request->user(), 'active' => $conversation,
+161: 'non_lus' => Messagerie::nonLus($request->user()),
+168: $conversation->participants()->where('user_id', $request->user()->id)->exists(),
+184: $destinataire = Messagerie::correspondantsQuery($request->user())
+187: $conversation = Messagerie::ouvrirDirecte($request->user(), $destinataire);
+211: 'message' => $message, 'user' => $request->user(), 'active' => $message->conversation,
+=== syntax check ===
+No syntax errors detected in app/Support/Messagerie.php
+No syntax errors detected in app/Http/Controllers/MessagerieController.php
+No syntax errors detected in app/Http/Controllers/PortailParentController.php
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

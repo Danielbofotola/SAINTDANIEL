@@ -1,0 +1,26 @@
+Applied patch: 1 file changed (1 updated)
+Updated resources/views/parent/portail.blade.php (2 hunks applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 113-116 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 116-118:
+116            <div class="portail-nav__item" data-tab="enfants" onclick="portailTab('enfants', this)">
+117                <i class="fa-solid fa-graduation-cap"></i><span>Mes enfants</span>
+118            </div>
+Landed at lines 197-226 (the file's new text; no re-read needed):
+197            {{-- ============ MES ENFANTS ============ --}}
+198            <section id="tab-enfants" class="portail-panel">
+199                <div class="portail-card">
+200                    <h2><i class="fa-solid fa-graduation-cap text-info"></i> Mes enfants</h2>
+201                    @forelse ($enfants as $enfant)
+202                        @php($inscription = $enfant->inscriptions->first())
+203                        <div class="py-2" style="border-bottom:1px solid var(--divider)">
+204                            <div class="d-flex align-items-center gap-2">
+      … 14 lines omitted …
+219                        </div>
+220                    @empty
+221                        <p class="text-muted-2 mb-0 fs-7">Aucun enfant n’est encore rattaché à votre compte. Contactez l’administration.</p>
+222                    @endforelse
+223                </div>
+224            </section>
+225    
+226            {{-- ============ PROFIL ============ --}}

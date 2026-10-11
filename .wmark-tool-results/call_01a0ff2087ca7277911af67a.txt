@@ -1,0 +1,14 @@
+348        <!-- CONTENT -->
+349        <main class="app-content">
+350            <div class="app-title border-0 bg-transparent pl-0 pt-0 ">
+351                <div class="mt-5">
+352                    <h1 class="font-weight-bold" style="color: var(--able-text-main);"><i class="fa fa-university mr-2"></i> Administration scolaire</h1>
+353                    <p class="text-muted">Bienvenue, {{ auth()->user()->username }}. Suivez les effectifs, les classes et les inscriptions de l'établissement.</p>
+354                </div>
+355                <div>
+356                    <a href="{{ route('admin.eleves.create') }}" class="btn btn-primary btn-sm mr-2"><i class="fa fa-plus mr-1"></i> Inscrire un élève</a>
+357                    <a href="{{ route('admin.classes.create') }}" class="btn btn-outline-primary btn-sm"><i class="fa fa-plus mr-1"></i> Créer une classe</a>
+358                </div>
+359            </div>
+
+[showing lines 348-359 of 702; read again with offset=360 for more]

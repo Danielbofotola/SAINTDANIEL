@@ -1,0 +1,6 @@
+Applied patch: 1 file changed (1 updated)
+Updated app/Http/Controllers/ArchiveAnneeController.php (2 hunks applied)
+Landed at lines 7-7 (the file's new text; no re-read needed):
+7      use App\Models\Classe;
+Landed at lines 9-9 (the file's new text; no re-read needed):
+9      use App\Models\Eleve;

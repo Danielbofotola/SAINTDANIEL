@@ -1,0 +1,22 @@
+177                    </p>
+178                    <div class="rangee">
+179                        <div style="min-width:260px">
+180                            <label>Année scolaire cible @if ($anneeSuivante) — l'année suivante est {{ $anneeSuivante->libelle }} @endif</label>
+181                            <select name="annee_cible_id" required>
+182                                <option value="">— choisir —</option>
+183                                @foreach ($annees as $a)
+184                                    @continue($a->id === $annee->id)
+185                                    <option value="{{ $a->id }}" @selected((int) old('annee_cible_id', $anneeSuivante?->id) === $a->id)>
+186                                        {{ $a->libelle }}@if ($anneeSuivante && $a->id === $anneeSuivante->id) · année suivante @endif
+187                                    </option>
+188                                @endforeach
+189                            </select>
+190                            @if (! $anneeSuivante)
+191                                <small style="color:#fca5a5">Aucune année postérieure n'existe : créez l'année suivante avant d'appliquer le passage.</small>
+192                            @endif
+193                        </div>
+194                        <button class="btn" type="submit"><i class="fa-solid fa-rocket"></i> Appliquer les décisions enregistrées</button>
+195                    </div>
+196                </section>
+
+[showing lines 177-196 of 201; read again with offset=197 for more]

@@ -1,0 +1,43 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\e8f943213216\20261003-011415-bash-call_01a0ff1cc10971f5893f2abc.txt (2,614 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Structured view (text):
+[powershell — Windows side]
+<?php
+
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\EleveController;
+use App\Http\Controllers\EleveInscriptionController;
+use App\Http\Controllers\SalleController;
+use App\Http\Controllers\ClasseController;
+use App\Http\Controllers\UserProfileController;
+use App\Http\Controllers\ProfesseurController;
+use App\Http\Controllers\ProfesseurDashboardController;
+use App\Http\Controllers\SectionOptionController;
+use App\Http\Controllers\RegistrationRequestController;
+use App\Http\Controllers\AdminRegistrationRequestController;
+use App\Http\Controllers\ParametreSystemeController;
+
+Route::middleware('guest')->group(function () {
+    Route::get('/', [AuthController::class, 'showLoginForm'])->name('login');
+    Route::post('/login', [AuthController::class, 'login'])->name('login.store');
+    Route::get('/connexion-pin', [AuthController::class, 'showPinForm'])->name('login.pin');
+    Route::post('/connexion-pin', [AuthController::class, 'loginWithPin'])->name('login.pin.store');
+});
+
+Route::get('/demande-inscription', [RegistrationRequestController::class, 'createStudentRequest'])->name('registration.student.create');
+Route::post('/demande-inscription', [RegistrationRequestController::class, 'storeStudentRequest'])->middleware('throttle:5,1')->name('registration.student.store');
+Route::get('/demande-compte', [RegistrationRequestController::class, 'creat
+… 3,531 chars elided …
+sonate');
+    Route::get('/admin/comptes/nouveau', [UserProfileController::class, 'createAccount'])->middleware('role:admin')->name('admin.profile.accounts.create');
+    Route::post('/admin/comptes', [UserProfileController::class, 'storeAccount'])->middleware('role:admin')->name('admin.profile.accounts.store');
+    Route::get('/admin/profil/modifier', [UserProfileController::class, 'edit'])->middleware('role:admin')->name('admin.profile.edit');
+    Route::put('/admin/profil', [UserProfileController::class, 'update'])->middleware('role:admin')->name('admin.profile.update');
+    Route::patch('/admin/profil/mot-de-passe', [UserProfileController::class, 'updatePassword'])->middleware('role:admin')->name('admin.profile.password');
+    Route::patch('/admin/profil/desactiver', [UserProfileControl
+… 4,332 chars elided …
+('/professeur/tableau-de-bord', [ProfesseurDashboardController::class, 'index'])->middleware('role:professeur')->name('professeur.dashboard');
+    Route::view('/comptable/tableau-de-bord', 'dashboard', ['role' => 'Comptable'])->middleware('role:comptable')->name('comptable.dashboard');
+});
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

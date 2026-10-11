@@ -1,0 +1,52 @@
+50         public function store(Request $request): RedirectResponse|JsonResponse
+51         {
+52             $data = $request->validate([
+53                 'sujet' => ['required', 'string', 'max:150'],
+54                 'corps' => ['nullable', 'string', 'max:2000', 'required_without:piece_jointe'],
+55                 'piece_jointe' => ['nullable', 'file', 'max:5120', 'mimes:jpg,jpeg,png,gif,webp,bmp,svg,pdf,doc,docx,xls,xlsx,ppt,pptx,txt,csv,zip,webm,ogg,oga,mp3,m4a,mp4,wav,aac,opus', 'required_without:corps'],
+56                 'destinataires' => ['required', 'array', 'min:1'],
+57             ], [
+58                 'sujet.required' => 'Indiquez l’objet du message.',
+59                 'corps.required' => 'Écrivez votre message.',
+60                 'destinataires.required' => 'Choisissez au moins un destinataire.',
+61             ]);
+62     
+63             $choix = (array) $data['destinataires'];
+64     
+65             $ids = in_array('tous', $choix, true)
+66                 ? User::query()->where('statut', 'actif')->where('id', '!=', $request->user()->id)->pluck('id')->all()
+67                 : User::query()
+68                     ->whereIn('id', array_values(array_filter($choix, fn ($valeur) => ctype_digit((string) $valeur))))
+69                     ->pluck('id')
+70                     ->all();
+71     
+72             if ($ids === []) {
+73                 return back()->withInput()->with('error', 'Aucun destinataire valide : vérifiez votre sélection.');
+74             }
+75     
+76             [$cheminJoint, $nomJoint] = $this->stockerPieceJointe($request);
+77     
+78             $conversation = Messagerie::creer($request->user(), $ids, $data['sujet'], (string) ($data['corps'] ?? ''), $cheminJoint, $nomJoint);
+79     
+80             if ($request->wantsJson()) {
+81                 return response()->json([
+82                     'conversation_id' => $conversation->id,
+83                     'url' => route('messagerie.index', ['conversation' => $conversation->id]),
+84                     'non_lus' => Messagerie::nonLus($request->user()),
+85                 ]);
+86             }
+87     
+88             return redirect()
+89                 ->route('messagerie.index', ['conversation' => $conversation->id])
+90                 ->with('success', 'Message envoyé à '.count($ids).' destinataire(s).');
+91         }
+92     
+93         public function repondre(Request $request, Conversation $conversation): RedirectResponse|JsonResponse
+94         {
+95             $this->autoriser($conversation, $request);
+96     
+97             $data = $request->validate([
+98                 'corps' => ['nullable', 'string', 'max:2000', 'required_without:piece_jointe'],
+99                 'piece_jointe' => ['nullable', 'file', 'max:5120', 'mimes:jpg,jpeg,png,gif,webp,bmp,svg,pdf,doc,docx,xls,xlsx,ppt,pptx,txt,csv,zip,webm,ogg,oga,mp3,m4a,mp4,wav,aac,opus', 'required_without:corps'],
+
+[showing lines 50-99 of 235; read again with offset=100 for more]

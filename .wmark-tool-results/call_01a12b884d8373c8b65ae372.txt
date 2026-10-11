@@ -1,0 +1,16 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/DeliberationTest.php (1 hunk applied)
+Landed at lines 574-586 (the file's new text; no re-read needed):
+574    
+575    test('la synthèse de délibération compte admis, ajournés, redoublants et le sexe', function () {
+576        $s = scenarioDeliberation();
+577        $s['eleves']['B']->update(['sexe' => 'F']);   // A (M) et B (F) sont admis
+578    
+579        $this->actingAs($s['alice'])
+580            ->get(route('admin.deliberations.index'))
+581            ->assertOk()
+582            ->assertSee('Synthèse')
+583            ->assertSee('Admis (passent)')
+584            ->assertSee('Redoublants')
+585            ->assertSee('1 G · 1 F');   // admis : 1 garçon (A) + 1 fille (B)
+586    });

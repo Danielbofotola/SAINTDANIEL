@@ -1,0 +1,20 @@
+336        expect(DB::table('archives_annees')->count())->toBe(1);
+337    
+338        // Réouverture.
+339        $this->actingAs($admin)
+340            ->delete(route('admin.archives.destroy', $archive->id))
+341            ->assertRedirect(route('admin.archives.index'));
+342        expect(DB::table('archives_annees')->count())->toBe(0);
+343    });
+344    
+345    test('the finance menu links point to the new modules', function () {
+346        $admin = User::factory()->create(['role' => 'admin']);
+347    
+348        $this->actingAs($admin)
+349            ->get(route('admin.dashboard'))
+350            ->assertOk()
+351            ->assertSee(route('admin.frais.index'), false)
+352            ->assertSee(route('admin.paiements.index'), false)
+353            ->assertSee(route('admin.depenses.index'), false)
+354            ->assertSee(route('admin.archives.index'), false);
+355    });

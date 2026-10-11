@@ -1,0 +1,20 @@
+Applied patch: 2 files changed (2 updated)
+Updated bootstrap/app.php (1 hunk applied)
+Updated app/Providers/AppServiceProvider.php (2 hunks applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 13-16 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 14-18:
+14             // LocalTunnel (et tout reverse-proxy) termine le TLS en amont.
+15             // Sans ceci, Laravel croit être en HTTP et génère des URL
+16             // http://127.0.0.1:8000, bloquées par le navigateur (mixed content).
+17             $middleware->trustProxies(at: '*');
+18     
+Landed at lines 8-8 (the file's new text; no re-read needed):
+8      use Illuminate\Support\Facades\URL;
+Landed at lines 29-34 (the file's new text; no re-read needed):
+29             // Derrière un proxy HTTPS (LocalTunnel, ngrok…), forcer la génération
+30             // d'URL/actifs en HTTPS pour éviter le contenu mixte HTTP/HTTPS.
+31             if (config('app.env') !== 'local' || request()->server('HTTP_X_FORWARDED_PROTO') === 'https') {
+32                 URL::forceScheme('https');
+33             }
+34

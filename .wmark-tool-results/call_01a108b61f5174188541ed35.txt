@@ -1,0 +1,14 @@
+17                 <div><h1><i class="fa fa-folder-open"></i> Dossier du professeur</h1><p>Identité, compte associé et affectations de l'année en cours.</p></div>
+18                 <div>
+19                     <a class="btn btn-secondary" href="{{ route('admin.professeurs.index') }}"><i class="fa fa-arrow-left"></i> Retour à la liste</a>
+20                     <a class="btn btn-info" href="{{ route('admin.affectations.index') }}"><i class="fa fa-list"></i> Cours &amp; affectation</a>
+21                 </div>
+22             </div>
+23             @if (session('success'))<div class="alert alert-success">{{ session('success') }}</div>@endif
+24     
+25             <div class="tile mb-4">
+26                 <div class="row align-items-center">
+27                     <div class="col-md-3 text-center">
+28                         @if ($professeur->photo)<img src="{{ asset('storage/'.$professeur->photo) }}" alt="Photo de {{ $professeur->prenom }}" width="150" height="180" style="object-fit:cover;border-radius:8px">@else<i class="fa fa-user-circle fa-5x text-secondary"></i>@endif
+
+[showing lines 17-28 of 89; read again with offset=29 for more]

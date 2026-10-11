@@ -1,0 +1,12 @@
+326                <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-graduation-cap"></i><span class="app-menu__label">Classes et salles</span><i class="treeview-indicator fa fa-angle-right"></i></a>
+327                    <ul class="treeview-menu">
+328                        <li><a class="treeview-item" href="#"><i class="icon fa fa-circle-o"></i> Cycles</a></li>
+329                        <li><a class="treeview-item" href="{{ route('admin.classes.index') }}"><i class="icon fa fa-list"></i> Liste des classes</a></li>
+330                        <li><a class="treeview-item" href="{{ route('admin.classes.create') }}"><i class="icon fa fa-plus"></i> Créer une classe</a></li>
+331                        <li><a class="treeview-item" href="{{ route('admin.salles.index') }}"><i class="icon fa fa-list"></i> Liste des salles</a></li>
+332                        <li><a class="treeview-item" href="{{ route('admin.salles.create') }}"><i class="icon fa fa-university"></i> Créer une salle</a></li>
+333                        <li><a class="treeview-item" href="{{ route('admin.annees.index') }}"><i class="icon fa fa-calendar"></i> Années scolaires</a></li>
+334                    </ul>
+335                </li>
+
+[showing lines 326-335 of 707; read again with offset=336 for more]

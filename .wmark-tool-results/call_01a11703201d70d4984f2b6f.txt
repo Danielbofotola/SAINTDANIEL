@@ -1,0 +1,3 @@
+Updated resources/views/admin/modules/index.blade.php: replaced 1 lines with 1 lines (fuzzy match: indent-shift)
+Auto-corrected edit landed at lines 52-52:
+52                             <p class="text-muted mb-0 small">Ouvre l'espace de communication des parents (<code>/espace-parent</code>) : profil, annonces et messagerie avec le personnel.</p>

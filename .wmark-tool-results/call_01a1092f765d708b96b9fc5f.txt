@@ -1,0 +1,28 @@
+266        @php($totalEleves = $statistiques['garcons'] + $statistiques['filles'])
+267        <!-- HEADER -->
+268        <header class="app-header">
+269            <a class="app-header__logo" href="{{ route('admin.dashboard') }}">{{ $systemSettings->nom_court }}</a>
+270            <a class="app-sidebar__toggle fa fa-bars" href="#" data-toggle="sidebar" aria-label="Afficher ou masquer le menu"></a>
+271            <ul class="app-nav">
+272                <li class="dropdown">
+273                    <a class="app-nav__item d-flex align-items-center" href="#" data-toggle="dropdown" aria-label="Menu profil">
+274                        @if (auth()->user()->photo)
+275                            <img class="app-header__user-avatar" src="{{ asset('storage/'.auth()->user()->photo) }}" alt="Photo de profil">
+276                        @else
+277                            <span class="app-header__user-initial">{{ $initiale }}</span>
+278                        @endif
+279                        <span class="d-none d-md-inline ml-2 text-white" style="font-size:14px">{{ auth()->user()->username }}</span>
+280                    </a>
+281                    <ul class="dropdown-menu settings-menu dropdown-menu-right border-0 shadow-lg">
+282                        <li><a class="dropdown-item" href="{{ route('admin.profile.show') }}"><i class="fa fa-user fa-lg mr-2"></i> {{ auth()->user()->username }}</a></li>
+283                        <li>
+284                            <form method="POST" action="{{ route('logout') }}">@csrf
+285                                <button class="dropdown-item text-danger" type="submit"><i class="fa fa-sign-out fa-lg mr-2"></i> Déconnexion</button>
+286                            </form>
+287                        </li>
+288                    </ul>
+289                </li>
+290            </ul>
+291        </header>
+
+[showing lines 266-291 of 727; read again with offset=292 for more]

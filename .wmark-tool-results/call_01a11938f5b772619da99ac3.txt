@@ -1,0 +1,84 @@
+1      <?php
+2      
+3      namespace App\Support;
+4      
+5      use App\Models\Eleve;
+6      use App\Models\FraisScolaire;
+7      use App\Models\Inscription;
+8      use App\Models\Paiement;
+9      use Illuminate\Support\Collection;
+10     
+11     /**
+12      * Situation complète d'un élève : parcours année par année (années passées
+13      * comprises) et état financier — frais exigés, paiements encaissés, dette.
+14      *
+15      * Une seule logique, partagée par le dossier de l'administration et celui du
+16      * préfet des études, pour que les deux affichent exactement les mêmes chiffres.
+17      */
+18     class SituationEleve
+19     {
+20         /**
+21          * État financier d'une inscription : exigible, encaissé, reste à payer.
+22          *
+23          * @return array{attendu: float, paye: float, reste: float}
+24          */
+25         public static function finances(Inscription $inscription): array
+26         {
+27             $attendu = (float) FraisScolaire::query()
+28                 ->where('classe_id', $inscription->classe_id)
+29                 ->where('annee_scolaire_id', $inscription->annee_scolaire_id)
+30                 ->where('statut', 'actif')
+31                 ->sum('montant_exige');
+32     
+33             $paye = (float) Paiement::query()
+34                 ->where('inscription_id', $inscription->id)
+35                 ->where('statut', 'actif')
+36                 ->sum('montant_paye');
+37     
+38             return ['attendu' => $attendu, 'paye' => $paye, 'reste' => round($attendu - $paye, 2)];
+39         }
+40     
+41         /**
+42          * Parcours de l'élève : toutes ses inscriptions, de l'année la plus récente
+43          * à la plus ancienne, enrichies de l'état financier de chaque année.
+44          *
+45          * @return Collection<int, array{inscription: Inscription, finances: array{attendu: float, paye: float, reste: float}}>
+46          */
+47         public static function parcours(Eleve $eleve): Collection
+48         {
+49             return $eleve->inscriptions()
+50                 ->with(['classe.cycle', 'classe.section', 'classe.option', 'anneeScolaire', 'bulletins'])
+51                 ->get()
+52                 ->sortByDesc(fn (Inscription $inscription) => (string) ($inscription->anneeScolaire?->libelle ?? ''))
+53                 ->values()
+54                 ->map(fn (Inscription $inscription) => [
+55                     'inscription' => $inscription,
+56                     'finances' => self::finances($inscription),
+57                 ]);
+58         }
+59     
+60         /**
+61          * Détail des paiements d'une inscription, du plus récent au plus ancien.
+62          *
+63          * @return Collection<int, Paiement>
+64          */
+65         public static function paiements(Inscription $inscription): Collection
+66         {
+67             return Paiement::query()
+68                 ->with('fraisScolaire.typeFrais')
+69                 ->where('inscription_id', $inscription->id)
+70                 ->orderByDesc('date_paiement')
+71                 ->orderByDesc('id')
+72                 ->get();
+73         }
+74     
+75         /**
+76          * Dette cumulée sur l'ensemble du parcours.
+77          *
+78          * @param  Collection<int, array{inscription: Inscription, finances: array{attendu: float, paye: float, reste: float}}>  $parcours
+79          */
+80         public static function detteTotale(Collection $parcours): float
+81         {
+82             return round($parcours->sum(fn (array $ligne) => $ligne['finances']['reste']), 2);
+83         }
+84     }

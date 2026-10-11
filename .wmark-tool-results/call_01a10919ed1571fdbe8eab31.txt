@@ -1,0 +1,5 @@
+196        Route::get('/comptable/tableau-de-bord', [ComptableDashboardController::class, 'index'])->middleware('role:comptable')->name('comptable.dashboard');
+197        Route::get('/comptable/paiements', [ComptablePaiementController::class, 'index'])->middleware('role:comptable')->name('comptable.paiements.index');
+198        Route::post('/comptable/paiements', [ComptablePaiementController::class, 'store'])->middleware('role:comptable')->name('comptable.paiements.store');
+
+[showing lines 196-198 of 208; read again with offset=199 for more]

@@ -1,0 +1,1 @@
+Updated app/Models/Presence.php: replaced 8 lines with 6 lines

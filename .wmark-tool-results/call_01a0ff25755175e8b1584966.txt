@@ -1,0 +1,1 @@
+Wrote storage/app/_smoke.php (20 lines)

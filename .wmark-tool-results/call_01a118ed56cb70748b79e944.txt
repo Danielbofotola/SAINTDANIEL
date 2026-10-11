@@ -1,0 +1,32 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/PrefectureDashboardTest.php (3 hunks applied)
+Landed at lines 9-9 (the file's new text; no re-read needed):
+9          foreach (['notifications', 'inscriptions', 'eleves', 'classes', 'cycles', 'sections', 'options', 'salles', 'professeurs', 'annees_scolaires', 'users'] as $table) {
+Landed at lines 102-110 (the file's new text; no re-read needed):
+102    
+103        Schema::create('notifications', function (Blueprint $table) {
+104            $table->uuid('id')->primary();
+105            $table->string('type');
+106            $table->morphs('notifiable');
+107            $table->text('data');
+108            $table->timestamp('read_at')->nullable();
+109            $table->timestamps();
+110        });
+Landed at lines 174-216 (the file's new text; no re-read needed):
+174    
+175    test('chaque rubrique de l’espace préfecture dispose de sa propre page', function () {
+176        $prefet = User::where('role', 'prefetture')->first();
+177    
+178        $this->actingAs($prefet)->get(route('prefecture.effectifs'))->assertOk()
+179            ->assertSee('Effectifs par cycle')->assertSee('Garçons')->assertSee('Filles');
+180    
+181        $this->actingAs($prefet)->get(route('prefecture.classes'))->assertOk()
+      … 27 lines omitted …
+209    
+210    test('les pages de l’espace préfecture sont fermées aux autres rôles', function () {
+211        $comptable = User::where('role', 'comptable')->first();
+212    
+213        foreach (['prefecture.effectifs', 'prefecture.classes', 'prefecture.personnel', 'prefecture.profil'] as $route) {
+214            $this->actingAs($comptable)->get(route($route))->assertForbidden();
+215        }
+216    });

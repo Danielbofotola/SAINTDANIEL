@@ -1,0 +1,51 @@
+106                            <img class="app-header__user-avatar" src="{{ asset('storage/'.$photo) }}" alt="">
+107                        @else
+108                            <span class="app-header__user-initial">{{ $initiale }}</span>
+109                        @endif
+110                        <span class="d-none d-md-inline ml-2 text-white" style="font-size:14px">{{ $displayName }}</span>
+111                    </a>
+112                    <ul class="dropdown-menu settings-menu dropdown-menu-right border-0 shadow-lg">
+113                        <li class="dropdown-header">{{ $displayName }}</li>
+114                        <li><a class="dropdown-item" href="{{ route('profile.show') }}"><i class="fa fa-user fa-lg mr-2"></i> Mon profil</a></li>
+115                        <li>
+116                            <form method="POST" action="{{ route('logout') }}">@csrf
+117                                <button class="dropdown-item text-danger" type="submit"><i class="fa fa-sign-out fa-lg mr-2"></i> Déconnexion</button>
+118                            </form>
+119                        </li>
+120                    </ul>
+121                </li>
+122            </ul>
+123        </header>
+124    
+125        <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
+126    
+127        <aside class="app-sidebar">
+128            <div class="app-sidebar__user">
+129                @if ($photo)
+130                    <img class="app-sidebar__user-avatar mr-2" src="{{ asset('storage/'.$photo) }}" alt="">
+131                @else
+132                    <span class="app-sidebar__user-initial mr-2">{{ $initiale }}</span>
+133                @endif
+134                <div>
+135                    <p class="app-sidebar__user-name mb-0">{{ $displayName }}</p>
+136                    <p class="app-sidebar__user-designation mb-0">Enseignant</p>
+137                </div>
+138            </div>
+139            <ul class="app-menu">
+140                <li class="menu-section">Mon espace</li>
+141                <li><a class="app-menu__item {{ request()->routeIs('professeur.dashboard') ? 'active' : '' }}" href="{{ route('professeur.dashboard') }}" @if (request()->routeIs('professeur.dashboard')) aria-current="page" @endif><i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label">Vue générale</span></a></li>
+142                <li><a class="app-menu__item {{ request()->routeIs('professeur.planning') ? 'active' : '' }}" href="{{ route('professeur.planning') }}"><i class="app-menu__icon fa fa-calendar-o"></i><span class="app-menu__label">Mon planning</span></a></li>
+143                <li><a class="app-menu__item {{ request()->routeIs('professeur.cours', 'professeur.cours.show') ? 'active' : '' }}" href="{{ route('professeur.cours') }}"><i class="app-menu__icon fa fa-book"></i><span class="app-menu__label">Mes cours</span></a></li>
+144                <li><a class="app-menu__item {{ request()->routeIs('professeur.evaluations', 'professeur.notes') ? 'active' : '' }}" href="{{ route('professeur.evaluations') }}"><i class="app-menu__icon fa fa-pencil-square-o"></i><span class="app-menu__label">Évaluations &amp; notes</span></a></li>
+145                <li><a class="app-menu__item {{ request()->routeIs('professeur.eleves', 'professeur.eleves.show') ? 'active' : '' }}" href="{{ route('professeur.eleves') }}"><i class="app-menu__icon fa fa-users"></i><span class="app-menu__label">Mes élèves</span></a></li>
+146                <li><a class="app-menu__item {{ request()->routeIs('professeur.presences') ? 'active' : '' }}" href="{{ route('professeur.presences') }}"><i class="app-menu__icon fa fa-check-square-o"></i><span class="app-menu__label">Faire l’appel</span></a></li>
+147                <li class="menu-section">Compte</li>
+148                <li><a class="app-menu__item {{ request()->routeIs('professeur.profil') ? 'active' : '' }}" href="{{ route('professeur.profil') }}"><i class="app-menu__icon fa fa-user"></i><span class="app-menu__label">Mon profil</span></a></li>
+149                <li><a class="app-menu__item" href="{{ route('profile.show') }}"><i class="app-menu__icon fa fa-cog"></i><span class="app-menu__label">Compte &amp; sécurité</span></a></li>
+150            </ul>
+151        </aside>
+152    
+153        <main class="app-content">
+154            @include('partials.impersonation-banner')
+
+[showing lines 106-155 of 181; read again with offset=156 for more]

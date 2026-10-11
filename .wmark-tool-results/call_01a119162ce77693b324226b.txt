@@ -1,0 +1,8 @@
+68         Route::get('/accueil', [HomeController::class, 'index'])->name('home');
+69         Route::get('/mon-profil', [UserProfileController::class, 'showPersonalProfile'])->name('profile.show');
+70         Route::get('/mon-profil/modifier', [UserProfileController::class, 'editPersonalProfile'])->name('profile.edit');
+71         Route::put('/mon-profil', [UserProfileController::class, 'update'])->name('profile.update');
+72         Route::get('/admin/tableau-de-bord', [AdminDashboardController::class, 'index'])->middleware('role:admin')->name('admin.dashboard');
+73         Route::get('/admin/professeurs/nouveau', [ProfesseurController::class, 'create'])->middleware('role:admin')->name('admin.professeurs.create');
+
+[showing lines 68-73 of 292; read again with offset=74 for more]

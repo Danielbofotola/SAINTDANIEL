@@ -1,0 +1,8 @@
+Applied patch: 1 file changed (1 updated)
+Updated routes/web.php (2 hunks applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 2: context matched at lines 36-36 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 37-37:
+37         Route::get('/accueil', [HomeController::class, 'index'])->name('home');
+Landed at lines 20-20 (the file's new text; no re-read needed):
+20     use App\Http\Controllers\HomeController;

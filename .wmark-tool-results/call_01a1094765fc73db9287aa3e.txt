@@ -1,0 +1,134 @@
+1      <!DOCTYPE html>
+2      <html lang="fr">
+3      <head>
+4          <meta charset="utf-8">
+5          <meta name="viewport" content="width=device-width, initial-scale=1">
+6          <title>Messagerie | {{ $systemSettings?->nom_court ?? 'Établissement' }}</title>
+7          <link rel="stylesheet" href="{{ asset('boostrap/css/css/main.css') }}">
+8          <link rel="stylesheet" href="{{ asset('boostrap/css/font-awesome/css/fa-regular.min.css') }}">
+9          <link rel="stylesheet" href="{{ asset('boostrap/css/font-awesome/css/fontawesome.css') }}">
+10         <link rel="stylesheet" href="{{ asset('boostrap/css/font-awesome/css/fa-solid.css') }}">
+11         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+12         <style>
+13             .messagerie { display:flex; gap:16px; align-items:flex-start; }
+14             .messagerie__liste { width:340px; flex:none; background:#fff; border:1px solid #e2e8f0; border-radius:12px; overflow:hidden; }
+15             .messagerie__fil { flex:1; background:#fff; border:1px solid #e2e8f0; border-radius:12px; display:flex; flex-direction:column; min-height:60vh; }
+16             .conv { display:block; padding:12px 14px; border-bottom:1px solid #f1f5f9; text-decoration:none; color:#1e293b; }
+17             .conv:hover { background:#f8fafc; text-decoration:none; }
+18             .conv.active { background:#eff6ff; border-left:4px solid #4680ff; }
+19             .conv strong { display:block; font-size:14px; }
+20             .conv small { color:#64748b; font-size:12px; }
+21             .bulle { padding:10px 14px; border-radius:12px; margin-bottom:10px; max-width:78%; font-size:14px; }
+22             .bulle--moi { background:#4680ff; color:#fff; margin-left:auto; }
+23             .bulle--autre { background:#f1f5f9; color:#1e293b; }
+24             .bulle__meta { display:block; font-size:11px; opacity:.8; margin-top:4px; }
+25             .messagerie__messages { flex:1; overflow-y:auto; padding:16px; max-height:52vh; }
+26             .messagerie__saisie { border-top:1px solid #e2e8f0; padding:12px 16px; }
+27             .badge-nonlu { background:#dc2626; color:#fff; border-radius:999px; font-size:11px; font-weight:700; padding:1px 7px; }
+28         </style>
+29     </head>
+30     <body class="app">
+31         <main class="app-content" style="margin-left:0">
+32             <div class="app-title">
+33                 <div>
+34                     <h1><i class="fa fa-comments"></i> Messagerie interne</h1>
+35                     <p>{{ $conversations->count() }} conversation(s) · {{ $nonLus }} message(s) non lu(s) · {{ $totalUtilisateurs }} utilisateur(s) joignables.</p>
+36                 </div>
+37                 <div>
+38                     <a class="btn btn-secondary" href="{{ route($user->dashboardRouteName()) }}"><i class="fa fa-dashboard"></i> Mon tableau de bord</a>
+39                     <a class="btn btn-info" href="{{ route('notifications.index') }}"><i class="fa fa-bell-o"></i> Mes notifications</a>
+40                 </div>
+41             </div>
+42     
+43             @if (session('success'))<div class="alert alert-success">{{ session('success') }}</div>@endif
+44             @if (session('error'))<div class="alert alert-danger">{{ session('error') }}</div>@endif
+45             @if ($errors->any())<div class="alert alert-danger"><ul class="mb-0">@foreach ($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul></div>@endif
+46     
+47             <div class="tile">
+48                 <h4 class="tile-title"><i class="fa fa-pencil"></i> Nouveau message</h4>
+49                 <form method="POST" action="{{ route('messagerie.store') }}">
+50                     @csrf
+51                     <div class="row">
+52                         <div class="col-md-5 form-group">
+53                             <label class="form-label">Destinataires *</label>
+54                             <select class="form-control" name="destinataires[]" multiple size="6" required>
+55                                 <option value="tous" @selected(in_array('tous', old('destinataires', []), true))>— Tous les utilisateurs ({{ $totalUtilisateurs - 1 }}) —</option>
+56                                 @foreach ($destinataires as $compte)
+57                                     @php($nom = trim(($compte->nom.' '.$compte->postnom.' '.$compte->prenom)) ?: $compte->username)
+58                                     <option value="{{ $compte->id }}" @selected(in_array((string) $compte->id, array_map('strval', old('destinataires', [])), true))>
+59                                         {{ $nom }} — {{ ucfirst($compte->role) }}
+60                                     </option>
+61                                 @endforeach
+62                             </select>
+63                             <small class="text-muted">Ctrl (ou Cmd) + clic pour choisir plusieurs personnes.</small>
+64                         </div>
+65                         <div class="col-md-7">
+66                             <div class="form-group">
+67                                 <label class="form-label">Objet *</label>
+68                                 <input class="form-control" name="sujet" maxlength="150" value="{{ old('sujet') }}" required placeholder="Ex. Préparation des bulletins">
+69                             </div>
+70                             <div class="form-group">
+71                                 <label class="form-label">Message *</label>
+72                                 <textarea class="form-control" name="corps" rows="4" maxlength="2000" required placeholder="Votre message…">{{ old('corps') }}</textarea>
+73                             </div>
+74                             <button class="btn btn-primary" type="submit"><i class="fa fa-paper-plane"></i> Envoyer</button>
+75                         </div>
+76                     </div>
+77                 </form>
+78             </div>
+79     
+80             <div class="messagerie">
+81                 <div class="messagerie__liste">
+82                     <div class="px-3 py-2 border-bottom"><strong>Conversations</strong></div>
+83                     @forelse ($conversations as $conversation)
+84                         <a class="conv {{ $active && $active->id === $conversation->id ? 'active' : '' }}" href="{{ route('messagerie.index', ['conversation' => $conversation->id]) }}">
+85                             <div class="d-flex justify-content-between align-items-start">
+86                                 <strong>{{ $conversation->sujet }}</strong>
+87                                 @if ($conversation->non_lus > 0)<span class="badge-nonlu">{{ $conversation->non_lus }}</span>@endif
+88                             </div>
+89                             <small>
+90                                 {{ $conversation->participants->count() }} participant(s)
+91                                 @if ($conversation->dernierMessage) · {{ \Illuminate\Support\Str::limit($conversation->dernierMessage->corps, 40) }}@endif
+92                             </small>
+93                             <small class="d-block text-muted">{{ $conversation->derniere_activite_at?->diffForHumans() }}</small>
+94                         </a>
+95                     @empty
+96                         <p class="text-muted p-3 mb-0">Aucune conversation. Lancez la première ci-dessus.</p>
+97                     @endforelse
+98                 </div>
+99     
+100                <div class="messagerie__fil">
+101                    @if (! $active)
+102                        <div class="p-4 text-muted">Choisissez une conversation ou créez-en une nouvelle.</div>
+103                    @else
+104                        <div class="px-3 py-2 border-bottom">
+105                            <strong>{{ $active->sujet }}</strong>
+106                            <small class="text-muted d-block">
+107                                {{ $active->libelleType() }} · {{ $active->participants->count() }} participant(s)
+108                                · {{ $active->createur?->username ? 'créée par '.$active->createur->username : '' }}
+109                            </small>
+110                        </div>
+111                        <div class="messagerie__messages">
+112                            @foreach ($messages as $message)
+113                                <div class="bulle {{ $message->auteur_id === $user->id ? 'bulle--moi' : 'bulle--autre' }}">
+114                                    @unless ($message->auteur_id === $user->id)
+115                                        <strong>{{ $message->nomAuteur() }}</strong><br>
+116                                    @endunless
+117                                    {{ $message->corps }}
+118                                    <span class="bulle__meta">{{ $message->created_at?->format('d/m/Y H:i') }}</span>
+119                                </div>
+120                            @endforeach
+121                        </div>
+122                        <form class="messagerie__saisie" method="POST" action="{{ route('messagerie.repondre', $active) }}">
+123                            @csrf
+124                            <div class="d-flex">
+125                                <input class="form-control mr-2" name="corps" maxlength="2000" required placeholder="Répondre…">
+126                                <button class="btn btn-primary" type="submit"><i class="fa fa-paper-plane"></i></button>
+127                            </div>
+128                        </form>
+129                    @endif
+130                </div>
+131            </div>
+132        </main>
+133    </body>
+134    </html>

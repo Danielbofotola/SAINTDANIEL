@@ -1,0 +1,38 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\b493c9bc81dc\20261008-011640-apply_patch-call_01a118debdb877ca874c7263.txt (604 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+Applied patch: 2 files changed (2 updated)
+Updated tests/Feature/PortailParentTest.php (2 hunks applied)
+Updated tests/Feature/MessagerieSuppressionTest.php (2 hunks applied)
+Landed at lines 12-12 (the file's new text; no re-read needed):
+12         foreach (['notifications', 'messages', 'conversation_user', 'conversations', 'eleve_user', 'inscriptions', 'classes', 'annees_scolaires', 'eleves', 'parametres_systeme', 'professeurs', 'users'] as $table) {
+Landed at lines 46-89 (the file's new text;
+
+... 416 chars truncated ...
+
+nedBigInteger('classe_id')->nullable();
+83             $table->unsignedBigInteger('annee_scolaire_id')->nullable();
+84             $table->date('date_inscription')->nullable();
+85             $table->string('statut')->default('actif');
+86             $table->timestamps();
+87         });
+88     
+89         Schema::create('parametres_systeme', function (Blueprint $table) {
+Landed at lines 15-15 (the file's new text; no re-read needed):
+15         foreach (['notifications', 'annonces', 'messages', 'conversation_user', 'conversations', 'eleve_user', 'inscriptions', 'classes', 'annees_scolaires', 'eleves', 'parametres_systeme', 'professeurs', 'users'] as $table) {
+Landed at lines 48-91 (the file's new text; no re-read needed):
+48         Schema::create('annees_scolaires', function (Blueprint $table) {
+49             $table->id();
+50             $table->string('libelle', 50);
+51             $table->boolean('is_encours')->default(false);
+52             $table->timestamps();
+53         });
+54     
+55         Schema::create('classes', function (Blueprint $table) {
+      … 28 lines omitted …
+84             $table->unsignedBigInteger('classe_id')->nullable();
+85             $table->unsignedBigInteger('annee_scolaire_id')->nullable();
+86             $table->date('date_inscription')->nullable();
+87             $table->string('statut')->default('actif');
+88             $table->timestamps();
+89         });
+90     
+91         Schema::create('parametres_systeme', function (Blueprint $table) {

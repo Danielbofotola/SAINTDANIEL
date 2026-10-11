@@ -1,0 +1,10 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/PrefectureVieScolaireTest.php (2 hunks applied)
+Landed at lines 370-372 (the file's new text; no re-read needed):
+370    
+371        // Régression : la page doit afficher la date de validation (et non recevoir une chaîne).
+372        $this->actingAs($prefet)->get(route('prefecture.evaluations'))->assertOk()->assertSee('Validée');
+Landed at lines 389-391 (the file's new text; no re-read needed):
+389    
+390        // Régression : la page doit afficher la date d'approbation (et non planter sur une chaîne).
+391        $this->actingAs($prefet)->get(route('prefecture.bulletins'))->assertOk()->assertSee('Approuvé le');

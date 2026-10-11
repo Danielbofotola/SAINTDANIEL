@@ -1,0 +1,66 @@
+1      <?php
+2      
+3      namespace App\Models;
+4      
+5      use Illuminate\Database\Eloquent\Model;
+6      
+7      /**
+8       * Fil de discussion interne : échange direct (un ou plusieurs collègues) ou
+9       * diffusion à tous les utilisateurs.
+10      */
+11     class Conversation extends Model
+12     {
+13         public const TYPES = [
+14             'directe' => 'Message direct',
+15             'diffusion' => 'Diffusion à tous',
+16         ];
+17     
+18         protected $fillable = ['sujet', 'type', 'createur_id', 'derniere_activite_at'];
+19     
+20         protected function casts(): array
+21         {
+22             return ['derniere_activite_at' => 'datetime'];
+23         }
+24     
+25         public function messages()
+26         {
+27             return $this->hasMany(Message::class)->orderBy('created_at');
+28         }
+29     
+30         public function participants()
+31         {
+32             return $this->belongsToMany(User::class, 'conversation_user')
+33                 ->withPivot('dernier_lu_at', 'dernier_message_id')
+34                 ->withTimestamps();
+35         }
+36     
+37         public function createur()
+38         {
+39             return $this->belongsTo(User::class, 'createur_id');
+40         }
+41     
+42         public function dernierMessage()
+43         {
+44             return $this->hasOne(Message::class)->latestOfMany();
+45         }
+46     
+47         /**
+48          * Nombre de messages non lus par cet utilisateur dans cette conversation.
+49          */
+50         public function nonLusPour(User $utilisateur): int
+51         {
+52             $dernierLu = $this->participants()
+53                 ->where('user_id', $utilisateur->id)
+54                 ->value('dernier_message_id');
+55     
+56             return $this->messages()
+57                 ->where('id', '>', (int) ($dernierLu ?? 0))
+58                 ->where('auteur_id', '!=', $utilisateur->id)
+59                 ->count();
+60         }
+61     
+62         public function libelleType(): string
+63         {
+64             return self::TYPES[$this->type] ?? 'Message direct';
+65         }
+66     }

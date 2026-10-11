@@ -1,0 +1,21 @@
+Applied patch: 4 files changed (4 updated)
+Updated resources/views/admin/comptabilite/index.blade.php (1 hunk applied)
+Updated resources/views/admin/comptabilite/plan.blade.php (1 hunk applied)
+Updated resources/views/admin/comptabilite/balance.blade.php (1 hunk applied)
+Updated resources/views/admin/statistiques/index.blade.php (1 hunk applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 22-22 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 23-23:
+23                     <a class="btn btn-dark" href="{{ route('admin.dashboard') }}"><i class="fa fa-dashboard"></i> Tableau de bord</a>
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 21-21 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 22-22:
+22                     <a class="btn btn-dark" href="{{ route('admin.dashboard') }}"><i class="fa fa-dashboard"></i> Tableau de bord</a>
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 23-23 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 24-24:
+24                     <a class="btn btn-dark" href="{{ route('admin.dashboard') }}"><i class="fa fa-dashboard"></i> Tableau de bord</a>
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 26-26 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 27-27:
+27                     <a class="btn btn-dark" href="{{ route('admin.dashboard') }}"><i class="fa fa-dashboard"></i> Tableau de bord</a>

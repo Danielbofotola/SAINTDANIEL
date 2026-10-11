@@ -1,0 +1,6 @@
+Applied patch: 1 file changed (1 updated)
+Updated app/Http/Controllers/ComptablePaiementController.php (2 hunks applied)
+Landed at lines 34-34 (the file's new text; no re-read needed):
+34                     ->whereIn('statut', ['actif', 'en_attente'])
+Landed at lines 97-97 (the file's new text; no re-read needed):
+97                 'inscription_id' => ['required', Rule::exists('inscriptions', 'id')->where(fn ($query) => $query->where('annee_scolaire_id', $annee->id)->whereIn('statut', ['actif', 'en_attente']))],

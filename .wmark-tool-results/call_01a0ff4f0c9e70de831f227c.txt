@@ -1,0 +1,6 @@
+33     Route::post('/deconnexion', [AuthController::class, 'logout'])->middleware('auth')->name('logout');
+34     
+35     Route::middleware('auth')->group(function () {
+36         Route::view('/accueil', 'dashboard')->name('home');
+
+[showing lines 33-36 of 105; read again with offset=37 for more]

@@ -1,0 +1,14 @@
+52                         <div class="col-md-6 form-group"><label class="form-label" for="classe_id">Classe demandée *</label><select class="form-control" id="classe_id" name="classe_id" required><option value="">Sélectionner une classe</option>@foreach ($classes as $classe)<option value="{{ $classe->id }}" @selected(old('classe_id') == $classe->id)>{{ $classe->nom }} · {{ $classe->cycle?->nom }}</option>@endforeach</select></div>
+53                         <div class="col-md-6 form-group"><label class="form-label" for="annee_scolaire_id">Année scolaire *</label><select class="form-control" id="annee_scolaire_id" name="annee_scolaire_id" required><option value="">Sélectionner une année</option>@foreach ($schoolYears as $schoolYear)<option value="{{ $schoolYear->id }}" @selected(old('annee_scolaire_id', $anneeEnCours?->id) == $schoolYear->id)>{{ $schoolYear->libelle }}{{ $schoolYear->is_encours ? ' · En cours' : '' }}</option>@endforeach</select></div>
+54                     </div>
+55                     <h2 class="section-title">Parent ou responsable légal</h2>
+56                     <div class="row">
+57                         <div class="col-md-6 form-group"><label class="form-label" for="nom_mere">Nom du parent / responsable *</label><input class="form-control" id="nom_mere" name="nom_mere" value="{{ old('nom_mere') }}" maxlength="100" required></div>
+58                         <div class="col-md-6 form-group"><label class="form-label" for="telephone_mere">Téléphone *</label><input class="form-control" id="telephone_mere" name="telephone_mere" value="{{ old('telephone_mere') }}" maxlength="20" required></div>
+59                         <div class="col-md-6 form-group"><label class="form-label" for="email_mere">E-mail</label><input class="form-control" id="email_mere" type="email" name="email_mere" value="{{ old('email_mere') }}" maxlength="100"></div>
+60                         <div class="col-md-6 form-group"><label class="form-label" for="telephone_pere">Autre téléphone</label><input class="form-control" id="telephone_pere" name="telephone_pere" value="{{ old('telephone_pere') }}" maxlength="20"></div>
+61                         <div class="col-12 form-group"><label class="form-label" for="adresse_mere">Adresse</label><textarea class="form-control" id="adresse_mere" name="adresse_mere" rows="2" maxlength="1000">{{ old('adresse_mere') }}</textarea></div>
+62                     </div>
+63                     <div class="actions"><a class="btn btn-secondary" href="{{ route('login') }}">Annuler</a><button class="btn btn-primary" type="submit" @disabled($classes->isEmpty() || $schoolYears->isEmpty())><i class="fa fa-paper-plane"></i> Envoyer la demande</button></div>
+
+[showing lines 52-63 of 68; read again with offset=64 for more]

@@ -1,0 +1,8 @@
+199                            <li><a class="waves-effect waves-dark" href="{{ route('admin.periodes.index') }}"><i class="icon-arrow-right"></i>Gestion de periode</a></li>
+200                            <li><a class="waves-effect waves-dark" href="{{ route('admin.affectations.index') }}"><i class="icon-arrow-right"></i>Gestion des affectations_cours</a></li>
+201                            <li><a class="waves-effect waves-dark" href="{{ route('admin.evaluations.index') }}"><i class="icon-arrow-right"></i>Gestion des evaluations</a></li>
+202                            <li><a class="waves-effect waves-dark" href="{{ route('admin.evaluations.index') }}"><i class="icon-arrow-right"></i>Gestion des notes </a></li>
+203                            <li><a class="waves-effect waves-dark" href="{{ route('admin.bulletins.index') }}"><i class="icon-arrow-right"></i>Gestion des bulletins</a></li>
+204                            <li><a class="waves-effect waves-dark" href="{{ route('admin.archives.index') }}"><i class="icon-arrow-right"></i>Gestion des archives_annees</a></li>
+
+[showing lines 199-204 of 378; read again with offset=205 for more]

@@ -1,0 +1,11 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\e1ce9c26600a\20261004-225617-bash-call_01a108eb2942733c955ab8d6.txt (514 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+[powershell — Windows side]
+23: <a href="{{ route('admin.professeurs.create') }}" class="btn btn-primary"><i class="fa fa-user-plus"></i> Créer un professeur</a>
+36: <form class="row mb-3" method="GET" action="{{ route('admin.professeurs.index') }}">
+47: <thead><tr><th>#</th><th>Photo</th><th>Matricule</th><th>Nom complet</th><th>Spécialité</th><th>Téléphone</th><th>E-mail</th><th>Affectations @if($anneeEnCours)<small>{{ $anneeEnCours->libelle }}</small>@endif</th><th>Statut</th><th>Actions</th></tr></thead>
+54: <td><a href="{{ route('admin.professeurs.show', $professeur) }}"><strong>{{ $professeur->nom }} {{ $professeur->postnom }} {{ $professeur->prenom }}</strong></a></td>
+61: <a href="{{ route('admin.professeurs.show', $professeur) }}" class="btn btn-sm btn-info" title="Voir le dossier"><i class="fa fa-folder-open"></i></a>
+62: <form class="d-inline" method="POST" action="{{ route('admin.professeurs.toggle-status', $professeur) }}">
+65: <button class="btn btn-sm btn-{{ $professeur->statut === 'actif' ? 'warning' : 'success' }}" type="submit" title="{{ $professeur->statut === 'actif' ? 'Désactiver' : 'Activer' }}"><i class="fa fa-power-off"></i></button>
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

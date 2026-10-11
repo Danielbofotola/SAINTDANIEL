@@ -1,0 +1,44 @@
+262                                  <div class="col-md-6 form-group">
+263                                     <label>Nouveau mot de passe</label>
+264                                     <input class="form-control" type="password" name="password" minlength="8" autocomplete="new-password">
+265                                     <small class="text-muted d-block mt-1">Au moins 8 caractères. Le mot de passe actuel n'est jamais affiché.</small>
+266                                     @error('password')<span class="text-danger small">{{ $message }}</span>@enderror
+267                                  </div>
+268                                  <div class="col-md-6 form-group">
+269                                     <label>Confirmer le nouveau mot de passe</label>
+270                                     <input class="form-control" type="password" name="password_confirmation" minlength="8" autocomplete="new-password">
+271                                  </div>
+272                                  <div class="col-md-6 form-group">
+273                                     <label>Nouveau code PIN</label>
+274                                     <input class="form-control" type="text" name="pin_code" inputmode="numeric" maxlength="4" pattern="[0-9]{4}" placeholder="4 chiffres">
+275                                     <small class="text-muted d-block mt-1">
+276                                        Le code PIN sert à la connexion rapide.
+277                                        @if ($user->pin_code) Un code PIN est actuellement défini pour ce compte. @else Aucun code PIN n'est défini. @endif
+278                                     </small>
+279                                     @error('pin_code')<span class="text-danger small">{{ $message }}</span>@enderror
+280                                  </div>
+281                                  <div class="col-md-6 form-group d-flex align-items-end">
+282                                     @if ($user->pin_code)
+283                                        <div class="form-check">
+284                                           <input class="form-check-input" type="checkbox" value="1" id="remove_pin" name="remove_pin">
+285                                           <label class="form-check-label" for="remove_pin">Retirer le code PIN de ce compte</label>
+286                                        </div>
+287                                     @endif
+288                                  </div>
+289                               </div>
+290    
+291                               <div class="mt-3">
+292                                  <a href="{{ route('admin.profile.accounts') }}" class="btn btn-secondary waves-effect">Annuler</a>
+293                                  <button class="btn btn-primary waves-effect waves-light" type="submit">
+294                                     <i class="icofont icofont-save"></i> Enregistrer les modifications
+295                                  </button>
+296                               </div>
+297                            </form>
+298                         </div>
+299                      </div>
+300                   </div>
+301                </div>
+302    
+303             </div>
+
+[showing lines 262-303 of 332; read again with offset=304 for more]

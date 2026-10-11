@@ -1,0 +1,36 @@
+1      <?php
+2      
+3      namespace App\Http\Controllers;
+4      
+5      use App\Models\Paiement;
+6      use Illuminate\View\View;
+7      
+8      /**
+9       * Reçu d'un paiement : document imprimable reprenant l'école, l'élève, le tarif,
+10      * la période, le montant encaissé et le reste à payer.
+11      */
+12     class RecuController extends Controller
+13     {
+14         public function show(Paiement $paiement): View
+15         {
+16             $paiement->load([
+17                 'inscription.eleve', 'inscription.classe', 'inscription.anneeScolaire',
+18                 'fraisScolaire.typeFrais', 'periode',
+19             ]);
+20     
+21             $exige = (float) ($paiement->fraisScolaire?->montant_exige ?? 0);
+22     
+23             $paye = (float) Paiement::query()
+24                 ->where('statut', 'actif')
+25                 ->where('inscription_id', $paiement->inscription_id)
+26                 ->where('frais_scolaire_id', $paiement->frais_scolaire_id)
+27                 ->sum('montant_paye');
+28     
+29             return view('paiements.recu', [
+30                 'paiement' => $paiement,
+31                 'exige' => $exige,
+32                 'paye' => $paye,
+33                 'reste' => max($exige - $paye, 0),
+34             ]);
+35         }
+36     }

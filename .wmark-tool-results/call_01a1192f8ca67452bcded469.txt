@@ -1,0 +1,29 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\b493c9bc81dc\20261008-024453-bash-call_01a1192f8ca67452bcded469.txt (791 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+[powershell — Windows side]
+=== routes : toggle eleves / periodes ===
+22: use App\Http\Controllers\PeriodeController;
+93: Route::get('/admin/periodes', [PeriodeController::class, 'index'])->middleware('role:admin')->name('admin.periodes.index');
+94: Route::post('/admin/periodes', [PeriodeController::class, 'store'])->middleware('role:admin')->name('admin.periodes.store');
+95: Route::patch('/admin/periodes/{periode}/statut', [PeriodeController::class, 'toggleStatus'])->middleware('role:admin')->n
+
+... 583 chars truncated ...
+
+ectureDashboardController::class, 'togglePeriode'])->middleware('role:prefetture')->name('prefecture.periodes.toggle');
+=== admin eleves index : filtre statut ===
+14: public function index(Request $request): View
+17: $statut = (string) $request->query('statut', '');
+22: ->whereIn('statut', ['actif', 'en_attente'])
+30: ->when(in_array($statut, ['actif', 'inactif', 'suspendu', 'exclu'], true), fn ($query) => $query->where('statut', $statut))
+40: 'statut' => $statut,
+45: 'inscrits' => Eleve::inscritAnneeEnCours()->count(),
+66: 'statut' => ['required', 'in:actif,inactif,suspendu,exclu'],
+86: $eleve->update(collect($data)->only(['nom', 'postnom', 'prenom', 'sexe', 'date_naissance', 'lieu_naissance', 'statut'])->merge($photo ? ['photo' => $photo] : [])->all());
+109: 'statut' => 'actif',
+121: 'documents' => fn ($query) => $query->where('statut', 'actif')->latest('created_at'),
+127: ->whereIn('statut', ['actif', 'en_attente'])
+=== scope Eleve::inscritAnneeEnCours ===
+23: 'statut',
+47: public function scopeInscritAnneeEnCours(Builder $query): Builder
+51: ->where('statut', 'actif'));
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

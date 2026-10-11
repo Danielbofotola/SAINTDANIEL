@@ -1,0 +1,22 @@
+9          Schema::disableForeignKeyConstraints();
+10         foreach ([
+11             'documents_eleves', 'eleve_sante', 'demandes_inscription', 'inscriptions', 'eleves', 'tuteurs', 'classes',
+12             'cycles', 'salles', 'annees_scolaires', 'professeurs', 'users',
+13         ] as $table) {
+14             Schema::dropIfExists($table);
+15         }
+16         Schema::enableForeignKeyConstraints();
+17     
+18         Schema::create('users', function (Blueprint $table) {
+19             $table->id();
+20             $table->string('username')->unique();
+21             $table->string('email')->unique();
+22             $table->string('password');
+23             $table->string('pin_code')->nullable();
+24             $table->string('role');
+25             $table->string('statut');
+26             $table->rememberToken();
+27             $table->timestamps();
+28         });
+
+[showing lines 9-28 of 285; read again with offset=29 for more]

@@ -1,0 +1,16 @@
+[powershell — Windows side]
+PASS  Tests\Feature\AnneeEnCoursScopingTest
+  ✓ the inscription scope keeps only the current school year                                                     0.32s  
+  ✓ the student scope keeps only pupils enrolled for the current school year                                     0.02s  
+  ✓ the class students page lists only the current school year enrolments                                        0.07s  
+  ✓ the class list counts only the current school year enrolments                                                0.02s  
+  ✓ without a current school year the scopes return nothing                                                      0.02s  
+  ✓ a pupil file shows the current school year enrolment                                                         0.03s  
+  ✓ a pupil file states when the pupil is not enrolled for the current year                                      0.02s  
+
+  Tests:    7 passed (16 assertions)
+  Duration: 0.76s
+
+
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

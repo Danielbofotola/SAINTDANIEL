@@ -1,0 +1,18 @@
+Applied patch: 1 file changed (1 updated)
+Updated routes/web.php (2 hunks applied)
+Landed at lines 16-18 (the file's new text; no re-read needed):
+16     use App\Http\Controllers\PeriodeController;
+17     use App\Http\Controllers\EvaluationController;
+18     use App\Http\Controllers\BulletinController;
+Landed at lines 62-72 (the file's new text; no re-read needed):
+62         Route::get('/admin/periodes', [PeriodeController::class, 'index'])->middleware('role:admin')->name('admin.periodes.index');
+63         Route::post('/admin/periodes', [PeriodeController::class, 'store'])->middleware('role:admin')->name('admin.periodes.store');
+64         Route::patch('/admin/periodes/{periode}/statut', [PeriodeController::class, 'toggleStatus'])->middleware('role:admin')->name('admin.periodes.toggle-status');
+65         Route::delete('/admin/periodes/{periode}', [PeriodeController::class, 'destroy'])->middleware('role:admin')->name('admin.periodes.destroy');
+66         Route::get('/admin/evaluations', [EvaluationController::class, 'index'])->middleware('role:admin')->name('admin.evaluations.index');
+67         Route::post('/admin/evaluations', [EvaluationController::class, 'store'])->middleware('role:admin')->name('admin.evaluations.store');
+68         Route::get('/admin/evaluations/{evaluation}/notes', [EvaluationController::class, 'notes'])->middleware('role:admin')->name('admin.evaluations.notes');
+69         Route::post('/admin/evaluations/{evaluation}/notes', [EvaluationController::class, 'storeNotes'])->middleware('role:admin')->name('admin.evaluations.notes.store');
+70         Route::delete('/admin/evaluations/{evaluation}', [EvaluationController::class, 'destroy'])->middleware('role:admin')->name('admin.evaluations.destroy');
+71         Route::get('/admin/bulletins', [BulletinController::class, 'index'])->middleware('role:admin')->name('admin.bulletins.index');
+72         Route::post('/admin/bulletins/generer', [BulletinController::class, 'generate'])->middleware('role:admin')->name('admin.bulletins.generate');

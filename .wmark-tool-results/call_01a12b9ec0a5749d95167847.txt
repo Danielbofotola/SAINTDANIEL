@@ -1,0 +1,13 @@
+Applied patch: 2 files changed (2 updated)
+Updated resources/views/comptable/paiements.blade.php (1 hunk applied)
+Updated resources/views/admin/paiements/index.blade.php (1 hunk applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 28-28 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 28-30:
+28                 <small class="text-muted">{{ $systemSettings->nom_etablissement }}@if($annee) · année <strong>{{ $annee->libelle }}</strong>@endif · Total encaissé :
+29                     @forelse ($totauxParDevise as $devise => $montant)<strong>{{ $money($montant, $devise) }}</strong>@if (! $loop->last) · @endif @empty <strong>{{ $money(0) }}</strong> @endforelse
+30                 </small>
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 33-33 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 33-33:
+33                 <div class="col-md-4"><div class="widget-small primary coloured-icon"><i class="icon fa fa-money fa-3x"></i><div class="info"><h4>Total encaissé</h4><p><b>@forelse ($totauxParDevise as $devise => $montant){{ $money($montant, $devise) }}@if (! $loop->last)<br>@endif @empty {{ $money(0) }} @endforelse</b></p></div></div></div>

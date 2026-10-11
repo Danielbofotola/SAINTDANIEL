@@ -1,0 +1,10 @@
+17                 <div>
+18                     <h1><i class="fa fa-calculator"></i> Comptabilité OHADA (SYSCOHADA)</h1>
+19                     <p>Plan comptable, écritures en partie double et balance générale.</p>
+20                 </div>
+21                 <div>
+22                     <a class="btn btn-secondary" href="{{ route('admin.comptabilite.plan') }}"><i class="fa fa-sitemap"></i> Plan comptable</a>
+23                     <a class="btn btn-info" href="{{ route('admin.comptabilite.balance') }}"><i class="fa fa-balance-scale"></i> Balance générale</a>
+24                 </div>
+
+[showing lines 17-24 of 166; read again with offset=25 for more]

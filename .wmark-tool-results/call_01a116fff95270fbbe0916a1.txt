@@ -1,0 +1,50 @@
+1      <?php
+2      
+3      use Illuminate\Database\Migrations\Migration;
+4      use Illuminate\Database\Schema\Blueprint;
+5      use Illuminate\Support\Facades\Schema;
+6      
+7      return new class extends Migration
+8      {
+9          public function up(): void
+10         {
+11             if (! Schema::hasTable('conversations')) {
+12                 Schema::create('conversations', function (Blueprint $table) {
+13                     $table->id();
+14                     $table->string('sujet', 150);
+15                     $table->string('type', 20)->default('directe'); // directe | diffusion
+16                     $table->foreignId('createur_id')->nullable()->constrained('users')->nullOnDelete();
+17                     $table->timestamp('derniere_activite_at')->nullable();
+18                     $table->timestamps();
+19                 });
+20             }
+21     
+22             if (! Schema::hasTable('conversation_user')) {
+23                 Schema::create('conversation_user', function (Blueprint $table) {
+24                     $table->id();
+25                     $table->foreignId('conversation_id')->constrained('conversations')->cascadeOnDelete();
+26                     $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+27                     $table->timestamp('dernier_lu_at')->nullable();
+28                     $table->timestamps();
+29                     $table->unique(['conversation_id', 'user_id']);
+30                 });
+31             }
+32     
+33             if (! Schema::hasTable('messages')) {
+34                 Schema::create('messages', function (Blueprint $table) {
+35                     $table->id();
+36                     $table->foreignId('conversation_id')->constrained('conversations')->cascadeOnDelete();
+37                     $table->foreignId('auteur_id')->nullable()->constrained('users')->nullOnDelete();
+38                     $table->text('corps');
+39                     $table->timestamps();
+40                 });
+41             }
+42         }
+43     
+44         public function down(): void
+45         {
+46             Schema::dropIfExists('messages');
+47             Schema::dropIfExists('conversation_user');
+48             Schema::dropIfExists('conversations');
+49         }
+50     };

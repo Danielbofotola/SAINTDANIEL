@@ -1,0 +1,24 @@
+date inputs converted: 21
+files with script tag: 22
+   resources/views/comptable/depenses.blade.php
+   resources/views/comptable/paiements.blade.php
+   resources/views/comptable/paies.blade.php
+   resources/views/errors/layout.blade.php
+   resources/views/page publique pour les inscription et info/layout.blade.php
+   resources/views/parent/layout.blade.php
+   resources/views/prefecture/layout.blade.php
+   resources/views/professeur/layout.blade.php
+   resources/views/profile/edit.blade.php
+   resources/views/admin/annees/edit.blade.php
+   resources/views/admin/annees/index.blade.php
+   resources/views/admin/comptabilite/index.blade.php
+   resources/views/admin/depenses/index.blade.php
+   resources/views/admin/eleves/create.blade.php
+   resources/views/admin/eleves/edit.blade.php
+   resources/views/admin/evaluations/index.blade.php
+   resources/views/admin/frais/index.blade.php
+   resources/views/admin/paiements/index.blade.php
+   resources/views/admin/paies/index.blade.php
+   resources/views/admin/periodes/index.blade.php
+   resources/views/admin/profile/account-edit.blade.php
+   resources/views/admin/profile/edit.blade.php

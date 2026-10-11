@@ -1,0 +1,44 @@
+1      [powershell — Windows side]
+2      <div class="request-top">\n
+3                          <div>\n
+4                              <h2 class="request-name">Refusee  Cas</h2>\n
+5                              <div class="request-meta">Demande #2 · traitée le 04/10/2026 20:00 · par connie47</div>\n
+6                          </div>\n
+7                          <span class="badge badge-danger">Refusée</span>\n
+8                      </div>\n
+9                      <div class="request-details">\n
+10                         <div><span class="detail-label">Naissance</span><span class="detail-value">01/01/2014 · Garçon</span></div>\n
+11                         <div><span class="detail-label">Responsable</span><span class="detail-value">Marie</span></div>\n
+12                         <div><span class="detail-label">Téléphone</span><span class="detail-value">0990000000</span></div>\n
+13                         <div><span class="detail-label">Classe attribuée</span><span class="detail-value">3e A</span></div>\n
+14                         <div><span class="detail-label">Année scolaire</span><span class="detail-value">2026-2027</span></div>\n
+15                         <div><span class="detail-label">Déposée le</span><span class="detail-value">04/10/2026 20:00</span></div>\n
+16                     </div>\n
+17                                         <div class="reject-reason"><strong>Motif du refus :</strong> Dossier incomplet</div>\n
+18                                 </article>\n
+19             \n
+20                 </main>\n
+21     </body>\n
+22     </html>\n
+23     
+24     
+25       To contain: Acceptee Cas
+26     
+27       at tests\Feature\ElevesPagesTest.php:223
+28         219▕     $this->actingAs($admin)
+29         220▕         ->get(route('admin.registration.students.history'))
+30         221▕         ->assertOk()
+31         222▕         ->assertSee("Historique d'inscription", false)
+32       ➜ 223▕         ->assertSee('Acceptee Cas')
+33         224▕         ->assertSee('Refusee Cas')
+34         225▕         ->assertSee('Dossier incomplet')
+35         226▕         ->assertDontSee('EnAttente Cas');
+36         227▕
+37     
+38     
+39       Tests:    2 failed, 2 passed (14 assertions)
+40       Duration: 0.45s
+41     
+42     ==exit 1==
+43     #< CLIXML
+44     <Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

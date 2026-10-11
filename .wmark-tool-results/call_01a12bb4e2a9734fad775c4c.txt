@@ -1,0 +1,32 @@
+185        });
+186    
+187        DB::table('annees_scolaires')->insert([
+188            'id' => 1, 'libelle' => '2026-2027', 'date_debut' => '2026-09-01',
+189            'date_fin' => '2027-07-01', 'is_encours' => true, 'statut' => 'actif',
+190        ]);
+191        DB::table('cycles')->insert(['id' => 1, 'nom' => 'Secondaire', 'statut' => 'actif']);
+192        DB::table('classes')->insert(['id' => 1, 'cycle_id' => 1, 'nom' => '8e CTEB', 'statut' => 'actif']);
+193        DB::table('professeurs')->insert(['id' => 1, 'statut' => 'actif']);
+194        DB::table('cours')->insert(['id' => 1, 'code' => 'ALG', 'intitule' => 'Algèbre', 'ponderation' => 4, 'statut' => 'actif']);
+195        DB::table('affectations_cours')->insert([
+196            'id' => 1, 'professeur_id' => 1, 'cours_id' => 1, 'classe_id' => 1, 'annee_scolaire_id' => 1, 'statut' => 'actif',
+197        ]);
+198        DB::table('periodes')->insert(['id' => 1, 'annee_scolaire_id' => 1, 'nom' => '1ère Période', 'statut' => 'actif']);
+199    });
+200    
+201    function seedBulletinEleve(): int
+202    {
+203        $tuteurId = DB::table('tuteurs')->insertGetId(['nom_mere' => 'Marie', 'telephone_mere' => '0990', 'statut' => 'actif', 'created_at' => now(), 'updated_at' => now()]);
+204        $eleveId = DB::table('eleves')->insertGetId([
+205            'matricule' => 'ELV-2026-0001', 'nom' => 'Mwamba', 'postnom' => 'Kabila', 'prenom' => 'Aline',
+206            'sexe' => 'F', 'date_naissance' => '2012-05-12', 'lieu_naissance' => 'Kinshasa',
+207            'tuteur_id' => $tuteurId, 'statut' => 'actif', 'created_at' => now(), 'updated_at' => now(),
+208        ]);
+209    
+210        return DB::table('inscriptions')->insertGetId([
+211            'eleve_id' => $eleveId, 'classe_id' => 1, 'annee_scolaire_id' => 1, 'date_inscription' => '2026-09-05',
+212            'statut' => 'actif', 'created_at' => now(), 'updated_at' => now(),
+213        ]);
+214    }
+
+[showing lines 185-214 of 433; read again with offset=215 for more]

@@ -1,0 +1,340 @@
+1      <?php
+2      
+3      use App\Models\User;
+4      use Illuminate\Database\Schema\Blueprint;
+5      use Illuminate\Support\Facades\DB;
+6      use Illuminate\Support\Facades\Hash;
+7      use Illuminate\Support\Facades\Schema;
+8      
+9      beforeEach(function () {
+10         Schema::disableForeignKeyConstraints();
+11         foreach ([
+12             'demandes_comptes', 'demandes_inscription', 'inscriptions', 'eleve_sante', 'eleves',
+13             'tuteurs', 'classes', 'cycles', 'annees_scolaires', 'professeurs', 'users',
+14         ] as $table) {
+15             Schema::dropIfExists($table);
+16         }
+17         Schema::enableForeignKeyConstraints();
+18     
+19         Schema::create('users', function (Blueprint $table) {
+20             $table->id();
+21             $table->unsignedBigInteger('professeur_id')->nullable()->unique();
+22             $table->string('nom', 50)->nullable();
+23             $table->string('postnom', 50)->nullable();
+24             $table->string('prenom', 50)->nullable();
+25             $table->date('date_naissance')->nullable();
+26             $table->string('username', 50)->unique();
+27             $table->string('email', 100)->unique();
+28             $table->string('telephone', 20)->nullable();
+29             $table->text('adresse')->nullable();
+30             $table->string('photo')->nullable();
+31             $table->string('password');
+32             $table->string('pin_code')->nullable();
+33             $table->string('role');
+34             $table->string('statut');
+35             $table->dateTime('last_login')->nullable();
+36             $table->rememberToken();
+37             $table->timestamps();
+38         });
+39         Schema::create('professeurs', function (Blueprint $table) {
+40             $table->id();
+41             $table->string('matricule');
+42             $table->string('nom');
+43             $table->string('postnom')->nullable();
+44             $table->string('prenom');
+45             $table->string('sexe');
+46             $table->string('specialite');
+47             $table->string('telephone');
+48             $table->string('email');
+49             $table->string('photo')->nullable();
+50             $table->string('statut');
+51         });
+52         Schema::create('cycles', function (Blueprint $table) {
+53             $table->id();
+54             $table->string('nom');
+55             $table->string('statut');
+56         });
+57         Schema::create('classes', function (Blueprint $table) {
+58             $table->id();
+59             $table->unsignedBigInteger('cycle_id')->nullable();
+60             $table->unsignedBigInteger('salle_id')->nullable();
+61             $table->unsignedBigInteger('section_id')->nullable();
+62             $table->unsignedBigInteger('option_id')->nullable();
+63             $table->string('nom');
+64             $table->string('statut');
+65         });
+66         Schema::create('annees_scolaires', function (Blueprint $table) {
+67             $table->id();
+68             $table->string('libelle');
+69             $table->date('date_debut');
+70             $table->date('date_fin');
+71             $table->boolean('is_encours')->default(false);
+72             $table->string('statut');
+73         });
+74         Schema::create('tuteurs', function (Blueprint $table) {
+75             $table->id();
+76             $table->string('nom_mere');
+77             $table->string('telephone_mere');
+78             $table->string('email_mere')->nullable();
+79             $table->text('adresse_mere')->nullable();
+80             $table->string('nom_pere')->nullable();
+81             $table->string('telephone_pere')->nullable();
+82             $table->string('email_pere')->nullable();
+83             $table->string('statut')->default('actif');
+84             $table->timestamps();
+85         });
+86         Schema::create('eleves', function (Blueprint $table) {
+87             $table->id();
+88             $table->string('matricule')->unique();
+89             $table->string('nom');
+90             $table->string('postnom')->nullable();
+91             $table->string('prenom');
+92             $table->string('sexe');
+93             $table->date('date_naissance');
+94             $table->string('lieu_naissance')->nullable();
+95             $table->unsignedBigInteger('tuteur_id');
+96             $table->string('photo')->nullable();
+97             $table->string('statut');
+98             $table->timestamps();
+99         });
+100        Schema::create('inscriptions', function (Blueprint $table) {
+101            $table->id();
+102            $table->unsignedBigInteger('eleve_id');
+103            $table->unsignedBigInteger('classe_id');
+104            $table->unsignedBigInteger('annee_scolaire_id');
+105            $table->date('date_inscription');
+106            $table->string('statut');
+107            $table->timestamps();
+108        });
+109        Schema::create('demandes_inscription', function (Blueprint $table) {
+110            $table->id();
+111            $table->string('nom');
+112            $table->string('postnom')->nullable();
+113            $table->string('prenom');
+114            $table->string('sexe');
+115            $table->date('date_naissance');
+116            $table->string('lieu_naissance')->nullable();
+117            $table->unsignedBigInteger('classe_id')->nullable();
+118            $table->unsignedBigInteger('annee_scolaire_id')->nullable();
+119            $table->string('nom_mere');
+120            $table->string('telephone_mere');
+121            $table->string('email_mere')->nullable();
+122            $table->text('adresse_mere')->nullable();
+123            $table->string('nom_pere')->nullable();
+124            $table->string('telephone_pere')->nullable();
+125            $table->string('email_pere')->nullable();
+126            $table->string('statut')->default('en_attente');
+127            $table->unsignedBigInteger('traite_par')->nullable();
+128            $table->timestamp('traite_le')->nullable();
+129            $table->text('motif_refus')->nullable();
+130            $table->timestamps();
+131        });
+132        Schema::create('demandes_comptes', function (Blueprint $table) {
+133            $table->id();
+134            $table->string('nom');
+135            $table->string('postnom')->nullable();
+136            $table->string('prenom');
+137            $table->string('username');
+138            $table->string('email');
+139            $table->string('telephone')->nullable();
+140            $table->string('role_souhaite');
+141            $table->string('mot_de_passe')->nullable();
+142            $table->string('statut')->default('en_attente');
+143            $table->unsignedBigInteger('traite_par')->nullable();
+144            $table->timestamp('traite_le')->nullable();
+145            $table->text('motif_refus')->nullable();
+146            $table->timestamps();
+147        });
+148    
+149        DB::table('cycles')->insert(['id' => 1, 'nom' => 'Secondaire', 'statut' => 'actif']);
+150        DB::table('classes')->insert(['id' => 1, 'cycle_id' => 1, 'nom' => '3e A', 'statut' => 'actif']);
+151        DB::table('annees_scolaires')->insert([
+152            'id' => 1,
+153            'libelle' => '2026-2027',
+154            'date_debut' => '2026-09-01',
+155            'date_fin' => '2027-07-01',
+156            'is_encours' => true,
+157            'statut' => 'actif',
+158        ]);
+159    });
+160    
+161    function makeAdminForRegistrationRequests(): User
+162    {
+163        return User::create([
+164            'username' => 'registration-admin',
+165            'email' => 'registration-admin@example.test',
+166            'password' => 'admin-password',
+167            'role' => 'admin',
+168            'statut' => 'actif',
+169        ]);
+170    }
+171    
+172    function validStudentRequest(): array
+173    {
+174        return [
+175            'nom' => 'Mwamba',
+176            'postnom' => 'Kabila',
+177            'prenom' => 'Aline',
+178            'sexe' => 'F',
+179            'date_naissance' => '2014-05-12',
+180            'lieu_naissance' => 'Kinshasa',
+181            'classe_id' => 1,
+182            'annee_scolaire_id' => 1,
+183            'nom_mere' => 'Marie Kabila',
+184            'telephone_mere' => '0990000000',
+185            'email_mere' => 'marie@example.test',
+186        ];
+187    }
+188    
+189    test('a public student application remains pending until an admin approves enrollment', function () {
+190        $this->post(route('registration.student.store'), validStudentRequest())
+191            ->assertRedirect(route('registration.student.create'))
+192            ->assertSessionHas('success');
+193    
+194        expect(DB::table('demandes_inscription')->where('statut', 'en_attente')->count())->toBe(1)
+195            ->and(DB::table('eleves')->count())->toBe(0)
+196            ->and(DB::table('inscriptions')->count())->toBe(0);
+197    
+198        $admin = makeAdminForRegistrationRequests();
+199        $applicationId = DB::table('demandes_inscription')->value('id');
+200    
+201        $this->actingAs($admin)
+202            ->get(route('admin.registration.students'))
+203            ->assertOk()
+204            ->assertSee('Mwamba Kabila Aline');
+205    
+206        $this->post(route('admin.registration.students.approve', $applicationId), [
+207            'classe_id' => 1,
+208            'annee_scolaire_id' => 1,
+209        ])->assertRedirect(route('admin.registration.students'));
+210    
+211        $application = DB::table('demandes_inscription')->where('id', $applicationId)->first();
+212        $student = DB::table('eleves')->first();
+213        expect($application->statut)->toBe('acceptee')
+214            ->and($application->traite_par)->toBe($admin->id)
+215            ->and($student->nom)->toBe('Mwamba')
+216            ->and(DB::table('inscriptions')->where('eleve_id', $student->id)->count())->toBe(1);
+217    });
+218    
+219    test('a requested account is not active until the admin approves it', function () {
+220        $this->post(route('registration.account.store'), [
+221            'nom' => 'Kabila',
+222            'prenom' => 'Aline',
+223            'username' => 'aline.prof',
+224            'email' => 'aline.prof@example.test',
+225            'telephone' => '0990000000',
+226            'role_souhaite' => 'professeur',
+227            'mot_de_passe' => 'secret1234',
+228            'mot_de_passe_confirmation' => 'secret1234',
+229        ])->assertRedirect(route('registration.account.create'));
+230    
+231        $application = DB::table('demandes_comptes')->first();
+232        expect(Hash::check('secret1234', $application->mot_de_passe))->toBeTrue()
+233            ->and(DB::table('users')->count())->toBe(0);
+234    
+235        DB::table('professeurs')->insert([
+236            'id' => 1,
+237            'matricule' => 'PROF-2026-0001',
+238            'nom' => 'Kabila',
+239            'prenom' => 'Aline',
+240            'sexe' => 'F',
+241            'specialite' => 'Mathématiques',
+242            'telephone' => '0990000000',
+243            'email' => 'aline.prof@example.test',
+244            'statut' => 'actif',
+245        ]);
+246    
+247        $admin = makeAdminForRegistrationRequests();
+248        $this->actingAs($admin)
+249            ->get(route('admin.registration.accounts'))
+250            ->assertOk()
+251            ->assertSee('aline.prof');
+252    
+253        $this->post(route('admin.registration.accounts.approve', $application->id), [
+254            'role' => 'professeur',
+255            'professeur_id' => 1,
+256        ])->assertRedirect(route('admin.registration.accounts'));
+257    
+258        $createdUser = DB::table('users')->where('username', 'aline.prof')->first();
+259        $processedApplication = DB::table('demandes_comptes')->where('id', $application->id)->first();
+260        expect($createdUser->role)->toBe('professeur')
+261            ->and($createdUser->statut)->toBe('actif')
+262            ->and($createdUser->professeur_id)->toBe(1)
+263            ->and(Hash::check('secret1234', $createdUser->password))->toBeTrue()
+264            ->and($processedApplication->statut)->toBe('acceptee')
+265            ->and($processedApplication->mot_de_passe)->toBeNull();
+266    });
+267    
+268    test('an admin can reject both request types without creating student or user records', function () {
+269        $this->post(route('registration.student.store'), validStudentRequest());
+270        $studentRequestId = DB::table('demandes_inscription')->value('id');
+271    
+272        $this->post(route('registration.account.store'), [
+273            'nom' => 'Mwamba',
+274            'prenom' => 'Jean',
+275            'username' => 'jean.mwamba',
+276            'email' => 'jean.mwamba@example.test',
+277            'role_souhaite' => 'comptable',
+278            'mot_de_passe' => 'secret1234',
+279            'mot_de_passe_confirmation' => 'secret1234',
+280        ]);
+281        $accountRequestId = DB::table('demandes_comptes')->value('id');
+282    
+283        $admin = makeAdminForRegistrationRequests();
+284        $this->actingAs($admin)
+285            ->post(route('admin.registration.students.reject', $studentRequestId), ['motif_refus' => 'Dossier incomplet'])
+286            ->assertRedirect();
+287        $this->post(route('admin.registration.accounts.reject', $accountRequestId), ['motif_refus' => 'Rôle non confirmé'])
+288            ->assertRedirect();
+289    
+290        expect(DB::table('demandes_inscription')->where('id', $studentRequestId)->value('statut'))->toBe('refusee')
+291            ->and(DB::table('demandes_comptes')->where('id', $accountRequestId)->value('statut'))->toBe('refusee')
+292            ->and(DB::table('eleves')->count())->toBe(0)
+293            ->and(DB::table('users')->where('role', '!=', 'admin')->count())->toBe(0);
+294    });
+295    
+296    test('a public student application without a school year is attached to the current year', function () {
+297        $this->post(route('registration.student.store'), collect(validStudentRequest())->except('annee_scolaire_id')->all())
+298            ->assertRedirect(route('registration.student.create'))
+299            ->assertSessionHas('success');
+300    
+301        expect((int) DB::table('demandes_inscription')->value('annee_scolaire_id'))
+302            ->toBe((int) DB::table('annees_scolaires')->where('is_encours', true)->value('id'));
+303    });
+304    
+305    test('a public student application is rejected when no school year is current', function () {
+306        DB::table('annees_scolaires')->update(['is_encours' => false]);
+307    
+308        $this->post(route('registration.student.store'), collect(validStudentRequest())->except('annee_scolaire_id')->all())
+309            ->assertSessionHasErrors('annee_scolaire_id');
+310    
+311        expect(DB::table('demandes_inscription')->count())->toBe(0);
+312    });
+313    
+314    test('an admin enrollment without a school year is attached to the current year', function () {
+315        $admin = makeAdminForRegistrationRequests();
+316    
+317        $this->actingAs($admin)
+318            ->post(route('admin.eleves.store'), [
+319                'classe_id' => 1,
+320                'nom' => 'Mwamba',
+321                'postnom' => 'Kabila',
+322                'prenom' => 'Aline',
+323                'sexe' => 'F',
+324                'date_naissance' => '2014-05-12',
+325                'lieu_naissance' => 'Kinshasa',
+326                'nom_mere' => 'Marie Kabila',
+327                'telephone_mere' => '0990000000',
+328            ])
+329            ->assertRedirect();
+330    
+331        expect((int) DB::table('inscriptions')->value('annee_scolaire_id'))
+332            ->toBe((int) DB::table('annees_scolaires')->where('is_encours', true)->value('id'));
+333    });
+334    
+335    test('a school year submitted by the client is ignored in favour of the current year', function () {
+336        DB::table('annees_scolaires')->insert([
+337            'id' => 2,
+338            'libelle' => '2025-2026',
+
+[lines 1-350 of 350 exceed the 4000-token delivery ceiling; showing lines 1-338. Continue with offset=339 — each windowed read arrives in full]

@@ -1,0 +1,55 @@
+1      <?php
+2      
+3      use Illuminate\Database\Migrations\Migration;
+4      use Illuminate\Database\Schema\Blueprint;
+5      use Illuminate\Support\Facades\DB;
+6      use Illuminate\Support\Facades\Schema;
+7      
+8      return new class extends Migration
+9      {
+10         public function up(): void
+11         {
+12             $optionIndexes = collect(DB::select('SHOW INDEX FROM options'))
+13                 ->pluck('Key_name')
+14                 ->unique()
+15                 ->all();
+16     
+17             Schema::table('options', function (Blueprint $table) {
+18                 $table->index('section_id', 'options_section_id_index');
+19             });
+20     
+21             if (in_array('options_section_id_code_unique', $optionIndexes, true)) {
+22                 Schema::table('options', function (Blueprint $table) {
+23                     $table->dropUnique('options_section_id_code_unique');
+24                 });
+25             }
+26     
+27             Schema::table('options', function (Blueprint $table) use ($optionIndexes) {
+28                 $table->dropUnique('options_section_id_nom_unique');
+29                 $table->dropColumn(['code', 'description', 'statut']);
+30             });
+31     
+32             Schema::table('sections', function (Blueprint $table) {
+33                 $table->dropUnique('sections_nom_unique');
+34                 $table->dropColumn(['code', 'description', 'statut']);
+35             });
+36         }
+37     
+38         public function down(): void
+39         {
+40             Schema::table('sections', function (Blueprint $table) {
+41                 $table->string('code', 30)->unique()->after('id');
+42                 $table->text('description')->nullable()->after('nom');
+43                 $table->enum('statut', ['actif', 'inactif'])->default('actif')->after('description');
+44                 $table->unique('nom');
+45             });
+46     
+47             Schema::table('options', function (Blueprint $table) {
+48                 $table->string('code', 30)->after('section_id');
+49                 $table->text('description')->nullable()->after('nom');
+50                 $table->enum('statut', ['actif', 'inactif'])->default('actif')->after('description');
+51                 $table->unique(['section_id', 'code']);
+52                 $table->unique(['section_id', 'nom']);
+53             });
+54         }
+55     };

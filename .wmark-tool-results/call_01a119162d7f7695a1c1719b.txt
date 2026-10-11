@@ -1,0 +1,50 @@
+85                                 </li>
+86                                 <li>
+87                                     <div class="dropdown-divider"></div>
+88                                     <a class="dropdown-item" href="{{ route('prefecture.profil') }}">Mon profil</a>
+89                                     <a class="dropdown-item" href="{{ route('profile.edit') }}">Modifier mon profil</a>
+90                                     <a class="dropdown-item" href="{{ route('notifications.index') }}">Notifications</a>
+91                                     <div class="dropdown-divider"></div>
+92                                     <form method="POST" action="{{ route('logout') }}">
+93                                         @csrf
+94                                         <button class="dropdown-item" type="submit">Déconnexion</button>
+95                                     </form>
+96                                 </li>
+97                             </ul>
+98                         </li>
+99                     </ul>
+100                </div>
+101            </nav>
+102        </div>
+103    
+104        {{-- Menu latéral --}}
+105        <div class="sidebar">
+106            <div class="sidebar-background"></div>
+107            <div class="sidebar-wrapper scrollbar-inner">
+108                <div class="sidebar-content">
+109                    <div class="user">
+110                        <div class="avatar-sm float-left mr-2">
+111                            @if ($user->photo)
+112                                <img src="{{ asset('storage/'.$user->photo) }}" alt="" class="avatar-img rounded-circle">
+113                            @else
+114                                <span class="avatar-title rounded-circle bg-primary">{{ $initial }}</span>
+115                            @endif
+116                        </div>
+117                        <div class="info">
+118                            <a data-toggle="collapse" href="#collapseExample" aria-expanded="true">
+119                                <span>
+120                                    {{ $displayName }}
+121                                    <span class="user-level">Préfecture</span>
+122                                    <span class="caret"></span>
+123                                </span>
+124                            </a>
+125                            <div class="clearfix"></div>
+126                            <div class="collapse in" id="collapseExample">
+127                                <ul class="nav">
+128                                    <li><a href="{{ route('prefecture.profil') }}"><span class="link-collapse">Mon profil</span></a></li>
+129                                    <li><a href="{{ route('profile.edit') }}"><span class="link-collapse">Modifier mon profil</span></a></li>
+130                                </ul>
+131                            </div>
+132                        </div>
+
+[showing lines 85-132 of 256; read again with offset=133 for more]

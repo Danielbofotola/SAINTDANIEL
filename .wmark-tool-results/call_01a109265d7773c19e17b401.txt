@@ -1,0 +1,47 @@
+71             ]);
+72         }
+73     
+74         public function editAccount(User $user): View|RedirectResponse
+75         {
+76             if ($user->is(auth()->user())) {
+77                 return redirect()->route('admin.profile.edit');
+78             }
+79     
+80             return view('admin.profile.account-edit', [
+81                 'user' => $user,
+82                 'professeurs' => Professeurs::query()
+83                     ->where(function ($query) use ($user) {
+84                         $query->where('statut', 'actif')
+85                             ->when($user->professeur_id, fn ($query) => $query->orWhere('id', $user->professeur_id));
+86                     })
+87                     ->orderBy('nom')
+88                     ->orderBy('prenom')
+89                     ->get(),
+90             ]);
+91         }
+92     
+93         public function updateAccount(Request $request, User $user): RedirectResponse
+94         {
+95             if ($user->is($request->user())) {
+96                 return redirect()->route('admin.profile.edit');
+97             }
+98     
+99             $data = $request->validate([
+100                'nom' => ['nullable', 'string', 'max:50'],
+101                'postnom' => ['nullable', 'string', 'max:50'],
+102                'prenom' => ['nullable', 'string', 'max:50'],
+103                'date_naissance' => ['nullable', 'date', 'before:today'],
+104                'username' => ['required', 'string', 'max:50', Rule::unique('users', 'username')->ignore($user->id)],
+105                'email' => ['required', 'email', 'max:100', Rule::unique('users', 'email')->ignore($user->id)],
+106                'telephone' => ['nullable', 'string', 'max:20'],
+107                'adresse' => ['nullable', 'string', 'max:500'],
+108                'photo' => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:2048'],
+109                'role' => ['required', 'in:admin,prefetture,titulaire,professeur,comptable'],
+110                'statut' => ['required', 'in:actif,inactif'],
+111                'professeur_id' => [
+112                    'nullable',
+113                    'exists:professeurs,id',
+114                    Rule::unique('users', 'professeur_id')->ignore($user->id),
+115                    Rule::requiredIf(fn () => $request->input('role') === 'professeur'),
+
+[showing lines 71-115 of 399; read again with offset=116 for more]

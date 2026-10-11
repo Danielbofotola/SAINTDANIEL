@@ -1,0 +1,8 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/EspaceProfesseurTest.php (2 hunks applied)
+Landed at lines 244-245 (the file's new text; no re-read needed):
+244        // Le profil générique (/mon-profil) est suspendu dans l'interface enseignant.
+245        $this->actingAs($user)->get(route('professeur.dashboard'))->assertOk()->assertDontSee(route('profile.show'), false);
+Landed at lines 252-253 (the file's new text; no re-read needed):
+252            ->assertSee('3e A')
+253            ->assertDontSee(route('profile.show'), false);

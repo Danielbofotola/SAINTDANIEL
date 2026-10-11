@@ -1,0 +1,20 @@
+92             <thead>
+93                 <tr>
+94                     <th rowspan="2" style="width: 22%;">BRANCHE</th>
+95                     @foreach ($periodes as $periode)
+96                         <th colspan="4">{{ $periode->nom }}</th>
+97                     @endforeach
+98                     <th colspan="3">TOTAUX GÉNÉRAUX</th>
+99                 </tr>
+100                <tr>
+101                    @foreach ($periodes as $periode)
+102                        <th>T.J.</th><th>EX.</th><th>TOT</th><th>MAX</th>
+103                    @endforeach
+104                    <th>TOTAL</th><th>MAX</th><th>%</th>
+105                </tr>
+106            </thead>
+107            <tbody>
+108                @forelse ($branches as $branche)
+109                    <tr>
+
+[showing lines 92-109 of 208; read again with offset=110 for more]

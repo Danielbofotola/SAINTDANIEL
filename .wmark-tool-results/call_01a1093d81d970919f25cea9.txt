@@ -1,0 +1,10 @@
+Applied patch: 1 file changed (1 updated)
+Updated app/Models/Conversation.php (2 hunks applied)
+Landed at lines 32-34 (the file's new text; no re-read needed):
+32             return $this->belongsToMany(User::class, 'conversation_user')
+33                 ->withPivot('dernier_lu_at', 'dernier_message_id')
+34                 ->withTimestamps();
+Landed at lines 54-54 (the file's new text; no re-read needed):
+54                 ->value('dernier_message_id');
+Landed at lines 57-57 (the file's new text; no re-read needed):
+57                 ->where('id', '>', (int) ($dernierLu ?? 0))

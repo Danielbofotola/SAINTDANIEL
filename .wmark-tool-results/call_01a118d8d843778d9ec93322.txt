@@ -1,0 +1,12 @@
+[powershell — Windows side]
+PASS  Tests\Feature\MessagerieSuppressionTest
+  ✓ retirer une discussion ne l’enlève que d’un côté et garde les messages                                       0.19s  
+  ✓ un nouveau message fait réapparaître la discussion retirée                                                   0.03s  
+  ✓ un non-participant ne peut pas retirer la discussion d’autrui                                                0.03s  
+  ✓ le parent retire sa discussion sans que le préfet perde les messages                                         0.04s  
+
+  Tests:    4 passed (19 assertions)
+  Duration: 0.42s
+
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

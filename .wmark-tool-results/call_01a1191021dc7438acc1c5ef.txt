@@ -1,0 +1,10 @@
+Applied patch: 1 file changed (1 updated)
+Updated app/Http/Controllers/ProfesseurEvaluationController.php (1 hunk applied)
+Landed at lines 131-137 (the file's new text; no re-read needed):
+131            // Verrouillage de fin de période (décision du préfet) : plus aucune
+132            // modification de notes n'est acceptée sur une période clôturée.
+133            if ($evaluation->periode && $evaluation->periode->statut !== 'actif') {
+134                return back()->with('error', 'La période « '.$evaluation->periode->nom.' » est clôturée : la saisie des notes est verrouillée.');
+135            }
+136    
+137            DB::transaction(function () use ($data, $evaluation, $request, &$enregistrees) {

@@ -1,0 +1,90 @@
+1      <?php
+2      
+3      namespace App\Providers;
+4      
+5      use App\Models\ParametreSysteme;
+6      use App\Models\AnneeScolaire;
+7      use Illuminate\Database\Eloquent\Relations\Relation;
+8      use Illuminate\Support\Facades\URL;
+9      use Illuminate\Support\ServiceProvider;
+10     use Illuminate\Support\Facades\View;
+11     
+12     class AppServiceProvider extends ServiceProvider
+13     {
+14         /**
+15          * Register any application services.
+16          */
+17         public function register(): void
+18         {
+19             //
+20         }
+21     
+22         
+23     
+24         /**
+25          * Bootstrap any application services.
+26          */
+27         public function boot(): void
+28         {
+29             // Vues de la partie publique (vitrine) : elles vivent dans le dossier
+30             // « page publique pour les inscription et info » et sont appelées via
+31             // le namespace `site` (ex. view('site::accueil')).
+32             View::addNamespace('site', resource_path('views/page publique pour les inscription et info'));
+33     
+34             // Derrière un proxy HTTPS (LocalTunnel, ngrok…), forcer la génération
+35             // d'URL/actifs en HTTPS pour éviter le contenu mixte HTTP/HTTPS.
+36             // On se base sur le proxy (X-Forwarded-Proto) OU sur le fait que la
+37             // requête vise déjà l'hôte public déclaré dans APP_URL.
+38             $publicHost = parse_url((string) config('app.url'), PHP_URL_HOST);
+39     
+40             if (config('app.env') !== 'local'
+41                 || request()->server('HTTP_X_FORWARDED_PROTO') === 'https'
+42                 || ($publicHost !== null && $publicHost !== '' && request()->getHost() === $publicHost)
+43             ) {
+44                 URL::forceScheme('https');
+45             }
+46     
+47             // Bénéficiaires d'un salaire : un professeur (entité) ou un autre
+48             // membre du personnel (compte utilisateur).
+49             Relation::morphMap([
+50                 'professeur' => \App\Models\Professeurs::class,
+51                 'utilisateur' => \App\Models\User::class,
+52             ]);
+53     
+54             View::composer('*', static function ($view): void {
+55                 $settings = request()->attributes->get('system_settings');
+56                 if (! $settings) {
+57                     $settings = self::firstOrNull(fn () => ParametreSysteme::query()->first());
+58                     $settings ??= ParametreSysteme::defaults();
+59                     request()->attributes->set('system_settings', $settings);
+60                 }
+61     
+62                 $view->with('systemSettings', $settings);
+63     
+64                 if (! request()->attributes->has('annee_en_cours')) {
+65                     request()->attributes->set('annee_en_cours', self::firstOrNull(
+66                         fn () => AnneeScolaire::where('is_encours', true)->first()
+67                     ));
+68                 }
+69     
+70                 $view->with('anneeEnCours', request()->attributes->get('annee_en_cours'));
+71             });
+72         }
+73     
+74         /**
+75          * Exécute une lecture destinée à l'affichage et renvoie null en cas d'échec.
+76          *
+77          * Ces valeurs ne sont que du contexte d'affichage : une table absente ou
+78          * indisponible ne doit jamais faire échouer le rendu d'une page.
+79          */
+80         private static function firstOrNull(callable $query): mixed
+81         {
+82             try {
+83                 return $query();
+84             } catch (\Throwable) {
+85                 return null;
+86             }
+87         }
+88     
+89         
+90     }

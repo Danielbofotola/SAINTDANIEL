@@ -1,0 +1,1 @@
+Wrote resources/views/admin/comptabilite/balance.blade.php (86 lines)

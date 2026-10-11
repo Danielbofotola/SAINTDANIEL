@@ -1,0 +1,23 @@
+332    
+333                <div class="chat-input-wrap">
+334                    <div class="sticker-picker" id="stickerPicker">
+335                        <div class="d-flex justify-content-between mb-2" style="font-size:.78rem;color:var(--chat-muted)">
+336                            <span>Stickers & réactions</span>
+337                            <i class="fa-solid fa-xmark" style="cursor:pointer" onclick="toggleStickers()"></i>
+338                        </div>
+339                        <div class="sticker-grid">
+340                            @foreach (['📚','🎓','📝','✅','👍','👏','💯','⭐','🏫','❤️','😀','🙏'] as $sticker)
+341                                <span onclick="envoyerSticker('{{ $sticker }}')">{{ $sticker }}</span>
+342                            @endforeach
+343                        </div>
+344                    </div>
+345    
+346                    @if ($avecFichier)
+347                        <label class="icon-btn" for="fileAttachment" title="Joindre un fichier (5 Mo max)" style="cursor:pointer">
+348                            <i class="fa-solid fa-paperclip"></i>
+349                        </label>
+350                        <input type="file" id="fileAttachment" style="display:none"
+351                               accept="image/*,audio/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv,.zip">
+352                    @endif
+
+[showing lines 332-353 of 836; read again with offset=354 for more]

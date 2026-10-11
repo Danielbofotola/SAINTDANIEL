@@ -1,0 +1,12 @@
+36             </form>
+37         </div>
+38     
+39         <!-- Barre d’action -->
+40         <div class="profile-actions d-flex flex-wrap align-items-center mb-4">
+41             <a href="{{ route('professeur.profil') }}"><i class="fa fa-user"></i> Mes informations</a>
+42             <a href="{{ route('professeur.planning') }}"><i class="fa fa-calendar-o"></i> Mon planning</a>
+43             <a href="{{ route('professeur.cours') }}"><i class="fa fa-book"></i> Mes cours</a>
+44             <a href="{{ route('professeur.eleves') }}"><i class="fa fa-users"></i> Mes élèves</a>
+45             <a href="{{ route('professeur.evaluations') }}"><i class="fa fa-pencil-square-o"></i> Évaluations &amp; notes</a>
+
+[showing lines 36-45 of 149; read again with offset=46 for more]

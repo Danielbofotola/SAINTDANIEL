@@ -1,0 +1,25 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\144c63540b62\20261007-170733-bash-call_01a1171ef72473d8bf33bbe4.txt (507 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+[powershell — Windows side]
+PASS  Tests\Feature\MessagerieTest
+  ✓ a user writes to a colleague who then sees the message                                                       0.27s  
+  ✓ a broadcast reaches every active user                                                                        0.03s  
+  ✓ a participant answers and only the others get an unread message                                              0.03s  
+  ✓ an outsider cannot write into a conversation he does not belong to    
+
+... 346 chars truncated ...
+
+thread and the list                                     0.04s  
+  ✓ an image can be attached to a reply and is shown in the thread                                               0.07s  
+  ✓ an image can be sent without text, the size and the format are checked                                       0.06s  
+  ✓ la page de messagerie du personnel expose le modèle partagé (vocaux, stickers, pièces jointes, diffusion)    0.03s  
+  ✓ la barre d’écriture reste disponible même sans discussion ouverte                                            0.03s  
+  ✓ écrire à un correspondant ouvre une conversation directe unique (sans doublon)                               0.03s  
+  ✓ on ne peut pas démarrer une discussion avec soi-même                                                         0.02s  
+  ✓ une réponse citée apparaît sur la bulle du nouveau message                                                   0.03s  
+  ✓ une réaction émoji est enregistrée, affichée et retirée                                                      0.04s  
+
+  Tests:    15 passed (104 assertions)
+  Duration: 0.97s
+
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

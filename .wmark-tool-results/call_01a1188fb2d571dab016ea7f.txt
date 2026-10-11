@@ -1,0 +1,4 @@
+occurrences by (version, ext):
+  ('fa4', '.blade.php') 68
+  ('fa6', '.blade.php') 6
+files: 64

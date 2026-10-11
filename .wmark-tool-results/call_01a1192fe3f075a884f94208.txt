@@ -1,0 +1,47 @@
+1      <?php
+2      
+3      namespace App\Http\Controllers;
+4      
+5      use App\Models\DocumentEleve;
+6      use App\Models\Eleve;
+7      use Illuminate\Http\RedirectResponse;
+8      use Illuminate\Http\Request;
+9      use Illuminate\Support\Facades\DB;
+10     use Illuminate\View\View;
+11     
+12     class EleveController extends Controller
+13     {
+14         public function index(Request $request): View
+15         {
+16             $search = trim((string) $request->query('q', ''));
+17             $statut = (string) $request->query('statut', '');
+18     
+19             $eleves = Eleve::query()
+20                 ->with(['inscriptions' => fn ($query) => $query
+21                     ->anneeEnCours()
+22                     ->whereIn('statut', ['actif', 'en_attente'])
+23                     ->with('classe')])
+24                 ->when($search !== '', fn ($query) => $query->where(function ($query) use ($search) {
+25                     $query->where('nom', 'like', "%{$search}%")
+26                         ->orWhere('postnom', 'like', "%{$search}%")
+27                         ->orWhere('prenom', 'like', "%{$search}%")
+28                         ->orWhere('matricule', 'like', "%{$search}%");
+29                 }))
+30                 ->when(in_array($statut, ['actif', 'inactif', 'suspendu', 'exclu'], true), fn ($query) => $query->where('statut', $statut))
+31                 ->orderBy('nom')
+32                 ->orderBy('postnom')
+33                 ->orderBy('prenom')
+34                 ->paginate(25)
+35                 ->withQueryString();
+36     
+37             return view('admin.eleves.index', [
+38                 'eleves' => $eleves,
+39                 'search' => $search,
+40                 'statut' => $statut,
+41                 'stats' => [
+42                     'total' => Eleve::count(),
+43                     'garcons' => Eleve::where('sexe', 'M')->count(),
+44                     'filles' => Eleve::where('sexe', 'F')->count(),
+45                     'inscrits' => Eleve::inscritAnneeEnCours()->count(),
+
+[showing lines 1-45 of 144; read again with offset=46 for more]

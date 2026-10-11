@@ -1,0 +1,25 @@
+Applied patch: 1 file changed (1 updated)
+Updated app/Http/Controllers/UserProfileController.php (2 hunks applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 115-137 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+  ⚠ hunk 2: context matched at lines 149-150 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 115-115:
+115            ]);
+Auto-corrected hunk landed at lines 129-185:
+129    
+130        /**
+131         * Page dédiée à la réinitialisation des identifiants d'un compte.
+132         */
+133        public function editAccountPassword(User $user): View|RedirectResponse
+134        {
+135            if ($user->is(auth()->user())) {
+136                return redirect()->route('admin.profile.edit')
+      … 41 lines omitted …
+178                'user_id' => $user->id,
+179                'pin_changed' => array_key_exists('pin_code', $data),
+180            ]);
+181    
+182            return redirect()
+183                ->route('admin.profile.accounts')
+184                ->with('success', "Les identifiants de {$user->username} ont été réinitialisés.");
+185        }

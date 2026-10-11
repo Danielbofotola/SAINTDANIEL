@@ -1,0 +1,24 @@
+[powershell — Windows side]
+=== public/azzara/.htaccess ===
+# # Deny access to .htaccess
+# <Files .htaccess>
+# Order allow, deny
+# Deny from all
+# </Files>
+
+# # Disable directory browsing 
+Options -Indexes
+
+# # Hide files of type .png, .zip, .jpg, .gif .doc etc from listing
+IndexIgnore *.png *.zip *.jpg *.gif *.doc *.css *.scss *.js *.jpg *.txt
+=== dossiers copiés en trop ? ===
+core
+css
+fonts
+img
+js
+sass
+=== la page répond toujours ? ===
+azzara.min.css => 200
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

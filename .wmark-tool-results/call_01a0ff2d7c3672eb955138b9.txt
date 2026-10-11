@@ -1,0 +1,24 @@
+[powershell — Windows side]
+</body>\n
+</html>\n
+
+
+  To contain: n&#039;est pas inscrit pour l&#039;année en cours
+
+  at tests\Feature\AnneeEnCoursScopingTest.php:200
+    196▕ 
+    197▕     $this->actingAs($admin)
+    198▕         ->get(route('admin.eleves.show', 1))
+    199▕         ->assertOk()
+  ➜ 200▕         ->assertSee("n'est pas inscrit pour l'année en cours")
+    201▕         ->assertDontSee('3e primaire');
+    202▕ });
+    203▕
+
+
+  Tests:    1 failed, 6 passed (15 assertions)
+  Duration: 0.58s
+
+
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

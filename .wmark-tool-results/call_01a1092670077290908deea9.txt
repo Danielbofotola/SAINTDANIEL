@@ -1,0 +1,46 @@
+150            if ($user->is($request->user())) {
+151                return redirect()->route('admin.profile.edit');
+152            }
+153    
+154            $data = $request->validate([
+155                'password' => ['required', 'string', 'min:8', 'confirmed'],
+156                'pin_code' => ['nullable', 'digits:4'],
+157                'remove_pin' => ['nullable', 'boolean'],
+158            ], [
+159                'password.required' => 'Le nouveau mot de passe est obligatoire.',
+160                'password.min' => 'Le mot de passe doit contenir au moins 8 caractères.',
+161                'password.confirmed' => 'La confirmation du mot de passe ne correspond pas.',
+162                'pin_code.digits' => 'Le code PIN doit contenir exactement 4 chiffres.',
+163            ]);
+164    
+165            unset($data['remove_pin']);
+166    
+167            // Le cast « hashed » du modèle hache le mot de passe.
+168            if (filled($data['pin_code'] ?? null)) {
+169                $data['pin_code'] = Hash::make($data['pin_code']);
+170            } elseif ($request->boolean('remove_pin')) {
+171                $data['pin_code'] = null;
+172            } else {
+173                unset($data['pin_code']);
+174            }
+175    
+176            $user->update($data);
+177    
+178            Log::notice('Admin reset an account password', [
+179                'admin_id' => $request->user()->id,
+180                'user_id' => $user->id,
+181                'pin_changed' => array_key_exists('pin_code', $data),
+182            ]);
+183    
+184            return redirect()
+185                ->route('admin.profile.accounts')
+186                ->with('success', "Les identifiants de {$user->username} ont été réinitialisés.");
+187        }
+188    
+189        public function impersonate(Request $request, User $user): RedirectResponse
+190        {
+191            if ($request->session()->has('impersonating_admin_id')) {
+192                return back()->with('error', 'Une session de consultation est déjà en cours.');
+193            }
+
+[showing lines 150-194 of 399; read again with offset=195 for more]

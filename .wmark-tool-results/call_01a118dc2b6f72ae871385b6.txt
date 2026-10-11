@@ -1,0 +1,32 @@
+95         </header>
+96     
+97         <nav class="portail-nav">
+98             <div class="portail-nav__item active" data-tab="actualites" onclick="portailTab('actualites', this)">
+99                 <i class="fa-solid fa-newspaper"></i><span>Actualités</span>
+100            </div>
+101            <div class="portail-nav__item" data-tab="notifications" onclick="portailTab('notifications', this)">
+102                <i class="fa-solid fa-bell"></i><span>Notifications</span>
+103                @if ($notifications->whereNull('read_at')->count() > 0)
+104                    <span class="portail-nav__badge">{{ $notifications->whereNull('read_at')->count() }}</span>
+105                @endif
+106            </div>
+107            <div class="portail-nav__item" data-tab="messages" onclick="portailTab('messages', this)">
+108                <i class="fa-brands fa-facebook-messenger"></i><span>Messages</span>
+109                @if ($nonLus > 0)
+110                    <span class="portail-nav__badge" data-non-lus>{{ $nonLus }}</span>
+111                @endif
+112            </div>
+113            <div class="portail-nav__item" data-tab="profil" onclick="portailTab('profil', this)">
+114                <i class="fa-solid fa-circle-user"></i><span>Profil</span>
+115            </div>
+116        </nav>
+117    
+118        <main class="portail-layout">
+119    
+120            {{-- ============ ACTUALITÉS ============ --}}
+121            <section id="tab-actualites" class="portail-panel active">
+122                <div class="portail-card">
+123                    <h2><i class="fa-solid fa-bullhorn text-warning"></i> Communications de l'établissement</h2>
+124                    @forelse ($annonces as $annonce)
+
+[showing lines 95-124 of 234; read again with offset=125 for more]

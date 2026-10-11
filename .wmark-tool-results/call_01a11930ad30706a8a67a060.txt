@@ -1,0 +1,8 @@
+62                                     <td class="text-nowrap">
+63                                         <a href="{{ route('admin.eleves.show', $eleve) }}" class="btn btn-sm btn-info" title="Voir le dossier"><i class="fa fa-folder-open"></i></a>
+64                                         <a href="{{ route('admin.eleves.edit', $eleve) }}" class="btn btn-sm btn-primary" title="Modifier"><i class="fa fa-pencil"></i></a>
+65                                     </td>
+66                                 </tr>
+67                             @empty
+
+[showing lines 62-67 of 80; read again with offset=68 for more]

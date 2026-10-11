@@ -1,0 +1,72 @@
+286        @endphp
+287    
+288        <!-- HEADER -->
+289        <header class="app-header">
+290            <a class="app-header__logo" href="{{ route('professeur.dashboard') }}">{{ $systemSettings->nom_court }}</a>
+291            <a class="app-sidebar__toggle fa fa-bars" href="#" data-toggle="sidebar" aria-label="Afficher ou masquer le menu"></a>
+292            <ul class="app-nav">
+293                <li class="dropdown">
+294                    <a class="app-nav__item d-flex align-items-center" href="#" data-toggle="dropdown" aria-label="Menu profil">
+295                        @if ($photo)
+296                            <img class="app-header__user-avatar" src="{{ asset('storage/'.$photo) }}" alt="">
+297                        @else
+298                            <span class="app-header__user-initial">{{ $initiale }}</span>
+299                        @endif
+300                        <span class="d-none d-md-inline ml-2 text-white" style="font-size:14px">{{ $displayName }}</span>
+301                    </a>
+302                    <ul class="dropdown-menu settings-menu dropdown-menu-right border-0 shadow-lg">
+303                        <li class="dropdown-header">{{ $displayName }}</li>
+304                        <li><a class="dropdown-item" href="{{ route('profile.show') }}"><i class="fa fa-user fa-lg mr-2"></i> Mon profil</a></li>
+305                        <li>
+306                            <form method="POST" action="{{ route('logout') }}">@csrf
+307                                <button class="dropdown-item text-danger" type="submit"><i class="fa fa-sign-out fa-lg mr-2"></i> Déconnexion</button>
+308                            </form>
+309                        </li>
+310                    </ul>
+311                </li>
+312            </ul>
+313        </header>
+314    
+315        <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
+316    
+317        <!-- SIDEBAR -->
+318        <aside class="app-sidebar">
+319            <div class="app-sidebar__user">
+320                @if ($photo)
+321                    <img class="app-sidebar__user-avatar mr-2" src="{{ asset('storage/'.$photo) }}" alt="">
+322                @else
+323                    <span class="app-sidebar__user-initial mr-2">{{ $initiale }}</span>
+324                @endif
+325                <div>
+326                    <p class="app-sidebar__user-name mb-0">{{ $displayName }}</p>
+327                    <p class="app-sidebar__user-designation mb-0">Enseignant</p>
+328                </div>
+329            </div>
+330            <ul class="app-menu">
+331                <li class="menu-section">Mon espace</li>
+332                <li><a class="app-menu__item active" href="{{ route('professeur.dashboard') }}" aria-current="page"><i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label">Vue générale</span></a></li>
+333                <li><a class="app-menu__item" href="#planning"><i class="app-menu__icon fa fa-calendar-o"></i><span class="app-menu__label">Mon planning</span></a></li>
+334                <li><a class="app-menu__item" href="#enseignements"><i class="app-menu__icon fa fa-book"></i><span class="app-menu__label">Mes cours</span></a></li>
+335                <li><a class="app-menu__item" href="#evaluations"><i class="app-menu__icon fa fa-pencil-square-o"></i><span class="app-menu__label">Évaluations</span></a></li>
+336                <li class="menu-section">Compte</li>
+337                <li><a class="app-menu__item" href="{{ route('profile.show') }}"><i class="app-menu__icon fa fa-user"></i><span class="app-menu__label">Mon profil</span></a></li>
+338            </ul>
+339        </aside>
+340    
+341        <!-- CONTENT -->
+342        <main class="app-content">
+343            @include('partials.impersonation-banner')
+344            <div class="app-title border-0 bg-transparent pl-0 pt-0">
+345                <div>
+346                    <h1 class="font-weight-bold" style="color: var(--able-text-main);"><i class="fa fa-graduation-cap mr-2"></i> Bonjour, {{ $professor?->prenom ?: $user->prenom ?: $user->username }}</h1>
+347                    <p class="text-muted">{{ $schoolYear?->libelle ? 'Année scolaire '.$schoolYear->libelle : 'Année scolaire non définie' }}@if ($professor?->specialite) · {{ $professor->specialite }}@endif</p>
+348                </div>
+349                <time class="text-muted" datetime="{{ now()->toDateString() }}"><i class="fa fa-calendar-o mr-1" aria-hidden="true"></i> {{ ucfirst($todayLabel) }} {{ now()->format('d/m/Y') }}</time>
+350            </div>
+351    
+352            @if (! $professor)
+353                <div class="alert alert-info" role="status"><strong>Aucune fiche enseignant n’est reliée à ce compte.</strong> Demandez à l’administration de relier votre compte à votre fiche professeur pour afficher vos cours et votre planning.</div>
+354            @elseif (! $schoolYear)
+355                <div class="alert alert-info" role="status"><strong>Aucune année scolaire en cours n’est définie.</strong> Vos affectations apparaîtront dès que l’administration aura activé l’année scolaire.</div>
+
+[showing lines 286-355 of 419; read again with offset=356 for more]

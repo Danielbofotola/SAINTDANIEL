@@ -1,0 +1,74 @@
+10     beforeEach(function () {
+11         Schema::disableForeignKeyConstraints();
+12         foreach (['messages', 'conversation_user', 'conversations', 'professeurs', 'parametres_systeme', 'users'] as $table) {
+13             Schema::dropIfExists($table);
+14         }
+15         Schema::enableForeignKeyConstraints();
+16     
+17         Schema::create('users', function (Blueprint $table) {
+18             $table->id();
+19             $table->unsignedBigInteger('professeur_id')->nullable()->unique();
+20             $table->string('nom', 50)->nullable();
+21             $table->string('postnom', 50)->nullable();
+22             $table->string('prenom', 50)->nullable();
+23             $table->string('photo')->nullable();
+24             $table->string('username')->unique();
+25             $table->string('email')->unique();
+26             $table->string('password');
+27             $table->string('pin_code')->nullable();
+28             $table->string('role');
+29             $table->string('statut');
+30             $table->rememberToken();
+31             $table->timestamps();
+32         });
+33         Schema::create('professeurs', function (Blueprint $table) {
+34             $table->id();
+35             $table->string('matricule')->unique();
+36             $table->string('nom');
+37             $table->string('postnom')->nullable();
+38             $table->string('prenom');
+39             $table->string('sexe');
+40             $table->string('statut')->default('actif');
+41             $table->timestamps();
+42         });
+43         Schema::create('parametres_systeme', function (Blueprint $table) {
+44             $table->id();
+45             $table->string('nom_etablissement', 150)->default('Etablissement');
+46             $table->string('nom_court', 60)->default('Ecole');
+47             $table->timestamps();
+48         });
+49         DB::table('parametres_systeme')->insert(['nom_court' => 'Ecole Test', 'created_at' => now(), 'updated_at' => now()]);
+50     
+51         Schema::create('conversations', function (Blueprint $table) {
+52             $table->id();
+53             $table->string('sujet', 150);
+54             $table->string('type', 20)->default('directe');
+55             $table->unsignedBigInteger('createur_id')->nullable();
+56             $table->timestamp('derniere_activite_at')->nullable();
+57             $table->timestamps();
+58         });
+59         Schema::create('conversation_user', function (Blueprint $table) {
+60             $table->id();
+61             $table->unsignedBigInteger('conversation_id');
+62             $table->unsignedBigInteger('user_id');
+63             $table->timestamp('dernier_lu_at')->nullable();
+64             $table->unsignedBigInteger('dernier_message_id')->nullable();
+65             $table->timestamp('supprime_at')->nullable();
+66             $table->timestamps();
+67             $table->unique(['conversation_id', 'user_id']);
+68         });
+69         Schema::create('messages', function (Blueprint $table) {
+70             $table->id();
+71             $table->unsignedBigInteger('conversation_id');
+72             $table->unsignedBigInteger('auteur_id')->nullable();
+73             $table->text('corps');
+74             $table->string('piece_jointe')->nullable();
+75             $table->string('piece_jointe_nom')->nullable();
+76             $table->unsignedBigInteger('reponse_a_id')->nullable();
+77             $table->string('reaction', 16)->nullable();
+78             $table->unsignedBigInteger('appel_id')->nullable();
+79             $table->timestamps();
+80         });
+81     });
+
+[showing lines 10-81 of 544; read again with offset=82 for more]

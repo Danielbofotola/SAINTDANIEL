@@ -1,0 +1,10 @@
+Applied patch: 1 file changed (1 updated)
+Updated routes/web.php (3 hunks applied)
+Landed at lines 27-28 (the file's new text; no re-read needed):
+27     use App\Http\Controllers\ComptableRecouvrementController;
+28     use App\Http\Controllers\RecuController;
+Landed at lines 96-96 (the file's new text; no re-read needed):
+96         Route::get('/admin/paiements/{paiement}/recu', [RecuController::class, 'show'])->middleware('role:admin')->name('admin.paiements.recu');
+Landed at lines 178-179 (the file's new text; no re-read needed):
+178        Route::get('/comptable/paiements/{paiement}/recu', [RecuController::class, 'show'])->middleware('role:comptable')->name('comptable.paiements.recu');
+179        Route::get('/comptable/recouvrement', [ComptableRecouvrementController::class, 'index'])->middleware('role:comptable')->name('comptable.recouvrement.index');

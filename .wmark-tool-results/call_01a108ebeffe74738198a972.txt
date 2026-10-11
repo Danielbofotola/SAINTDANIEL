@@ -1,0 +1,6 @@
+Applied patch: 1 file changed (1 updated)
+Updated resources/views/admin/professeurs/show.blade.php (1 hunk applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 80-80 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 80-80:
+80                                 <span><i class="fa fa-file-text-o text-primary"></i> {{ $document->titre }}<br><small class="text-muted">{{ ucfirst(str_replace('_', ' ', $document->type_document)) }} · {{ $document->created_at?->format('d/m/Y') }}@if ($document->taille_ko) · {{ $document->taille_ko }} Ko @endif</small></span>

@@ -1,0 +1,10 @@
+Applied patch: 2 files changed (2 updated)
+Updated app/Models/Section.php (1 hunk applied)
+Updated app/Models/Option.php (1 hunk applied)
+Landed at lines 9-11 (the file's new text; no re-read needed):
+9          // La table `sections` ne porte que le nom (les colonnes code/description/statut
+10         // ont été retirées par la migration align_sections_options_schema).
+11         protected $fillable = ['nom'];
+Landed at lines 11-12 (the file's new text; no re-read needed):
+11         // La table `options` ne porte que le nom et la section de rattachement.
+12         protected $fillable = ['nom', 'section_id'];

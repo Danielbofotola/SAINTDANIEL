@@ -1,0 +1,1 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\144c63540b62\20261007-170717-apply_patch-call_01a1171ebbc2738ca5c3511a.txt (5,897 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large).

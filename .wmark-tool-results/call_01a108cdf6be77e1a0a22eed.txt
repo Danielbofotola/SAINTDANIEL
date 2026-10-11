@@ -1,0 +1,31 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\e1ce9c26600a\20261004-222423-bash-call_01a108cdf6be77e1a0a22eed.txt (662 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+[powershell — Windows side]
+12: 'demandes_comptes', 'demandes_inscription', 'inscriptions', 'eleve_sante', 'eleves',
+34: $table->string('statut');
+50: $table->string('statut');
+55: $table->string('statut');
+64: $table->string('statut');
+72: $table->string('statut');
+83: $table->string('statut')->default('actif');
+97: $table->string('statut');
+100: Schema::create('inscriptions', function (Blueprint $table) {
+106: $table->string('statut');
+126: $table->string('statut')->default('en_attente');
+142: $table->string('statut')->default('en_attente');
+149: DB::table('cycles')->insert(['id' => 1, 'nom' => 'Secondaire', 'statut' => 'actif']);
+150: DB::table('classes')->insert(['id' => 1, 'cycle_id' => 1, 'nom' => '3e A', 'statut' => 'actif']);
+157: 'statut' => 'actif',
+168: 'statut' => 'actif',
+194: expect(DB::table('demandes_inscription')->where('statut', 'en_attente')->count())->toBe(1)
+196: ->and(DB::table('inscriptions')->count())->toBe(0);
+213: expect($application->statut)->toBe('acceptee')
+216: ->and(DB::table('inscriptions')->where('eleve_id', $student->id)->count())->toBe(1);
+244: 'statut' => 'actif',
+261: ->and($createdUser->statut)->toBe('actif')
+264: ->and($processedApplication->statut)->toBe('acceptee')
+290: expect(DB::table('demandes_inscription')->where('id', $studentRequestId)->value('statut'))->toBe('refusee')
+291: ->and(DB::table('demandes_comptes')->where('id', $accountRequestId)->value('statut'))->toBe('refusee')
+331: expect((int) DB::table('inscriptions')->value('annee_scolaire_id'))
+342: 'statut' => 'actif',
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

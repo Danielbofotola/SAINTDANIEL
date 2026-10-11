@@ -1,0 +1,24 @@
+Applied patch: 1 file changed (1 updated)
+Updated app/Models/Inscription.php (1 hunk applied)
+Landed at lines 12-15 (the file's new text; no re-read needed):
+12         public const STATUT_EN_ATTENTE = 'en_attente';
+13     
+14         public const STATUT_ACTIF = 'actif';
+15     
+Landed at lines 17-32 (the file's new text; no re-read needed):
+17     
+18         /**
+19          * Valide l'inscription : elle devient active (généralement après le
+20          * règlement du frais d'inscription par la caisse).
+21          */
+22         public function valider(): void
+23         {
+24             if ($this->statut !== self::STATUT_ACTIF) {
+25                 $this->update(['statut' => self::STATUT_ACTIF]);
+26             }
+27         }
+28     
+29         public function estEnAttente(): bool
+30         {
+31             return $this->statut === self::STATUT_EN_ATTENTE;
+32         }

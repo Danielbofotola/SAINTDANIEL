@@ -1,0 +1,23 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\aba9102c187c\20261011-163414-bash-call_01a12b99a4a472799bb2d002.txt (1,638 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Structured view (text):
+[powershell — Windows side]
+LineNumber Line                                                                                                                                                                                         
+---------- ----                                                                                                                                                                                         
+         5     <meta name="viewport" content="width=device-width, initial-scale=1">                                                                                                                     
+        22         .section-title { margin: 22px 0 14px; padding-bottom: 8px; color: #193c39; border-bottom: 1px solid #e5ebe5; font-size: 12px; font-weight: 800; letter-spacing: .7px;                
+           text-transform: uppercase; }                                                                                                                                                                 
+        55             <section class="settings-panel">                                                                                                                                                 
+        61                     <input class="form-control" id="nom_etablissement" name="nom_etablissement" value="{{ old('nom_etablissement', $settings->nom_etablissement) }}" maxlength="150"         
+           required>                                             
+… 2,863 chars elided …
+                                                                                      
+       122                 <h3 class="section-title">En-t�te officiel</h3>                                                                                                                              
+       126                         <input class="form-control" id="bulletin_pays" name="bulletin_pays" value="{{ old('bulletin_pays', $settings->bulletin_pays) }}" maxlength="100">                    
+       130                         <input class="form-control" id="bulletin_reference" name="bulletin_reference" value="{{ old('bulletin_reference', $settings->bulletin_reference) }}" maxlength="50"> 
+       136                     <input class="form-control" id="bulletin_ministere" name="bulletin_ministere" v
+… 3,663 chars elided …
+                                             
+
+
+
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

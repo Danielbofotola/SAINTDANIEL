@@ -1,0 +1,6 @@
+Applied patch: 1 file changed (1 updated)
+Updated resources/views/admin/frais/index.blade.php (1 hunk applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 39-40 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 40-40:
+40                             <div class="form-check mb-2"><input class="form-check-input" type="checkbox" name="est_inscription" id="est_inscription" value="1" @checked(old('est_inscription'))><label class="form-check-label" for="est_inscription">Frais d’inscription — son paiement valide automatiquement l’inscription de l’élève</label></div>

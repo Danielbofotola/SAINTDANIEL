@@ -1,0 +1,5 @@
+Applied patch: 1 file changed (1 updated)
+Updated routes/web.php (1 hunk applied)
+Landed at lines 64-65 (the file's new text; no re-read needed):
+64         Route::get('/admin/comptes/{user}/mot-de-passe', [UserProfileController::class, 'editAccountPassword'])->middleware('role:admin')->name('admin.profile.accounts.password.edit');
+65         Route::patch('/admin/comptes/{user}/mot-de-passe', [UserProfileController::class, 'updateAccountPassword'])->middleware('role:admin')->name('admin.profile.accounts.password.update');

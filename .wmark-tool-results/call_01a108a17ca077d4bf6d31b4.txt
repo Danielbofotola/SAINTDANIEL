@@ -1,0 +1,14 @@
+362            ->assertSee('60,00');
+363    });
+364    
+365    test('the finance menu links point to the new modules', function () {
+366        $admin = User::factory()->create(['role' => 'admin']);
+367    
+368        $this->actingAs($admin)
+369            ->get(route('admin.dashboard'))
+370            ->assertOk()
+371            ->assertSee(route('admin.frais.index'), false)
+372            ->assertSee(route('admin.paiements.index'), false)
+373            ->assertSee(route('admin.depenses.index'), false)
+374            ->assertSee(route('admin.archives.index'), false);
+375    });

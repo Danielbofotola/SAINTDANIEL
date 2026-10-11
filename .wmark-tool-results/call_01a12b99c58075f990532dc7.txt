@@ -1,0 +1,31 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\aba9102c187c\20261011-163423-apply_patch-call_01a12b99c58075f990532dc7.txt (671 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+Applied patch: 2 files changed (2 updated)
+Updated app/Http/Controllers/ParametreSystemeController.php (3 hunks applied)
+Updated resources/views/admin/profile/settings.blade.php (1 hunk applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 3: context matched at lines 73-75 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 81-87:
+81     
+82             // Colonnes devise/taux_cha
+
+... 753 chars truncated ...
+
+ce normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 84-104:
+84     
+85                 <section class="settings-panel">
+86                     <h2 class="panel-title"><i class="fa fa-money"></i> Devises &amp; taux de change</h2>
+87                     <p class="panel-hint">Devise par défaut des nouveaux tarifs, et taux de change du franc congolais (CDF) par rapport au dollar (USD) — pré-rempli lors des encaissements.</p>
+88                     <div class="row">
+89                         <div class="col-md-6 form-group">
+90                             <label class="form-label" for="devise">Devise par défaut</label>
+91                             <select class="form-control" id="devise" name="devise">
+      … 5 lines omitted …
+97                         </div>
+98                         <div class="col-md-6 form-group">
+99                             <label class="form-label" for="taux_change">Taux de change (FC pour 1 $)</label>
+100                            <input class="form-control" id="taux_change" type="number" step="0.01" min="0" name="taux_change" value="{{ old('taux_change', $settings->taux_change ?? \App\Support\Monnaie::TAUX_DEFAUT) }}">
+101                            <div class="settings-hint">Nombre de francs congolais pour 1 dollar. Sert à convertir un paiement en FC vers la devise du tarif.</div>
+102                        </div>
+103                    </div>
+104                </section>

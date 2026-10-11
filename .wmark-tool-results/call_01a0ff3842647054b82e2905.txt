@@ -1,0 +1,16 @@
+286            ['eleve_id' => 1, 'classe_id' => 1, 'annee_scolaire_id' => 1, 'statut' => 'actif'],
+287            ['eleve_id' => 2, 'classe_id' => 1, 'annee_scolaire_id' => 1, 'statut' => 'actif'],
+288        ]);
+289        DB::table('emplois_du_temps')->insert([
+290            'affectation_id' => 1,
+291            'jour' => ['lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'][now()->addDay()->dayOfWeekIso - 1],
+292            'heure_debut' => '10:00:00',
+293            'heure_fin' => '11:00:00',
+294            'statut' => 'actif',
+295        ]);
+296        DB::table('evaluations')->insert([
+297            'affectation_id' => 1,
+298            'titre' => 'Contrôle de géométrie',
+299            'type_evaluation' => 'interro',
+
+[showing lines 286-299 of 483; read again with offset=300 for more]

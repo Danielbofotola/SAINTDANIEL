@@ -1,0 +1,24 @@
+Applied patch: 1 file changed (1 updated)
+Updated app/Http/Controllers/UserProfileController.php (3 hunks applied)
+Landed at lines 13-13 (the file's new text; no re-read needed):
+13     use Illuminate\Support\Facades\DB;
+Landed at lines 369-372 (the file's new text; no re-read needed):
+369            if ($user->statut !== 'actif') {
+370                $this->purgerSessions($user);
+371            }
+372    
+Landed at lines 382-383 (the file's new text; no re-read needed):
+382            $this->purgerSessions($user);
+383            $user->delete();
+Landed at lines 387-397 (the file's new text; no re-read needed):
+387    
+388        /**
+389         * Met fin aux sessions actives d'un compte (driver « database ») : un
+390         * utilisateur désactivé ou supprimé ne reste pas connecté.
+391         */
+392        private function purgerSessions(User $user): void
+393        {
+394            if (config('session.driver') === 'database' && Schema::hasTable('sessions')) {
+395                DB::table('sessions')->where('user_id', $user->id)->delete();
+396            }
+397        }

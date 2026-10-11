@@ -1,0 +1,1 @@
+DENIED: matches destructive pattern 'Remove-Item $tmp -Recurse -Force'

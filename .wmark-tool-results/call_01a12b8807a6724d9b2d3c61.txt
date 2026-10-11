@@ -1,0 +1,44 @@
+85             ]);
+86         }
+87     
+88         /**
+89          * Synthèse de l'effectif délibéré : compte par décision et répartition
+90          * garçons / filles (globale et par décision), pour les cartes d'en-tête.
+91          *
+92          * @param  Collection<int, array{eleve: ?\App\Models\Eleve, decision: string}>  $lignes
+93          * @return array{total: int, garcons: int, filles: int, decisions: array<string, array{total: int, g: int, f: int}>}
+94          */
+95         private function synthese(Collection $lignes): array
+96         {
+97             $decisions = [];
+98             $garcons = 0;
+99             $filles = 0;
+100    
+101            foreach ($lignes as $ligne) {
+102                $decision = $ligne['decision'];
+103                $decisions[$decision] ??= ['total' => 0, 'g' => 0, 'f' => 0];
+104                $decisions[$decision]['total']++;
+105    
+106                match ($ligne['eleve']?->sexe) {
+107                    'M' => $decisions[$decision]['g']++ + $garcons++,
+108                    'F' => $decisions[$decision]['f']++ + $filles++,
+109                    default => null,
+110                };
+111            }
+112    
+113            foreach (array_keys(Deliberation::DECISIONS) as $cle) {
+114                $decisions[$cle] ??= ['total' => 0, 'g' => 0, 'f' => 0];
+115            }
+116    
+117            return [
+118                'total' => $lignes->count(),
+119                'garcons' => $garcons,
+120                'filles' => $filles,
+121                'decisions' => $decisions,
+122            ];
+123        }
+124    
+125        /** Enregistre les critères de délibération (seuils et plafond). */
+126        public function criteres(Request $request): RedirectResponse
+
+[showing lines 85-126 of 287; read again with offset=127 for more]

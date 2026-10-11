@@ -1,0 +1,19 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\b493c9bc81dc\20261008-005435-bash-call_01a118ca8e4c7740b7d8ba44.txt (818 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+[powershell — Windows side]
+HTTP/1.1 302 Found
+Host: 127.0.0.1:8000
+Connection: close
+X-Powered-By: PHP/8.2.12
+Cache-Control: no-cache, private
+Date: Wed, 07 Oct 2026 23:54:34 GMT
+Location: http://127.0.0.1:8000
+Content-Type: text/html; charset=utf-8
+Set-Cookie: XSRF-TOKEN=eyJpdiI6InlOOGwvSGxTSy8waDZrUi9PZk9ZWUE9PSIsInZhbHVlIjoiZk9xSURPSW4rRGRUdDZqNkduK05PY1IrcmlJNWFuS01WVHRKalRSSFpzYXJBZlpHUlBuUnQxUmdjRDRMMTB6ci9kZDQ4MmszY05NYWdwNFZKZzZwOU9pa2twdUcyOFV1MWFOcGcrb3c5emxJSEpMS28xc1hLOGZuMVVVL1VoWlMiLCJtYWMiOiI1MWI4MTM5MjU0NTBlNDFjNzQyYWZlODUwOWZkNTQ4MDIxMjM0NmQ1YTZmMTUyOTE2Y2ZjMDhmZDI0Yzc4MWFiIiwidGFnIjoiIn0%3D; expires=Thu, 08 Oct 2026 01:54:34 GMT; Max-Age=7200; path=/; samesite=lax
+Set-Cookie: laravel-session=eyJpdiI6InBaOWt1cnVNQnRtcS9rcmtRcEsxcVE9PSIsInZhbHVlIjoiYnVMZ24xSXpObld5Slh0VXRhcFp0OVhWOFZ4YWk2V3JCVnRVYlZJMUtqOFF5emNMVUp6ekJpQjJ2QVNmL0FpUDJGVzM4d3RnYlp3V1RQNkk1TEt2TzJXd1BuN2VPSThDRUVlU0Q1bDJnQ2NQOGlwOVNPbGx1TUJaNzduRDB4bDciLCJtYWMiOiJlMzJjZDA2NGE0ODMzYmRmNjc1ZWYxNTE5MTA2MmI5NGFmYzQzNWJlNjIyMjQwNjQ2ZGVmNmY4YmJiOGUxODE1IiwidGFnIjoiIn0%3D; expires=Thu, 08 Oct 2026 01:54:34 GMT; Max-Age=7200; path=/; httponly; samesite=lax
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

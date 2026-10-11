@@ -1,0 +1,15 @@
+1      <?php
+2      
+3      namespace App\Models;
+4      
+5      use Illuminate\Database\Eloquent\Model;
+6      
+7      class Salle extends Model
+8      {
+9          protected $fillable = ['nom', 'capacite', 'statut'];
+10     
+11         public function classes()
+12         {
+13             return $this->hasMany(Classe::class);
+14         }
+15     }

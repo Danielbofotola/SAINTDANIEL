@@ -1,0 +1,12 @@
+285                            </div>
+286                        </div>
+287                        @if ($conversation->non_lus === 0)
+288                            <i class="fa-solid fa-circle-check conv__vu"></i>
+289                        @endif
+290                    </a>
+291                @empty
+292                    <p class="p-3 text-center mb-0" style="color:var(--chat-muted);font-size:.8rem">Aucune discussion.</p>
+293                @endforelse
+294            </div>
+
+[showing lines 285-294 of 957; read again with offset=295 for more]

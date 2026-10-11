@@ -1,0 +1,23 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\e8f943213216\20261003-014233-bash-call_01a0ff36a5d674a6a8a225f7.txt (939 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+[powershell — Windows side]
+resources\views\professeur\dashboard.blade.php:202:            <a class="brand" href="{{ route('professeur.dashboard') }}">
+resources\views\professeur\dashboard.blade.php:208:                <a class="active" href="{{ route('professeur.dashboard') }}" aria-current="page"><i class="fa fa-th-large"></i><span 
+class="nav-label">Vue g�n�rale</span></a>
+resources\views\professeur\dashboard.blade.php:214:                <a class="profile-shortcut" href="{{ route('profile.sh
+
+... 1,276 chars truncated ...
+
+           <a class="banner-action" href="{{ route('profile.show') }}">Mon profil <i class="fa fa-arrow-right" 
+aria-hidden="true"></i></a>
+resources\views\professeur\dashboard.blade.php:267:                            <div class="section-heading"><div><h2>Mon planning</h2><p>Les cours pr�vus aujourd'hui</p></div><span 
+class="section-link">{{ ucfirst($todayLabel) }}</span></div>
+resources\views\professeur\dashboard.blade.php:284:                            <div class="section-heading"><div><h2>Mes enseignements</h2><p>R�partition par classe et par cours</p></div><span 
+class="section-link">{{ $assignments->count() }} affectation(s)</span></div>
+resources\views\professeur\dashboard.blade.php:302:                            <div class="section-heading"><div><h2>� venir</h2><p>Vos prochaines �valuations</p></div></div>
+
+
+
+=== SIZE ===
+311
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">2</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

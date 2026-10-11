@@ -1,0 +1,44 @@
+1      <?php
+2      
+3      namespace App\Models;
+4      
+5      use Illuminate\Database\Eloquent\Model;
+6      
+7      /**
+8       * Annonce diffusée par l'administration à tout ou partie des utilisateurs.
+9       */
+10     class Annonce extends Model
+11     {
+12         public const NIVEAUX = [
+13             'info' => 'Information',
+14             'success' => 'Bonne nouvelle',
+15             'warning' => 'Avertissement',
+16             'danger' => 'Urgent',
+17         ];
+18     
+19         public const CIBLES = [
+20             'tous' => 'Tous les utilisateurs',
+21             'admin' => 'Administrateurs',
+22             'prefetture' => 'Préfecture',
+23             'titulaire' => 'Titulaires',
+24             'professeur' => 'Professeurs',
+25             'comptable' => 'Comptables',
+26         ];
+27     
+28         protected $fillable = ['titre', 'message', 'niveau', 'lien', 'cible', 'envoye_par', 'destinataires'];
+29     
+30         public function auteur()
+31         {
+32             return $this->belongsTo(User::class, 'envoye_par');
+33         }
+34     
+35         public function libelleNiveau(): string
+36         {
+37             return self::NIVEAUX[$this->niveau] ?? 'Information';
+38         }
+39     
+40         public function libelleCible(): string
+41         {
+42             return self::CIBLES[$this->cible] ?? 'Tous les utilisateurs';
+43         }
+44     }

@@ -1,0 +1,18 @@
+Applied patch: 3 files changed (3 updated)
+Updated resources/views/admin/dashboard.blade.php (1 hunk applied)
+Updated resources/views/admin/profile/show.blade.php (1 hunk applied)
+Updated resources/views/comptable/dashboard.blade.php (1 hunk applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 355-355 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 356-356:
+356                        <li><a class="treeview-item" href="{{ route('admin.paies.index') }}"><i class="icon fa fa-money"></i> Paie &amp; salaires</a></li>
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 204-204 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 205-205:
+205                            <li><a class="waves-effect waves-dark" href="{{ route('admin.paies.index') }}"><i class="icon-arrow-right"></i>Gestion des salaires</a></li>
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 329-331 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 332-334:
+332                                  <div class="mt-1">
+333                                      <a href="{{ route('comptable.paies.index') }}" class="btn btn-outline-success bg-white fw-bold w-100"><i class="bi bi-cash-stack me-1"></i> Paie &amp; salaires</a>
+334                                  </div>

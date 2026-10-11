@@ -1,0 +1,163 @@
+1      <?php
+2      
+3      use App\Models\User;
+4      use Illuminate\Database\Schema\Blueprint;
+5      use Illuminate\Support\Facades\DB;
+6      use Illuminate\Support\Facades\Schema;
+7      
+8      beforeEach(function () {
+9          foreach (['inscriptions', 'eleves', 'classes', 'cycles', 'sections', 'options', 'salles', 'professeurs', 'annees_scolaires', 'users'] as $table) {
+10             Schema::dropIfExists($table);
+11         }
+12     
+13         Schema::create('users', function (Blueprint $table) {
+14             $table->id();
+15             $table->unsignedBigInteger('professeur_id')->nullable();
+16             $table->string('nom', 50)->nullable();
+17             $table->string('prenom', 50)->nullable();
+18             $table->string('username', 50)->unique();
+19             $table->string('email', 100)->unique();
+20             $table->string('photo')->nullable();
+21             $table->string('password');
+22             $table->string('pin_code')->nullable();
+23             $table->string('role');
+24             $table->string('statut');
+25             $table->rememberToken();
+26             $table->timestamps();
+27         });
+28     
+29         Schema::create('annees_scolaires', function (Blueprint $table) {
+30             $table->id();
+31             $table->string('libelle', 20)->unique();
+32             $table->date('date_debut');
+33             $table->date('date_fin');
+34             $table->boolean('is_encours')->default(false);
+35             $table->string('statut')->default('actif');
+36             $table->timestamps();
+37         });
+38     
+39         Schema::create('cycles', function (Blueprint $table) {
+40             $table->id();
+41             $table->string('nom');
+42             $table->string('statut')->default('actif');
+43         });
+44     
+45         Schema::create('salles', function (Blueprint $table) {
+46             $table->id();
+47             $table->string('nom')->nullable();
+48         });
+49     
+50         Schema::create('classes', function (Blueprint $table) {
+51             $table->id();
+52             $table->string('nom');
+53             $table->unsignedBigInteger('cycle_id')->nullable();
+54             $table->unsignedBigInteger('salle_id')->nullable();
+55             $table->string('statut')->default('actif');
+56             $table->timestamps();
+57         });
+58     
+59         Schema::create('sections', function (Blueprint $table) {
+60             $table->id();
+61             $table->string('nom');
+62             $table->timestamps();
+63         });
+64     
+65         Schema::create('options', function (Blueprint $table) {
+66             $table->id();
+67             $table->unsignedBigInteger('section_id');
+68             $table->string('nom');
+69             $table->timestamps();
+70         });
+71     
+72         Schema::create('eleves', function (Blueprint $table) {
+73             $table->id();
+74             $table->string('matricule')->unique();
+75             $table->string('nom');
+76             $table->string('postnom')->nullable();
+77             $table->string('prenom');
+78             $table->string('sexe');
+79             $table->date('date_naissance');
+80             $table->string('statut')->default('actif');
+81             $table->timestamps();
+82         });
+83     
+84         Schema::create('inscriptions', function (Blueprint $table) {
+85             $table->id();
+86             $table->unsignedBigInteger('eleve_id');
+87             $table->unsignedBigInteger('classe_id');
+88             $table->unsignedBigInteger('annee_scolaire_id');
+89             $table->date('date_inscription');
+90             $table->string('statut')->default('actif');
+91             $table->timestamps();
+92         });
+93     
+94         Schema::create('professeurs', function (Blueprint $table) {
+95             $table->id();
+96             $table->string('matricule');
+97             $table->string('nom');
+98             $table->string('prenom');
+99             $table->string('statut')->default('actif');
+100            $table->timestamps();
+101        });
+102    
+103        DB::table('annees_scolaires')->insert([
+104            'id' => 1, 'libelle' => '2026-2027', 'date_debut' => '2026-09-01', 'date_fin' => '2027-07-01',
+105            'is_encours' => true, 'statut' => 'actif',
+106        ]);
+107        DB::table('cycles')->insert(['id' => 1, 'nom' => 'Primaire', 'statut' => 'actif']);
+108        DB::table('salles')->insert(['id' => 1, 'nom' => 'Salle A']);
+109        DB::table('classes')->insert(['id' => 1, 'nom' => '3e primaire', 'cycle_id' => 1, 'salle_id' => 1, 'statut' => 'actif']);
+110        DB::table('sections')->insert(['id' => 1, 'nom' => 'Scientifique']);
+111        DB::table('options')->insert(['id' => 1, 'section_id' => 1, 'nom' => 'Latin-Mathématiques']);
+112        DB::table('professeurs')->insert(['id' => 1, 'matricule' => 'PRF-001', 'nom' => 'Mwamba', 'prenom' => 'Jean', 'statut' => 'actif']);
+113        DB::table('eleves')->insert(['id' => 1, 'matricule' => 'ELV-001', 'nom' => 'Banzolo', 'prenom' => 'Daniel', 'sexe' => 'M', 'date_naissance' => '2017-05-12', 'statut' => 'actif']);
+114        DB::table('inscriptions')->insert(['id' => 1, 'eleve_id' => 1, 'classe_id' => 1, 'annee_scolaire_id' => 1, 'date_inscription' => '2026-09-05', 'statut' => 'actif']);
+115    
+116        User::factory()->create(['role' => 'prefetture']);
+117        User::factory()->create(['role' => 'comptable']);
+118    });
+119    
+120    test('the prefecture space is a dedicated page, not the shared placeholder', function () {
+121        $prefet = User::where('role', 'prefetture')->first();
+122    
+123        $this->actingAs($prefet)
+124            ->get(route('prefecture.dashboard'))
+125            ->assertOk()
+126            ->assertSee('Espace préfecture')
+127            ->assertSee('Effectifs par cycle')
+128            ->assertSee('Primaire')
+129            ->assertSee('3e primaire')
+130            ->assertSee('Personnel et comptes')
+131            ->assertSee('Sections')
+132            ->assertSee('2026-2027')
+133            ->assertDontSee('Voir mon profil et mes coordonnées');
+134    });
+135    
+136    test('the prefecture space reports the current year figures only', function () {
+137        // Un élève inscrit sur une autre année ne doit pas compter
+138        DB::table('annees_scolaires')->insert([
+139            'id' => 2, 'libelle' => '2025-2026', 'date_debut' => '2025-09-01', 'date_fin' => '2026-07-01',
+140            'is_encours' => false, 'statut' => 'actif',
+141        ]);
+142        DB::table('eleves')->insert(['id' => 2, 'matricule' => 'ELV-002', 'nom' => 'Ancien', 'prenom' => 'Eleve', 'sexe' => 'F', 'date_naissance' => '2015-01-01', 'statut' => 'actif']);
+143        DB::table('inscriptions')->insert(['id' => 2, 'eleve_id' => 2, 'classe_id' => 1, 'annee_scolaire_id' => 2, 'date_inscription' => '2025-09-05', 'statut' => 'actif']);
+144    
+145        $prefet = User::where('role', 'prefetture')->first();
+146    
+147        $this->actingAs($prefet)
+148            ->get(route('prefecture.dashboard'))
+149            ->assertOk()
+150            ->assertSee('1 élève(s) suivis cette année');
+151    });
+152    
+153    test('the prefecture space is closed to the other roles', function () {
+154        $comptable = User::where('role', 'comptable')->first();
+155    
+156        $this->actingAs($comptable)
+157            ->get(route('prefecture.dashboard'))
+158            ->assertForbidden();
+159    });
+160    
+161    test('the shared placeholder page has been retired', function () {
+162        expect(view()->exists('dashboard'))->toBeFalse();
+163    });

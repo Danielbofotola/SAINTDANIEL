@@ -1,0 +1,7 @@
+200        // Espace enseignant : une page par fonction.
+201        Route::get('/professeur/planning', [ProfesseurEspaceController::class, 'planning'])->middleware('role:professeur')->name('professeur.planning');
+202        Route::get('/professeur/cours', [ProfesseurEspaceController::class, 'cours'])->middleware('role:professeur')->name('professeur.cours');
+203        Route::get('/professeur/cours/{affectation}', [ProfesseurEspaceController::class, 'coursShow'])->middleware('role:professeur')->name('professeur.cours.show');
+204        Route::get('/professeur/eleves', [ProfesseurEspaceController::class, 'eleves'])->middleware('role:professeur')->name('professeur.eleves');
+
+[showing lines 200-204 of 223; read again with offset=205 for more]

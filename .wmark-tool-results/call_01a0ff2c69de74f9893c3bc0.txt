@@ -1,0 +1,16 @@
+18         <main class="app-content" style="margin-left:0">
+19             <div class="app-title">
+20                 <div><h1><i class="fa fa-graduation-cap"></i> Classes créées</h1><p>Consultez les classes et leur organisation scolaire@if($anneeEnCours) — année <strong>{{ $anneeEnCours->libelle }}</strong>@endif.</p></div>
+21                 <div><a href="{{ route('admin.dashboard') }}" class="btn btn-secondary">Retour</a> <a href="{{ route('admin.classes.create') }}" class="btn btn-primary"><i class="fa fa-plus"></i> Créer une classe</a></div>
+22             </div>
+23     
+24             <div class="tile">
+25                 <div class="table-responsive">
+26                     <table class="table table-hover table-bordered">
+27                         @if (session('success'))<div class="alert alert-success">{{ session('success') }}</div>@endif
+28                         @if (session('error'))<div class="alert alert-danger">{{ session('error') }}</div>@endif
+29                         <thead><tr><th>#</th><th>Classe</th><th>Cycle</th><th>Section</th><th>Option</th><th>Salle</th><th>Élèves @if($anneeEnCours)<small>{{ $anneeEnCours->libelle }}</small>@endif</th><th>Statut</th><th>Actions</th></tr></thead>
+30                         <tbody>
+31                             @forelse ($classes as $classe)
+
+[showing lines 18-31 of 64; read again with offset=32 for more]

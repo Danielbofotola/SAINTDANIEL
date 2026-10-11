@@ -1,0 +1,1 @@
+Updated app/Http/Controllers/AnnonceController.php: replaced 6 lines with 7 lines

@@ -1,0 +1,26 @@
+Applied patch: 1 file changed (1 updated)
+Updated app/Http/Controllers/DeliberationController.php (5 hunks applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 2: context matched at lines 125-127 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+  ⚠ hunk 3: context matched at lines 130-131 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 130-130:
+130            $notifies = 0;
+Auto-corrected hunk landed at lines 134-134:
+134                    ->with(['classe', 'eleve.parents'])
+Landed at lines 14-15 (the file's new text; no re-read needed):
+14     use App\Notifications\DecisionAnnuelleNotification;
+15     use Illuminate\Support\Facades\Notification;
+Landed at lines 143-143 (the file's new text; no re-read needed):
+143                    $deliberation = Deliberation::updateOrCreate(
+Landed at lines 157-165 (the file's new text; no re-read needed):
+157    
+158                    // Le verdict de fin d'année est notifié à chaque compte parent
+159                    // rattaché à l'élève (cloche + « Mes notifications » du portail).
+160                    $parents = $inscription->eleve?->parents ?? collect();
+161    
+162                    if ($parents->isNotEmpty()) {
+163                        Notification::send($parents, new DecisionAnnuelleNotification($deliberation));
+164                        $notifies += $parents->count();
+165                    }
+Landed at lines 169-169 (the file's new text; no re-read needed):
+169            return back()->with('success', $total.' décision(s) enregistrée(s) — '.$notifies.' notification(s) envoyée(s) aux comptes parents.');

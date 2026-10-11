@@ -1,0 +1,36 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\e8f943213216\20261003-012249-apply_patch-call_01a0ff249593744da0e95e3d.txt (623 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+Applied patch: 3 files changed (3 updated)
+Updated app/Models/AnneeScolaire.php (1 hunk applied)
+Updated app/Http/Controllers/EleveInscriptionController.php (2 hunks applied)
+Updated app/Http/Controllers/RegistrationRequestController.php (2 hunks applied)
+Landed at lines 20-20 (the file's new text; no re-read needed):
+20             'demandes_inscription',
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 32-32 only after leading-whitespace normalization; i
+
+... 379 chars truncated ...
+
+$query) => $query->where('statut', 'actif'))],
+Auto-corrected hunk landed at lines 47-54:
+47     
+48             $data['annee_scolaire_id'] = $data['annee_scolaire_id'] ?? AnneeScolaire::enCours()?->id;
+49     
+50             if (! $data['annee_scolaire_id']) {
+51                 return back()->withInput()->withErrors([
+52                     'annee_scolaire_id' => "Aucune année scolaire n'est en cours. Définissez d'abord une année en cours avant d'inscrire un élève.",
+53                 ]);
+54             }
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 43-43 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+  ⚠ hunk 2: context matched at lines 54-55 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 43-43:
+43                 'annee_scolaire_id' => ['nullable', Rule::exists('annees_scolaires', 'id')->where('statut', 'actif')],
+Auto-corrected hunk landed at lines 56-63:
+56     
+57             $data['annee_scolaire_id'] = $data['annee_scolaire_id'] ?? AnneeScolaire::enCours()?->id;
+58     
+59             if (! $data['annee_scolaire_id']) {
+60                 return back()->withInput()->withErrors([
+61                     'annee_scolaire_id' => "Aucune année scolaire n'est en cours. L'administration doit d'abord ouvrir une année.",
+62                 ]);
+63             }

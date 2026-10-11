@@ -1,0 +1,33 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\e1ce9c26600a\20261004-234515-bash-call_01a10917fbcc71f3b9e447bc.txt (773 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+[powershell — Windows side]
+11: use App\Http\Controllers\ProfesseurController;
+12: use App\Http\Controllers\ProfesseurDashboardController;
+63: Route::get('/admin/professeurs/nouveau', [ProfesseurController::class, 'create'])->middleware('role:admin')->name('admin.professeurs.create');
+64: Route::post('/admin/professeurs', [ProfesseurController::class, 'store'])->middleware('role:admin')->name('admin.professeurs.store');
+65: Route::get('/admin/professeurs', [ProfesseurController::class, 'index'])
+
+... 847 chars truncated ...
+
+in.professeurs.documents.store');
+71: Route::delete('/admin/professeurs/documents/{document}', [ProfesseurController::class, 'destroyDocument'])->middleware('role:admin')->name('admin.professeurs.documents.destroy');
+72: Route::patch('/admin/professeurs/{professeur}/statut', [ProfesseurController::class, 'toggleStatus'])->middleware('role:admin')->name('admin.professeurs.toggle-status');
+195: Route::get('/professeur/tableau-de-bord', [ProfesseurDashboardController::class, 'index'])->middleware('role:professeur')->name('professeur.dashboard');
+===== MODELES =====
+AffectationCours.php
+Classe.php
+Cours.php
+DocumentEleve.php
+DocumentProfesseur.php
+Eleve.php
+EleveSante.php
+Evaluation.php
+Note.php
+Option.php
+Professeurs.php
+Section.php
+===== CONTROLEURS =====
+ProfesseurController.php
+ProfesseurDashboardController.php
+ProfesseursController.php
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

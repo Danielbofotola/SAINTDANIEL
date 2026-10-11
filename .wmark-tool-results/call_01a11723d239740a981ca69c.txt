@@ -1,0 +1,24 @@
+Applied patch: 1 file changed (1 updated)
+Updated resources/views/messagerie/_espace.blade.php (5 hunks applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 3: context matched at lines 179-182 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 185-189:
+185                @if ($active)
+186                    <button class="btn-compose only-mobile" type="button" onclick="reprendreConversation()">
+187                        <i class="fa-solid fa-comment-dots"></i> Reprendre la discussion
+188                    </button>
+189                @endif
+Landed at lines 150-151 (the file's new text; no re-read needed):
+150        /* ===== Mobile : liste ↔ conversation ===== */
+151        .only-mobile { display: none; }
+Landed at lines 159-163 (the file's new text; no re-read needed):
+159            /* Conversation chargée mais revenu à la liste : le fil s'efface,
+160               on le rouvre par « Reprendre la discussion ». */
+161            .msg-shell.has-conv:not(.show-thread) .msg-thread { display: none; }
+162            /* Sans conversation : la liste ET la barre d'écriture restent visibles. */
+163            .only-mobile { display: inline-flex !important; }
+Landed at lines 168-168 (the file's new text; no re-read needed):
+168    <div class="msg-shell {{ $active ? 'show-thread has-conv' : '' }}" id="msgShell">
+Landed at lines 201-201 (the file's new text; no re-read needed):
+201                       @if ($active && $active->id === $conversation->id) onclick="reprendreConversation(); return false;" @endif
+… 1 more hunks not echoed …

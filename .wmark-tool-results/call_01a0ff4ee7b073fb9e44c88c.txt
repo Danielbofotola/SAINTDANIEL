@@ -1,0 +1,31 @@
+Applied patch: 4 files changed (4 updated)
+Updated app/Models/User.php (1 hunk applied)
+Updated app/Http/Controllers/AuthController.php (1 hunk applied)
+Updated app/Http/Controllers/UserProfileController.php (1 hunk applied)
+Updated resources/views/profile/show.blade.php (1 hunk applied)
+Landed at lines 20-42 (the file's new text; no re-read needed):
+20     
+21         /**
+22          * Nom de route du tableau de bord correspondant au rôle.
+23          *
+24          * Source unique : login, « retour au tableau de bord » et impersonation s'y réfèrent.
+25          * Le repli est `profile.show` — jamais `home`, qui redirige selon le rôle (boucle).
+26          */
+27         public static function dashboardRouteNameFor(?string $role): string
+      … 7 lines omitted …
+35                 default => 'profile.show',
+36             };
+37         }
+38     
+39         public function dashboardRouteName(): string
+40         {
+41             return static::dashboardRouteNameFor($this->role);
+42         }
+Landed at lines 112-112 (the file's new text; no re-read needed):
+112            return User::dashboardRouteNameFor($role);
+Landed at lines 207-207 (the file's new text; no re-read needed):
+207            return redirect()->route($user->dashboardRouteName());
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 21-21 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 21-21:
+21             <a class="text-white" href="{{ route(auth()->user()->dashboardRouteName()) }}"><i class="fa fa-arrow-left"></i> Tableau de bord</a>

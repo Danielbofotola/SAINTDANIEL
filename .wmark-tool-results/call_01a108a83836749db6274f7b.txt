@@ -1,0 +1,22 @@
+1      <?php
+2      
+3      namespace App\Http\Controllers;
+4      
+5      use App\Models\AnneeScolaire;
+6      use App\Models\Bulletin;
+7      use App\Models\Classe;
+8      use App\Models\Evaluation;
+9      use App\Models\Note;
+10     use App\Models\Periode;
+11     use Illuminate\Http\RedirectResponse;
+12     use Illuminate\Http\Request;
+13     use Illuminate\Support\Facades\DB;
+14     use Illuminate\Validation\Rule;
+15     use Illuminate\View\View;
+16     
+17     class BulletinController extends Controller
+18     {
+19         public function index(Request $request): View
+20         {
+
+[showing lines 1-20 of 162; read again with offset=21 for more]

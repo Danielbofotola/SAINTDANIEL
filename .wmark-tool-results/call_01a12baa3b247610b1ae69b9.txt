@@ -1,0 +1,37 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\aba9102c187c\20261011-165222-apply_patch-call_01a12baa3b247610b1ae69b9.txt (1,137 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Structured view (text):
+Applied patch: 3 files changed (3 updated)
+Updated app/Http/Controllers/ParametreSystemeController.php (3 hunks applied)
+Updated resources/views/admin/modules/index.blade.php (1 hunk applied)
+Updated resources/views/admin/profile/settings.blade.php (1 hunk applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 2: context matched at lines 70-71 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+  ⚠ hunk 3: context matched at lines 82-83 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 73-73:
+73                 'module_recus_actif', 'module_recouvrement_actif',
+Auto-corrected hunk landed at lines 85-86:
+85             // Colonnes optionnelles : ignorées si la table n'est pas migrée.
+86             foreach (['devise', 'taux_change', 'module_recus_actif', 'module_recouvrement_actif'] as $colonne) {
+Landed at lines 39-40 (the file's new text; no re-read needed):
+39                 'module_recus_actif' => ['nullable', 'boolean'],
+40                 'module_recouvrement_actif' => ['nullable', 'boolean'],
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 73-73 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 73-97:
+73                     <div class="py-3 d-flex 
+… 496 chars elided …
+recus_actif" value="0">
+80                             <input type="checkbox" class="custom-control-input" id="module_recus_actif" name="module_recus_actif" value="1" @checked(old('module_recus_actif', $settings->module_recus_actif ?? true))>
+      … 9 lines omitted …
+90                         <div class="custom-control custom-switch ml-3">
+91                             <input type="hidden" name="module_recouvrement_actif" value="0">
+92                             <input type="checkbox" class="custom-control-input" id="module_recouvrement_actif" name="module_recouvrement_actif" value="1" @checked(old('module_recouvrement_actif', $settings->module_recouvrement_actif ?? true))>
+93                             <label class="custom-control-label" for="module_recouvrement_actif">{{ ($settings-
+… 1,297 chars elided …
+ type="hidden" name="module_recouvrement_actif" value="0">
+144                        <input type="checkbox" id="module_recouvrement_actif" name="module_recouvrement_actif" value="1" @checked(old('module_recouvrement_actif', $settings->module_recouvrement_actif ?? true))>
+145                        <label for="module_recouvrement_actif">
+146                            <span class="switch-titre">Recouvrement</span>
+147                            <p class="switch-texte">Ouvre le suivi des encaissements (classe, période, mois). Décochée, la page recouvrement est fermée (404).</p>
+148                        </label>
+149                    </div>
+150                    <div class="settings-hint">

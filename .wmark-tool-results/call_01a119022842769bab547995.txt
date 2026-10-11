@@ -1,0 +1,20 @@
+36                                     </tr>
+37                                 </thead>
+38                                 <tbody>
+39                                     @forelse ($eleves as $eleve)
+40                                         @php($inscription = $eleve->inscriptions->first())
+41                                         <tr>
+42                                             <td class="fw-bold">{{ trim($eleve->nom.' '.($eleve->postnom ?? '').' '.$eleve->prenom) }}</td>
+43                                             <td>{{ $eleve->matricule ?: '—' }}</td>
+44                                             <td>{{ $inscription?->classe?->nom ?? '—' }}</td>
+45                                             <td>{{ $eleve->tuteur ? trim(($eleve->tuteur->nom_pere ?: $eleve->tuteur->nom_mere ?: '—')) : '—' }}</td>
+46                                             <td>{{ $eleve->tuteur?->telephone_pere ?: ($eleve->tuteur?->telephone_mere ?: '—') }}</td>
+47                                             <td class="text-right">
+48                                                 <a href="{{ route('prefecture.eleves.fiche', $eleve) }}" class="btn btn-info btn-xs btn-round">
+49                                                     <i class="fas fa-folder-open"></i> Ouvrir
+50                                                 </a>
+51                                             </td>
+52                                         </tr>
+53                                     @empty
+
+[showing lines 36-53 of 83; read again with offset=54 for more]

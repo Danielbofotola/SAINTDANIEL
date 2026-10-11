@@ -1,0 +1,24 @@
+205            ]);
+206    
+207            $dashboard = match ($user->role) {
+208                'prefetture' => 'prefecture.dashboard',
+209                'titulaire' => 'titulaire.dashboard',
+210                'professeur' => 'professeur.dashboard',
+211                'comptable' => 'comptable.dashboard',
+212                default => 'home',
+213            };
+214    
+215            return redirect()->route($dashboard);
+216        }
+217    
+218        public function stopImpersonation(Request $request): RedirectResponse
+219        {
+220            $admin = User::query()
+221                ->whereKey($request->session()->get('impersonating_admin_id'))
+222                ->where('role', 'admin')
+223                ->where('statut', 'actif')
+224                ->first();
+225    
+226            if (! $admin) {
+
+[showing lines 205-226 of 389; read again with offset=227 for more]

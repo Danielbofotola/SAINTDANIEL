@@ -1,0 +1,48 @@
+1      [powershell — Windows side]
+2      #64 C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\vendor\laravel\framework\src\Illuminate\Foundation\Http\Kernel.php(175): Illuminate\Pipeline\Pipeline->then(Object(Closure))
+3      #65 C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\vendor\laravel\framework\src\Illuminate\Foundation\Http\Kernel.php(144): Illuminate\Foundation\Http\Kernel->sendRequestThroughRouter(Object(Illuminate\Http\Request))
+4      #66 C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\vendor\laravel\framework\src\Illuminate\Foundation\Testing\Concerns\MakesHttpRequests.php(607): Illuminate\Foundation\Http\Kernel->handle(Object(Illuminate\Http\Request))
+5      #67 C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\vendor\laravel\framework\src\Illuminate\Foundation\Testing\Concerns\MakesHttpRequests.php(368): Illuminate\Foundation\Testing\TestCase->call('GET', 'https://mon-app...', Array, Array, Array, Array)
+6      #68 C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\tests\Feature\AdminUserManagementTest.php(427): Illuminate\Foundation\Testing\TestCase->get('https://mon-app...')
+7      #69 C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\vendor\pestphp\pest\src\Factories\TestCaseMethodFactory.php(171): P\Tests\Feature\AdminUserManagementTest->{closure}()
+8      #70 [internal function]: P\Tests\Feature\AdminUserManagementTest->Pest\Factories\{closure}()
+9      #71 C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\vendor\pestphp\pest\src\Concerns\Testable.php(419): call_user_func_array(Object(Closure), Array)
+10     #72 C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\vendor\pestphp\pest\src\Support\ExceptionTrace.php(26): P\Tests\Feature\AdminUserManagementTest->Pest\Concerns\{closure}()
+11     #73 C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\vendor\pestphp\pest\src\Concerns\Testable.php(419): Pest\Support\ExceptionTrace::ensure(Object(Closure))
+12     #74 C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\vendor\pestphp\pest\src\Concerns\Testable.php(321): P\Tests\Feature\AdminUserManagementTest->__callClosure(Object(Closure), Array)
+13     #75 C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\vendor\pestphp\pest\src\Factories\TestCaseFactory.php(173) : eval()'d code(98): P\Tests\Feature\AdminUserManagementTest->__runTest(Object(Closure))
+14     #76 C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\vendor\phpunit\phpunit\src\Framework\TestCase.php(1667): P\Tests\Feature\AdminUserManagementTest->__pest_evaluable_admin_can_create_a_section_and_option_before_returning_to_the_class_form()
+15     #77 C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\vendor\phpunit\phpunit\src\Framework\TestCase.php(519): PHPUnit\Framework\TestCase->runTest()
+16     #78 C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\vendor\phpunit\phpunit\src\Framework\TestRunner\TestRunner.php(87): PHPUnit\Framework\TestCase->runBare()
+17     #79 C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\vendor\phpunit\phpunit\src\Framework\TestCase.php(365): PHPUnit\Framework\TestRunner->run(Object(P\Tests\Feature\AdminUserManagementTest))
+18     #80 C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\vendor\phpunit\phpunit\src\Framework\TestSuite.php(369): PHPUnit\Framework\TestCase->run()
+19     #81 C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\vendor\phpunit\phpunit\src\Framework\TestSuite.php(369): PHPUnit\Framework\TestSuite->run()
+20     #82 C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\vendor\phpunit\phpunit\src\Framework\TestSuite.php(369): PHPUnit\Framework\TestSuite->run()
+21     #83 C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\vendor\phpunit\phpunit\src\TextUI\TestRunner.php(64): PHPUnit\Framework\TestSuite->run()
+22     #84 C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\vendor\phpunit\phpunit\src\TextUI\Application.php(211): PHPUnit\TextUI\TestRunner->run(Object(PHPUnit\TextUI\Configuration\Configuration), Object(PHPUnit\Runner\ResultCache\DefaultResultCache), Object(PHPUnit\Framework\TestSuite))
+23     #85 C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\vendor\pestphp\pest\src\Kernel.php(103): PHPUnit\TextUI\Application->run(Array)
+24     #86 C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\vendor\pestphp\pest\bin\pest(184): Pest\Kernel->handle(Array, Array)
+25     #87 C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\vendor\pestphp\pest\bin\pest(192): {closure}()
+26     #88 {main}
+27     
+28     ----------------------------------------------------------------------------------
+29     
+30     SQLSTATE[HY000]: General error: 1 no such column: ordre (Connection: sqlite, Database: :memory:, SQL: select * from "classes" where "statut" = actif order by ordre is null, "ordre" asc, "nom" asc)
+31     
+32       at tests\Feature\AdminUserManagementTest.php:428
+33         424▕     });
+34         425▕     DB::table('cycles')->insert(['id' => 1, 'nom' => 'Secondaire', 'statut' => 'actif']);
+35         426▕ 
+36         427▕     $this->get(route('admin.classes.create', ['section_id' => 1, 'option_id' => 1]))
+37       ➜ 428▕         ->assertOk()
+38         429▕         ->assertSee('Nouvelle section')
+39         430▕         ->assertSee('Nouvelle option')
+40         431▕         ->assertSee('data-section-id="1"', false)
+41         432▕         ->assertSee('selected>Mathématiques - Physique</option>', false);
+42     
+43     
+44       Tests:    1 failed, 267 passed (1721 assertions)
+45       Duration: 14.46s
+46     
+47     #< CLIXML
+48     <Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

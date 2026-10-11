@@ -1,0 +1,80 @@
+1      <?php
+2      
+3      namespace App\Http\Controllers;
+4      
+5      use App\Models\AnneeScolaire;
+6      use App\Models\ArchiveAnnee;
+7      use App\Models\Depense;
+8      use App\Models\Inscription;
+9      use App\Models\Paiement;
+10     use Illuminate\Http\RedirectResponse;
+11     use Illuminate\Http\Request;
+12     use Illuminate\Support\Facades\DB;
+13     use Illuminate\Validation\Rule;
+14     use Illuminate\View\View;
+15     
+16     class ArchiveAnneeController extends Controller
+17     {
+18         public function index(): View
+19         {
+20             $archives = ArchiveAnnee::query()
+21                 ->with('anneeScolaire')
+22                 ->orderByDesc('date_cloture')
+23                 ->get();
+24     
+25             $anneesArchivees = $archives->pluck('annee_scolaire_id')->all();
+26     
+27             return view('admin.archives.index', [
+28                 'archives' => $archives,
+29                 'annees' => AnneeScolaire::orderByDesc('date_debut')->get(),
+30                 'anneesDisponibles' => AnneeScolaire::query()
+31                     ->whereNotIn('id', $anneesArchivees)
+32                     ->orderByDesc('date_debut')
+33                     ->get(),
+34             ]);
+35         }
+36     
+37         public function store(Request $request): RedirectResponse
+38         {
+39             $data = $request->validate([
+40                 'annee_scolaire_id' => ['required', Rule::exists('annees_scolaires', 'id'), 'unique:archives_annees,annee_scolaire_id'],
+41                 'remarques' => ['nullable', 'string', 'max:2000'],
+42             ], [
+43                 'annee_scolaire_id.required' => 'Sélectionnez une année scolaire.',
+44                 'annee_scolaire_id.unique' => 'Cette année scolaire est déjà clôturée.',
+45             ]);
+46     
+47             $anneeId = (int) $data['annee_scolaire_id'];
+48     
+49             $recettes = (float) Paiement::query()
+50                 ->where('statut', 'actif')
+51                 ->whereHas('inscription', fn ($query) => $query->where('annee_scolaire_id', $anneeId))
+52                 ->sum('montant_paye');
+53     
+54             $depenses = (float) Depense::query()
+55                 ->where('annee_scolaire_id', $anneeId)
+56                 ->where('statut', 'actif')
+57                 ->sum('montant');
+58     
+59             DB::transaction(function () use ($anneeId, $data, $recettes, $depenses) {
+60                 ArchiveAnnee::create([
+61                     'annee_scolaire_id' => $anneeId,
+62                     'total_eleves_inscrits' => Inscription::query()->where('annee_scolaire_id', $anneeId)->where('statut', 'actif')->count(),
+63                     'total_recettes' => $recettes,
+64                     'total_depenses' => $depenses,
+65                     'solde_final' => $recettes - $depenses,
+66                     'date_cloture' => now(),
+67                     'remarques' => $data['remarques'] ?? null,
+68                 ]);
+69             });
+70     
+71             return redirect()->route('admin.archives.index')->with('success', 'L’année scolaire a été clôturée et archivée.');
+72         }
+73     
+74         public function destroy(ArchiveAnnee $archiveAnnee): RedirectResponse
+75         {
+76             $archiveAnnee->delete();
+77     
+78             return redirect()->route('admin.archives.index')->with('success', 'L’archive a été supprimée : l’année est de nouveau ouverte.');
+79         }
+80     }

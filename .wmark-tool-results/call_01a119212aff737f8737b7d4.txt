@@ -1,0 +1,13 @@
+[powershell — Windows side]
+✓ l’application en masse promeut les admis et maintient les autres                                             0.05s  
+  ✓ la délibération est réservée à l’administration                                                              0.03s  
+  ✓ les critères sont enregistrés et le repêchage ne peut dépasser l’admission                                   0.03s  
+  ✓ le formulaire de classe expose le niveau et la progression s’en déduit                                       0.03s  
+
+  Tests:    9 passed (61 assertions)
+  Duration: 0.65s
+
+=== SUITE COMPLETE ===
+  Tests:    252 passed (1582 assertions)
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

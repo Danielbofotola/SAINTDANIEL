@@ -1,0 +1,57 @@
+55                     <div class="card-title-header"><i class="bi bi-cash-stack me-1"></i> Nouveau paiement</div>
+56                     @if ($inscriptions->isEmpty() || $tarifs->isEmpty())
+57                         <p class="text-muted mb-0">Il faut au moins un élève inscrit et un tarif pour l'année en cours. Les tarifs se définissent dans « Types de frais ».</p>
+58                     @else
+59                         <form method="POST" action="{{ route('comptable.paiements.store') }}">
+60                             @csrf
+61                             <input type="hidden" name="classe_id" value="{{ $classeId }}">
+62                             <div class="mb-2">
+63                                 <label class="form-label mb-1 fw-bold">Rechercher l'élève</label>
+64                                 <input class="form-control form-control-sm" type="text" id="eleveSearch" placeholder="Tapez un nom ou un matricule pour filtrer la liste…" autocomplete="off">
+65                             </div>
+66                             <div class="row g-2">
+67                                 <div class="col-md-6"><label class="form-label mb-1 fw-bold">Élève *</label>
+68                                     <select class="form-select form-select-sm" id="inscriptionSelect" name="inscription_id" required>
+69                                         <option value="">Choisir un élève</option>
+70                                         @foreach ($inscriptions as $inscription)<option value="{{ $inscription->id }}" @selected(old('inscription_id') == $inscription->id)>{{ $inscription->eleve?->nom }} {{ $inscription->eleve?->postnom }} {{ $inscription->eleve?->prenom }} — {{ $inscription->classe?->nom }} ({{ $inscription->eleve?->matricule }})</option>@endforeach
+71                                     </select>
+72                                 </div>
+73                                 <div class="col-md-6"><label class="form-label mb-1 fw-bold">Tarif *</label>
+74                                     <select class="form-select form-select-sm" id="fraisSelect" name="frais_scolaire_id" required>
+75                                         <option value="">Choisir un tarif</option>
+76                                         @foreach ($tarifs as $tarif)<option value="{{ $tarif->id }}" @selected(old('frais_scolaire_id') == $tarif->id)>{{ $tarif->typeFrais?->nom }} — {{ $tarif->classe?->nom }} ({{ $money($tarif->montant_exige) }})</option>@endforeach
+77                                     </select>
+78                                 </div>
+79                             </div>
+80                             <div class="alert alert-info d-none py-2 mt-2 mb-2" id="soldeInfo"></div>
+81                             <div class="row g-2">
+82                                 <div class="col-md-6"><label class="form-label mb-1 fw-bold">Période</label><select class="form-select form-select-sm" name="periode_id"><option value="">Non précisée</option>@foreach ($periodes as $periode)<option value="{{ $periode->id }}" @selected(old('periode_id') == $periode->id)>{{ $periode->nom }}</option>@endforeach</select></div>
+83                             </div>
+84                             <div class="row g-2">
+85                                 <div class="col-md-3"><label class="form-label mb-1 fw-bold">Montant *</label><input class="form-control form-control-sm" type="number" step="0.01" min="0.01" name="montant_paye" value="{{ old('montant_paye') }}" required></div>
+86                                 <div class="col-md-3"><label class="form-label mb-1 fw-bold">Mode *</label><select class="form-select form-select-sm" name="mode_paiement" required>@foreach ($modes as $value => $label)<option value="{{ $value }}" @selected(old('mode_paiement', 'especes') === $value)>{{ $label }}</option>@endforeach</select></div>
+87                                 <div class="col-md-3"><label class="form-label mb-1 fw-bold">Date</label><input class="form-control form-control-sm" type="date" name="date_paiement" value="{{ old('date_paiement', now()->toDateString()) }}"></div>
+88                                 <div class="col-md-3"><label class="form-label mb-1 fw-bold">Référence</label><input class="form-control form-control-sm" name="reference_transaction" value="{{ old('reference_transaction') }}" maxlength="100" placeholder="N° transaction"></div>
+89                             </div>
+90                             <button class="btn btn-success mt-3 w-100 fw-bold" type="submit" style="--green-btn:#107c41;background:var(--green-btn);" @disabled(! $annee)><i class="bi bi-check2-circle me-1"></i> Encaisser le paiement</button>
+91                         </form>
+92                     @endif
+93                 </div>
+94             </div>
+95     
+96             <div class="col-lg-5">
+97                 <div class="caisse-card">
+98                     <div class="card-title-header"><i class="bi bi-receipt me-1"></i> Derniers paiements</div>
+99                     <div class="table-responsive">
+100                        <table class="table table-sm table-caisse align-middle mb-0">
+101                            <thead><tr><th>Reçu</th><th>Élève</th><th class="text-end">Montant</th><th></th></tr></thead>
+102                            <tbody>
+103                                @forelse ($paiements as $paiement)
+104                                    <tr>
+105                                        <td><span class="fw-bold">{{ $paiement->num_recu }}</span><br><small class="text-muted">{{ $paiement->date_paiement?->format('d/m/Y H:i') }}</small></td>
+106                                        <td>{{ $paiement->inscription?->eleve?->nom }} {{ $paiement->inscription?->eleve?->prenom }}<br><small class="text-muted">{{ $paiement->inscription?->classe?->nom }} · {{ $paiement->fraisScolaire?->typeFrais?->nom }}</small></td>
+107                                        <td class="text-end fw-bold">{{ $money($paiement->montant_paye) }}</td>
+108                                        <td class="text-end"><a href="{{ route('comptable.paiements.recu', $paiement) }}" class="btn btn-sm btn-outline-info" title="Voir le reçu"><i class="bi bi-receipt"></i></a></td>
+109                                    </tr>
+
+[showing lines 55-109 of 157; read again with offset=110 for more]

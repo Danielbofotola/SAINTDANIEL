@@ -1,0 +1,60 @@
+1      <?php
+2      
+3      namespace App\Models;
+4      
+5      use Illuminate\Database\Eloquent\Builder;
+6      use Illuminate\Database\Eloquent\Factories\HasFactory;
+7      use Illuminate\Database\Eloquent\Model;
+8      
+9      class Eleve extends Model
+10     {
+11         use HasFactory;
+12     
+13         protected $fillable = [
+14             'nom',
+15             'matricule',
+16             'postnom',
+17             'prenom',
+18             'sexe',
+19             'date_naissance',
+20             'lieu_naissance',
+21             'tuteur_id',
+22             'photo',
+23             'statut',
+24         ];
+25     
+26         protected function casts(): array
+27         {
+28             return ['date_naissance' => 'date'];
+29         }
+30     
+31         public function tuteur()
+32         {
+33             return $this->belongsTo(Tuteur::class);
+34         }
+35     
+36         /**
+37          * Limite la requête aux élèves inscrits (inscription active) pour l'année en cours.
+38          */
+39         public function scopeInscritAnneeEnCours(Builder $query): Builder
+40         {
+41             return $query->whereHas('inscriptions', fn (Builder $inscription) => $inscription
+42                 ->anneeEnCours()
+43                 ->where('statut', 'actif'));
+44         }
+45     
+46         public function inscriptions()
+47         {
+48             return $this->hasMany(Inscription::class);
+49         }
+50     
+51         public function sante()
+52         {
+53             return $this->hasOne(EleveSante::class);
+54         }
+55     
+56         public function documents()
+57         {
+58             return $this->hasMany(DocumentEleve::class);
+59         }
+60     }

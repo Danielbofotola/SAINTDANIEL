@@ -1,0 +1,20 @@
+66     
+67         /* ===== Colonne discussion ===== */
+68         .msg-thread { display: flex; flex-direction: column; min-width: 0; }
+69         .msg-thread__head { display: flex; align-items: center; justify-content: space-between; gap: 10px;
+70             padding: 10px 14px; border-bottom: 1px solid var(--chat-divider); }
+71         .msg-thread__head .titre { color: #fff; font-weight: 700; font-size: .95rem; }
+72         .msg-thread__head .sous { color: var(--chat-muted); font-size: .74rem; }
+73         .msg-thread__icones { display: flex; gap: 16px; color: var(--chat-blue); font-size: 1.1rem; }
+74         .msg-thread__body { flex: 1; overflow-y: auto; padding: 14px; display: flex; flex-direction: column; gap: 10px; }
+75         .msg-thread__empty { margin: auto; text-align: center; color: var(--chat-muted); }
+76         .nouveau-dest { margin-top: 14px; display: inline-flex; flex-direction: column; gap: 6px; align-items: flex-start; }
+77         .nouveau-dest label { color: var(--chat-muted); font-size: .78rem; }
+78         .nouveau-dest select { background: #3a3b3c; border: none; color: #fff; border-radius: 10px; padding: 9px 12px; min-width: 240px; max-width: 100%; }
+79     
+80         .chat-input-wrap { padding: 10px 12px; border-top: 1px solid var(--chat-divider); background: var(--chat-bg); display: flex; align-items: center; gap: 10px; position: relative; }
+81         /* min-width:0 : sinon l'input garde sa largeur intrinsèque et pousse les
+82            boutons (dont l'envoi) hors de l'écran sur les petits écrans. */
+83         .chat-input { flex: 1 1 auto; min-width: 0; background: #3a3b3c; border: none;
+
+[showing lines 66-83 of 776; read again with offset=84 for more]

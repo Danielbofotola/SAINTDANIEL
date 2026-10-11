@@ -1,0 +1,14 @@
+30                                         <th>Élève</th>
+31                                         <th>Matricule</th>
+32                                         <th>Classe (année en cours)</th>
+33                                         <th>Tuteur</th>
+34                                         <th>Contact tuteur</th>
+35                                         <th class="text-right">Documents</th>
+36                                         <th class="text-right">Dossier</th>
+37                                     </tr>
+38                                 </thead>
+39                                 <tbody>
+40                                     @forelse ($eleves as $eleve)
+41                                         @php($inscription = $eleve->inscriptions->first())
+
+[showing lines 30-41 of 91; read again with offset=42 for more]

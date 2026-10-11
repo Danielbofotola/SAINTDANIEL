@@ -1,0 +1,14 @@
+170    
+171        $this->actingAs($admin)
+172            ->get(route('admin.classes.index'))
+173            ->assertOk()
+174            ->assertSee('1 élève(s)');
+175    });
+176    
+177    test('without a current school year the scopes return nothing', function () {
+178        DB::table('annees_scolaires')->update(['is_encours' => false]);
+179    
+180        expect(Inscription::anneeEnCours()->count())->toBe(0)
+181            ->and(Eleve::inscritAnneeEnCours()->count())->toBe(0);
+
+[showing lines 170-181 of 182; read again with offset=182 for more]

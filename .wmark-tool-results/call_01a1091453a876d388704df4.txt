@@ -1,0 +1,1 @@
+Wrote resources/views/partials/alertes.blade.php (7 lines)

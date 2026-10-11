@@ -1,0 +1,11 @@
+Recorded verification for 'periodes': Routes admin.periodes.index/store/toggle-status/destroy (role:admin) + PeriodeController + vue admin/periodes/index.blade.php. Nom unique par année, suppression bloquée si évaluations/bulletins. Tests 'an admin can create a period...' et 'a period with evaluations cannot be deleted...' PASS.
+Task 'periodes': pending → verified
+Recorded verification for 'evaluations': Routes admin.evaluations.index/store/destroy + admin.evaluations.notes(.store) + EvaluationController + vues index/notes. Évaluation liée à affectation+période de l'année en cours (période d'une autre année refusée), saisie de notes validée par max_note et upsert par élève. Tests 'an admin can create an evaluation only for the current year' et 'notes can be captured and are bounded...' PASS.
+Task 'evaluations': pending → verified
+Recorded verification for 'bulletins': Routes admin.bulletins.index/generate + BulletinController + vue bulletins/index.blade.php. Calcul total/max/pourcentage depuis les notes, rang par classe, mention (Distinction/Satisfaction/Passable/Faible/Insuffisant), persistance par updateOrCreate. Test 'bulletins are computed with rank and mention...' PASS (place 1/2, 80% Distinction, 50% Faible).
+Task 'bulletins': pending → verified
+Recorded verification for 'menu-scol': Nouveau treeview « Évaluations & Bulletins » dans admin/dashboard.blade.php → admin.periodes.index, admin.evaluations.index, admin.bulletins.index. Test 'the school menu links point to periods, evaluations and bulletins' PASS.
+Task 'menu-scol': pending → verified
+Recorded verification for 'verify-scol': php artisan route:list : 11 routes scolaires enregistrées ; php artisan view:cache OK ; php artisan test = 92 passed (489 assertions), 0 échec.
+Task 'verify-scol': pending → verified
+Progress: 5/5 done; all tasks complete

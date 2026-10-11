@@ -1,0 +1,7 @@
+95         Route::get('/admin/cycles', [CycleController::class, 'index'])->middleware('role:admin')->name('admin.cycles.index');
+96         Route::post('/admin/cycles', [CycleController::class, 'store'])->middleware('role:admin')->name('admin.cycles.store');
+97         Route::patch('/admin/cycles/{cycle}/statut', [CycleController::class, 'toggleStatus'])->middleware('role:admin')->name('admin.cycles.toggle-status');
+98         Route::delete('/admin/cycles/{cycle}', [CycleController::class, 'destroy'])->middleware('role:admin')->name('admin.cycles.destroy');
+99         Route::get('/admin/profil', [UserProfileController::class, 'show'])->middleware('role:admin')->name('admin.profile.show');
+
+[showing lines 95-99 of 163; read again with offset=100 for more]

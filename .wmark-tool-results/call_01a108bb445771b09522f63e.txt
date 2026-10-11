@@ -1,0 +1,12 @@
+383            ->assertSee(route('admin.affectations.index'), false)
+384            ->assertSee(route('admin.periodes.index'), false)
+385            ->assertSee(route('admin.evaluations.index'), false)
+386            ->assertSee(route('admin.bulletins.index'), false)
+387            ->assertSee(route('admin.archives.index'), false)
+388            ->assertSee(route('admin.eleves.index'), false)
+389            ->assertSee(route('admin.frais.index'), false)
+390            ->assertSee(route('admin.paiements.index'), false)
+391            ->assertSee(route('admin.depenses.index'), false)
+392            ->assertSee(route('admin.professeurs.index'), false)
+
+[showing lines 383-392 of 394; read again with offset=393 for more]

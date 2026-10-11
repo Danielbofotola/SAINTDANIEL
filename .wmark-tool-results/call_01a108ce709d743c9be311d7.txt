@@ -1,0 +1,9 @@
+Applied patch: 1 file changed (1 updated)
+Updated app/Http/Controllers/EleveInscriptionController.php (2 hunks applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 64-64 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+  ⚠ hunk 2: context matched at lines 70-70 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 64-64:
+64                 DB::table('inscriptions')->insert(['eleve_id' => $eleve->id, 'classe_id' => $data['classe_id'], 'annee_scolaire_id' => $data['annee_scolaire_id'], 'date_inscription' => now()->toDateString(), 'statut' => Inscription::STATUT_EN_ATTENTE, 'created_at' => now(), 'updated_at' => now()]);
+Auto-corrected hunk landed at lines 70-70:
+70             return redirect()->route('admin.eleves.show', $eleve)->with('success', 'L’inscription de l’élève a été enregistrée. Elle est en attente de validation : la caisse l’activera automatiquement dès l’encaissement du frais d’inscription.');

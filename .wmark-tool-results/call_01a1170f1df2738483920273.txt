@@ -1,0 +1,42 @@
+Applied patch: 3 files changed (3 updated)
+Updated app/Support/Messagerie.php (1 hunk applied)
+Updated app/Http/Controllers/MessagerieController.php (1 hunk applied)
+Updated routes/web.php (1 hunk applied)
+Landed at lines 49-81 (the file's new text; no re-read needed):
+49         /**
+50          * Conversation directe entre deux utilisateurs : la retrouve si elle
+51          * existe déjà, sinon la crée (sans message initial). Permet d'écrire à un
+52          * correspondant d'un simple clic, sans passer par le formulaire complet.
+53          */
+54         public static function ouvrirDirecte(User $auteur, User $destinataire): Conversation
+55         {
+56             $existante = Conversation::query()
+      … 17 lines omitted …
+74             $conversation->participants()->sync([
+75                 $auteur->id => ['dernier_lu_at' => now()],
+76                 $destinataire->id => ['dernier_lu_at' => null],
+77             ]);
+78     
+79             return $conversation;
+80         }
+81     
+Landed at lines 167-186 (the file's new text; no re-read needed):
+167    
+168        /**
+169         * Ouvre (ou retrouve) la conversation directe avec un correspondant, puis
+170         * renvoie son identifiant : le client recharge la page sur ce fil.
+171         */
+172        public function demarrer(Request $request): JsonResponse
+173        {
+174            $data = $request->validate([
+      … 4 lines omitted …
+179                ->where('id', '!=', $request->user()->id)
+180                ->where('statut', 'actif')
+181                ->findOrFail($data['destinataire']);
+182    
+183            $conversation = Messagerie::ouvrirDirecte($request->user(), $destinataire);
+184    
+185            return response()->json(['conversation_id' => $conversation->id]);
+186        }
+Landed at lines 161-161 (the file's new text; no re-read needed):
+161        Route::post('/messagerie/demarrer', [MessagerieController::class, 'demarrer'])->middleware('auth')->name('messagerie.demarrer');

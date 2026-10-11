@@ -1,0 +1,1 @@
+Updated app/Http/Controllers/CoursController.php: replaced 12 lines with 23 lines

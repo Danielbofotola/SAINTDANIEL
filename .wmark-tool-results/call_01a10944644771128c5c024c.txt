@@ -1,0 +1,18 @@
+Applied patch: 2 files changed (2 updated)
+Updated app/Support/Raccourcis.php (2 hunks applied)
+Updated tests/Feature/RaccourcisTest.php (2 hunks applied)
+Landed at lines 21-21 (the file's new text; no re-read needed):
+21                 'admin' => [
+Landed at lines 40-44 (the file's new text; no re-read needed):
+40                 'prefetture' => [
+41                     'direct' => ['libelle' => 'Mon espace', 'icone' => 'fa-dashboard', 'url' => route('prefecture.dashboard')],
+42                     'rapports' => [],
+43                 ],
+44                 'titulaire' => [
+Landed at lines 73-73 (the file's new text; no re-read needed):
+73         $prefet = Raccourcis::pour(User::factory()->create(['role' => 'prefetture']));
+Landed at lines 80-83 (the file's new text; no re-read needed):
+80     
+81         // La préfecture n'a que son espace : aucun lien d'administration.
+82         expect($prefet['direct']['url'])->toBe(route('prefecture.dashboard'))
+83             ->and($prefet['rapports'])->toBe([]);

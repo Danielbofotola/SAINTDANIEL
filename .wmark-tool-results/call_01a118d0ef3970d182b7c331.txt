@@ -1,0 +1,29 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/PortailParentTest.php (2 hunks applied)
+Landed at lines 123-123 (the file's new text; no re-read needed):
+123        User::factory()->create(['role' => 'professeur', 'nom' => 'Mapika', 'prenom' => 'Joseph']);
+Landed at lines 126-126 (the file's new text; no re-read needed):
+126        Messagerie::creer($prefet, [$parent->id], 'Bienvenue', 'Bonjour, bienvenue sur le portail.');
+Landed at lines 133-135 (the file's new text; no re-read needed):
+133            ->assertSee('Kalala')
+134            // Les autres services (ici le professeur) restent invisibles.
+135            ->assertDontSee('Mapika')
+Landed at lines 269-292 (the file's new text; no re-read needed):
+269    test('un parent ne voit ni ne lit les discussions avec les autres services', function () {
+270        reglerPortailParents(true);
+271    
+272        $parent = User::factory()->create(['role' => 'parent']);
+273        $prefet = User::factory()->create(['role' => 'prefetture']);
+274        $comptable = User::factory()->create(['role' => 'comptable']);
+275    
+276        $avecPrefet = Messagerie::creer($prefet, [$parent->id], 'Minerval', 'Bonjour.');
+      … 8 lines omitted …
+285        $cachee = \App\Models\Conversation::query()
+286            ->whereHas('participants', fn ($query) => $query->where('user_id', $comptable->id))
+287            ->firstOrFail();
+288    
+289        $this->post(route('messagerie.repondre', $cachee), ['corps' => 'Réponse'])
+290            ->assertForbidden();
+291    });
+292    
+… 1 more hunks not echoed …

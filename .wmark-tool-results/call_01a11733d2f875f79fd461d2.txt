@@ -1,0 +1,12 @@
+110        .reply-bar__close { background: transparent; border: none; color: var(--chat-muted); cursor: pointer; }
+111    
+112        .sticker-picker { display: none; position: absolute; bottom: 62px; left: 10px; right: 10px; background: var(--chat-card);
+113            border: 1px solid var(--chat-divider); border-radius: 12px; padding: 12px; box-shadow: 0 -6px 22px rgba(0,0,0,.5); z-index: 100; }
+114        .sticker-picker.on { display: block; }
+115        .sticker-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; font-size: 1.6rem; text-align: center; }
+116        .sticker-grid span { cursor: pointer; padding: 5px; border-radius: 8px; }
+117        .sticker-grid span:hover { background: var(--chat-hover); }
+118    
+119        .reaction-pop { display: none; position: fixed; z-index: 1100; background: var(--chat-card); border: 1px solid var(--chat-divider);
+
+[showing lines 110-119 of 836; read again with offset=120 for more]

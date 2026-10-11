@@ -1,0 +1,1 @@
+Error: file not found: C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\tests\Feature\ElevesAppsTest.php

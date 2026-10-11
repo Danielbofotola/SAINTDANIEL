@@ -1,0 +1,7 @@
+[powershell — Windows side]
+colonnes sections: id,nom,created_at,updated_at
+creation section ECHOUE: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'code' in 'where clause' (Connection: mysql, Host: 127.0.0.1, Port: 3307, Database: laravel, SQL: select 
+page option ECHOUE: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'statut' in 'where clause' (Connection: mysql, Host: 127.0.0.1, Port: 3307, Database: laravel, SQL: selec
+sections restantes: 8 | sonde: 0
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

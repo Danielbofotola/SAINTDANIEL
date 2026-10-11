@@ -1,0 +1,14 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\144c63540b62\20261007-172759-bash-call_01a1173199987328910f16b0.txt (579 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+[powershell — Windows side]
+WMARK_CDP={"bas":{"scrollTop":3397,"scrollH":3880,"clientH":483,"fleche":false,"barreBasPx":692,"vueH":805,"pageScrollH
+":805},"apresMolletteHaut":{"scrollTop":2997,"scrollH":3880,"clientH":483,"fleche":true,"barreBasPx":692,"vueH":805,"pa
+geScrollH":805},"apresMolletteBas":{"scrollTop":3397,"scrollH":3880,"clientH":483,"fleche":false,"barreBasPx":692,"vueH
+":805,"pageScrollH":805},"apresPageUp":{"scrollTop":3397,"scrollH":3880,"clientH":483,"fleche":false,"barreBasPx":692,"
+vueH":805,"pageScrollH":805},"clampHaut":{"scrollTop":0,"scrollH":3880,"clientH":483,"fleche":true,"barreBasPx":692,"vu
+eH":805,"pageScrollH":805},"apresClicFleche":{"scrollTop":3387,"scrollH":3880,"clientH":483,"fleche":false,"barreBasPx"
+:692,"vueH":805,"pageScrollH":805},"capture":"C:\\Users\\danie\\AppData\\Roaming\\Composer\\vendor\\bin\\ecole\\.wmark-
+tool-results\\capture.png","captureOctets":46462}
+
+
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

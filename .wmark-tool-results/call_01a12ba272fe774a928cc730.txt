@@ -1,0 +1,76 @@
+1      <!DOCTYPE html>
+2      <html lang="fr">
+3      <head>
+4          <meta charset="utf-8">
+5          <meta name="viewport" content="width=device-width, initial-scale=1">
+6          <title>Périodes</title>
+7          <link rel="stylesheet" href="{{ asset('boostrap/css/css/main.css') }}">
+8          <link rel="stylesheet" href="{{ asset('boostrap/css/font-awesome/css/fa-regular.min.css') }}">
+9          <link rel="stylesheet" href="{{ asset('boostrap/css/font-awesome/css/fontawesome.css') }}">
+10         <link rel="stylesheet" href="{{ asset('boostrap/css/font-awesome/css/fa-solid.css') }}">
+11         <link rel="stylesheet" href="{{ asset('assets/css/font-awesome.min.css') }}">
+12         <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap4.min.css">
+13     </head>
+14     <body class="app">
+15         <main class="app-content" style="margin-left:0">
+16             <div class="app-title">
+17                 <div>
+18                     <h1><i class="fa fa-calendar"></i> Périodes</h1>
+19                     <p>Découpez l'année scolaire en périodes d'évaluation @if($annee) — année <strong>{{ $annee->libelle }}</strong>@endif.</p>
+20                 </div>
+21                 <div>
+22                     <a href="{{ route('admin.dashboard') }}" class="btn btn-secondary">Retour</a>
+23                     <a href="{{ route('admin.evaluations.index') }}" class="btn btn-primary"><i class="fa fa-pencil"></i> Évaluations</a>
+24                 </div>
+25             </div>
+26     
+27             @if (session('success'))<div class="alert alert-success">{{ session('success') }}</div>@endif
+28             @if (session('error'))<div class="alert alert-danger">{{ session('error') }}</div>@endif
+29             @if ($errors->any())<div class="alert alert-danger"><ul class="mb-0">@foreach ($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul></div>@endif
+30             @unless ($annee)<div class="alert alert-warning"><i class="fa fa-exclamation-triangle"></i> Aucune année scolaire en cours. Définissez-en une dans « Années scolaires ».</div>@endunless
+31     
+32             <div class="tile mb-4">
+33                 <h4 class="tile-title"><i class="fa fa-plus"></i> Nouvelle période</h4>
+34                 <form class="row" method="POST" action="{{ route('admin.periodes.store') }}">
+35                     @csrf
+36                     <div class="col-md-9 form-group mb-md-0"><input class="form-control" name="nom" value="{{ old('nom') }}" maxlength="50" required placeholder="Ex. 1ère Période, Examen 1er Semestre…"></div>
+37                     <div class="col-md-3"><button class="btn btn-primary btn-block" type="submit" @disabled(! $annee)><i class="fa fa-save"></i> Créer la période</button></div>
+38                 </form>
+39             </div>
+40     
+41             <div class="tile">
+42                 <h4 class="tile-title"><i class="fa fa-list"></i> Périodes de l'année @if($annee)<small class="text-muted">{{ $annee->libelle }}</small>@endif</h4>
+43                 <div class="table-responsive">
+44                     <table class="table table-hover table-bordered">
+45                         <thead><tr><th>#</th><th>Période</th><th>Évaluations</th><th>Bulletins</th><th>Statut</th><th>Actions</th></tr></thead>
+46                         <tbody>
+47                             @forelse ($periodes as $periode)
+48                                 <tr>
+49                                     <td>{{ $loop->iteration }}</td>
+50                                     <td><strong>{{ $periode->nom }}</strong></td>
+51                                     <td><span class="badge badge-info">{{ $periode->evaluations_count }}</span></td>
+52                                     <td><span class="badge badge-info">{{ $periode->bulletins_count }}</span></td>
+53                                     <td><span class="badge badge-{{ $periode->statut === 'actif' ? 'success' : 'secondary' }}">{{ ucfirst($periode->statut) }}</span></td>
+54                                     <td class="text-nowrap">
+55                                         <form class="d-inline" method="POST" action="{{ route('admin.periodes.toggle-status', $periode) }}">
+56                                             @csrf
+57                                             @method('PATCH')
+58                                             <button class="btn btn-sm btn-{{ $periode->statut === 'actif' ? 'warning' : 'success' }}" type="submit" title="{{ $periode->statut === 'actif' ? 'Désactiver' : 'Activer' }}"><i class="fa fa-power-off"></i></button>
+59                                         </form>
+60                                         <form class="d-inline" method="POST" action="{{ route('admin.periodes.destroy', $periode) }}" onsubmit="return confirm('Supprimer cette période ?');">
+61                                             @csrf
+62                                             @method('DELETE')
+63                                             <button class="btn btn-sm btn-danger" type="submit" title="Supprimer"><i class="fa fa-trash"></i></button>
+64                                         </form>
+65                                     </td>
+66                                 </tr>
+67                             @empty
+68                                 <tr><td colspan="6" class="text-center text-muted">Aucune période définie pour l'année en cours.</td></tr>
+69                             @endforelse
+70                         </tbody>
+71                     </table>
+72                 </div>
+73             </div>
+74         </main>
+75     </body>
+76     </html>

@@ -1,0 +1,9 @@
+Recorded verification for 'eleves-index': Route admin.eleves.index (GET /admin/eleves, role:admin) + EleveController@index + resources/views/admin/eleves/index.blade.php (recherche, filtre statut, classe année en cours, stats, pagination bootstrap-4). Test 'the student list page shows enrollments...' et '...filtered by search term and by status' PASS.
+Task 'eleves-index': pending → verified
+Recorded verification for 'history': Route admin.registration.students.history + AdminRegistrationRequestController@studentHistory + vue student-history.blade.php (acceptées/refusées, motif, auteur via relation DemandeInscription::traitePar). Test 'the enrollment history lists processed applications and hides pending ones' PASS.
+Task 'history': pending → verified
+Recorded verification for 'menu': dashboard.blade.php treeview-menu Élèves : les 4 entrées pointent désormais vers admin.eleves.index, admin.eleves.create, admin.registration.students, admin.registration.students.history (aucun href vide/#). Test 'the admin dashboard menu links to the student list and the enrollment history' PASS.
+Task 'menu': pending → verified
+Recorded verification for 'verify': php artisan route:list confirme les 2 routes ; php artisan view:cache compile toutes les vues ; php artisan test = 79 passed (402 assertions), 0 échec (dont la correction du titre 'Sécurité du compte' dans admin/profile/show.blade.php).
+Task 'verify': pending → verified
+Progress: 4/4 done; all tasks complete

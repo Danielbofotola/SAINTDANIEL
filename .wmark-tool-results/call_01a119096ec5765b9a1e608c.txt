@@ -1,0 +1,17 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/PrefectureDashboardTest.php (2 hunks applied)
+Landed at lines 9-9 (the file's new text; no re-read needed):
+9          foreach (['notifications', 'documents_professeurs', 'inscriptions', 'eleves', 'classes', 'cycles', 'sections', 'options', 'salles', 'professeurs', 'annees_scolaires', 'users'] as $table) {
+Landed at lines 103-114 (the file's new text; no re-read needed):
+103        Schema::create('documents_professeurs', function (Blueprint $table) {
+104            $table->id();
+105            $table->unsignedBigInteger('professeur_id');
+106            $table->string('titre');
+107            $table->string('type_document')->default('autre');
+108            $table->string('chemin_fichier');
+109            $table->integer('taille_ko')->nullable();
+110            $table->string('statut')->default('actif');
+111            $table->timestamps();
+112        });
+113    
+114        Schema::create('notifications', function (Blueprint $table) {

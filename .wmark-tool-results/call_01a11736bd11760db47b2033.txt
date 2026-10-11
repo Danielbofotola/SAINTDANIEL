@@ -1,0 +1,10 @@
+311                        </div>
+312                    </div>
+313                    <div class="msg-thread__icones">
+314                        <i class="fa-solid fa-phone" title="Appel (bientôt)"></i>
+315                        <i class="fa-solid fa-video" title="Vidéo (bientôt)"></i>
+316                        <i class="fa-solid fa-gear" title="Options"></i>
+317                    </div>
+318                </div>
+
+[showing lines 311-319 of 904; read again with offset=320 for more]

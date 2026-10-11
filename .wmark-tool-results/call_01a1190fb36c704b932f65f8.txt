@@ -1,0 +1,11 @@
+Applied patch: 1 file changed (1 updated)
+Updated app/Http/Controllers/EvaluationController.php (1 hunk applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 99-102 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 103-108:
+103            // Verrouillage de fin de période décidé par le préfet : une période
+104            // clôturée n'accepte plus aucune modification de notes.
+105            if ($evaluation->periode && $evaluation->periode->statut !== 'actif') {
+106                return back()->with('error', 'La période « '.$evaluation->periode->nom.' » est clôturée : la saisie des notes est verrouillée.');
+107            }
+108

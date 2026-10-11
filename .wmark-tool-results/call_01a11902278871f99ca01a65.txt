@@ -1,0 +1,22 @@
+180                        <h6 class="fw-bold mt-3">Assiduité — derniers appels</h6>
+181                        <div class="table-responsive" style="max-height: 220px">
+182                            <table class="table table-hover">
+183                                <thead><tr><th>Date</th><th>Statut</th><th>Motif</th></tr></thead>
+184                                <tbody>
+185                                    @forelse ($presences as $presence)
+186                                        <tr>
+187                                            <td>{{ $presence->date_seance }}</td>
+188                                            <td>{{ \App\Models\Presence::STATUTS[$presence->statut_presence] ?? $presence->statut_presence }}</td>
+189                                            <td>{{ $presence->motif ?: '—' }}</td>
+190                                        </tr>
+191                                    @empty
+192                                        <tr><td colspan="3" class="text-center text-muted">Aucun appel enregistré.</td></tr>
+193                                    @endforelse
+194                                </tbody>
+195                            </table>
+196                        </div>
+197                    </div>
+198                </div>
+199            </div>
+200        </div>
+201    @endsection

@@ -1,0 +1,15 @@
+330    test('la période et la référence sont automatiques au paiement', function () {
+331        $comptable = User::factory()->create(['role' => 'comptable']);
+332    
+333        // Ni période ni référence fournies : le système les détermine.
+334        $this->actingAs($comptable)
+335            ->post(route('comptable.paiements.store'), [
+336                'inscription_id' => 1, 'frais_scolaire_id' => 1,
+337                'montant_paye' => 30, 'mode_paiement' => 'especes',
+338            ])->assertRedirect();
+339    
+340        $paiement = DB::table('paiements')->first();
+341    
+342        expect((int) $paiement->periode_id)->toBe(1)                              // période en cours
+343            ->and($paiement->reference_transaction)->toBe('REC-2026-2027-0001'); // référence = n° de reçu
+344    });

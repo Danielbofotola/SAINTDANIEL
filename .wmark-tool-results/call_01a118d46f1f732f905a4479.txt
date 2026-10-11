@@ -1,0 +1,72 @@
+285                            </div>
+286                        </div>
+287                        @if ($conversation->non_lus === 0)
+288                            <i class="fa-solid fa-circle-check conv__vu"></i>
+289                        @endif
+290                    </a>
+291                @empty
+292                    <p class="p-3 text-center mb-0" style="color:var(--chat-muted);font-size:.8rem">Aucune discussion.</p>
+293                @endforelse
+294            </div>
+295    
+296            <div class="conv-scroll" id="contactsContainer" data-vue="correspondants" @if ($vueParDefaut !== 'correspondants') style="display:none" @endif>
+297                @forelse ($destinataires as $compte)
+298                    @php($nomCompte = trim(($compte->nom ?? '').' '.($compte->prenom ?? '')) ?: $compte->username)
+299                    <div class="conv" data-search="{{ mb_strtolower($nomCompte.' '.\App\Models\User::libelleRole($compte->role)) }}"
+300                         onclick="ouvrirDiscussion({{ $compte->id }})">
+301                        <span class="msg-avatar" title="Voir le profil"
+302                              onclick="event.stopPropagation(); ouvrirProfil({{ $compte->id }})">
+303                            @if ($compte->photo)
+304                                <img class="msg-avatar" src="{{ asset('storage/'.$compte->photo) }}" alt="{{ $nomCompte }}">
+305                            @else
+306                                {{ $initiales($compte) }}
+307                            @endif
+308                        </span>
+309                        <div style="flex:1; min-width:0">
+310                            <div class="conv__name text-truncate">{{ $nomCompte }}</div>
+311                            <div class="conv__meta">{{ \App\Models\User::libelleRole($compte->role) }}</div>
+312                        </div>
+313                        <i class="fa-solid fa-comment-dots conv__vu"></i>
+314                    </div>
+315                @empty
+316                    <p class="p-3 text-center mb-0" style="color:var(--chat-muted);font-size:.8rem">Aucun correspondant actif.</p>
+317                @endforelse
+318            </div>
+319        </aside>
+320    
+321        <section class="msg-thread">
+322            @if ($active)
+323                <div class="msg-thread__head">
+324                    <div class="d-flex align-items-center gap-2" style="min-width:0">
+325                        <button type="button" class="icon-btn d-inline-flex d-md-none" onclick="retourListe()" title="Retour à la liste">
+326                            <i class="fa-solid fa-arrow-left"></i>
+327                        </button>
+328                        @php($corrActif = $active->participants->firstWhere('id', '!=', $user->id))
+329                        <span class="msg-avatar msg-avatar--sm" title="Voir le profil"
+330                              style="cursor:pointer" onclick="ouvrirProfil({{ $corrActif?->id }})">
+331                            @if ($active->type !== 'directe' || ! $corrActif)
+332                                <i class="fa-solid fa-bullhorn"></i>
+333                            @elseif ($corrActif->photo)
+334                                <img class="msg-avatar msg-avatar--sm" src="{{ asset('storage/'.$corrActif->photo) }}" alt="">
+335                            @else
+336                                {{ $initiales($corrActif) }}
+337                            @endif
+338                        </span>
+339                        <div style="min-width:0; cursor:pointer" onclick="ouvrirProfil({{ $corrActif?->id }})">
+340                            <div class="titre text-truncate">{{ $nomConversation($active) }}</div>
+341                            <div class="sous text-truncate">{{ $active->libelleType() }} · {{ $active->sujet }}</div>
+342                        </div>
+343                    </div>
+344                    <div class="msg-thread__icones">
+345                        <button type="button" onclick="appelDemarrer('audio')" title="Appel vocal"><i class="fa-solid fa-phone"></i></button>
+346                        <button type="button" onclick="appelDemarrer('video')" title="Appel vidéo"><i class="fa-solid fa-video"></i></button>
+347                        <i class="fa-solid fa-gear" title="Options"></i>
+348                    </div>
+349                </div>
+350    
+351                <div class="msg-thread__body" id="messagesContainer" data-flux="{{ route('messagerie.messages', $active) }}">
+352                    @foreach ($messages as $message)
+353                        @include('messagerie._bulle', ['message' => $message, 'active' => $active])
+354                    @endforeach
+
+[showing lines 285-354 of 957; read again with offset=355 for more]

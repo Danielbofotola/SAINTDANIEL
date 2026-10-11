@@ -1,0 +1,62 @@
+1      <!DOCTYPE html>
+2      <html lang="fr">
+3      <head>
+4          <meta charset="utf-8">
+5          <meta name="viewport" content="width=device-width, initial-scale=1">
+6          <title>Délibération | {{ $systemSettings?->nom_court ?? 'Établissement' }}</title>
+7          <link rel="stylesheet" href="{{ asset('boostrap/css/css/main.css') }}">
+8          <link rel="stylesheet" href="{{ asset('assets/font-awesome-6.5.1/css/all.min.css') }}">
+9          <style>
+10             :root { --bg:#0b0b0c; --card:#242526; --div:#2f3031; --txt:#e4e6eb; --mut:#b0b3b8; --blue:#0866ff; }
+11             body { background:var(--bg); color:var(--txt); margin:0; font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif; }
+12             .entete { display:flex; justify-content:space-between; align-items:center; gap:12px; padding:14px 20px;
+13                 background:var(--card); border-bottom:1px solid var(--div); position:sticky; top:0; z-index:9; }
+14             .entete h1 { margin:0; font-size:1.15rem; color:#fff; }
+15             .entete .sous { color:var(--mut); font-size:.78rem; }
+16             .btn { display:inline-flex; align-items:center; gap:7px; padding:8px 14px; border-radius:999px; border:none;
+17                 font-size:.82rem; font-weight:700; cursor:pointer; color:#fff; background:var(--blue); text-decoration:none; }
+18             .btn--neutre { background:#3a3b3c; color:var(--txt); }
+19             .contenu { max-width:1200px; margin:0 auto; padding:16px; }
+20             .carte { background:var(--card); border:1px solid var(--div); border-radius:12px; padding:16px; margin-bottom:14px; }
+21             .carte h2 { margin:0 0 12px; font-size:1rem; color:#fff; }
+22             .grille { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px; }
+23             label { display:block; font-size:.76rem; color:var(--mut); margin-bottom:5px; }
+24             input[type=number], select { width:100%; background:var(--bg); border:1px solid var(--div); color:#fff;
+25                 border-radius:8px; padding:8px 10px; font-size:.88rem; }
+26             table { width:100%; border-collapse:collapse; font-size:.86rem; }
+27             th, td { padding:9px 10px; border-bottom:1px solid var(--div); text-align:left; }
+28             th { color:var(--mut); font-size:.74rem; text-transform:uppercase; letter-spacing:.4px; }
+29             td.nom { color:#fff; font-weight:600; }
+30             .pill { font-size:.72rem; font-weight:700; padding:2px 9px; border-radius:999px; }
+31             .pill--admis { background:#14532d; color:#dcfce7; }
+32             .pill--ajourne { background:#78350f; color:#fef3c7; }
+33             .pill--redouble { background:#7f1d1d; color:#fee2e2; }
+34             .alerte { padding:10px 14px; border-radius:8px; margin-bottom:12px; font-size:.85rem; }
+35             .alerte--ok { background:#14532d; color:#dcfce7; }
+36             .alerte--ko { background:#7f1d1d; color:#fee2e2; }
+37             .rangee { display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+38             .vide { color:var(--mut); padding:18px; text-align:center; }
+39         </style>
+40     </head>
+41     <body>
+42     
+43     <header class="entete">
+44         <div>
+45             <h1><i class="fa-solid fa-gavel"></i> Délibération de fin d'année</h1>
+46             <div class="sous">
+47                 {{ $annee ? $annee->libelle : 'Aucune année en cours' }}
+48                 @if (! empty($regles)) · seuils : {{ $regles['seuil_admission'] }} % / repêchage {{ $regles['seuil_repechage'] }} % @endif
+49             </div>
+50         </div>
+51         <a class="btn btn--neutre" href="{{ route('admin.dashboard') }}"><i class="fa-solid fa-gauge"></i> Tableau de bord</a>
+52     </header>
+53     
+54     <main class="contenu">
+55         @if (session('success'))<div class="alerte alerte--ok">{{ session('success') }}</div>@endif
+56         @if (session('error'))<div class="alerte alerte--ko">{{ session('error') }}</div>@endif
+57         @if ($errors->any())
+58             <div class="alerte alerte--ko"><ul style="margin:0;padding-left:18px">
+59                 @foreach ($errors->all() as $e)<li>{{ $e }}</li>@endforeach
+60             </ul></div>
+
+[showing lines 1-60 of 196; read again with offset=61 for more]

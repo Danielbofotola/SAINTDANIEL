@@ -1,0 +1,10 @@
+1      <?php
+2      
+3      namespace App\Http\Controllers;
+4      
+5      use Illuminate\Http\Request;
+6      
+7      class ProfesseursController extends Controller
+8      {
+9          //
+10     }

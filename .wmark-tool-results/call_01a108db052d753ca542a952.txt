@@ -1,0 +1,31 @@
+Applied patch: 1 file changed (1 updated)
+Updated resources/views/comptable/paiements.blade.php (4 hunks applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 73-73 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 73-73:
+73                                 <div class="col-md-6"><label class="form-label mb-1 fw-bold">Tarif de la classe de l'élève *</label>
+Landed at lines 125-126 (the file's new text; no re-read needed):
+125            var classesParInscription = @json($classesParInscription);
+126            var classesParFrais = @json($classesParFrais);
+Landed at lines 153-181 (the file's new text; no re-read needed):
+153            // N'affiche que les tarifs de la classe de l'élève sélectionné :
+154            // impossible de se tromper de tarif (mauvaise classe).
+155            function filtrerTarifs() {
+156                if (!inscriptionSelect || !fraisSelect) { return; }
+157                var inscription = inscriptionSelect.value;
+158                var classe = inscription ? String(classesParInscription[inscription] || '') : '';
+159                var visibles = 0;
+160    
+      … 13 lines omitted …
+174                            break;
+175                        }
+176                    }
+177                }
+178    
+179                majSolde();
+180            }
+181    
+Landed at lines 183-183 (the file's new text; no re-read needed):
+183            if (inscriptionSelect) { inscriptionSelect.addEventListener('change', filtrerTarifs); }
+Landed at lines 185-185 (the file's new text; no re-read needed):
+185            filtrerTarifs();

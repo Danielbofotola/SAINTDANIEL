@@ -1,0 +1,12 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/MessagerieTest.php (1 hunk applied)
+Landed at lines 342-350 (the file's new text; no re-read needed):
+342            ->toContain('only-mobile');
+343    
+344        // Barre figée en bas + flèche « revenir au message du moment ».
+345        expect($html)
+346            ->toContain('position: sticky; bottom: 0;')
+347            ->toContain('id="btnBas"')
+348            ->toContain('onclick="allerEnBas()"')
+349            ->toContain('window.allerEnBas')
+350            ->toContain('majBtnBas');

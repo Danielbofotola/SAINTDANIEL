@@ -1,0 +1,14 @@
+245        <section class="msg-thread">
+246            @if ($active)
+247                <div class="msg-thread__head">
+248                    <div class="d-flex align-items-center gap-2" style="min-width:0">
+249                        <a class="icon-btn d-inline-flex d-md-none" href="{{ $espaceUrl }}" title="Retour"><i class="fa-solid fa-arrow-left"></i></a>
+250                        @php($corrActif = $active->participants->firstWhere('id', '!=', $user->id))
+251                        <span class="msg-avatar msg-avatar--sm">
+252                            @if ($active->type !== 'directe' || ! $corrActif)
+253                                <i class="fa-solid fa-bullhorn"></i>
+254                            @elseif ($corrActif->photo)
+255                                <img class="msg-avatar msg-avatar--sm" src="{{ asset('storage/'.$corrActif->photo) }}" alt="">
+256                            @else
+
+[showing lines 245-256 of 736; read again with offset=257 for more]

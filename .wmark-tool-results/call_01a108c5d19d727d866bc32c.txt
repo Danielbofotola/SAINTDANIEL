@@ -1,0 +1,23 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\e1ce9c26600a\20261004-221534-apply_patch-call_01a108c5d19d727d866bc32c.txt (927 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Structured view (text):
+Applied patch: 1 file changed (1 updated)
+Updated resources/views/admin/paiements/index.blade.php (6 hunks applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 48-51 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+  ⚠ hunk 2: context matched at lines 61-63 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+  ⚠ hunk 3: context matched at lines 67-67 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+  ⚠ hunk 4: context matched at lines 79-79 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+  ⚠ hunk 5: context matched at lines 91-92 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+  ⚠ hunk 6: context matched at lines 100-100 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 48-52:
+48                             <div class="col-md-4 form-group"><label class="form-label">Période</label><select class="form-control" name="periode_id"><option value="">Non précisée</option>@foreach ($periodes as $periode)<option value="{{ $periode->id }}" @selected(old('periode_id') == $periode->id)>{{ $periode->nom }}</opti
+… 0 chars elided …
+on>@endforeach</select></div>
+49                             <div class="col-md-2 form-group"><label class="form-label">Montant *</label><input class="form-control" type="number" step="0.01" min="0.01" name="montant_paye" value="{{ old('montant_paye') }}" required></div>
+50                             <div class="col-md-2 form-group"><label class="form-label">Date</label><input class="form-control" type="date" name="date_paiement" value="{{ old('date_paiement', now()->toDateString()) }}"></div>
+51                             <div class="col-md-2 form-group"><label class="form-label">Mode *</label><select class="form-control" name="mode_paiement" required>@foreach ($modes as $value => $label)<option value="{{ $value }}" @selected(old('mode_paiement', 'especes') === $value)>{{ $label }}</opt
+… 541 chars elided …
+ted hunk landed at lines 64-64:
+64                     <div class="col-md-2 form-group mb-md-0"><select class="form-control" name="periode_id"><option value="">Toutes les périodes</option>@foreach ($periodes as $periode)<option value="{{ $periode->id }}" @selected((string) $periodeId === (string) $periode->id)>{{ $periode->nom }}</option>@endforeach</select></div>
+Auto-corrected hunk landed at lines 69-69:
+69                         <thead><tr><th>Reçu</th><th>Date</th><th>Élève</th><th>Classe</th><th>Type de frais</th><th>Période</th><th>Montant exigé</th><th>Payé</th><th>Reste à payer</th><th>Mode</th><th>Référence</th><th>Actions</th></tr></thead>
+… 3 more auto-corrected hunks not shown …

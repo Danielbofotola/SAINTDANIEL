@@ -1,0 +1,25 @@
+Applied patch: 2 files changed (2 updated)
+Updated routes/web.php (1 hunk applied)
+Updated app/Http/Controllers/MessagerieController.php (1 hunk applied)
+Landed at lines 166-168 (the file's new text; no re-read needed):
+166        // Suppression « pour soi » : la discussion quitte la liste de l'utilisateur,
+167        // les autres participants conservent tous les messages.
+168        Route::delete('/messagerie/{conversation}', [MessagerieController::class, 'supprimer'])->middleware('auth')->name('messagerie.supprimer');
+Landed at lines 205-228 (the file's new text; no re-read needed):
+205        /**
+206         * Retire la discussion de la liste de l'utilisateur courant (« supprimer pour
+207         * moi ») : rien n'est supprimé pour les autres participants, qui gardent
+208         * l'intégralité des messages.
+209         */
+210        public function supprimer(Request $request, Conversation $conversation): RedirectResponse|JsonResponse
+211        {
+212            $this->autoriser($conversation, $request);
+      … 8 lines omitted …
+221                    'message' => $message,
+222                    'non_lus' => Messagerie::nonLus($request->user()),
+223                ]);
+224            }
+225    
+226            return back()->with('success', $message);
+227        }
+228

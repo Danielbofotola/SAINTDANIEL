@@ -1,0 +1,14 @@
+311                <li class="menu-section">Scolarité</li>
+312                <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-users"></i><span class="app-menu__label">Élèves</span><i class="treeview-indicator fa fa-angle-right"></i></a>
+313                    <ul class="treeview-menu">
+314                        <li><a class="treeview-item" href="{{ route('admin.eleves.index') }}"><i class="icon fa fa-list"></i> Liste des élèves</a></li>
+315                        <li><a class="treeview-item" href="{{ route('admin.eleves.create') }}"><i class="icon fa fa-user-plus"></i> Inscrire un élève</a></li>
+316                        <li><a class="treeview-item" href="{{ route('admin.registration.students') }}"><i class="icon fa fa-inbox"></i> Demandes d’inscription</a></li>
+317                        <li><a class="treeview-item" href="{{ route('admin.registration.students.history') }}"><i class="icon fa fa-history"></i> Historique d'inscription</a></li>
+318                    </ul>
+319                </li>
+320                <li class="menu-section">Personnel enseignant</li>
+321                <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-user-md"></i><span class="app-menu__label">Professeurs</span><i class="treeview-indicator fa fa-angle-right"></i></a>
+322                    <ul class="treeview-menu">
+
+[showing lines 311-322 of 713; read again with offset=323 for more]

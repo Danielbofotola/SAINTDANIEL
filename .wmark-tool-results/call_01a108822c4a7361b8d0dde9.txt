@@ -1,0 +1,20 @@
+322                            </div>
+323                         </div>
+324                      </div>
+325                   </div>
+326                </div>
+327    
+328                <!-- Reset Password Section -->
+329                <div class="row" id="password">
+330                   <div class="col-xl-12">
+331                      <div class="card p-20">
+332                         <div class="card-header border-0 p-0 mb-3">
+333                            <h5 class="card-header-text"><i class="icofont icofont-key"></i> Réinitialiser le mot de passe</h5>
+334                         </div>
+335                         <div class="card-block p-0">
+336                            <form method="POST" action="{{ route('admin.profile.password') }}">
+337                               @csrf
+338                               @method('PATCH')
+339                               <div class="row">
+
+[showing lines 322-339 of 378; read again with offset=340 for more]

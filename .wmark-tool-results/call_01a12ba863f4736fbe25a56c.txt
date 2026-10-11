@@ -1,0 +1,78 @@
+1      <!DOCTYPE html>
+2      <html lang="fr">
+3      <head>
+4          <meta charset="utf-8">
+5          <meta name="viewport" content="width=device-width, initial-scale=1">
+6          <title>Commuter les modules</title>
+7          <link rel="stylesheet" href="{{ asset('boostrap/css/css/main.css') }}">
+8          <link rel="stylesheet" href="{{ asset('boostrap/css/font-awesome/css/fa-regular.min.css') }}">
+9          <link rel="stylesheet" href="{{ asset('boostrap/css/font-awesome/css/fontawesome.css') }}">
+10         <link rel="stylesheet" href="{{ asset('boostrap/css/font-awesome/css/fa-solid.css') }}">
+11         <link rel="stylesheet" href="{{ asset('assets/css/font-awesome.min.css') }}">
+12         <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap4.min.css">
+13     </head>
+14     <body class="app">
+15         <main class="app-content" style="margin-left:0">
+16             <div class="app-title">
+17                 <div>
+18                     <h1><i class="fa fa-toggle-on"></i> Commuter les modules</h1>
+19                     <p>Activez ou désactivez les modules optionnels de l'établissement.</p>
+20                 </div>
+21                 <div>
+22                     <a href="{{ route('admin.dashboard') }}" class="btn btn-secondary">Retour</a>
+23                     <a href="{{ route('admin.profile.settings') }}" class="btn btn-primary"><i class="fa fa-cog"></i> Paramètres établissement</a>
+24                 </div>
+25             </div>
+26     
+27             @if (session('success'))<div class="alert alert-success">{{ session('success') }}</div>@endif
+28             @if (session('error'))<div class="alert alert-danger">{{ session('error') }}</div>@endif
+29             @if ($errors->any())<div class="alert alert-danger"><ul class="mb-0">@foreach ($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul></div>@endif
+30     
+31             <div class="tile">
+32                 <h4 class="tile-title"><i class="fa fa-sliders"></i> Modules optionnels</h4>
+33                 <form method="POST" action="{{ route('admin.modules.update') }}">
+34                     @csrf
+35                     @method('PUT')
+36     
+37                     <div class="border-bottom py-3 d-flex justify-content-between align-items-start">
+38                         <div>
+39                             <strong>Saisie des notes</strong>
+40                             <p class="text-muted mb-0 small">Autorise l'ouverture de la page de saisie des notes d'une évaluation. Lorsqu'il est désactivé, la saisie est bloquée sur toute l'application.</p>
+41                         </div>
+42                         <div class="custom-control custom-switch ml-3">
+43                             <input type="hidden" name="saisie_notes_active" value="0">
+44                             <input type="checkbox" class="custom-control-input" id="saisie_notes_active" name="saisie_notes_active" value="1" @checked(old('saisie_notes_active', $settings->saisie_notes_active))>
+45                             <label class="custom-control-label" for="saisie_notes_active">{{ $settings->saisie_notes_active ? 'Actif' : 'Inactif' }}</label>
+46                         </div>
+47                     </div>
+48     
+49                     <div class="py-3 d-flex justify-content-between align-items-start">
+50                         <div>
+51                             <strong>Portail Parents</strong>
+52                             <p class="text-muted mb-0 small">Ouvre l'espace de communication des parents (<code>/espace-parent</code>) : profil, annonces et messagerie avec le personnel.</p>
+53                         </div>
+54                         <div class="custom-control custom-switch ml-3">
+55                             <input type="hidden" name="portail_parents_actif" value="0">
+56                             <input type="checkbox" class="custom-control-input" id="portail_parents_actif" name="portail_parents_actif" value="1" @checked(old('portail_parents_actif', $settings->portail_parents_actif))>
+57                             <label class="custom-control-label" for="portail_parents_actif">{{ $settings->portail_parents_actif ? 'Actif' : 'Inactif' }}</label>
+58                         </div>
+59                     </div>
+60     
+61                     <div class="py-3 d-flex justify-content-between align-items-start border-top">
+62                         <div>
+63                             <strong>Délibération &amp; passage</strong>
+64                             <p class="text-muted mb-0 small">Active l'écran de délibération : critères, décisions par élève et passage de classe en masse (réutilise la moyenne du bulletin).</p>
+65                         </div>
+66                         <div class="custom-control custom-switch ml-3">
+67                             <input type="hidden" name="deliberation_active" value="0">
+68                             <input type="checkbox" class="custom-control-input" id="deliberation_active" name="deliberation_active" value="1" @checked(old('deliberation_active', $settings->deliberation_active))>
+69                             <label class="custom-control-label" for="deliberation_active">{{ $settings->deliberation_active ? 'Actif' : 'Inactif' }}</label>
+70                         </div>
+71                     </div>
+72     
+73                     <div class="mt-3 text-right"><button class="btn btn-primary" type="submit"><i class="fa fa-save"></i> Enregistrer</button></div>
+74                 </form>
+75             </div>
+76         </main>
+77     </body>
+78     </html>

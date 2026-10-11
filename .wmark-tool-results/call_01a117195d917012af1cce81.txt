@@ -1,0 +1,27 @@
+Applied patch: 1 file changed (1 updated)
+Updated resources/views/messagerie/_espace.blade.php (4 hunks applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 3: context matched at lines 272-281 only after blank-line normalization (the model's blank-line layout differed from the file's; the file's own text was kept). Verify the result.
+Auto-corrected hunk landed at lines 279-294:
+279            @else
+280                <div class="msg-thread__empty">
+281                    <i class="fa-solid fa-comment-dots fa-3x mb-3"></i>
+282                    <p class="mb-0">Choisissez un correspondant, ou écrivez directement ci-dessous.</p>
+283                    <div class="nouveau-dest">
+284                        <label for="nouveauDest">Nouveau message à</label>
+285                        <select id="nouveauDest">
+286                            @foreach ($destinataires as $compte)
+287                                @php($nomCompte = trim(($compte->nom ?? '').' '.($compte->prenom ?? '')) ?: $compte->username)
+288                                <option value="{{ $compte->id }}">{{ $nomCompte }} — {{ \App\Models\User::libelleRole($compte->role) }}</option>
+289                            @endforeach
+290                        </select>
+291                    </div>
+292                </div>
+293            @endif
+294    
+Landed at lines 76-78 (the file's new text; no re-read needed):
+76         .nouveau-dest { margin-top: 14px; display: inline-flex; flex-direction: column; gap: 6px; align-items: flex-start; }
+77         .nouveau-dest label { color: var(--chat-muted); font-size: .78rem; }
+78         .nouveau-dest select { background: #3a3b3c; border: none; color: #fff; border-radius: 10px; padding: 9px 12px; min-width: 240px; max-width: 100%; }
+Landed at lines 239-239 (the file's new text; no re-read needed):
+239            @if ($active)

@@ -1,0 +1,25 @@
+203    
+204    test('un parent envoie un message au personnel depuis le portail', function () {
+205        reglerPortailParents(true);
+206    
+207        $parent = User::factory()->create(['role' => 'parent']);
+208        $prof = User::factory()->create(['role' => 'professeur']);
+209    
+210        $this->actingAs($parent)
+211            ->post(route('messagerie.store'), [
+212                'destinataires' => [(string) $prof->id],
+213                'sujet' => 'Question minerval',
+214                'corps' => 'Bonjour, quel est le solde restant ?',
+215            ])
+216            ->assertRedirect()
+217            ->assertSessionHas('success', fn (string $m) => str_contains($m, '1 destinataire'));
+218    
+219        expect(DB::table('messages')->count())->toBe(1);
+220        expect(Messagerie::nonLus($prof->fresh()))->toBe(1);
+221    });
+222    
+223    test('un message vocal est enregistré et rendu par un lecteur audio', function () {
+224        Storage::fake('public');
+225        reglerPortailParents(true);
+
+[showing lines 203-226 of 275; read again with offset=227 for more]

@@ -1,0 +1,33 @@
+Applied patch: 2 files changed (2 updated)
+Updated resources/views/prefecture/eleve-fiche.blade.php (1 hunk applied)
+Updated resources/views/prefecture/eleves.blade.php (2 hunks applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 194-201 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 201-242:
+201    
+202        <div class="col-md-12">
+203            <div class="card">
+204                <div class="card-header">
+205                    <div class="card-head-row">
+206                        <div class="card-title"><i class="fas fa-paperclip text-warning"></i> Documents attachés</div>
+207                        <div class="card-category">{{ $eleve->documents->count() }} document(s)</div>
+208                    </div>
+      … 26 lines omitted …
+235                                    <tr><td colspan="4" class="text-center text-muted">Aucun document attaché à ce dossier.</td></tr>
+236                                @endforelse
+237                            </tbody>
+238                        </table>
+239                    </div>
+240                </div>
+241            </div>
+242        </div>
+Landed at lines 35-35 (the file's new text; no re-read needed):
+35                                         <th class="text-right">Documents</th>
+Landed at lines 48-54 (the file's new text; no re-read needed):
+48                                             <td class="text-right">
+49                                                 @if ($eleve->documents_count > 0)
+50                                                     <span class="badge badge-count">{{ $eleve->documents_count }}</span>
+51                                                 @else
+52                                                     <span class="text-muted">0</span>
+53                                                 @endif
+54                                             </td>

@@ -1,0 +1,28 @@
+130    
+131            DB::transaction(function () use ($data, $evaluation, $request, &$enregistrees) {
+132                foreach ($data['notes'] as $eleveId => $valeur) {
+133                    $observation = $data['observations'][$eleveId] ?? null;
+134    
+135                    if ($valeur === null || $valeur === '') {
+136                        // Note effacée : on désactive la ligne si elle existait.
+137                        Note::query()
+138                            ->where('evaluation_id', $evaluation->id)
+139                            ->where('eleve_id', $eleveId)
+140                            ->update(['statut' => 'inactif', 'observation' => $observation]);
+141                        continue;
+142                    }
+143    
+144                    Note::updateOrCreate(
+145                        ['evaluation_id' => $evaluation->id, 'eleve_id' => $eleveId],
+146                        ['note_obtenue' => $valeur, 'observation' => $observation, 'statut' => 'actif']
+147                    );
+148    
+149                    $enregistrees++;
+150                }
+151            });
+152    
+153            $commentaire = $enregistrees === 0
+154                ? 'Aucune note saisie : vérifiez les valeurs.'
+155                : $enregistrees.' note(s) enregistrée(s) pour « '.$evaluation->titre.' ».';
+
+[showing lines 130-155 of 181; read again with offset=156 for more]

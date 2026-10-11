@@ -1,0 +1,16 @@
+424            const sendBtn = document.getElementById('sendBtn');
+425            const fichier = document.getElementById('fileAttachment');
+426            let dernierId = 0;
+427    
+428            const bulles = fil.querySelectorAll('[data-message-id]');
+429            if (bulles.length) dernierId = Number(bulles[bulles.length - 1].getAttribute('data-message-id')) || 0;
+430    
+431            const bas = () => { fil.scrollTop = fil.scrollHeight; };
+432            bas();
+433    
+434            // Flèche « revenir au message du moment » : visible quand on a remonté le fil.
+435            const btnBas = document.getElementById('btnBas');
+436            const majBtnBas = () => {
+437                if (!btnBas) return;
+
+[showing lines 424-437 of 823; read again with offset=438 for more]

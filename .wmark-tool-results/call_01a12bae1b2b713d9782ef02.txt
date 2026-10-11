@@ -1,0 +1,20 @@
+[powershell — Windows side]
+FAIL  Tests\Feature\ProfesseursPagesTest
+  ✓ the professor list shows the teaching staff and can be filtered                                              0.23s  
+  ✓ the professor file shows linked account, affectations and toggles status                                     0.03s  
+  ⨯ an admin can create a cours and an affectation for the current year                                          0.04s  
+  ✓ a duplicate affectation is rejected and a cours in use cannot be deleted                                     0.03s  
+  ✓ an admin can schedule a timetable slot and conflicts are rejected                                            0.03s  
+  ✓ the timetable refuses an end time before the start time                                                      0.03s  
+  ✓ the professor menu links point to the new modules                                                            0.02s  
+  ✓ the professor detail page offers a timetable button that renders the weekly grid                             0.03s  
+  ✓ an admin can edit a professor profile from the file and attach documents                                     0.05s  
+  ✓ a professor email stays unique when updated                                                                  0.02s  
+   FAILED  Tests\Feature\ProfesseursPagesTest > an admin can create a cours and an affectation for the current year     
+  Failed asserting that two strings are equal.
+--- Expected
++++ Actual
+  at tests\Feature\ProfesseursPagesTest.php:250
+  Tests:    1 failed, 9 passed (65 assertions)
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

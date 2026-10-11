@@ -1,0 +1,19 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/AnneeScolaireTest.php (1 hunk applied)
+Landed at lines 190-205 (the file's new text; no re-read needed):
+190    
+191    test('toggling a school year off then on restores it as the current year', function () {
+192        $admin = User::factory()->create(['role' => 'admin']);
+193        $annee = AnneeScolaire::create([
+194            'libelle' => '2025-2026',
+195            'date_debut' => '2025-09-01',
+196            'date_fin' => '2026-07-15',
+197            'is_encours' => true,
+198        ]);
+199    
+200        $this->actingAs($admin)->patch(route('admin.annees.toggle', $annee))->assertRedirect();
+201        expect($annee->fresh()->is_encours)->toBeFalse();
+202    
+203        $this->patch(route('admin.annees.toggle', $annee))->assertRedirect();
+204        expect($annee->fresh()->is_encours)->toBeTrue();
+205    });

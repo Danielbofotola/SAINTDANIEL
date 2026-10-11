@@ -1,0 +1,20 @@
+125            $table->unsignedBigInteger('periode_id')->nullable();
+126            $table->decimal('montant_paye', 10, 2);
+127            $table->string('devise', 3)->default('USD');
+128            $table->decimal('taux', 12, 2)->nullable();
+129            $table->decimal('montant_recu', 12, 2)->nullable();
+130            $table->dateTime('date_paiement')->nullable();
+131            $table->string('mode_paiement')->default('especes');
+132            $table->string('reference_transaction', 100)->nullable();
+133            $table->string('statut')->default('actif');
+134            $table->timestamps();
+135        });
+136    
+137        DB::table('annees_scolaires')->insert([
+138            'id' => 1, 'libelle' => '2026-2027', 'date_debut' => '2026-09-01',
+139            'date_fin' => '2027-07-01', 'is_encours' => true, 'statut' => 'actif',
+140        ]);
+141        DB::table('cycles')->insert(['id' => 1, 'nom' => 'Secondaire', 'statut' => 'actif']);
+142        DB::table('periodes')->insert(['id' => 1, 'annee_scolaire_id' => 1, 'nom' => '1ère Période', 'statut' => 'actif', 'created_at' => now(), 'updated_at' => now()]);
+
+[showing lines 125-142 of 335; read again with offset=143 for more]

@@ -1,0 +1,1 @@
+Updated resources/views/registration/account-request.blade.php: replaced 1 lines with 1 lines

@@ -1,0 +1,22 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/ElevesPagesTest.php (1 hunk applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 178-178 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 178-200:
+178    test('désactiver un élève le rend invisible et l’activation le rétablit', function () {
+179        $eleveId = seedEleve();
+180        $admin = User::factory()->create(['role' => 'admin']);
+181    
+182        // Désactivation : l'élève sort des effectifs et des écrans de suivi.
+183        $this->actingAs($admin)->patch(route('admin.eleves.toggle', $eleveId))
+184            ->assertRedirect()
+185            ->assertSessionHas('success', fn ($m) => str_contains($m, 'désactivé'));
+      … 7 lines omitted …
+193        // Réactivation : il réapparaît dans les listes et les effectifs.
+194        $this->actingAs($admin)->patch(route('admin.eleves.toggle', $eleveId))->assertRedirect();
+195    
+196        expect(\App\Models\Eleve::find($eleveId)->statut)->toBe('actif')
+197            ->and(\App\Models\Eleve::inscritAnneeEnCours()->whereKey($eleveId)->exists())->toBeTrue();
+198    });
+199    
+200    test('the student list can be filtered by search term and by status', function () {

@@ -1,0 +1,13 @@
+352        // Réception quasi instantanée : interrogation chaque seconde, récupération
+353        // immédiate au retour sur l'onglet, plus de cycle à 4 s.
+354        expect($html)
+355            ->toContain('await attendre(1000)')
+356            ->toContain('visibilitychange')
+357            ->not->toContain('attendre(4000)');
+358    });
+359    
+360    test('la barre d’écriture reste disponible même sans discussion ouverte', function () {
+361        $alice = User::factory()->create(['role' => 'admin', 'nom' => 'Mwamba', 'prenom' => 'Alice']);
+362        User::factory()->create(['role' => 'professeur', 'nom' => 'Kabila', 'prenom' => 'Bruno']);
+
+[showing lines 352-363 of 459; read again with offset=364 for more]

@@ -1,0 +1,9 @@
+Recorded verification for 'models': Inscription::anneeScolaire() + scopeAnneeEnCours (whereRaw 1=0 si aucune année) ; Eleve::scopeInscritAnneeEnCours (whereHas inscriptions années en cours + statut actif). Tests: scope renvoie 0 sans année en cours.
+Task 'models': pending → verified
+Recorded verification for 'controllers': AdminDashboardController: eleves + stats garcons/filles via inscritAnneeEnCours, withCount occupationSalles scopé, leftJoin repartitionCycles conditionné à l'année. ClasseController: index withCount scopé, students() scopé. Smoke réel: dashboard 10 élèves (6G/4F), cycles 2+5+0+3=10 cohérent.
+Task 'controllers': pending → verified
+Recorded verification for 'views': classes/index: titre + colonne Élèves avec année ; classes/students: sous-titre + widget Élèves actifs avec année ; dashboard: badge année en cours (fait précédemment).
+Task 'views': pending → verified
+Recorded verification for 'tests': tests/Feature/AnneeEnCoursScopingTest.php: 5/5 (scopes modèle, page élèves de classe scopée, comptage classe scopé, aucun résultat sans année). Suite complète: 34 passés, 3 échecs préexistants inchangés.
+Task 'tests': pending → verified
+Progress: 4/4 done; all tasks complete

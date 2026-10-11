@@ -1,0 +1,13 @@
+323                                 <div class="mt-2">
+324                                     <a href="{{ route('comptable.paiements.index') }}" class="btn btn-success fw-bold w-100"><i class="bi bi-cash-coin me-1"></i> Encaisser un paiement</a>
+325                                 </div>
+326                                  <div class="mt-1">
+327                                      <a href="{{ route('comptable.recouvrement.index') }}" class="btn btn-outline-primary bg-white fw-bold w-100"><i class="bi bi-graph-up-arrow me-1"></i> Recouvrement &amp; évolution</a>
+328                                  </div>
+329                                  <div class="mt-1">
+330                                      <a href="{{ route('comptable.depenses.index') }}" class="btn btn-outline-danger bg-white fw-bold w-100"><i class="bi bi-cart-dash me-1"></i> Dépenses de la caisse</a>
+331                                  </div>
+332                            </div>
+333                        </div>
+
+[showing lines 323-334 of 508; read again with offset=335 for more]

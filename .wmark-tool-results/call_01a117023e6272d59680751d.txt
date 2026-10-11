@@ -1,0 +1,62 @@
+1      <?php
+2      
+3      namespace App\Support;
+4      
+5      use App\Models\User;
+6      
+7      /**
+8       * Raccourcis de l'en-tête (modèle du template) : un lien direct suivi d'un
+9       * menu déroulant « Rapports », adaptés au rôle de l'utilisateur connecté.
+10      */
+11     class Raccourcis
+12     {
+13         /**
+14          * @return array{direct: array{libelle: string, icone: string, url: string}, rapports: array<int, array{0: string, 1: string, 2: string}>}
+15          */
+16         public static function pour(?User $utilisateur): array
+17         {
+18             $role = $utilisateur?->role ?? 'invite';
+19     
+20             return match ($role) {
+21                 'admin' => [
+22                     'direct' => ['libelle' => 'Documents', 'icone' => 'fa-file-text-o', 'url' => route('admin.eleves.index')],
+23                     'rapports' => [
+24                         ['Rapports journaliers', 'fa-line-chart', route('admin.statistiques.index')],
+25                         ['Comptabilité OHADA', 'fa-calculator', route('admin.comptabilite.index')],
+26                         ['Évaluations & examens', 'fa-pencil-square-o', route('admin.evaluations.index')],
+27                         ['Paie & salaires', 'fa-money', route('admin.paies.index')],
+28                     ],
+29                 ],
+30                 'professeur' => [
+31                     'direct' => ['libelle' => 'Mes élèves', 'icone' => 'fa-users', 'url' => route('professeur.eleves')],
+32                     'rapports' => [
+33                         ['Mon planning', 'fa-calendar-o', route('professeur.planning')],
+34                         ['Mes cours', 'fa-book', route('professeur.cours')],
+35                         ['Évaluations & notes', 'fa-pencil-square-o', route('professeur.evaluations')],
+36                         ['Feuilles de présence', 'fa-check-square-o', route('professeur.presences')],
+37                     ],
+38                 ],
+39                 'prefetture' => [
+40                     'direct' => ['libelle' => 'Mon espace', 'icone' => 'fa-dashboard', 'url' => route('prefecture.dashboard')],
+41                     'rapports' => [],
+42                 ],
+43                 'titulaire' => [
+44                     'direct' => ['libelle' => 'Mon espace', 'icone' => 'fa-dashboard', 'url' => route('titulaire.dashboard')],
+45                     'rapports' => [
+46                         ['Mon tableau de bord', 'fa-dashboard', route('titulaire.dashboard')],
+47                     ],
+48                 ],
+49                 'comptable' => [
+50                     'direct' => ['libelle' => 'Paiements', 'icone' => 'fa-money', 'url' => route('comptable.paiements.index')],
+51                     'rapports' => [
+52                         ['Dépenses & natures', 'fa-shopping-cart', route('comptable.depenses.index')],
+53                         ['Paie & salaires', 'fa-money', route('comptable.paies.index')],
+54                     ],
+55                 ],
+56                 default => [
+57                     'direct' => ['libelle' => 'Tableau de bord', 'icone' => 'fa-dashboard', 'url' => route('login')],
+58                     'rapports' => [],
+59                 ],
+60             };
+61         }
+62     }

@@ -1,0 +1,6 @@
+Applied patch: 1 file changed (1 updated)
+Updated resources/views/admin/professeurs/show.blade.php (1 hunk applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 18-21 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 20-20:
+20                     <a class="btn btn-primary" href="{{ route('admin.professeurs.emploi-du-temps', $professeur) }}"><i class="fa fa-calendar"></i> Emploi du temps</a>

@@ -1,0 +1,1 @@
+Wrote database/migrations/2026_10_04_000000_add_module_switches_to_parametres_systeme_table.php (34 lines)

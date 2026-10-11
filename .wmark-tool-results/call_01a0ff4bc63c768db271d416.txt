@@ -1,0 +1,16 @@
+251                                     <select class="form-control" name="statut" required>
+252                                        <option value="actif" @selected(old('statut', $user->statut) === 'actif')>Actif</option>
+253                                        <option value="inactif" @selected(old('statut', $user->statut) === 'inactif')>Inactif</option>
+254                                     </select>
+255                                  </div>
+256                               </div>
+257    
+258                               <hr>
+259                               <h6 class="text-primary font-weight-bold mb-3"><i class="icofont icofont-key"></i> Identifiants de connexion</h6>
+260                               <p class="text-muted small">Laissez les champs vides pour conserver les identifiants actuels du compte.</p>
+261                               <div class="row">
+262                                  <div class="col-md-6 form-group">
+263                                     <label>Nouveau mot de passe</label>
+264                                     <input class="form-control" type="password" name="password" minlength="8" autocomplete="new-password">
+
+[showing lines 251-264 of 332; read again with offset=265 for more]

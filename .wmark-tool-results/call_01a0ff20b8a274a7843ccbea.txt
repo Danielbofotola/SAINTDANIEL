@@ -1,0 +1,4 @@
+53                         <div class="col-md-6 form-group"><label class="form-label" for="annee_scolaire_id">Année scolaire *</label><select class="form-control" id="annee_scolaire_id" name="annee_scolaire_id" required><option value="">Sélectionner une année</option>@foreach ($schoolYears as $schoolYear)<option value="{{ $schoolYear->id }}" @selected(old('annee_scolaire_id') == $schoolYear->id)>{{ $schoolYear->libelle }}{{ $schoolYear->is_encours ? ' · En cours' : '' }}</option>@endforeach</select></div>
+54                     </div>
+
+[showing lines 53-54 of 68; read again with offset=55 for more]

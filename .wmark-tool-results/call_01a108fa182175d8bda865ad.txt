@@ -1,0 +1,16 @@
+[powershell — Windows side]
+11: 'archives_annees', 'depenses', 'categories_depenses', 'paiements', 'frais_scolaires',
+165: Schema::create('archives_annees', function (Blueprint $table) {
+168: $table->unsignedInteger('total_eleves_inscrits')->default(0);
+171: $table->decimal('solde_final', 12, 2)->default(0);
+315: test('closing a school year computes the summary and can be reopened', function () {
+334: $archive = DB::table('archives_annees')->first();
+336: ->and((int) $archive->total_eleves_inscrits)->toBe(1)
+339: ->and((float) $archive->solde_final)->toBe(110.0);
+345: expect(DB::table('archives_annees')->count())->toBe(1);
+351: expect(DB::table('archives_annees')->count())->toBe(0);
+418: $archiveId = DB::table('archives_annees')->insertGetId([
+419: 'annee_scolaire_id' => 1, 'total_eleves_inscrits' => 1, 'total_recettes' => 90,
+420: 'total_depenses' => 25, 'solde_final' => 65, 'date_cloture' => now(),
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

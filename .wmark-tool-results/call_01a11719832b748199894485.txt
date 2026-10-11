@@ -1,0 +1,63 @@
+545    
+546        window.ouvrirDiscussion = async function (id) {
+547            try {
+548                const donnees = new FormData();
+549                donnees.append('_token', CSRF);
+550                donnees.append('destinataire', id);
+551                const rep = await fetch(DEMARRER_URL, {
+552                    method: 'POST',
+553                    headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'application/json' },
+554                    body: donnees,
+555                    credentials: 'same-origin',
+556                });
+557                const json = await rep.json();
+558                if (!rep.ok) throw json;
+559                window.location.assign(ESPACE_URL + '?conversation=' + json.conversation_id);
+560            } catch (e) {
+561                alert('Impossible d’ouvrir cette conversation.');
+562            }
+563        };
+564    
+565        /* ---------- Nouvelle conversation ---------- */
+566        window.ouvrirCompose = () => document.getElementById('composeModal').classList.add('on');
+567        window.fermerCompose = () => document.getElementById('composeModal').classList.remove('on');
+568    
+569        document.getElementById('composeSend')?.addEventListener('click', async function () {
+570            const select = document.getElementById('composeDest');
+571            const choix = Array.from(select.selectedOptions).map(o => o.value).filter(Boolean);
+572            const sujet = document.getElementById('composeSujet').value.trim();
+573            const corps = document.getElementById('composeCorps').value.trim();
+574            if (!choix.length || !sujet || !corps) { alert('Destinataire, objet et message sont obligatoires.'); return; }
+575    
+576            this.disabled = true;
+577            try {
+578                const donnees = new FormData();
+579                donnees.append('_token', CSRF);
+580                donnees.append('sujet', sujet);
+581                donnees.append('corps', corps);
+582                choix.forEach(c => donnees.append('destinataires[]', c));
+583                const rep = await fetch(STORE_URL, {
+584                    method: 'POST',
+585                    headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'application/json' },
+586                    body: donnees,
+587                    credentials: 'same-origin',
+588                });
+589                const json = await rep.json();
+590                if (!rep.ok) throw json;
+591                window.location.assign(ESPACE_URL + '?conversation=' + json.conversation_id);
+592            } catch (e) {
+593                alert('Envoi impossible. Vérifiez le destinataire.');
+594            } finally {
+595                this.disabled = false;
+596            }
+597        });
+598    
+599        /* ---------- Filtre ---------- */
+600        document.getElementById('convSearch')?.addEventListener('keyup', function () {
+601            const filtre = this.value.toLowerCase().trim();
+602            document.querySelectorAll('#convContainer .conv, #contactsContainer .conv').forEach(conv => {
+603                conv.style.display = (conv.getAttribute('data-search') || '').includes(filtre) ? 'flex' : 'none';
+604            });
+605        });
+606    </script>
+607    @endonce

@@ -1,0 +1,12 @@
+1      @php($utilisateur = auth()->user())
+2      @if ($utilisateur && \Illuminate\Support\Facades\Schema::hasTable('notifications'))
+3          @php($nonLues = $utilisateur->unreadNotifications()->count())
+4          @php($dernieres = $utilisateur->notifications()->latest()->limit(5)->get())
+5          <div class="cloche-flottante no-print">
+6              <button type="button" class="cloche-flottante__btn" aria-label="Notifications" aria-expanded="false">
+7                  <i class="fa fa-bell"></i>
+8                  @if ($nonLues > 0)<span class="cloche-flottante__badge" data-non-lues>{{ $nonLues > 99 ? '99+' : $nonLues }}</span>@endif
+9              </button>
+10             <div class="cloche-flottante__panneau" hidden>
+
+[showing lines 1-10 of 80; read again with offset=11 for more]

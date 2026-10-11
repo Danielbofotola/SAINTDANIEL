@@ -1,0 +1,1 @@
+Wrote database/migrations/2026_10_05_000000_add_periode_to_paiements_table.php (26 lines)

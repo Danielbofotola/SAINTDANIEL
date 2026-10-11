@@ -1,0 +1,24 @@
+Applied patch: 1 file changed (1 updated)
+Updated app/Http/Controllers/EleveController.php (3 hunks applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 2: context matched at lines 40-56 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+  ⚠ hunk 3: context matched at lines 78-91 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 44-56:
+44     
+45             // Portée commune : seuls les élèves inscrits dans l'année observée
+46             // (inscription active ou « en attente » — nouveaux, délibérés, autres
+47             // inscrits). Un élève sans inscription dans l'année n'est ni listé ni
+48             // compté dans les statistiques.
+49             $inscritsAnnee = fn () => Eleve::query()->when($annee, fn ($query) => $query->whereHas(
+50                 'inscriptions',
+51                 fn ($inscription) => $inscription
+52                     ->where('annee_scolaire_id', $annee->id)
+53                     ->whereIn('statut', ['actif', 'en_attente'])
+54             ));
+55     
+56             $eleves = $inscritsAnnee()
+Auto-corrected hunk landed at lines 87-90:
+87                     'total' => $inscritsAnnee()->count(),
+88                     'garcons' => $inscritsAnnee()->where('sexe', 'M')->count(),
+89                     'filles' => $inscritsAnnee()->where('sexe', 'F')->count(),
+90                     'inscrits' => $inscritsAnnee()->count(),

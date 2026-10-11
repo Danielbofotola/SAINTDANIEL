@@ -1,0 +1,13 @@
+143                    'date_cloture' => now(),
+144                    'remarques' => $data['remarques'] ?? null,
+145                ]);
+146            });
+147    
+148            return redirect()->route('admin.archives.index')->with('success', 'L’année scolaire a été clôturée et archivée.');
+149        }
+150    
+151        public function destroy(ArchiveAnnee $archiveAnnee): RedirectResponse
+152        {
+153            $archiveAnnee->delete();
+
+[showing lines 143-154 of 157; read again with offset=155 for more]

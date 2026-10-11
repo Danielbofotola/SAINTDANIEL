@@ -1,0 +1,62 @@
+1      <?php
+2      
+3      namespace App\Models;
+4      
+5      use Illuminate\Database\Eloquent\Model;
+6      
+7      /**
+8       * Message d'une conversation.
+9       */
+10     class Message extends Model
+11     {
+12         protected $table = 'messages';
+13     
+14         protected $fillable = ['conversation_id', 'auteur_id', 'corps', 'piece_jointe', 'piece_jointe_nom'];
+15     
+16         public function conversation()
+17         {
+18             return $this->belongsTo(Conversation::class);
+19         }
+20     
+21         public function auteur()
+22         {
+23             return $this->belongsTo(User::class, 'auteur_id');
+24         }
+25     
+26         public function nomAuteur(): string
+27         {
+28             $auteur = $this->auteur;
+29     
+30             if (! $auteur) {
+31                 return 'Utilisateur supprimé';
+32             }
+33     
+34             return trim(($auteur->nom.' '.$auteur->postnom.' '.$auteur->prenom)) ?: $auteur->username;
+35         }
+36     
+37         /** Adresse publique de la pièce jointe, ou null s'il n'y en a pas. */
+38         public function urlPieceJointe(): ?string
+39         {
+40             return $this->piece_jointe ? asset('storage/'.$this->piece_jointe) : null;
+41         }
+42     
+43         /** Vrai si la pièce jointe est une image (affichée en aperçu). */
+44         public function estImage(): bool
+45         {
+46             if (! $this->piece_jointe) {
+47                 return false;
+48             }
+49     
+50             return in_array(
+51                 strtolower(pathinfo($this->piece_jointe, PATHINFO_EXTENSION)),
+52                 ['jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp', 'svg'],
+53                 true
+54             );
+55         }
+56     
+57         /** Nom affiché de la pièce jointe. */
+58         public function nomPieceJointe(): string
+59         {
+60             return $this->piece_jointe_nom ?: basename((string) $this->piece_jointe);
+61         }
+62     }

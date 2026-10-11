@@ -1,0 +1,10 @@
+Applied patch: 1 file changed (1 updated)
+Updated app/Http/Controllers/AffectationCoursController.php (1 hunk applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 46-49 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 49-53:
+49                 // Liste complète (non paginée) pour les sélecteurs de permutation.
+50                 'toutesAffectations' => AffectationCours::query()
+51                     ->with(['professeur', 'cours', 'classe'])
+52                     ->anneeEnCours()
+53                     ->get(),

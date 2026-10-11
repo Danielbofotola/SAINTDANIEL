@@ -1,0 +1,9 @@
+Applied patch: 1 file changed (1 updated)
+Updated routes/web.php (2 hunks applied)
+Landed at lines 23-23 (the file's new text; no re-read needed):
+23     use App\Http\Controllers\CycleController;
+Landed at lines 95-98 (the file's new text; no re-read needed):
+95         Route::get('/admin/cycles', [CycleController::class, 'index'])->middleware('role:admin')->name('admin.cycles.index');
+96         Route::post('/admin/cycles', [CycleController::class, 'store'])->middleware('role:admin')->name('admin.cycles.store');
+97         Route::patch('/admin/cycles/{cycle}/statut', [CycleController::class, 'toggleStatus'])->middleware('role:admin')->name('admin.cycles.toggle-status');
+98         Route::delete('/admin/cycles/{cycle}', [CycleController::class, 'destroy'])->middleware('role:admin')->name('admin.cycles.destroy');

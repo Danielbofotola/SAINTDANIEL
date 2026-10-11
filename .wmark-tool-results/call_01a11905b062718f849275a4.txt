@@ -1,0 +1,16 @@
+158                                        <th class="text-right">Dernière connexion</th>
+159                                    </tr>
+160                                </thead>
+161                                <tbody>
+162                                    @forelse ($comptes as $compte)
+163                                        <tr>
+164                                            <td class="fw-bold">{{ trim(($compte->nom ?? '').' '.($compte->postnom ?? '').' '.($compte->prenom ?? '')) ?: $compte->username }}</td>
+165                                            <td>{{ $compte->username }}</td>
+166                                            <td>{{ \App\Models\User::libelleRole($compte->role) }}</td>
+167                                            <td>
+168                                                <span class="badge {{ $compte->statut === 'actif' ? 'badge-success' : 'badge-danger' }}">
+169                                                    {{ $compte->statut }}
+170                                                </span>
+171                                            </td>
+
+[showing lines 158-171 of 186; read again with offset=172 for more]

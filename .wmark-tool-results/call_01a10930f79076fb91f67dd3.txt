@@ -1,0 +1,14 @@
+[harness: offset clamped — requested offset 100000 is 99489 past the end of resources/views/comptable/dashboard.blade.php (511 lines); the requested 12-line window was slid back to start at line 500. Line numbers below are the file's REAL numbers — re-target any pending edit against them]
+
+500                        if (k === 'back') expr = expr.slice(0, -1);
+501                        else if (k === '=') {
+502                            try { expr = String(Function('"use strict"; return (' + expr.replace(/×/g, '*').replace(/÷/g, '/') + ')')()); }
+503                            catch (e) { expr = 'Erreur'; }
+504                        } else expr += k;
+505                        display.textContent = expr || '0';
+506                    });
+507                });
+508            })();
+509        </script>
+510    </body>
+511    </html>

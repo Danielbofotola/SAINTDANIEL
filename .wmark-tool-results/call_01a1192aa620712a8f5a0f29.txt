@@ -1,0 +1,260 @@
+1      @extends('prefecture.layout')
+2      
+3      @section('titre', 'Dossier élève')
+4      
+5      @section('actions')
+6          <a href="{{ route('prefecture.eleves') }}" class="btn btn-light btn-round">
+7              <i class="fas fa-arrow-left"></i> Retour à la liste
+8          </a>
+9      @endsection
+10     
+11     @section('contenu')
+12         @php
+13             $nomComplet = trim($eleve->nom.' '.($eleve->postnom ?? '').' '.$eleve->prenom);
+14             $inscriptionEnCours = $eleve->inscriptions->first(fn ($i) => (int) $i->annee_scolaire_id === (int) ($schoolYear?->id));
+15             $present = (int) ($parStatut['present'] ?? 0);
+16             $absent = (int) ($parStatut['absent'] ?? 0);
+17             $retard = (int) ($parStatut['retard'] ?? 0);
+18             $excuse = (int) ($parStatut['excuse'] ?? 0);
+19             $totalPresences = $present + $absent + $retard + $excuse;
+20             $assiduite = $totalPresences > 0 ? round(($present + $excuse) * 100 / $totalPresences, 1) : 0;
+21         @endphp
+22     
+23         <div class="row">
+24             <div class="col-md-12">
+25                 <div class="card card-profile">
+26                     <div class="card-body">
+27                         <div class="user-profile text-center">
+28                             @if ($eleve->photo)
+29                                 <div class="avatar avatar-xl mb-2">
+30                                     <img src="{{ asset('storage/'.$eleve->photo) }}" alt="{{ $nomComplet }}" class="avatar-img rounded-circle">
+31                                 </div>
+32                             @endif
+33                             <div class="name">{{ $nomComplet }}</div>
+34                             <div class="job">{{ $inscriptionEnCours?->classe?->nom ?? 'Classe non définie' }}</div>
+35                             <div class="mb-2">
+36                                 <span class="badge badge-primary">Matricule {{ $eleve->matricule ?: '—' }}</span>
+37                                 <span class="badge {{ $eleve->statut === 'actif' ? 'badge-success' : 'badge-danger' }}">{{ $eleve->statut }}</span>
+38                                 @if ($eleve->sante?->allergies_pathologies)
+39                                     <span class="badge badge-warning">Attention médicale</span>
+40                                 @endif
+41                             </div>
+42                         </div>
+43                     </div>
+44                 </div>
+45             </div>
+46         </div>
+47     
+48         <div class="row">
+49             <div class="col-sm-6 col-md-3">
+50                 <div class="card card-stats card-round">
+51                     <div class="card-body"><div class="row align-items-center">
+52                         <div class="col-icon"><div class="icon-big text-center icon-success bubble-shadow-small"><i class="fas fa-user-check"></i></div></div>
+53                         <div class="col col-stats ml-3 ml-sm-0"><div class="numbers">
+54                             <p class="card-category">Présences</p><h4 class="card-title">{{ $present }}</h4>
+55                         </div></div>
+56                     </div></div>
+57                 </div>
+58             </div>
+59             <div class="col-sm-6 col-md-3">
+60                 <div class="card card-stats card-round">
+61                     <div class="card-body"><div class="row align-items-center">
+62                         <div class="col-icon"><div class="icon-big text-center icon-danger bubble-shadow-small"><i class="fas fa-user-times"></i></div></div>
+63                         <div class="col col-stats ml-3 ml-sm-0"><div class="numbers">
+64                             <p class="card-category">Absences</p><h4 class="card-title">{{ $absent }}</h4>
+65                         </div></div>
+66                     </div></div>
+67                 </div>
+68             </div>
+69             <div class="col-sm-6 col-md-3">
+70                 <div class="card card-stats card-round">
+71                     <div class="card-body"><div class="row align-items-center">
+72                         <div class="col-icon"><div class="icon-big text-center icon-warning bubble-shadow-small"><i class="fas fa-user-clock"></i></div></div>
+73                         <div class="col col-stats ml-3 ml-sm-0"><div class="numbers">
+74                             <p class="card-category">Retards</p><h4 class="card-title">{{ $retard }}</h4>
+75                         </div></div>
+76                     </div></div>
+77                 </div>
+78             </div>
+79             <div class="col-sm-6 col-md-3">
+80                 <div class="card card-stats card-round">
+81                     <div class="card-body"><div class="row align-items-center">
+82                         <div class="col-icon"><div class="icon-big text-center icon-primary bubble-shadow-small"><i class="fas fa-percentage"></i></div></div>
+83                         <div class="col col-stats ml-3 ml-sm-0"><div class="numbers">
+84                             <p class="card-category">Assiduité</p><h4 class="card-title">{{ $assiduite }}%</h4>
+85                         </div></div>
+86                     </div></div>
+87                 </div>
+88             </div>
+89         </div>
+90     
+91         <div class="row">
+92             <div class="col-md-6">
+93                 <div class="card">
+94                     <div class="card-header"><div class="card-title"><i class="fas fa-id-badge text-primary"></i> Identité</div></div>
+95                     <div class="card-body">
+96                         <table class="table table-borderless mb-0">
+97                             <tr><th style="width:45%">Sexe</th><td>{{ $eleve->sexe === 'F' ? 'Féminin' : 'Masculin' }}</td></tr>
+98                             <tr><th>Date de naissance</th><td>{{ $eleve->date_naissance?->format('d/m/Y') ?? '—' }}</td></tr>
+99                             <tr><th>Lieu de naissance</th><td>{{ $eleve->lieu_naissance ?: '—' }}</td></tr>
+100                            <tr><th>Statut</th><td>{{ $eleve->statut }}</td></tr>
+101                        </table>
+102                        <hr>
+103                        {{-- Décision disciplinaire du préfet --}}
+104                        <form method="POST" action="{{ route('prefecture.eleves.statut', $eleve) }}" class="d-flex align-items-center flex-wrap">
+105                            @csrf
+106                            @method('PATCH')
+107                            <label class="mr-2 mb-0"><strong>Statut disciplinaire</strong></label>
+108                            <select name="statut" class="form-control form-control-sm mr-2" style="max-width:170px">
+109                                @foreach (['actif' => 'Actif', 'suspendu' => 'Suspendu', 'exclu' => 'Exclu'] as $valeur => $libelle)
+110                                    <option value="{{ $valeur }}" @selected($eleve->statut === $valeur)>{{ $libelle }}</option>
+111                                @endforeach
+112                            </select>
+113                            <button class="btn btn-sm btn-round btn-primary" type="submit">
+114                                <i class="fas fa-gavel"></i> Appliquer
+115                            </button>
+116                        </form>
+117                    </div>
+118                </div>
+119            </div>
+120            <div class="col-md-6">
+121                <div class="card">
+122                    <div class="card-header"><div class="card-title"><i class="fas fa-heartbeat text-danger"></i> Dossier médical</div></div>
+123                    <div class="card-body">
+124                        @if ($eleve->sante)
+125                            <table class="table table-borderless mb-0">
+126                                <tr><th style="width:45%">Groupe sanguin</th><td>{{ $eleve->sante->groupe_sanguin ?: '—' }}</td></tr>
+127                                <tr><th>Allergies / pathologies</th><td>{{ $eleve->sante->allergies_pathologies ?: '—' }}</td></tr>
+128                                <tr><th>Traitements d'urgence</th><td>{{ $eleve->sante->traitements_urgences ?: '—' }}</td></tr>
+129                                <tr><th>Médecin référent</th><td>{{ $eleve->sante->medecin_referent ?: '—' }}</td></tr>
+130                            </table>
+131                        @else
+132                            <p class="text-muted mb-0">Aucun dossier médical enregistré.</p>
+133                        @endif
+134                    </div>
+135                </div>
+136            </div>
+137        </div>
+138    
+139        <div class="row">
+140            <div class="col-md-6">
+141                <div class="card">
+142                    <div class="card-header"><div class="card-title"><i class="fas fa-user-friends text-info"></i> Tuteur &amp; contacts</div></div>
+143                    <div class="card-body">
+144                        @if ($eleve->tuteur)
+145                            <table class="table table-borderless mb-0">
+146                                <tr><th style="width:45%">Père</th><td>{{ $eleve->tuteur->nom_pere ?: '—' }}</td></tr>
+147                                <tr><th>Téléphone père</th><td>{{ $eleve->tuteur->telephone_pere ?: '—' }}</td></tr>
+148                                <tr><th>Mère</th><td>{{ $eleve->tuteur->nom_mere ?: '—' }}</td></tr>
+149                                <tr><th>Téléphone mère</th><td>{{ $eleve->tuteur->telephone_mere ?: '—' }}</td></tr>
+150                                <tr><th>Adresse</th><td>{{ $eleve->tuteur->adresse_pere ?: ($eleve->tuteur->adresse_mere ?: '—') }}</td></tr>
+151                            </table>
+152                        @else
+153                            <p class="text-muted mb-0">Aucun tuteur renseigné.</p>
+154                        @endif
+155    
+156                        <hr>
+157                        <h6 class="fw-bold">Comptes parents rattachés</h6>
+158                        @forelse ($eleve->parents as $parent)
+159                            <div class="d-flex justify-content-between py-1">
+160                                <small>{{ trim(($parent->nom ?? '').' '.($parent->prenom ?? '')) ?: $parent->username }}</small>
+161                                <small class="text-muted">{{ $parent->email }}</small>
+162                            </div>
+163                        @empty
+164                            <p class="text-muted mb-0">Aucun compte parent rattaché (voir « Tuteurs &amp; parents »).</p>
+165                        @endforelse
+166                    </div>
+167                </div>
+168            </div>
+169            <div class="col-md-6">
+170                <div class="card">
+171                    <div class="card-header"><div class="card-title"><i class="fas fa-school text-success"></i> Inscriptions</div></div>
+172                    <div class="card-body">
+173                        <div class="table-responsive" style="max-height: 220px">
+174                            <table class="table table-hover">
+175                                <thead><tr><th>Année</th><th>Classe</th><th>Date</th><th>Statut</th></tr></thead>
+176                                <tbody>
+177                                    @forelse ($eleve->inscriptions as $inscription)
+178                                        <tr>
+179                                            <td>{{ $inscription->anneeScolaire?->libelle ?? '—' }}</td>
+180                                            <td class="fw-bold">{{ $inscription->classe?->nom ?? '—' }}</td>
+181                                            <td>{{ $inscription->date_inscription?->format('d/m/Y') ?? '—' }}</td>
+182                                            <td>
+183                                                <span class="badge {{ $inscription->statut === 'actif' ? 'badge-success' : 'badge-warning' }}">
+184                                                    {{ $inscription->statut }}
+185                                                </span>
+186                                            </td>
+187                                        </tr>
+188                                    @empty
+189                                        <tr><td colspan="4" class="text-center text-muted">Aucune inscription.</td></tr>
+190                                    @endforelse
+191                                </tbody>
+192                            </table>
+193                        </div>
+194    
+195                        <h6 class="fw-bold mt-3">Assiduité — derniers appels</h6>
+196                        <div class="table-responsive" style="max-height: 220px">
+197                            <table class="table table-hover">
+198                                <thead><tr><th>Date</th><th>Statut</th><th>Motif</th></tr></thead>
+199                                <tbody>
+200                                    @forelse ($presences as $presence)
+201                                        <tr>
+202                                            <td>{{ $presence->date_seance }}</td>
+203                                            <td>{{ \App\Models\Presence::STATUTS[$presence->statut_presence] ?? $presence->statut_presence }}</td>
+204                                            <td>{{ $presence->motif ?: '—' }}</td>
+205                                        </tr>
+206                                    @empty
+207                                        <tr><td colspan="3" class="text-center text-muted">Aucun appel enregistré.</td></tr>
+208                                    @endforelse
+209                                </tbody>
+210                            </table>
+211                        </div>
+212                    </div>
+213                </div>
+214            </div>
+215        </div>
+216    
+217    <div class="row">
+218        <div class="col-md-12">
+219            <div class="card">
+220                <div class="card-header">
+221                    <div class="card-head-row">
+222                        <div class="card-title"><i class="fas fa-paperclip text-warning"></i> Documents attachés</div>
+223                        <div class="card-category">{{ $eleve->documents->count() }} document(s)</div>
+224                    </div>
+225                </div>
+226                <div class="card-body">
+227                    <div class="table-responsive">
+228                        <table class="table table-hover">
+229                            <thead><tr><th>Type</th><th>Déposé le</th><th>Statut</th><th class="text-right">Fichier</th></tr></thead>
+230                            <tbody>
+231                                @forelse ($eleve->documents as $document)
+232                                    <tr>
+233                                        <td class="fw-bold">
+234                                            <i class="fas fa-file-alt text-primary"></i>
+235                                            {{ $documentLabels[$document->type_document] ?? ucfirst($document->type_document) }}
+236                                        </td>
+237                                        <td>{{ $document->created_at?->format('d/m/Y') ?? '—' }}</td>
+238                                        <td>
+239                                            <span class="badge {{ ($document->statut ?? 'actif') === 'actif' ? 'badge-success' : 'badge-warning' }}">
+240                                                {{ $document->statut ?? 'actif' }}
+241                                            </span>
+242                                        </td>
+243                                        <td class="text-right">
+244                                            <a href="{{ asset('storage/'.$document->chemin_fichier) }}" target="_blank" rel="noopener"
+245                                               class="btn btn-info btn-xs btn-round">
+246                                                <i class="fas fa-eye"></i> Ouvrir
+247                                            </a>
+248                                        </td>
+249                                    </tr>
+250                                @empty
+251                                    <tr><td colspan="4" class="text-center text-muted">Aucun document attaché à ce dossier.</td></tr>
+252                                @endforelse
+253                            </tbody>
+254                        </table>
+255                    </div>
+256                </div>
+257            </div>
+258        </div>
+259    </div>
+260    @endsection

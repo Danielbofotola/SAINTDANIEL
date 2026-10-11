@@ -1,0 +1,32 @@
+42                 'paiements' => $paiements,
+43                 'annee' => $annee,
+44                 'classeId' => $classeId,
+45                 'search' => $search,
+46                 'modes' => self::MODES,
+47                 'classes' => Classe::where('statut', 'actif')->orderBy('nom')->get(),
+48                 'inscriptions' => $annee
+49                     ? Inscription::query()->where('annee_scolaire_id', $annee->id)->where('statut', 'actif')->with(['eleve', 'classe'])->get()
+50                     : collect(),
+51                 'tarifs' => $annee
+52                     ? FraisScolaire::query()->where('annee_scolaire_id', $annee->id)->where('statut', 'actif')->with(['typeFrais', 'classe'])->get()
+53                     : collect(),
+54                 'totalEncaisse' => $annee
+55                     ? (float) Paiement::query()->where('statut', 'actif')
+56                         ->whereHas('inscription', fn ($query) => $query->where('annee_scolaire_id', $annee->id))
+57                         ->sum('montant_paye')
+58                     : 0.0,
+59             ]);
+60         }
+61     
+62         public function store(Request $request): RedirectResponse
+63         {
+64             $annee = AnneeScolaire::enCours();
+65     
+66             if (! $annee) {
+67                 return back()->withInput()->with('error', 'Aucune année scolaire en cours : impossible d’enregistrer un paiement.');
+68             }
+69     
+70             $data = $request->validate([
+71                 'inscription_id' => ['required', Rule::exists('inscriptions', 'id')->where('annee_scolaire_id', $annee->id)->where('statut', 'actif')],
+
+[showing lines 42-71 of 117; read again with offset=72 for more]

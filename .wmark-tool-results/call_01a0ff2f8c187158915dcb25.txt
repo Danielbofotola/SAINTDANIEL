@@ -1,0 +1,12 @@
+178    
+179        $admin = User::factory()->create(['role' => 'admin']);
+180        $annee = AnneeScolaire::create(['libelle' => '2025-2026', 'date_debut' => '2025-09-01', 'date_fin' => '2026-07-15']);
+181        DB::table('inscriptions')->insert(['annee_scolaire_id' => $annee->id]);
+182    
+183        $this->actingAs($admin)
+184            ->delete(route('admin.annees.destroy', $annee))
+185            ->assertRedirect()
+186            ->assertSessionHas('error');
+187    
+188        $this->assertDatabaseHas('annees_scolaires', ['id' => $annee->id]);
+189    });

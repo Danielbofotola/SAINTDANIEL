@@ -1,0 +1,13 @@
+[powershell — Windows side]
+PASS  Tests\Feature\ElevesPagesTest
+  ✓ the student list page shows enrollments, class and statistics                                                0.30s  
+  ✓ the student list can be filtered by search term and by status                                                0.03s  
+  ✓ the enrollment history lists processed applications and hides pending ones                                   0.04s  
+  ✓ the admin dashboard menu links to the student list and the enrollment history                                0.06s  
+
+  Tests:    4 passed (24 assertions)
+  Duration: 0.64s
+
+==exit 0==
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

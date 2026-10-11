@@ -1,0 +1,8 @@
+158        Route::post('/messagerie', [MessagerieController::class, 'store'])->middleware('auth')->name('messagerie.store');
+159        Route::post('/messagerie/{conversation}/messages', [MessagerieController::class, 'repondre'])->middleware('auth')->name('messagerie.repondre');
+160        Route::get('/messagerie/{conversation}/messages', [MessagerieController::class, 'messages'])->middleware('auth')->name('messagerie.messages');
+161        Route::post('/messagerie/demarrer', [MessagerieController::class, 'demarrer'])->middleware('auth')->name('messagerie.demarrer');
+162        // Annonces : diffusion d'une notification par l'administrateur.
+163        Route::get('/admin/annonces', [AnnonceController::class, 'index'])->middleware('role:admin')->name('admin.annonces.index');
+
+[showing lines 158-163 of 246; read again with offset=164 for more]

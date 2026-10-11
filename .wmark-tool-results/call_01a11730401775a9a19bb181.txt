@@ -1,0 +1,10 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/MessagerieTest.php (1 hunk applied)
+Landed at lines 365-371 (the file's new text; no re-read needed):
+365    
+366        // Anti-doublon : verrou sur la requête de flux et refus d'insérer deux fois
+367        // la même bulle.
+368        expect($html)
+369            ->toContain('let requeteEnCours = false;')
+370            ->toContain('if (requeteEnCours) return;')
+371            ->toContain('Anti-doublon');

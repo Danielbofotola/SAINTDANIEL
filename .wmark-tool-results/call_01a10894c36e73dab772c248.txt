@@ -1,0 +1,17 @@
+1      <?php
+2      
+3      namespace App\Models;
+4      
+5      use Illuminate\Database\Eloquent\Model;
+6      
+7      class TypeFrais extends Model
+8      {
+9          protected $table = 'types_frais';
+10     
+11         protected $fillable = ['nom', 'description', 'statut'];
+12     
+13         public function fraisScolaires()
+14         {
+15             return $this->hasMany(FraisScolaire::class, 'type_frais_id');
+16         }
+17     }

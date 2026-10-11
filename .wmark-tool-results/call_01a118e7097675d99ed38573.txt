@@ -1,0 +1,54 @@
+1      <?php
+2      
+3      namespace App\Http\Controllers;
+4      
+5      use App\Models\AnneeScolaire;
+6      use App\Models\Classe;
+7      use App\Models\Cycle;
+8      use App\Models\Eleve;
+9      use App\Models\Option;
+10     use App\Models\Professeurs;
+11     use App\Models\Section;
+12     use App\Models\User;
+13     use Illuminate\Http\Request;
+14     use Illuminate\View\View;
+15     
+16     class PrefectureDashboardController extends Controller
+17     {
+18         /**
+19          * Espace préfecture : vue de supervision de l'établissement pour l'année en cours.
+20          *
+21          * Consultation seule — aucun écran d'administration n'est exposé ici.
+22          */
+23         public function index(Request $request): View
+24         {
+25             return view('prefecture.dashboard', [
+26                 'user' => $request->user(),
+27                 'schoolYear' => AnneeScolaire::enCours(),
+28                 'effectifTotal' => Eleve::inscritAnneeEnCours()->where('statut', 'actif')->count(),
+29                 'classesActives' => Classe::where('statut', 'actif')->count(),
+30                 'professeursActifs' => Professeurs::where('statut', 'actif')->count(),
+31                 'sectionsCount' => Section::count(),
+32                 'optionsCount' => Option::count(),
+33                 'effectifsParCycle' => Cycle::query()
+34                     ->where('statut', 'actif')
+35                     ->withCount(['inscriptions as effectif' => fn ($query) => $query
+36                         ->anneeEnCours()
+37                         ->where('inscriptions.statut', 'actif')])
+38                     ->orderBy('nom')
+39                     ->get(),
+40                 'classes' => Classe::query()
+41                     ->with(['cycle', 'salle'])
+42                     ->withCount(['inscriptions as effectif' => fn ($query) => $query
+43                         ->anneeEnCours()
+44                         ->where('statut', 'actif')])
+45                     ->where('statut', 'actif')
+46                     ->orderBy('nom')
+47                     ->get(),
+48                 'personnel' => User::query()
+49                     ->selectRaw('role, COUNT(*) as total')
+50                     ->groupBy('role')
+51                     ->pluck('total', 'role'),
+52             ]);
+53         }
+54     }

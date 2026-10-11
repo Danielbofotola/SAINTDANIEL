@@ -1,0 +1,76 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\144c63540b62\20261007-172440-bash-call_01a1172ea6507626b3fbd827.txt (23,665 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Structured view (text):
+[powershell — Windows side]
+call_01a0ff1cb228776f8cb73350.txt
+call_01a0ff1cb84977a9b8b64011.txt
+call_01a0ff1cb8d0708ca6a80361.txt
+call_01a0ff1cc0497066b8fe2638.txt
+call_01a0ff1cc10971f5893f2abc.txt
+call_01a0ff1cc88d776a907f96f5.txt
+call_01a0ff1cc9327102bf531fa8.txt
+call_01a0ff1cd0697500957465bf.txt
+call_01a0ff1cd0fc75319762d190.txt
+call_01a0ff1cda537396b1451503.txt
+call_01a0ff1cdb0873cab470a269.txt
+call_01a0ff1ce279702394e09d1b.txt
+call_01a0ff1ce2af767a87a996b7.txt
+call_01a0ff1ce74974ca88e1ec6f.txt
+call_01a0ff1ce7747645891229ee.txt
+call_01a0ff1cfdf074adb1ae12e0.txt
+call_01a0ff1d032574558f3f097f.txt
+call_01a0ff1d04b272b2a348765d.txt
+call_01a0ff1d11be75bdb76711c2.txt
+call_01a0ff1d2846721aac46bacb.txt
+call_01a0ff1d31bb776ebbdd60c4.txt
+call_01a0ff1d43f575fe953e7890.txt
+call_01a0ff1d9b0974beb153cfe5.txt
+call_01a0ff1d9b667490a61bc440.txt
+call_01a0ff1da83b70eb8e6ad931.txt
+call_01a0ff1db9677212a250402c.txt
+call_01a0ff1db9cb714589641a37.txt
+call_01a0ff1dc1a172679a3138a9.txt
+call_01a0ff1dc1fd703a86450ee3.txt
+call_01a0ff1dcb5175b8b67ef2d8.txt
+call_01a0ff1dd73772a4a3e06f52.txt
+call_01a0ff1e01ab75d1b7f3d312.txt
+call_01a0ff1e111c7713b2357e8f.txt
+call_01a0ff1e1641703bb59980fd.txt
+call_01a0ff1e234677749cbee97a.txt
+call_01a0ff1e4143742caec9e70f.txt
+call_01a0ff1e601c7630bdd52997.txt
+call_01a0ff1e861e733dbe50b428.txt
+call_01a0ff1e90a377cea112767a.txt
+call_01a0ff1f61a97497a03a1d8a.txt
+call_01a0ff1f62157768bb50c9e7.txt
+call_01a0ff1f6815779cad41b3d2.txt
+call_01a0ff1f6ef774baa6f0bded.txt
+call_01a0f
+… 21,180 chars elided …
+108b133f27123880ac65c.txt
+call_01a108b58d0e732089bf1dc0.txt
+call_01a108b58d877367bb238ea2.txt
+call_01a108b59f14748e986e54ed.txt
+call_01a108b5ad9a706a8e6b29a7.txt
+call_01a108b5afd77392ae349f21.txt
+call_01a108b5c1e07622bf453d4d.txt
+call_01a108b5ce7f7167a3596b30.txt
+call_01a108b5db2371678b9609d7.txt
+call_01a108b5f4cb73d097b7fb46.txt
+call_01a108b61f5174188541ed35.txt
+call_01a108b62dda7511bed27d2b.txt
+call_01a108b63e4876eeb3447dd7.txt
+call_01a108b63ef270f2a34337ac.txt
+call_01a108b650ed71a898b96e04.txt
+call_01a108b6653d75eeb26bd57b.txt
+call_01a108b67f0473549776e75f.txt
+call_01a108b67f95707093a03aaa.txt
+call_01a108b68aef76c8b70f5002.txt
+call_01a108b68cd271e8a2d6a51d.txt
+call_01a108b69f5374fda6bab2aa.txt
+call_01a108b6c6c771ba81ffedd7.txt
+call_01a108b6d2e1762f90fa1a58.txt
+call_01a108b6e4127747bcdd3
+… 21,981 chars elided …
+0947ec6272bb83a0a96c.txt
+wmark-pending-tools.txt
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

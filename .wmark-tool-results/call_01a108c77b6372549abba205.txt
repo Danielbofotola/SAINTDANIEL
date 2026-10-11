@@ -1,0 +1,16 @@
+190    test('the cashier dashboard links to the payment page', function () {
+191        $comptable = User::factory()->create(['role' => 'comptable']);
+192    
+193        $this->actingAs($comptable)
+194            ->get(route('comptable.dashboard'))
+195            ->assertOk()
+196            ->assertSee(route('comptable.paiements.index'), false);
+197    });
+198    
+199    test('the payment page is restricted to the cashier role', function () {
+200        $admin = User::factory()->create(['role' => 'admin']);
+201    
+202        $this->actingAs($admin)
+203            ->get(route('comptable.paiements.index'))
+204            ->assertForbidden();
+205    });

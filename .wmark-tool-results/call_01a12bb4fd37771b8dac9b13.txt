@@ -1,0 +1,18 @@
+[powershell — Windows side]
+PASS  Tests\Feature\BulletinDocumentTest
+  ✓ the calculator applies the percentage rule and pass threshold                                                0.13s  
+  ✓ a student below the pass threshold is declared failed and listed for retake                                  0.02s  
+  ✓ the bulletin document renders the official layout with the computed results                                  0.06s  
+  ✓ the bulletin document is restricted to administrators                                                        0.02s  
+  ✓ the bulletins list links to the RDC document                                                                 0.02s  
+  ✓ the reference maximum of a branch is displayed even without any note                                         0.03s  
+  ✓ the branch maximums can be recorded from the course form                                                     0.03s  
+  ✓ the settings screen saves the application options and the bulletin settings                                  0.03s  
+  ✓ the bulletin document uses the saved parameters and pass threshold                                           0.02s  
+  ✓ la note maximale d’une évaluation est reprise du barème du cours si elle est omise                           0.02s  
+
+  Tests:    10 passed (67 assertions)
+  Duration: 0.55s
+
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

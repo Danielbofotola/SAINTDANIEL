@@ -1,0 +1,6 @@
+205                            <li><a class="waves-effect waves-dark" href="{{ route('admin.paies.index') }}"><i class="icon-arrow-right"></i>Gestion des salaires</a></li>
+206                            <li><a class="waves-effect waves-dark" href="{{ route('admin.comptabilite.index') }}"><i class="icon-arrow-right"></i>Comptabilité OHADA</a></li>
+207                            <li><a class="waves-effect waves-dark" href="{{ route('admin.eleves.index') }}"><i class="icon-arrow-right"></i>Gestion des documents_eleves</a></li>
+208                            <li><a class="waves-effect waves-dark" href="{{ route('admin.periodes.index') }}"><i class="icon-arrow-right"></i>Gestion des periodes</a></li>
+
+[showing lines 205-208 of 380; read again with offset=209 for more]

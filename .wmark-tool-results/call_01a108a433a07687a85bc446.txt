@@ -1,0 +1,8 @@
+Applied patch: 1 file changed (1 updated)
+Updated app/Http/Controllers/EvaluationController.php (2 hunks applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 2: context matched at lines 41-44 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 44-44:
+44                 'saisieNotesActive' => $this->saisieNotesActive(),
+Landed at lines 10-10 (the file's new text; no re-read needed):
+10     use App\Models\ParametreSysteme;

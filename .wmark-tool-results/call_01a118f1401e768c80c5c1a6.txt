@@ -1,0 +1,118 @@
+1      <?php
+2      
+3      namespace App\Support;
+4      
+5      use App\Models\User;
+6      use Illuminate\Support\Carbon;
+7      use Illuminate\Support\Collection;
+8      use Illuminate\Support\Facades\DB;
+9      use Illuminate\Support\Facades\Schema;
+10     
+11     /**
+12      * Utilisateurs actuellement en ligne, déduits de la table `sessions`
+13      * (pilote de session « database ») : une session est considérée active si sa
+14      * dernière activité date de moins de FENETRE_MINUTES minutes.
+15      */
+16     class PresenceUtilisateurs
+17     {
+18         public const FENETRE_MINUTES = 5;
+19     
+20         /**
+21          * Sessions actives, éventuellement rattachées à leur compte utilisateur.
+22          */
+23         public static function enLigne(): Collection
+24         {
+25             if (! Schema::hasTable('sessions')) {
+26                 return collect();
+27             }
+28     
+29             $depuis = now()->subMinutes(self::FENETRE_MINUTES)->getTimestamp();
+30     
+31             $sessions = DB::table('sessions')
+32                 ->where('last_activity', '>=', $depuis)
+33                 ->orderByDesc('last_activity')
+34                 ->get();
+35     
+36             if ($sessions->isEmpty()) {
+37                 return collect();
+38             }
+39     
+40             $utilisateurs = User::query()
+41                 ->with('professeur')
+42                 ->whereIn('id', $sessions->pluck('user_id')->filter()->unique()->values())
+43                 ->get()
+44                 ->keyBy('id');
+45     
+46             return $sessions->map(function (object $session) use ($utilisateurs) {
+47                 $activite = Carbon::createFromTimestamp((int) $session->last_activity);
+48     
+49                 return (object) [
+50                     'session_id' => $session->id,
+51                     'user' => $session->user_id ? $utilisateurs->get($session->user_id) : null,
+52                     'ip' => $session->ip_address ?: '—',
+53                     'appareil' => self::appareil($session->user_agent),
+54                     'activite' => $activite,
+55                     'minutes' => (int) $activite->diffInMinutes(now()),
+56                     'est_connecte' => (bool) $session->user_id,
+57                 ];
+58             });
+59         }
+60     
+61         /**
+62          * Identifiants des comptes ayant au moins une session active (badges).
+63          *
+64          * @return array<int, int>
+65          */
+66         public static function idsEnLigne(): array
+67         {
+68             if (! Schema::hasTable('sessions')) {
+69                 return [];
+70             }
+71     
+72             $depuis = now()->subMinutes(self::FENETRE_MINUTES)->getTimestamp();
+73     
+74             return DB::table('sessions')
+75                 ->where('last_activity', '>=', $depuis)
+76                 ->whereNotNull('user_id')
+77                 ->distinct()
+78                 ->pluck('user_id')
+79                 ->map(fn ($id) => (int) $id)
+80                 ->all();
+81         }
+82     
+83         /**
+84          * Libellé lisible du navigateur et du système d'exploitation.
+85          */
+86         public static function appareil(?string $userAgent): string
+87         {
+88             $ua = (string) $userAgent;
+89     
+90             if ($ua === '') {
+91                 return 'Appareil inconnu';
+92             }
+93     
+94             $navigateur = 'Navigateur inconnu';
+95             foreach ([
+96                 'Edg' => 'Edge', 'OPR' => 'Opera', 'Chrome' => 'Chrome', 'Firefox' => 'Firefox',
+97                 'Safari' => 'Safari', 'MSIE' => 'Internet Explorer', 'curl' => 'Client API',
+98             ] as $jeton => $nom) {
+99                 if (str_contains($ua, $jeton)) {
+100                    $navigateur = $nom;
+101                    break;
+102                }
+103            }
+104    
+105            $systeme = '';
+106            foreach ([
+107                'Windows' => 'Windows', 'Android' => 'Android', 'iPhone' => 'iPhone', 'iPad' => 'iPad',
+108                'Mac OS' => 'macOS', 'Linux' => 'Linux',
+109            ] as $jeton => $nom) {
+110                if (str_contains($ua, $jeton)) {
+111                    $systeme = ' · '.$nom;
+112                    break;
+113                }
+114            }
+115    
+116            return $navigateur.$systeme;
+117        }
+118    }

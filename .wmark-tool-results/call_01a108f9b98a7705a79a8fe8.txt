@@ -1,0 +1,13 @@
+Applied patch: 1 file changed (1 updated)
+Updated resources/views/admin/archives/index.blade.php (3 hunks applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 51-51 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+  ⚠ hunk 2: context matched at lines 61-62 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+  ⚠ hunk 3: context matched at lines 74-74 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 51-51:
+51                         <thead><tr><th>#</th><th>Année</th><th>Élèves inscrits</th><th>Recettes</th><th>Dépenses</th><th>Solde</th><th>Impayés</th><th>Bulletins</th><th>Clôturée le</th><th>Remarques</th><th>Actions</th></tr></thead>
+Auto-corrected hunk landed at lines 62-63:
+62                                     <td>{{ number_format((float) $archive->total_impayes, 2, ',', ' ') }}</td>
+63                                     <td>{{ $archive->total_bulletins }}</td>
+Auto-corrected hunk landed at lines 76-76:
+76                                 <tr><td colspan="11" class="text-center text-muted">Aucune année clôturée pour le moment.</td></tr>

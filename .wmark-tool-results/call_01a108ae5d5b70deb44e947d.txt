@@ -1,0 +1,18 @@
+Applied patch: 1 file changed (1 updated)
+Updated app/Support/BulletinRdc.php (2 hunks applied)
+Landed at lines 81-81 (the file's new text; no re-read needed):
+81                 $cours = $affectation->cours;
+Landed at lines 89-90 (the file's new text; no re-read needed):
+89                     [$tjObtenu, $tjMaxCalcule] = $this->agrege($notesPeriode, examen: false);
+90                     [$exObtenu, $exMaxCalcule] = $this->agrege($notesPeriode, examen: true);
+Landed at lines 92-98 (the file's new text; no re-read needed):
+92                     // Le maximum de référence (barème saisi sur la branche) prime ;
+93                     // à défaut, on retombe sur le maximum calculé des évaluations.
+94                     $maxTj = $cours?->max_travaux_journaliers !== null ? (float) $cours->max_travaux_journaliers : $tjMaxCalcule;
+95                     $maxEx = $cours?->max_examen !== null ? (float) $cours->max_examen : $exMaxCalcule;
+96     
+97                     $total = $tjObtenu + $exObtenu;
+98                     $max = $maxTj + $maxEx;
+Landed at lines 102-102 (the file's new text; no re-read needed):
+102                        'tj_max' => round($maxTj, 2),
+… 2 more hunks not echoed …

@@ -1,0 +1,21 @@
+78         .nouveau-dest select { background: #3a3b3c; border: none; color: #fff; border-radius: 10px; padding: 9px 12px; min-width: 240px; max-width: 100%; }
+79     
+80         .chat-input-wrap { padding: 10px 12px; border-top: 1px solid var(--chat-divider); background: var(--chat-bg); display: flex; align-items: center; gap: 10px; position: relative; }
+81         .chat-input { flex: 1; background: #3a3b3c; border: none; border-radius: 20px; padding: 9px 16px; color: #fff; outline: none; }
+82         .icon-btn { background: transparent; border: none; color: var(--chat-blue); width: 34px; height: 34px;
+83             border-radius: 50%; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; flex: none; font-size: 1.05rem; }
+84         .icon-btn--send { font-size: 1.35rem; }
+85         .icon-btn--rec { color: #e41e3f; animation: recpulse 1s infinite; }
+86         @keyframes recpulse { 50% { opacity: .5; } }
+87         .rec-status { display: none; align-items: center; gap: 8px; flex: 1; color: #ff8ea0; font-weight: 700; font-size: .85rem; }
+88         .rec-status.on { display: flex; }
+89         .rec-dot { width: 11px; height: 11px; border-radius: 50%; background: #e41e3f; animation: recpulse 1s infinite; }
+90     
+91         /* Barre de réponse citée */
+92         .reply-bar { display: flex; align-items: center; justify-content: space-between; gap: 10px;
+93             margin: 0 12px; padding: 8px 12px; border-left: 3px solid var(--chat-blue); background: var(--chat-card); border-radius: 8px; }
+94         .reply-bar__label { color: var(--chat-blue); font-size: .74rem; font-weight: 700; }
+95         .reply-bar__extrait { color: var(--chat-muted); font-size: .8rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+96         .reply-bar__close { background: transparent; border: none; color: var(--chat-muted); cursor: pointer; }
+
+[showing lines 78-97 of 732; read again with offset=98 for more]

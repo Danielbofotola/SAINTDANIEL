@@ -1,0 +1,39 @@
+1      <?php
+2      
+3      namespace App\Http\Controllers;
+4      
+5      use App\Models\ParametreSysteme;
+6      use Illuminate\Http\RedirectResponse;
+7      use Illuminate\Http\Request;
+8      use Illuminate\View\View;
+9      
+10     class ParametreSystemeController extends Controller
+11     {
+12         public function edit(): View
+13         {
+14             return view('admin.profile.settings', [
+15                 'settings' => ParametreSysteme::query()->first() ?? ParametreSysteme::defaults(),
+16             ]);
+17         }
+18     
+19         public function update(Request $request): RedirectResponse
+20         {
+21             $data = $request->validate([
+22                 'nom_etablissement' => ['required', 'string', 'max:150'],
+23                 'nom_court' => ['required', 'string', 'max:60'],
+24                 'telephone' => ['nullable', 'string', 'max:30'],
+25                 'email' => ['nullable', 'email', 'max:150'],
+26                 'adresse' => ['nullable', 'string', 'max:1000'],
+27             ], [
+28                 'nom_etablissement.required' => 'Le nom de l’établissement est obligatoire.',
+29                 'nom_court.required' => 'Le nom court de l’établissement est obligatoire.',
+30                 'email.email' => 'L’adresse e-mail de l’établissement n’est pas valide.',
+31             ]);
+32     
+33             $settings = ParametreSysteme::query()->first() ?? ParametreSysteme::create(ParametreSysteme::defaults()->getAttributes());
+34             $settings->update($data);
+35     
+36             return redirect()->route('admin.profile.settings')
+37                 ->with('success', 'Les paramètres de l’établissement ont été mis à jour.');
+38         }
+39     }

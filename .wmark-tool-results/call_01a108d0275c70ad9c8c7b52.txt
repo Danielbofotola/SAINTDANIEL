@@ -1,0 +1,14 @@
+[powershell — Windows side]
+PASS  Tests\Feature\InscriptionValidationTest
+  ✓ a pending inscription is validated when the cashier encashes the registration fee                            0.19s  
+  ✓ paying a regular fee does not validate the inscription                                                       0.02s  
+  ✓ the admin payment page also validates the inscription                                                        0.02s  
+  ✓ the registration fee type is detected by flag or by name                                                     0.01s  
+  ✓ the enrolment form creates a pending inscription awaiting payment                                            0.02s  
+
+  Tests:    5 passed (12 assertions)
+  Duration: 0.43s
+
+==exit 0==
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

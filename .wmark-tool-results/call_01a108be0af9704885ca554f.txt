@@ -1,0 +1,43 @@
+90                 'reference_transaction' => ['nullable', 'string', 'max:100'],
+91                 'date_paiement' => ['nullable', 'date'],
+92             ], [
+93                 'inscription_id.required' => 'Sélectionnez un élève inscrit.',
+94                 'frais_scolaire_id.required' => 'Sélectionnez un tarif.',
+95                 'montant_paye.required' => 'Le montant payé est obligatoire.',
+96                 'montant_paye.min' => 'Le montant payé doit être supérieur à zéro.',
+97             ]);
+98     
+99             $inscription = Inscription::findOrFail($data['inscription_id']);
+100            $frais = FraisScolaire::findOrFail($data['frais_scolaire_id']);
+101    
+102            if ((int) $frais->classe_id !== (int) $inscription->classe_id) {
+103                return back()->withInput()->with('error', 'Ce tarif ne correspond pas à la classe de l’élève.');
+104            }
+105    
+106            $prefix = 'REC-'.$annee->libelle.'-';
+107            $numero = Paiement::where('num_recu', 'like', $prefix.'%')->count() + 1;
+108            do {
+109                $numRecu = $prefix.str_pad((string) $numero++, 4, '0', STR_PAD_LEFT);
+110            } while (Paiement::where('num_recu', $numRecu)->exists());
+111    
+112            Paiement::create([
+113                'num_recu' => $numRecu,
+114                'inscription_id' => $data['inscription_id'],
+115                'frais_scolaire_id' => $data['frais_scolaire_id'],
+116                'montant_paye' => $data['montant_paye'],
+117                'mode_paiement' => $data['mode_paiement'],
+118                'reference_transaction' => $data['reference_transaction'] ?? null,
+119                'date_paiement' => $data['date_paiement'] ?? now(),
+120                'statut' => 'actif',
+121            ]);
+122    
+123            return redirect()->route('admin.paiements.index')->with('success', 'Le paiement a été enregistré sous le reçu '.$numRecu.'.');
+124        }
+125    
+126        public function destroy(Paiement $paiement): RedirectResponse
+127        {
+128            $paiement->delete();
+129    
+130            return redirect()->route('admin.paiements.index')->with('success', 'Le paiement a été supprimé.');
+131        }
+132    }

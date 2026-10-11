@@ -1,0 +1,13 @@
+373        // Panneau de stickers façon messagerie : onglets par pack, planche des
+374        // récents, et mémorisation locale.
+375        expect($html)
+376            ->toContain('id="stickerTabs"')
+377            ->toContain('id="grilleRecents"')
+378            ->toContain('data-pack="ecole"')
+379            ->toContain('data-pack="visages"')
+380            ->toContain('window.ouvrirPack')
+381            ->toContain('window.majGrilleRecents')
+382            ->toContain('wmark_stickers_recents');
+383    });
+
+[showing lines 373-384 of 484; read again with offset=385 for more]

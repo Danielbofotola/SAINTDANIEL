@@ -1,0 +1,28 @@
+106                                    </tr>
+107                                </thead>
+108                                <tbody>
+109                                    @forelse ($evaluations as $evaluation)
+110                                        <tr>
+111                                            <td>{{ $evaluation->date_evaluation?->format('d/m/Y') ?? '—' }}</td>
+112                                            <td class="fw-bold">{{ $evaluation->titre }}</td>
+113                                            <td>{{ $types[$evaluation->type_evaluation] ?? $evaluation->type_evaluation }}</td>
+114                                            <td>{{ $evaluation->affectation?->classe?->nom ?? '—' }}</td>
+115                                            <td>{{ $evaluation->affectation?->cours?->intitule ?? '—' }}</td>
+116                                            <td>
+117                                                @php($prof = $evaluation->affectation?->professeur)
+118                                                {{ $prof ? trim($prof->nom.' '.$prof->prenom) : '—' }}
+119                                            </td>
+120                                            <td class="text-right">{{ (float) $evaluation->max_note }}</td>
+121                                            <td class="text-right">{{ $evaluation->notes_count }}</td>
+122                                        </tr>
+123                                    @empty
+124                                        <tr><td colspan="8" class="text-center text-muted">Aucune évaluation programmée pour ce filtre.</td></tr>
+125                                    @endforelse
+126                                </tbody>
+127                            </table>
+128                        </div>
+129                    </div>
+130                </div>
+131            </div>
+132        </div>
+133    @endsection

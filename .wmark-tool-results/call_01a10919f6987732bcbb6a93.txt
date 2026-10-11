@@ -1,0 +1,22 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\e1ce9c26600a\20261004-234725-apply_patch-call_01a10919f6987732bcbb6a93.txt (547 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+Applied patch: 1 file changed (1 updated)
+Updated routes/web.php (2 hunks applied)
+Landed at lines 13-15 (the file's new text; no re-read needed):
+13     use App\Http\Controllers\ProfesseurEspaceController;
+14     use App\Http\Controllers\ProfesseurEvaluationController;
+15     use App\Http\Controllers\ProfesseurPresenceController;
+Landed at lines 200-211 (the file's new text; no re-read needed):
+200        // Espace enseignant : une page par fonction.
+201        Route::get('/professeur/planning'
+
+... 262 chars truncated ...
+
+        Route::get('/professeur/cours/{affectation}', [ProfesseurEspaceController::class, 'coursShow'])->middleware('role:professeur')->name('professeur.cours.show');
+204        Route::get('/professeur/eleves', [ProfesseurEspaceController::class, 'eleves'])->middleware('role:professeur')->name('professeur.eleves');
+205        Route::get('/professeur/eleves/{eleve}', [ProfesseurEspaceController::class, 'eleveShow'])->middleware('role:professeur')->name('professeur.eleves.show');
+206        Route::get('/professeur/evaluations', [ProfesseurEvaluationController::class, 'index'])->middleware('role:professeur')->name('professeur.evaluations');
+207        Route::post('/professeur/evaluations', [ProfesseurEvaluationController::class, 'store'])->middleware('role:professeur')->name('professeur.evaluations.store');
+208        Route::get('/professeur/evaluations/{evaluation}/notes', [ProfesseurEvaluationController::class, 'notes'])->middleware('role:professeur')->name('professeur.notes');
+209        Route::post('/professeur/evaluations/{evaluation}/notes', [ProfesseurEvaluationController::class, 'storeNotes'])->middleware('role:professeur')->name('professeur.notes.store');
+210        Route::get('/professeur/presences', [ProfesseurPresenceController::class, 'index'])->middleware('role:professeur')->name('professeur.presences');
+211        Route::post('/professeur/presences', [ProfesseurPresenceController::class, 'store'])->middleware('role:professeur')->name('professeur.presences.store');

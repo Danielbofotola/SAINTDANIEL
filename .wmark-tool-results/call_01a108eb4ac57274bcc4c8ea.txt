@@ -1,0 +1,6 @@
+Applied patch: 1 file changed (1 updated)
+Updated resources/views/admin/professeurs/index.blade.php (1 hunk applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 61-62 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 62-62:
+62                                         <a href="{{ route('admin.professeurs.edit', $professeur) }}" class="btn btn-sm btn-warning" title="Modifier"><i class="fa fa-pencil"></i></a>

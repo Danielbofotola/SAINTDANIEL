@@ -1,0 +1,11 @@
+[powershell — Windows side]
+NotesController.php:86 return back()->with('error', 'La saisie des notes est désactivée (« Commuter les modules »).');
+NotesController.php:173 return (bool) ParametreSysteme::current()->saisie_notes_active;
+EvaluationController.php:80 return redirect()->route('admin.evaluations.index')->with('error', 'La saisie des notes est désactivée (« Commuter les modules »).');
+EvaluationController.php:100 return back()->with('error', 'La saisie des notes est désactivée (« Commuter les modules »).');
+EvaluationController.php:106 return back()->with('error', 'La période « '.$evaluation->periode->nom.' » est clôturée : la saisie des notes est verrouillée.');
+EvaluationController.php:163 * L'accès à la saisie des notes dépend du commutateur « Commuter les modules ».
+EvaluationController.php:169 return (bool) ParametreSysteme::current()->saisie_notes_active;
+PortailParentController.php:158 abort_unless($parametres->portail_parents_actif, 404);
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

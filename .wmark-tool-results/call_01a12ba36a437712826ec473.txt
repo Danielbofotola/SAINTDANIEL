@@ -1,0 +1,1 @@
+Error: invalid patch — line 21: 'resources/views/comptable/paiements.blade.php' appears in more than one section (first at line 2) — a patch touches each path once; merge the hunks into a single '*** Update File:' section

@@ -1,0 +1,11 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\144c63540b62\20261007-172431-bash-call_01a1172e3992745d80b0b019.txt (730 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+[powershell — Windows side]
+=== MESURE ===
+' + JSON.stringify(o);
+{"filTrouve":true,"barreTrouvee":true,"filClientH":441,"filScrollH":2931,"filDefileEnInterne":true,"pageScrollH":749,"fenetreH":749,"pageDefile":false,"barreVisible_avantScrollPage":true,"barreVisible_apresScrollPage":true,"fleche_visible_en_remontant":true,"fleche_visible_en_bas":false,"fleche_auDessus_de_la_barre":true,"overflow_fil":"auto","position_barre":"sticky"}
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.micros
+
+... 56 chars truncated ...
+
+<TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="information" RefId="2"><TN RefId="1"><T>System.Management.Automation.InformationRecord</T><T>System.Object</T></TN><ToString>=== MESURE ===</ToString><Props><Obj N="MessageData" RefId="3"><TN RefId="2"><T>System.Management.Automation.HostInformationMessage</T><T>System.Object</T></TN><ToString>=== MESURE ===</ToString><Props><S N="Message">=== MESURE ===</S><B N="NoNewLine">false</B><S N="ForegroundColor">Gray</S><S N="BackgroundColor">Black</S></Props></Obj><S N="Source">Write-Host</S><DT N="TimeGenerated">2026-10-07T17:24:31.5360386+01:00</DT><Obj N="Tags" RefId="4"><TN RefId="3"><T>System.Collections.Generic.List`1[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</T><T>System.Object</T></TN><LST><S>PSHOST</S></LST></Obj><S N="User">DANIELBOFOTOLA\danie</S><S N="Computer">DanielBofotola</S><U32 N="ProcessId">12732</U32><U32 N="NativeThreadId">17424</U32><U32 N="ManagedThreadId">7</U32></Props></Obj></Objs>

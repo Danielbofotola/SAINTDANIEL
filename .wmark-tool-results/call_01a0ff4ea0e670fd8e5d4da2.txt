@@ -1,0 +1,16 @@
+17         @php
+18             $roleLabels = ['admin' => 'Administrateur', 'prefetture' => 'Préfecture', 'titulaire' => 'Titulaire', 'professeur' => 'Professeur', 'comptable' => 'Comptable'];
+19         @endphp
+20         <header class="profile-header p-3 d-flex align-items-center justify-content-between">
+21             <a class="text-white" href="{{ route('home') }}"><i class="fa fa-arrow-left"></i> Tableau de bord</a>
+22             <form method="POST" action="{{ route('logout') }}">@csrf<button class="btn btn-light btn-sm" type="submit">Déconnexion</button></form>
+23         </header>
+24         @include('partials.impersonation-banner')
+25         <main class="container py-4 profile-content">
+26             <div class="app-title">
+27                 <div><h1><i class="fa fa-user"></i> Mon profil</h1><p>Vos informations personnelles et vos coordonnées.</p></div>
+28                 <a class="btn btn-primary" href="{{ route('profile.edit') }}"><i class="fa fa-pencil"></i> Modifier mon profil</a>
+29             </div>
+30             @if (session('success'))<div class="alert alert-success">{{ session('success') }}</div>@endif
+
+[showing lines 17-30 of 52; read again with offset=31 for more]

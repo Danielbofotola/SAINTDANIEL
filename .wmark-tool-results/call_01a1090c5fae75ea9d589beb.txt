@@ -1,0 +1,11 @@
+Applied patch: 2 files changed (2 updated)
+Updated resources/views/admin/dashboard.blade.php (1 hunk applied)
+Updated resources/views/admin/profile/show.blade.php (1 hunk applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 310-310 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 311-311:
+311                <li><a class="app-menu__item" href="{{ route('admin.statistiques.index') }}"><i class="app-menu__icon fa fa-line-chart"></i><span class="app-menu__label">Statistiques &amp; évolution</span></a></li>
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 206-206 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 207-207:
+207                            <li><a class="waves-effect waves-dark" href="{{ route('admin.statistiques.index') }}"><i class="icon-arrow-right"></i>Statistiques &amp; évolution</a></li>

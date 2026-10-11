@@ -1,0 +1,20 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/DeliberationTest.php (1 hunk applied)
+Landed at lines 468-513 (the file's new text; no re-read needed):
+468    
+469    test('un passage explicite franchit les cycles et prime sur le niveau', function () {
+470        $s = scenarioDeliberation();
+471    
+472        // Autre cycle : aucune classe n'y a l'ordre 3, le passage ne pouvait pas être déduit.
+473        $secondaire = DB::table('cycles')->insertGetId([
+474            'nom' => 'Secondaire', 'statut' => 'actif', 'created_at' => now(), 'updated_at' => now(),
+475        ]);
+      … 30 lines omitted …
+506        // Une classe ne peut pas être sa propre suivante.
+507        $this->actingAs($s['alice'])->put(route('admin.classes.update', $nouvelle), [
+508            'cycle_id' => $nouvelle->cycle_id,
+509            'nom' => $nouvelle->nom,
+510            'classe_suivante_id' => $nouvelle->id,
+511            'statut' => 'actif',
+512        ])->assertSessionHasErrors('classe_suivante_id');
+513    });

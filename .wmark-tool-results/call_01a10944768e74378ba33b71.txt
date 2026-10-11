@@ -1,0 +1,30 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\e1ce9c26600a\20261005-003518-bash-call_01a10944768e74378ba33b71.txt (503 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+[powershell — Windows side]
+Parse error: syntax error, unexpected token "default", expecting "]" in app\Support\Raccourcis.php on line 57
+
+
+   FAIL  Tests\Feature\AdminUserManagementTest
+  ⨯ a professor without an assigned teacher record can open the professor dashboard                              1.43s 
+ 
+  ⨯ a professor dashboard shows the teacher assigned courses and evaluations                                     0.85s 
+ 
+  ⨯ admin dashboard detail action supplies the student data to its modal                                         0.06s 
+ 
+  ✓ a student below the pass threshold is declared failed and listed for retake                                  0.02s 
+ 
+   FAIL  Tests\Feature\ComptableCaisseTest
+  ⨯ the cashier dashboard links to the payment page                                                              3.02s 
+ 
+   FAIL  Tests\Feature\CyclesPagesTest
+
+   ParseError 
+
+  syntax error, unexpected token "default", expecting "]"
+
+  at app\Support\Raccourcis.php:57
+     53▕                     ['Dépenses & natures', 'fa-shopping-cart', route('comptable.depenses.index')],
+     54▕                     ['Paie & salaires', 'fa-money', route('comptable.paies.index')],
+
+
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">2</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

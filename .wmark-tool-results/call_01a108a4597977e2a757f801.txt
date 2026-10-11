@@ -1,0 +1,23 @@
+Applied patch: 1 file changed (1 updated)
+Updated app/Http/Controllers/EvaluationController.php (3 hunks applied)
+Landed at lines 77-77 (the file's new text; no re-read needed):
+77         public function notes(Evaluation $evaluation): View|RedirectResponse
+Landed at lines 79-82 (the file's new text; no re-read needed):
+79             if (! $this->saisieNotesActive()) {
+80                 return redirect()->route('admin.evaluations.index')->with('error', 'La saisie des notes est désactivée (« Commuter les modules »).');
+81             }
+82     
+Landed at lines 99-102 (the file's new text; no re-read needed):
+99             if (! $this->saisieNotesActive()) {
+100                return back()->with('error', 'La saisie des notes est désactivée (« Commuter les modules »).');
+101            }
+102    
+Landed at lines 155-162 (the file's new text; no re-read needed):
+155    
+156        /**
+157         * L'accès à la saisie des notes dépend du commutateur « Commuter les modules ».
+158         */
+159        private function saisieNotesActive(): bool
+160        {
+161            return ParametreSysteme::current()->saisie_notes_active;
+162        }

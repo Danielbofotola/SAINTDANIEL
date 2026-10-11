@@ -1,0 +1,21 @@
+1      <?php
+2      
+3      namespace App\Http\Controllers;
+4      
+5      use App\Models\Paiement;
+6      use Illuminate\View\View;
+7      
+8      /**
+9       * Reçu d'un paiement : document imprimable reprenant l'école, l'élève, le tarif,
+10      * la période, le montant encaissé et le reste à payer.
+11      */
+12     class RecuController extends Controller
+13     {
+14         public function show(Paiement $paiement): View
+15         {
+16             $paiement->load([
+17                 'inscription.eleve', 'inscription.classe', 'inscription.anneeScolaire',
+18                 'fraisScolaire.typeFrais', 'periode',
+19             ]);
+
+[showing lines 1-20 of 36; read again with offset=21 for more]

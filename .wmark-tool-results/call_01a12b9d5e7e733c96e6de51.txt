@@ -1,0 +1,1 @@
+Updated app/Models/ParametreSysteme.php: replaced 5 lines with 3 lines

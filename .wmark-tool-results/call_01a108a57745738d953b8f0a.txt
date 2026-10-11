@@ -1,0 +1,10 @@
+154        }
+155    
+156        /**
+157         * L'accès à la saisie des notes dépend du commutateur « Commuter les modules ».
+158         */
+159        private function saisieNotesActive(): bool
+160        {
+161            return ParametreSysteme::current()->saisie_notes_active;
+162        }
+163    }

@@ -1,0 +1,20 @@
+1      <?php
+2      
+3      namespace App\Models;
+4      
+5      use Illuminate\Database\Eloquent\Model;
+6      
+7      class ParametreSysteme extends Model
+8      {
+9          protected $table = 'parametres_systeme';
+10     
+11         protected $fillable = ['nom_etablissement', 'nom_court', 'telephone', 'email', 'adresse'];
+12     
+13         public static function defaults(): self
+14         {
+15             return new self([
+16                 'nom_etablissement' => 'COMPLEXE SCOLAIRE BABAZIN',
+17                 'nom_court' => 'C.S. Moty',
+18             ]);
+19         }
+20     }

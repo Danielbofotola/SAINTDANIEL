@@ -1,0 +1,33 @@
+[powershell — Windows side]
+</table>\n
+\n
+        <div style="margin-top: 15px; font-size: 8px;">\n
+            (1) Biffer la mention inutile<br>\n
+            Note importante : Le Bulletin est sans valeur s'il est raturé ou surchargé.\n
+            <span style="float: right;">EBE/P.S./010</span>\n
+        </div>\n
+    </div>\n
+</div>\n
+\n
+</body>\n
+</html>\n
+
+
+  To contain: Bulletin annuel — Secondaire
+
+  at tests\Feature\BulletinDocumentTest.php:461
+    457▕ 
+    458▕     $this->actingAs($admin)
+    459▕         ->get(route('admin.bulletins.document', $inscriptionId))
+    460▕         ->assertOk()
+  ➜ 461▕         ->assertSee('Bulletin annuel — Secondaire')
+    462▕         ->assertSee('ANNÉE SCOLAIRE 2026-2027');
+    463▕ });
+    464▕
+
+
+  Tests:    1 failed, 13 passed (79 assertions)
+  Duration: 0.75s
+
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

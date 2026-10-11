@@ -1,0 +1,26 @@
+356    
+357            return redirect()->route('login')->with('success', 'Votre compte administrateur a été désactivé.');
+358        }
+359    
+360        public function toggleAccount(User $user): RedirectResponse
+361        {
+362            if ($user->is(auth()->user())) {
+363                return back()->with('error', 'Vous ne pouvez pas désactiver votre propre compte depuis cette page.');
+364            }
+365    
+366            $user->update(['statut' => $user->statut === 'actif' ? 'inactif' : 'actif']);
+367    
+368            return back()->with('success', 'Le statut du compte a été mis à jour.');
+369        }
+370    
+371        public function destroyAccount(User $user): RedirectResponse
+372        {
+373            if ($user->is(auth()->user())) {
+374                return back()->with('error', 'Vous ne pouvez pas supprimer votre propre compte.');
+375            }
+376    
+377            $user->delete();
+378    
+379            return back()->with('success', 'Le compte a été supprimé définitivement.');
+380        }
+381    }

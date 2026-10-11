@@ -1,0 +1,6 @@
+Applied patch: 1 file changed (1 updated)
+Updated bootstrap/app.php (1 hunk applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 17-17 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 18-18:
+18             $middleware->appendToGroup('web', \App\Http\Middleware\FlashGlobal::class);

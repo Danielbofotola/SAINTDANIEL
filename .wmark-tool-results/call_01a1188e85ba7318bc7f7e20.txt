@@ -1,0 +1,81 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\b493c9bc81dc\20261007-234900-bash-call_01a1188e85ba7318bc7f7e20.txt (4,475 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Structured view (text):
+[powershell — Windows side]
+Path                                                    
+----                                                    
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole
+
+PSPath            : Microsoft.PowerShell.Core\FileSystem::C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\.wma
+                    rk-subagents
+PSParentPath      : Microsoft.PowerShell.Core\FileSystem::C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole
+PSChildName       : .wmark-subagents
+PSDrive           : C
+PSProvider        : Microsoft.PowerShell.Core\FileSystem
+PSIsContainer     : True
+Name              : .wmark-subagents
+FullName          : C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\.wmark-subagents
+Parent            : ecole
+Exists            : True
+Root              : C:\
+Extension         : .wmark-subagents
+CreationTime      : 07/10/2026 17:50:18
+CreationTimeUtc   : 07/10/2026 16:50:18
+LastAccessTime    : 07/10/2026 23:35:57
+LastAccessTimeUtc : 07/10/2026 22:35:57
+LastWriteTime     : 07/10/2026 17:50:18
+LastWriteTimeUtc  : 07/10/2026 16:50:18
+Attributes        : Directory
+Mode              : d-----
+BaseName          : .wmark-subagents
+Target            : {}
+LinkType          : 
+
+
+PSPath            : Microsoft.PowerShell.Core\FileSystem::C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\.wma
+                    rk-tool-results
+PSParentPath      : Microsoft.PowerShell.Core\FileSystem::C:\Users\danie\AppData\Roaming\Composer\vendor\bin\eco
+… 5,434 chars elided …
+ 28/09/2026 13:26:14
+LastWriteTimeUtc  : 28/09/2026 12:26:14
+Attributes        : Directory
+Mode              : d-----
+BaseName          : node_modules
+Target            : {}
+LinkType          : 
+
+
+PSPath            : Microsoft.PowerShell.Core\FileSystem::C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\publ
+                    ic
+PSParentPath      : Microsoft.PowerShell.Core\FileSystem::C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole
+PSChildName       : public
+PSDrive           : C
+PSProvider        : Microsoft.PowerShell.Core\FileSystem
+PSIsContainer     : True
+Name              : public
+FullName          : C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\public
+Parent            : ecole
+Exists            : True
+Root              : C:\
+Extension         : 
+Creatio
+… 6,234 chars elided …
+me          : package.json
+
+
+LastWriteTime : 14/03/2026 09:54:00
+Length        : 1322
+Name          : phpunit.xml
+
+
+LastWriteTime : 14/03/2026 09:54:00
+Length        : 3911
+Name          : README.md
+
+
+LastWriteTime : 14/03/2026 09:54:00
+Length        : 436
+Name          : vite.config.js
+
+
+
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

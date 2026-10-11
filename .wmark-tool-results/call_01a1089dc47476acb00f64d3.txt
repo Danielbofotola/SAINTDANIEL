@@ -1,0 +1,13 @@
+[powershell — Windows side]
+filtre "" -> visibles: 3 [Mwamba Test Aline — 3e A | Ilunga Mukendi David — 3e A | Kalala Mbuyi Sarah — 4e B]
+filtre "ilunga" -> visibles: 1 [Ilunga Mukendi David — 3e A]
+filtre "Aline" -> visibles: 1 [Mwamba Test Aline — 3e A]
+filtre "zzz" -> visibles: 0 []
+filtre "  " -> visibles: 3 [Mwamba Test Aline — 3e A | Ilunga Mukendi David — 3e A | Kalala Mbuyi Sarah — 4e B]
+---
+les deux vides        -> MASQUÉ
+élève seul            -> MASQUÉ
+tarif seul            -> MASQUÉ
+1-1 (90 sur 150)      -> exigé 150.00 · payé 90.00 · reste 60.00
+1-1 avec paye=200     -> exigé 150.00 · payé 200.00 · reste 0.00
+2-1 (aucun paiement)  -> exigé 150.00 · payé 0.00 · reste 150.00

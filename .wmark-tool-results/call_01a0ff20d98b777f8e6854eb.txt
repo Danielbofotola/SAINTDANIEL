@@ -1,0 +1,15 @@
+110    test('deactivating the current school year turns it off', function () {
+111        $admin = User::factory()->create(['role' => 'admin']);
+112        $annee = AnneeScolaire::create([
+113            'libelle' => '2025-2026',
+114            'date_debut' => '2025-09-01',
+115            'date_fin' => '2026-07-15',
+116            'is_encours' => true,
+117        ]);
+118    
+119        $this->actingAs($admin)
+120            ->patch(route('admin.annees.toggle', $annee))
+121            ->assertRedirect();
+122    
+123        expect($annee->fresh()->is_encours)->toBeFalse();
+124    });

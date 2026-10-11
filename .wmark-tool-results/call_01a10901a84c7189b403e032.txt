@@ -1,0 +1,9 @@
+Applied patch: 1 file changed (1 updated)
+Updated app/Models/ArchiveAnnee.php (2 hunks applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 21-22 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+  ⚠ hunk 2: context matched at lines 33-34 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 22-22:
+22             'total_salaires', 'nombre_paies',
+Auto-corrected hunk landed at lines 36-36:
+36                 'total_salaires' => 'decimal:2',

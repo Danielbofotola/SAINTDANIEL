@@ -1,0 +1,10 @@
+530            'libelle' => '2024-2025', 'date_debut' => '2024-09-01', 'date_fin' => '2025-07-15', 'statut' => 'actif',
+531        ]);
+532    
+533        $this->actingAs($s['alice'])->post(route('admin.deliberations.appliquer'), [
+534            'annee_scolaire_id' => $s['annee']->id,
+535            'annee_cible_id' => $ancienne->id,
+536        ])->assertSessionHas('error');
+537    
+538        expect(Inscription::where('annee_scolaire_id', $ancienne->id)->count())->toBe(0);
+539    });

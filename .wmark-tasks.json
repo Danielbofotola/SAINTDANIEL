@@ -1,0 +1,76 @@
+{
+  "tasks": [
+    {
+      "id": "migr",
+      "description": "Migration: devise sur frais_scolaires, devise/taux/montant_recu sur paiements, devise/taux_change sur parametres_systeme",
+      "status": "done",
+      "criteria": [],
+      "verification_log": [],
+      "created_at": "2026-10-11T15:30:57.307244+00:00"
+    },
+    {
+      "id": "monnaie",
+      "description": "Helper App\\Support\\Monnaie (format/symbole/convertir) + mod\u00e8les (Paiement, FraisScolaire, ParametreSysteme)",
+      "status": "done",
+      "criteria": [],
+      "verification_log": [],
+      "created_at": "2026-10-11T15:30:57.307244+00:00"
+    },
+    {
+      "id": "caisse",
+      "description": "Caisse::enregistrer : devise re\u00e7ue + taux \u2192 montant_paye converti en devise du tarif",
+      "status": "done",
+      "criteria": [],
+      "verification_log": [],
+      "created_at": "2026-10-11T15:30:57.307244+00:00"
+    },
+    {
+      "id": "forms",
+      "description": "Formulaires de paiement (admin + comptable) : devise + taux, affichage format\u00e9",
+      "status": "done",
+      "criteria": [],
+      "verification_log": [],
+      "created_at": "2026-10-11T15:30:57.307244+00:00"
+    },
+    {
+      "id": "frais",
+      "description": "Frais: devise par ligne + r\u00e9glage global (settings)",
+      "status": "done",
+      "criteria": [],
+      "verification_log": [],
+      "created_at": "2026-10-11T15:30:57.307244+00:00"
+    },
+    {
+      "id": "recu",
+      "description": "Re\u00e7u: devise et montants",
+      "status": "verified",
+      "criteria": [
+        "Le re\u00e7u affiche la devise re\u00e7ue et le montant converti"
+      ],
+      "verification_log": [
+        {
+          "ts": "2026-10-11T15:39:14.059149+00:00",
+          "evidence": "Test re\u00e7u (ComptableCaisseTest) : paiement enregistr\u00e9 devise=CDF, taux=2800, montant_recu=168000, montant_paye=60 (USD) \u2192 le re\u00e7u affiche '168 000 FC', 'taux 2 800,00' et '60,00 $'. Suite compl\u00e8te : 275 passed (1764 assertions)."
+        }
+      ],
+      "created_at": "2026-10-11T15:30:57.307244+00:00"
+    },
+    {
+      "id": "tests",
+      "description": "Tests: devise/taux/conversion + suite compl\u00e8te verte",
+      "status": "verified",
+      "criteria": [
+        "php artisan test vert",
+        "conversion CDF\u2192USD et USD\u2192CDF correcte",
+        "affichage CDF sans d\u00e9cimale"
+      ],
+      "verification_log": [
+        {
+          "ts": "2026-10-11T15:38:42.253692+00:00",
+          "evidence": "php artisan test \u2192 275 passed (1761 assertions) ; migration 2026_10_25 appliqu\u00e9e. Tests: conversion 140 000 FC \u00f7 2800 = 50 $, format '50,00 $' / '140 000 FC'."
+        }
+      ],
+      "created_at": "2026-10-11T15:30:57.307244+00:00"
+    }
+  ]
+}

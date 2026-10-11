@@ -1,0 +1,36 @@
+1      <?xml version="1.0" encoding="UTF-8"?>
+2      <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+3               xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+4               bootstrap="vendor/autoload.php"
+5               colors="true"
+6      >
+7          <testsuites>
+8              <testsuite name="Unit">
+9                  <directory>tests/Unit</directory>
+10             </testsuite>
+11             <testsuite name="Feature">
+12                 <directory>tests/Feature</directory>
+13             </testsuite>
+14         </testsuites>
+15         <source>
+16             <include>
+17                 <directory>app</directory>
+18             </include>
+19         </source>
+20         <php>
+21             <env name="APP_ENV" value="testing"/>
+22             <env name="APP_MAINTENANCE_DRIVER" value="file"/>
+23             <env name="BCRYPT_ROUNDS" value="4"/>
+24             <env name="BROADCAST_CONNECTION" value="null"/>
+25             <env name="CACHE_STORE" value="array"/>
+26             <env name="DB_CONNECTION" value="sqlite"/>
+27             <env name="DB_DATABASE" value=":memory:"/>
+28             <env name="DB_URL" value=""/>
+29             <env name="MAIL_MAILER" value="array"/>
+30             <env name="QUEUE_CONNECTION" value="sync"/>
+31             <env name="SESSION_DRIVER" value="array"/>
+32             <env name="PULSE_ENABLED" value="false"/>
+33             <env name="TELESCOPE_ENABLED" value="false"/>
+34             <env name="NIGHTWATCH_ENABLED" value="false"/>
+35         </php>
+36     </phpunit>

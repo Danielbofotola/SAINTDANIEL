@@ -1,0 +1,16 @@
+[powershell — Windows side]
+public\azzara\js\plugin\datatables\datatables.min.js (83 Ko)
+public\azzara\sass\azzara\plugins\_datatables.scss (5 Ko)
+=== version dans le bundle azzara ===
+DataTables 1.10.16
+DataTables 1.10.16
+=== jQuery present dans le layout prefecture ? ===
+12: <script src="{{ asset('azzara/js/plugin/webfont/webfont.min.js') }}"></script>
+246: <script src="{{ asset('azzara/js/core/jquery.3.2.1.min.js') }}"></script>
+247: <script src="{{ asset('azzara/js/core/popper.min.js') }}"></script>
+248: <script src="{{ asset('azzara/js/core/bootstrap.min.js') }}"></script>
+249: <script src="{{ asset('azzara/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js') }}"></script>
+250: <script src="{{ asset('azzara/js/plugin/chart.js/chart.min.js') }}"></script>
+251: <script src="{{ asset('azzara/js/ready.min.js') }}"></script>
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

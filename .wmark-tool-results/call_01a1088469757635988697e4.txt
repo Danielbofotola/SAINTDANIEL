@@ -1,0 +1,51 @@
+1      <?php
+2      
+3      namespace App\Http\Controllers;
+4      
+5      use App\Models\Professeurs;
+6      use Illuminate\Http\RedirectResponse;
+7      use Illuminate\Http\Request;
+8      use Illuminate\Support\Facades\Storage;
+9      use Illuminate\View\View;
+10     
+11     class ProfesseurController extends Controller
+12     {
+13         public function create(): View
+14         {
+15             return view('admin.professeurs.create');
+16         }
+17     
+18         public function store(Request $request): RedirectResponse
+19         {
+20             $data = $request->validate([
+21                 'nom' => ['required', 'string', 'max:50'],
+22                 'postnom' => ['required', 'string', 'max:50'],
+23                 'prenom' => ['required', 'string', 'max:50'],
+24                 'sexe' => ['required', 'in:M,F'],
+25                 'specialite' => ['required', 'string', 'max:100'],
+26                 'telephone' => ['required', 'string', 'max:20'],
+27                 'email' => ['required', 'email', 'max:100', 'unique:professeurs,email'],
+28                 'photo' => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:2048'],
+29                 'statut' => ['required', 'in:actif,inactif'],
+30             ], [
+31                 'email.unique' => 'Cette adresse e-mail est déjà utilisée.',
+32                 'photo.max' => 'La photo ne doit pas dépasser 2 Mo.',
+33                 'photo.mimes' => 'La photo doit être au format JPG, JPEG ou PNG.',
+34             ]);
+35     
+36             $year = now()->format('Y');
+37             $number = Professeurs::where('matricule', 'like', 'PROF-'.$year.'-%')->count() + 1;
+38             do {
+39                 $data['matricule'] = 'PROF-'.$year.'-'.str_pad((string) $number, 4, '0', STR_PAD_LEFT);
+40                 $number++;
+41             } while (Professeurs::where('matricule', $data['matricule'])->exists());
+42     
+43             if ($request->hasFile('photo')) {
+44                 $data['photo'] = $request->file('photo')->store('professeurs/photos', 'public');
+45             }
+46     
+47             Professeurs::create($data);
+48     
+49             return redirect()->route('admin.professeurs.create')->with('success', 'Le professeur a été créé avec succès.');
+50         }
+51     }

@@ -1,0 +1,31 @@
+1      <?php
+2      
+3      use Illuminate\Database\Migrations\Migration;
+4      use Illuminate\Database\Schema\Blueprint;
+5      use Illuminate\Support\Facades\Schema;
+6      
+7      return new class extends Migration
+8      {
+9          public function up(): void
+10         {
+11             Schema::create('professeurs', function (Blueprint $table) {
+12                 $table->id();
+13                 $table->string('matricule', 30)->unique();
+14                 $table->string('nom', 50);
+15                 $table->string('postnom', 50);
+16                 $table->string('prenom', 50);
+17                 $table->enum('sexe', ['M', 'F']);
+18                 $table->string('specialite', 100);
+19                 $table->string('telephone', 20);
+20                 $table->string('email', 100)->unique();
+21                 $table->string('photo', 255)->nullable();
+22                 $table->enum('statut', ['actif', 'inactif'])->default('actif');
+23                 $table->timestamps();
+24             });
+25         }
+26     
+27         public function down(): void
+28         {
+29             Schema::dropIfExists('professeurs');
+30         }
+31     };

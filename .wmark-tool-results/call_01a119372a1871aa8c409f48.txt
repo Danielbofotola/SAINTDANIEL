@@ -1,0 +1,24 @@
+1      <?php
+2      
+3      use App\Models\Eleve;
+4      use App\Models\Inscription;
+5      use App\Models\User;
+6      use Illuminate\Database\Schema\Blueprint;
+7      use Illuminate\Support\Facades\Schema;
+8      
+9      beforeEach(function () {
+10         foreach (['inscriptions', 'eleves', 'classes', 'cycles', 'sections', 'options', 'salles', 'annees_scolaires', 'users'] as $table) {
+11             Schema::dropIfExists($table);
+12         }
+13     
+14         Schema::create('users', function (Blueprint $table) {
+15             $table->id();
+16             $table->string('username', 50)->unique();
+17             $table->string('email', 100)->unique();
+18             $table->string('password');
+19             $table->string('pin_code')->nullable();
+20             $table->string('role');
+21             $table->string('statut');
+22             $table->rememberToken();
+
+[showing lines 1-22 of 202; read again with offset=23 for more]

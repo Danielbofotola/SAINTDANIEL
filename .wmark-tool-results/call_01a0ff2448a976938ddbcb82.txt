@@ -1,0 +1,32 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\e8f943213216\20261003-012229-bash-call_01a0ff2448a976938ddbcb82.txt (1,129 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Structured view (text):
+[powershell — Windows side]
+tests\Feature\RegistrationRequestWorkflowTest.php:12:        'demandes_comptes', 'demandes_inscription', 'inscriptions', 'eleve_sante', 'eleves',
+> tests\Feature\RegistrationRequestWorkflowTest.php:13:        'tuteurs', 'classes', 'cycles', 'annees_scolaires', 'professeurs', 'users',
+  tests\Feature\RegistrationRequestWorkflowTest.php:14:    ] as $table) {
+  tests\Feature\RegistrationRequestWorkflowTest.php:65:    });
+> tests\Feature\RegistrationRequestWorkflowTest.php:66:    Schema::create('annees_scolaires', function (Blueprint $table) {
+  tests\Feature\RegistrationRequestWorkflowTest.php:67:        $table->id();
+  tests\Feature\RegistrationRequestWorkflowTest.php:103:        $table->unsignedBigInteger('classe_id');
+> tests\Feature\RegistrationRequestWorkflowTest.php:104:        $table->unsignedBigInteger('annee_scolaire_id');
+  tests\Feature\RegistrationRequestWorkflowTest.php:105:        $table->date('date_inscription');
+  tests\Feature\RegistrationRequestWorkflowTest.php:117:        $table->unsignedBigInteger('classe_id')->nullable();
+> tests\Feature\RegistrationRequestWorkflowTest.php:118:        $table->unsignedBigInteger('annee_scolaire_id')->nullable();
+  tests\Feature\RegistrationRequestWorkflowTest.php:119:        $table->string('nom_mere');
+  tests\Feature\RegistrationRequestWorkflowTest.php:150:    DB::table('classes')->insert(['id' => 1, 'cycle_id' => 1, 'nom' => '3e A', 'statut' => 'actif']);
+> tests\Feature\RegistrationRequestWorkfl
+… 228 chars elided …
+ure\RegistrationRequestWorkflowTest.php:182:        'annee_scolaire_id' => 1,
+  tests\Feature\RegistrationRequestWorkflowTest.php:183:        'nom_mere' => 'Marie Kabila',
+  tests\Feature\RegistrationRequestWorkflowTest.php:189:test('a public student application remains pending until an admin approves enrollment', function () {
+> tests\Feature\RegistrationRequestWorkflowTest.php:190:    $this->post(route('registration.student.store'), validStudentRequest())
+  tests\Feature\RegistrationRequestWorkflowTest.php:191:        ->assertRedirect(route('registration.student.create'))
+  tests\Feature\RegistrationRequestWorkflowTest.php:207:        'classe_id' => 1,
+> tests\Feature\RegistrationRequestWorkflowTest.php:208:        'annee_scolaire_id' => 1,
+  tests\Feature\RegistrationRequestWorkflowTest
+… 1,029 chars elided …
+rkflowTest.php:273:        'nom' => 'Mwamba',
+
+
+
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">2</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

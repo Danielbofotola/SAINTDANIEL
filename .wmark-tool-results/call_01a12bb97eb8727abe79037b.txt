@@ -1,0 +1,1 @@
+Updated date-fr.check.cjs: replaced 4 lines with 5 lines

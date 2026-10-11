@@ -1,0 +1,10 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/ComptableCaisseTest.php (1 hunk applied)
+Landed at lines 112-118 (the file's new text; no re-read needed):
+112        Schema::create('periodes', function (Blueprint $table) {
+113            $table->id();
+114            $table->unsignedBigInteger('annee_scolaire_id');
+115            $table->string('nom', 50);
+116            $table->string('statut')->default('actif');
+117            $table->timestamps();
+118        });

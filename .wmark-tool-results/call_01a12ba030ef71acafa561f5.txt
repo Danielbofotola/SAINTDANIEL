@@ -1,0 +1,24 @@
+302                                <div class="text-center text-secondary mb-2">{{ $schoolYear ? 'Année scolaire '.$schoolYear->libelle : 'Année scolaire non définie' }}</div>
+303                                <div class="row g-2 align-items-center mb-2">
+304                                    <div class="col-7">
+305                                        <div class="inner-block text-center">
+306                                            <div class="text-muted fw-semibold">Total encaissé</div>
+307                                            <div class="fw-bold fs-3 my-1">{{ $money($encaisse) }}</div>
+308                                            <div class="text-secondary">sur {{ $money($fraisDefinis) }} de frais définis</div>
+309                                        </div>
+310                                    </div>
+311                                    <div class="col-5">
+312                                        <div class="inner-block text-center">
+313                                            <div class="gauge-container" role="img" aria-label="Taux de recouvrement : {{ $taux }} %">
+314                                                <div class="gauge-body" style="background: conic-gradient(from 270deg, #107c41 0deg {{ $angle }}deg, #e2e8f0 {{ $angle }}deg 180deg);"></div>
+315                                                <div class="gauge-inner">{{ $taux }} %</div>
+316                                            </div>
+317                                            <div class="text-secondary fw-semibold mt-1">Recouvrement</div>
+318                                        </div>
+319                                    </div>
+320                                </div>
+321                                <div class="inner-block text-center py-2">
+322                                    <span class="fw-bold">Reste à percevoir :</span> {{ $money($reste) }}
+323                                </div>
+
+[showing lines 302-323 of 513; read again with offset=324 for more]

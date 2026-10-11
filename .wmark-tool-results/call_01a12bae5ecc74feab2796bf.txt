@@ -1,0 +1,32 @@
+55             $table->timestamps();
+56         });
+57         Schema::create('cours', function (Blueprint $table) {
+58             $table->id();
+59             $table->string('code', 20)->unique();
+60             $table->string('intitule', 100);
+61             $table->unsignedInteger('ponderation')->default(1);
+62             $table->unsignedInteger('max_travaux_journaliers')->nullable();
+63             $table->unsignedInteger('max_examen')->nullable();
+64             $table->enum('statut', ['actif', 'inactif'])->default('actif');
+65             $table->timestamps();
+66         });
+67         Schema::create('annees_scolaires', function (Blueprint $table) {
+68             $table->id();
+69             $table->string('libelle');
+70             $table->date('date_debut');
+71             $table->date('date_fin');
+72             $table->boolean('is_encours')->default(false);
+73             $table->string('statut');
+74             $table->timestamps();
+75         });
+76         Schema::create('cycles', function (Blueprint $table) {
+77             $table->id();
+78             $table->string('nom');
+79             $table->string('statut');
+80             $table->timestamps();
+81         });
+82         Schema::create('salles', function (Blueprint $table) {
+83             $table->id();
+84             $table->string('nom');
+
+[showing lines 55-84 of 430; read again with offset=85 for more]

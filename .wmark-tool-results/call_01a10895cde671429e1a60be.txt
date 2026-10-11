@@ -1,0 +1,8 @@
+Updated resources/views/admin/dashboard.blade.php: replaced 4 lines with 6 lines (fuzzy match: indent-shift)
+Auto-corrected edit landed at lines 351-356:
+351                    <ul class="treeview-menu">
+352                        <li><a class="treeview-item" href="{{ route('admin.frais.index') }}"><i class="icon fa fa-tags"></i> Types de frais &amp; tarifs</a></li>
+353                        <li><a class="treeview-item" href="{{ route('admin.paiements.index') }}"><i class="icon fa fa-credit-card"></i> Paiements</a></li>
+354                        <li><a class="treeview-item" href="{{ route('admin.depenses.index') }}"><i class="icon fa fa-shopping-cart"></i> Dépenses</a></li>
+355                        <li><a class="treeview-item" href="{{ route('admin.archives.index') }}"><i class="icon fa fa-archive"></i> Clôture &amp; archives</a></li>
+356                    </ul>

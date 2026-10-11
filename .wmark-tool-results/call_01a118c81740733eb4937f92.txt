@@ -1,0 +1,42 @@
+156    });
+157    
+158    test('l’espace parent est interdit aux autres rôles', function () {
+159        reglerPortailParents(true);
+160    
+161        $comptable = User::factory()->create(['role' => 'comptable']);
+162        $professeur = User::factory()->create(['role' => 'professeur']);
+163    
+164        $this->actingAs($comptable)->get(route('parent.dashboard'))->assertForbidden();
+165        $this->actingAs($professeur)->get(route('parent.dashboard'))->assertForbidden();
+166    });
+167    
+168    test('un admin qui consulte un compte parent accède au portail', function () {
+169        reglerPortailParents(true);
+170    
+171        $admin = User::factory()->create(['role' => 'admin']);
+172        $parent = User::factory()->create(['role' => 'parent']);
+173    
+174        // Session de consultation : l'admin s'est connecté au compte du parent.
+175        $this->actingAs($parent)
+176            ->withSession(['impersonating_admin_id' => $admin->id])
+177            ->get(route('parent.dashboard'))
+178            ->assertOk()
+179            ->assertSee('Espace Parent');
+180    });
+181    
+182    test('en consultation, une route strictement réservée à l’admin reste interdite', function () {
+183        $admin = User::factory()->create(['role' => 'admin']);
+184        $parent = User::factory()->create(['role' => 'parent']);
+185    
+186        $this->actingAs($parent)
+187            ->withSession(['impersonating_admin_id' => $admin->id])
+188            ->get(route('admin.dashboard'))
+189            ->assertForbidden();
+190    });
+191    
+192    test('un parent envoie un message au personnel depuis le portail', function () {
+193        reglerPortailParents(true);
+194    
+195        $parent = User::factory()->create(['role' => 'parent']);
+
+[showing lines 156-195 of 263; read again with offset=196 for more]

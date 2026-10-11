@@ -1,0 +1,16 @@
+Applied patch: 4 files changed (3 created, 1 updated)
+Created database/migrations/2026_10_18_000000_create_appels_table.php (41 lines)
+Created app/Models/Appel.php (48 lines)
+Created app/Http/Controllers/AppelController.php (147 lines)
+Updated routes/web.php (2 hunks applied)
+Landed at lines 49-49 (the file's new text; no re-read needed):
+49     use App\Http\Controllers\AppelController;
+Landed at lines 164-171 (the file's new text; no re-read needed):
+164        // Appels audio/vidéo (signalisation WebRTC, sans serveur temps réel).
+165        Route::post('/appels', [AppelController::class, 'store'])->middleware('auth')->name('appels.store');
+166        Route::get('/appels/entrant', [AppelController::class, 'entrant'])->middleware('auth')->name('appels.entrant');
+167        Route::get('/appels/{appel}', [AppelController::class, 'show'])->middleware('auth')->name('appels.show');
+168        Route::post('/appels/{appel}/reponse', [AppelController::class, 'repondre'])->middleware('auth')->name('appels.reponse');
+169        Route::post('/appels/{appel}/refuser', [AppelController::class, 'refuser'])->middleware('auth')->name('appels.refuser');
+170        Route::post('/appels/{appel}/terminer', [AppelController::class, 'terminer'])->middleware('auth')->name('appels.terminer');
+171        Route::post('/appels/{appel}/ice', [AppelController::class, 'ice'])->middleware('auth')->name('appels.ice');

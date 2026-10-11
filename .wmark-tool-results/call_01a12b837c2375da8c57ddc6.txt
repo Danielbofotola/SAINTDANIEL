@@ -1,0 +1,31 @@
+1      <?php
+2      
+3      namespace App\Models\Concerns;
+4      
+5      use App\Models\AnneeScolaire;
+6      use Illuminate\Database\Eloquent\Builder;
+7      use Illuminate\Database\Eloquent\Relations\BelongsTo;
+8      
+9      /**
+10      * À utiliser sur tout modèle dont la table porte une colonne `annee_scolaire_id`.
+11      *
+12      * Fournit la relation vers l'année et un scope qui restreint la requête à
+13      * l'année en cours (et à rien du tout s'il n'y a pas d'année en cours, pour
+14      * éviter de fuiter les données des années passées).
+15      */
+16     trait BelongsToAnneeScolaire
+17     {
+18         public function anneeScolaire(): BelongsTo
+19         {
+20             return $this->belongsTo(AnneeScolaire::class);
+21         }
+22     
+23         public function scopeAnneeEnCours(Builder $query): Builder
+24         {
+25             $anneeId = AnneeScolaire::enCours()?->id;
+26     
+27             return $anneeId
+28                 ? $query->where('annee_scolaire_id', $anneeId)
+29                 : $query->whereRaw('1 = 0');
+30         }
+31     }

@@ -1,0 +1,2 @@
+Error: failed to apply diff: applyDiff: overlapping chunk at 35 (cursor 41)
+(section '*** Update File: resources/views/prefecture/layout.blade.php', patch line 2; no files were changed — the patch applies atomically: fix that section and re-send the whole patch)

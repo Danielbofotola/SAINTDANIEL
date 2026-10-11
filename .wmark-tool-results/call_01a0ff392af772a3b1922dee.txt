@@ -1,0 +1,9 @@
+Recorded verification for 'shell': CSS (178 lignes) déplacé dans resources/views/partials/role-space-styles.blade.php, @include dans professeur/dashboard. Page professeur rendue à 25316 octets AVANT = APRÈS (identique à l'octet).
+Task 'shell': pending → verified
+Recorded verification for 'comptable': ComptableDashboardController + resources/views/comptable/dashboard.blade.php + route GET comptable.dashboard. Widgets (frais définis, encaissé, reste, taux), recouvrement par classe, derniers paiements. Test: taux 25 % (50/200), reçu REC-0001, classe 3e primaire affichés. Smoke réel: 25278 octets, aucune erreur.
+Task 'comptable': pending → verified
+Recorded verification for 'titulaire': TitulaireDashboardController + resources/views/titulaire/dashboard.blade.php + route GET titulaire.dashboard. Classes via affectations de l'année en cours, effectifs, roster élèves, états vides. Test: 3e primaire, '2 élève(s)', Banzolo, Annie. Smoke réel: 24340 octets, aucune erreur.
+Task 'titulaire': pending → verified
+Recorded verification for 'tests': RoleDashboardsTest: 5/5 (contenu comptable, avertissement sans année, contenu titulaire, avertissement sans fiche professeur liée, isolation des rôles → 403). Suite complète: 46 passés / 2 échecs PRÉEXISTANTS (AdminUserManagementTest, assertions de fixtures non liées). Bug de test corrigé au passage: index dayOfWeekIso dimanche hors borne.
+Task 'tests': pending → verified
+Progress: 4/4 done; all tasks complete

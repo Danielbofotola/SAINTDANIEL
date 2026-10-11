@@ -1,0 +1,20 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/AnneeEnCoursScopingTest.php (1 hunk applied)
+Landed at lines 89-121 (the file's new text; no re-read needed):
+89     
+90         Schema::create('tuteurs', function (Blueprint $table) {
+91             $table->id();
+92             $table->string('nom_mere')->nullable();
+93             $table->string('telephone_mere')->nullable();
+94             $table->string('email_mere')->nullable();
+95             $table->text('adresse_mere')->nullable();
+96             $table->string('nom_pere')->nullable();
+      … 17 lines omitted …
+114        Schema::create('documents_eleves', function (Blueprint $table) {
+115            $table->id();
+116            $table->unsignedBigInteger('eleve_id');
+117            $table->string('type_document');
+118            $table->string('chemin_fichier');
+119            $table->string('statut')->default('actif');
+120            $table->timestamp('created_at')->useCurrent();
+121        });

@@ -1,0 +1,4 @@
+Applied patch: 1 file changed (1 updated)
+Updated app/Http/Controllers/UserProfileController.php (1 hunk applied)
+Landed at lines 15-15 (the file's new text; no re-read needed):
+15     use Illuminate\Support\Facades\Schema;

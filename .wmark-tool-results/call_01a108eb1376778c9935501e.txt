@@ -1,0 +1,21 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\e1ce9c26600a\20261004-225613-apply_patch-call_01a108eb1376778c9935501e.txt (729 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+Applied patch: 1 file changed (1 updated)
+Updated resources/views/admin/professeurs/show.blade.php (2 hunks applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 19-20 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+  ⚠ hunk 2: context matched at lines 75-85 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-correc
+
+... 1,089 chars truncated ...
+
+target="_blank" rel="noopener"><i class="fa fa-eye"></i> Ouvrir</a>
+83                                     <form class="d-inline" method="POST" action="{{ route('admin.professeurs.documents.destroy', $document) }}" onsubmit="return confirm('Supprimer ce document du dossier ?');">
+      … 14 lines omitted …
+98                             <div class="row">
+99                                 <div class="col-md-5 form-group"><label class="form-label">Titre *</label><input class="form-control" name="titre" value="{{ old('titre') }}" required maxlength="150" placeholder="Ex. Diplôme d’État"></div>
+100                                <div class="col-md-3 form-group"><label class="form-label">Type *</label><select class="form-control" name="type_document" required><option value="cv">CV</option><option value="diplome">Diplôme</option><option value="contrat">Contrat</option><option value="piece_identite">Pièce d’identité</option><option value="autre">Autre</option></select></div>
+101                                <div class="col-md-4 form-group"><label class="form-label">Fichier *</label><input class="form-control" type="file" name="document" required accept=".pdf,.jpg,.jpeg,.png"><small class="text-muted">PDF, JPG, JPEG ou PNG — 4 Mo max.</small></div>
+102                            </div>
+103                            <button class="btn btn-primary" type="submit"><i class="fa fa-upload"></i> Ajouter au dossier</button>
+104                        </form>
+105                    </div>

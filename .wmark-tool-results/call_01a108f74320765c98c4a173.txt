@@ -1,0 +1,9 @@
+Applied patch: 1 file changed (1 updated)
+Updated routes/web.php (2 hunks applied)
+Landed at lines 28-28 (the file's new text; no re-read needed):
+28     use App\Http\Controllers\ComptableDepenseController;
+Landed at lines 185-188 (the file's new text; no re-read needed):
+185        Route::get('/comptable/depenses', [ComptableDepenseController::class, 'index'])->middleware('role:comptable')->name('comptable.depenses.index');
+186        Route::post('/comptable/depenses', [ComptableDepenseController::class, 'store'])->middleware('role:comptable')->name('comptable.depenses.store');
+187        Route::post('/comptable/depenses/natures', [ComptableDepenseController::class, 'storeNature'])->middleware('role:comptable')->name('comptable.depenses.natures.store');
+188        Route::delete('/comptable/depenses/{depense}', [ComptableDepenseController::class, 'destroy'])->middleware('role:comptable')->name('comptable.depenses.destroy');

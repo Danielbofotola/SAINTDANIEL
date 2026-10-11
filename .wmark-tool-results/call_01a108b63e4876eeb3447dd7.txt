@@ -1,0 +1,12 @@
+73         Route::get('/admin/evaluations', [EvaluationController::class, 'index'])->middleware('role:admin')->name('admin.evaluations.index');
+74         Route::post('/admin/evaluations', [EvaluationController::class, 'store'])->middleware('role:admin')->name('admin.evaluations.store');
+75         Route::get('/admin/evaluations/{evaluation}/notes', [EvaluationController::class, 'notes'])->middleware('role:admin')->name('admin.evaluations.notes');
+76         Route::post('/admin/evaluations/{evaluation}/notes', [EvaluationController::class, 'storeNotes'])->middleware('role:admin')->name('admin.evaluations.notes.store');
+77         Route::delete('/admin/evaluations/{evaluation}', [EvaluationController::class, 'destroy'])->middleware('role:admin')->name('admin.evaluations.destroy');
+78         Route::get('/admin/bulletins', [BulletinController::class, 'index'])->middleware('role:admin')->name('admin.bulletins.index');
+79         Route::post('/admin/bulletins/generer', [BulletinController::class, 'generate'])->middleware('role:admin')->name('admin.bulletins.generate');
+80         Route::get('/admin/bulletins/{inscription}/document', [BulletinController::class, 'document'])->middleware('role:admin')->name('admin.bulletins.document');
+81         Route::get('/admin/frais', [FraisController::class, 'index'])->middleware('role:admin')->name('admin.frais.index');
+82         Route::post('/admin/frais/types', [FraisController::class, 'storeType'])->middleware('role:admin')->name('admin.frais.types.store');
+
+[showing lines 73-82 of 168; read again with offset=83 for more]

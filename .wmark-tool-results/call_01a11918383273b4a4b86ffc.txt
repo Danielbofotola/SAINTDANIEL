@@ -1,0 +1,100 @@
+238                            {{ number_format($totalObtenu, 2) }} / {{ number_format($totalMax, 2) }}
+239                            @if ($totalMax > 0) · {{ round($totalObtenu * 100 / $totalMax, 1) }}% @endif
+240                        </p>
+241                        <div class="table-responsive">
+242                            <table class="table table-sm">
+243                                <thead>
+244                                    <tr><th>Date</th><th>Cours</th><th>Travail</th><th>Période</th><th class="text-right">Note</th></tr>
+245                                </thead>
+246                                <tbody>
+247                                    @forelse ($notes as $note)
+248                                        @php($evaluation = $note->evaluation)
+249                                        <tr>
+250                                            <td>{{ $evaluation?->date_evaluation?->format('d/m/Y') ?? '—' }}</td>
+251                                            <td>{{ $evaluation?->affectation?->cours?->intitule ?? '—' }}</td>
+252                                            <td>{{ $evaluation?->titre ?? '—' }}</td>
+253                                            <td>{{ $evaluation?->periode?->nom ?? '—' }}</td>
+254                                            <td class="text-right fw-bold">
+255                                                {{ (float) $note->note_obtenue }} / {{ (float) ($evaluation?->max_note ?? 0) }}
+256                                            </td>
+257                                        </tr>
+258                                    @empty
+259                                        <tr><td colspan="5" class="text-center text-muted-2 fs-7">Aucune note publiée pour le moment.</td></tr>
+260                                    @endforelse
+261                                </tbody>
+262                            </table>
+263                        </div>
+264                    </div>
+265    
+266                    <div class="portail-card" style="margin-top:14px">
+267                        <h2><i class="fa-solid fa-book-open text-info"></i> Travaux de la classe</h2>
+268                        <div class="table-responsive">
+269                            <table class="table table-sm">
+270                                <thead>
+271                                    <tr><th>Date</th><th>Cours</th><th>Titre</th><th>Type</th><th class="text-right">Sa note</th></tr>
+272                                </thead>
+273                                <tbody>
+274                                    @forelse ($travaux as $travail)
+275                                        <tr>
+276                                            <td>{{ $travail->date_evaluation?->format('d/m/Y') ?? '—' }}</td>
+277                                            <td>{{ $travail->affectation?->cours?->intitule ?? '—' }}</td>
+278                                            <td>{{ $travail->titre }}</td>
+279                                            <td>{{ ucfirst((string) $travail->type_evaluation) }}</td>
+280                                            <td class="text-right">
+281                                                @if ($travail->ma_note !== null)
+282                                                    <strong>{{ (float) $travail->ma_note }}</strong> / {{ (float) $travail->max_note }}
+283                                                @else
+284                                                    <span class="text-muted-2 fs-7">pas encore noté</span>
+285                                                @endif
+286                                            </td>
+287                                        </tr>
+288                                    @empty
+289                                        <tr><td colspan="5" class="text-center text-muted-2 fs-7">Aucun travail programmé.</td></tr>
+290                                    @endforelse
+291                                </tbody>
+292                            </table>
+293                        </div>
+294                    </div>
+295                @endif
+296            </section>
+297    
+298            {{-- ============ PROFIL ============ --}}
+299            <section id="tab-profil" class="portail-panel">
+300                <div class="portail-card text-center">
+301                    <span class="portail-avatar mx-auto mb-2" style="width:96px;height:96px;font-size:2rem;background:var(--blue)">
+302                        @if ($user->photo)
+303                            <img src="{{ asset('storage/'.$user->photo) }}" alt="{{ $nomUtilisateur }}">
+304                        @else
+305                            {{ $initiales }}
+306                        @endif
+307                    </span>
+308                    <h2 class="mb-1">{{ $nomUtilisateur }}</h2>
+309                    <div class="fs-7 text-muted-2">Espace Parent · {{ \App\Models\User::libelleRole($user->role) }}</div>
+310                </div>
+311    
+312                <div class="portail-card">
+313                    <h2>Informations</h2>
+314                    <div class="info-row"><i class="fa-solid fa-user"></i> <span>{{ $user->username }}</span></div>
+315                    <div class="info-row"><i class="fa-solid fa-envelope"></i> <span>{{ $user->email }}</span></div>
+316                    <div class="info-row"><i class="fa-solid fa-phone"></i> <span>{{ $user->telephone ?: '—' }}</span></div>
+317                    <div class="info-row"><i class="fa-solid fa-location-dot"></i> <span>{{ $user->adresse ?: '—' }}</span></div>
+318                    <div class="info-row"><i class="fa-solid fa-building"></i> <span>{{ $parametres->nom_etablissement }}</span></div>
+319                    <div class="mt-3 d-flex flex-wrap gap-2">
+320                        <a class="btn-ghost" href="{{ route('messagerie.index') }}"><i class="fa-solid fa-comments"></i> Messagerie interne</a>
+321                        <a class="btn-ghost" href="{{ route('notifications.index') }}"><i class="fa-solid fa-bell"></i> Notifications</a>
+322                    </div>
+323                </div>
+324            </section>
+325        </main>
+326    
+327        <script>
+328            function portailTab(nom, element) {
+329                document.querySelectorAll('.portail-panel').forEach(p => p.classList.remove('active'));
+330                document.querySelectorAll('.portail-nav__item').forEach(i => i.classList.remove('active'));
+331                const cible = document.getElementById('tab-' + nom);
+332                if (cible) cible.classList.add('active');
+333                if (element) element.classList.add('active');
+334            }
+335        </script>
+336    </body>
+337    </html>

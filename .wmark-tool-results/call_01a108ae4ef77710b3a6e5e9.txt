@@ -1,0 +1,52 @@
+68     
+69             $notes = Note::query()
+70                 ->where('eleve_id', $this->inscription->eleve_id)
+71                 ->where('statut', 'actif')
+72                 ->with(['evaluation:id,affectation_id,periode_id,max_note,type_evaluation'])
+73                 ->get()
+74                 ->groupBy(fn ($note) => $note->evaluation?->affectation_id);
+75     
+76             $branches = [];
+77             $totalGeneral = 0.0;
+78             $maxGeneral = 0.0;
+79     
+80             foreach ($affectations as $affectation) {
+81                 $lignes = [];
+82                 $totalBranche = 0.0;
+83                 $maxBranche = 0.0;
+84     
+85                 foreach ($periodes as $periode) {
+86                     $notesPeriode = $this->notesPeriode($notes->get($affectation->id, collect()), $periode->id);
+87     
+88                     [$tjObtenu, $tjMax] = $this->agrege($notesPeriode, examen: false);
+89                     [$exObtenu, $exMax] = $this->agrege($notesPeriode, examen: true);
+90     
+91                     $total = $tjObtenu + $exObtenu;
+92                     $max = $tjMax + $exMax;
+93     
+94                     $lignes[$periode->id] = [
+95                         'tj' => round($tjObtenu, 2),
+96                         'examen' => round($exObtenu, 2),
+97                         'total' => round($total, 2),
+98                         'max' => round($max, 2),
+99                         'pourcentage' => $max > 0 ? round($total / $max * 100, 2) : null,
+100                    ];
+101    
+102                    $totalBranche += $total;
+103                    $maxBranche += $max;
+104                }
+105    
+106                $branches[] = [
+107                    'intitule' => $affectation->cours?->intitule ?? 'Branche',
+108                    'code' => $affectation->cours?->code,
+109                    'periodes' => $lignes,
+110                    'total' => round($totalBranche, 2),
+111                    'max' => round($maxBranche, 2),
+112                    'pourcentage' => $maxBranche > 0 ? round($totalBranche / $maxBranche * 100, 2) : null,
+113                ];
+114    
+115                $totalGeneral += $totalBranche;
+116                $maxGeneral += $maxBranche;
+117            }
+
+[showing lines 68-117 of 155; read again with offset=118 for more]

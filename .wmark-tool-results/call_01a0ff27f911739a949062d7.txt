@@ -1,0 +1,7 @@
+Applied patch: 2 files changed (2 updated)
+Updated resources/views/admin/eleves/create.blade.php (1 hunk applied)
+Updated resources/views/registration/student-request.blade.php (1 hunk applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 26-28 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 55-56 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.

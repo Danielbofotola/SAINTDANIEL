@@ -1,0 +1,16 @@
+38                 : collect();
+39     
+40             $tarifs = $annee
+41                 ? FraisScolaire::query()
+42                     ->where('annee_scolaire_id', $annee->id)
+43                     ->where('statut', 'actif')
+44                     ->with(['typeFrais', 'classe'])
+45                     ->get()
+46                 : collect();
+47     
+48             $soldePaye = $annee
+49                 ? Paiement::query()
+50                     ->where('statut', 'actif')
+51                     ->whereHas('inscription', fn ($query) => $query->where('annee_scolaire_id', $annee->id))
+
+[showing lines 38-51 of 130; read again with offset=52 for more]

@@ -1,0 +1,2 @@
+[powershell — Windows side]
+Command cancelled by user

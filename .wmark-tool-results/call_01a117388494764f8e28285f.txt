@@ -1,0 +1,16 @@
+384        // Appels audio / vidéo : boutons réels, bannière de sonnerie et écran d'appel.
+385        expect($html)
+386            ->toContain("onclick=\"appelDemarrer('audio')\"")
+387            ->toContain("onclick=\"appelDemarrer('video')\"")
+388            ->toContain('id="appelBanniere"')
+389            ->toContain('id="appelOverlay"')
+390            ->toContain('id="appelDistant"')
+391            ->toContain('id="appelLocal"')
+392            ->toContain('window.appelAccepter')
+393            ->toContain('window.appelRaccrocher')
+394            ->toContain("stun:stun.l.google.com:19302");
+395    });
+396    
+397    test('la barre d’écriture reste disponible même sans discussion ouverte', function () {
+
+[showing lines 384-397 of 496; read again with offset=398 for more]

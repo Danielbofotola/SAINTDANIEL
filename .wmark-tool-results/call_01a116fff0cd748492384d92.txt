@@ -1,0 +1,87 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\144c63540b62\20261007-163338-glob-call_01a116fff0cd748492384d92.txt (1,204 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Structured view (text):
+resources/views/messagerie/_bulle.blade.php
+resources/views/messagerie/index.blade.php
+resources/views/partials/ (8 lines, newest first):
+  messagerie-flottante.blade.php
+resources/views/comptable/ (5 lines, newest first):
+  dashboard.blade.php
+resources/views/partials/ (8 lines, newest first):
+  raccourcis.blade.php
+resources/views/prefecture/dashboard.blade.php
+resources/views/titulaire/dashboard.blade.php
+resources/views/admin/dashboard.blade.php
+resources/views/professeur/ (11 lines, newest first):
+  layout.blade.php
+resources/views/partials/ (8 lines, newest first):
+  cloche-flottante.blade.php
+  cloche-notifications.blade.php
+resources/views/notifications/index.blade.php
+resources/views/admin/annonces.blade.php
+resources/views/admin/profile/ (9 lines, newest first):
+  online.blade.php
+  show.blade.php
+resources/views/professeur/ (11 lines, newest first):
+  profil.blade.php
+  presences.blade.php
+  dashboard.blade.php
+  eleve-show.blade.php
+  eleves.blade.php
+  notes.blade.php
+  evaluations.blade.php
+  cours-show.blade.php
+  cours.blade.php
+  planning.blade.php
+resources/views/comptable/ (5 lines, newest first):
+  depenses.blade.php
+resources/views/admin/depenses/index.blade.php
+resources/views/partials/ (8 lines, newest first):
+  alertes.blade.php
+resources/views/admin/comptabilite/ (3 lines, newest first):
+  balance.blade.php
+  index.blade.php
+  plan.blade.php
+resources/views/admin/statistiques/index.blade.php
+resources/views/partials/ (8 lines, newest first):
+  flash.b
+… 499 chars elided …
+  429.blade.php
+  500.blade.php
+  503.blade.php
+  layout.blade.php
+resources/views/admin/eleves/ (4 lines, newest first):
+  index.blade.php
+resources/views/admin/frais/index.blade.php
+resources/views/comptable/ (5 lines, newest first):
+  recouvrement.blade.php
+resources/views/paiements/recu.blade.php
+resources/views/admin/paiements/index.blade.php
+resources/views/admin/notes/index.blade.php
+resources/views/admin/professeurs/ (5 lines, newest first):
+  emploi-du-temps.blade.php
+resources/views/admin/bulletins/document.blade.php
+resources/views/admin/affectations/index.blade.php
+resources/views/admin/bulletins/index.blade.php
+resources/views/admin/evaluations/index.blade.php
+resources/views/admin/modules/index.blade.php
+resources/views/admin/cycles/index.blade.php
+resources/views/admin/evalu
+… 1,299 chars elided …
+min/registration/ (3 lines, newest first):
+  account-requests.blade.php
+  student-requests.blade.php
+resources/views/registration/account-request.blade.php
+resources/views/admin/profile/ (9 lines, newest first):
+  statistics.blade.php
+  settings.blade.php
+resources/views/partials/ (8 lines, newest first):
+  impersonation-banner.blade.php
+resources/views/profile/edit.blade.php
+resources/views/admin/eleves/ (4 lines, newest first):
+  edit.blade.php
+resources/views/admin/professeurs/ (5 lines, newest first):
+  create.blade.php
+resources/views/admin/salles/ (3 lines, newest first):
+  index.blade.php
+  create.blade.php
+  edit.blade.php
+resources/views/projet/page-connexion/connexion-pin.blade.php

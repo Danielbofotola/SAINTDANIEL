@@ -1,0 +1,40 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\e8f943213216\20261003-014739-bash-call_01a0ff3b546f70849896bff1.txt (928 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Structured view (text):
+[powershell — Windows side]
+app\Http\Controllers\AuthController.php:18:    }
+  app\Http\Controllers\AuthController.php:19:
+> app\Http\Controllers\AuthController.php:20:    public function showPinForm(): View
+  app\Http\Controllers\AuthController.php:21:    {
+> app\Http\Controllers\AuthController.php:22:        return view('projet.page-connexion.connexion-pin');
+  app\Http\Controllers\AuthController.php:23:    }
+  app\Http\Controllers\AuthController.php:24:
+  app\Http\Controllers\AuthController.php:25:    public function login(Request $request): RedirectResponse
+  app\Http\Controllers\AuthController.php:26:    {
+  app\Http\Controllers\AuthController.php:54:    }
+  app\Http\Controllers\AuthController.php:55:
+> app\Http\Controllers\AuthController.php:56:    public function loginWithPin(Request $request): RedirectResponse|JsonResponse
+  app\Http\Controllers\AuthController.php:57:    {
+  app\Http\Controllers\AuthController.php:58:        $validated = $request->validate([
+> app\Http\Controllers\AuthController.php:59:            'pin_code' => ['required', 'string', 'digits:4'],
+  app\Http\Controllers\AuthController.php:60:        ], [
+> app\Http\Controllers\AuthController.php:61:            'pin_code.required' => 'Le code PIN est obligatoire.',
+> app\Http\Controllers\AuthController.php:62:            'pin_code.digits' => 'Le code PIN doit contenir exactement 4 chiffres.',
+  app\Http\Controllers\AuthController.php:63:        ]);
+  app\Http\Controllers\AuthController.php:64:
+  app\Htt
+… 0 chars elided …
+p\Controllers\AuthController.php:65:        $matchingUsers = User::where('statut', 'actif')
+> app\Http\Controllers\AuthController.php:66:            ->whereNotNull('pin_code')
+  app\Http\Controllers\AuthController.php:67:            ->get()
+> app\Http\Controllers\AuthController.php:68:            ->filter(fn (User $user) => Hash::check($validated['pin_code'], $user->pin_code));
+  app\Http\Controllers\AuthController.php:69:
+  app\Http\Controllers\AuthController.php:70:        if ($matchingUsers->count() !== 1) {
+  app\Http\Controllers\AuthController.php:71:            $message = $matchingUsers->isEmpty()
+> app\Http\Controllers\AuthController.php:72:                ? 'Code PIN invalide.'
+> app\Http\Controllers\AuthController.php:73:                : 'Ce code PIN est associé à plusieurs compt
+… 717 chars elided …
+p:83:        $user = $matchingUsers->first();
+
+
+
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">2</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

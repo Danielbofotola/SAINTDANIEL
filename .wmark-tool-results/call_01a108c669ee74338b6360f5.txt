@@ -1,0 +1,1 @@
+Wrote resources/views/paiements/recu.blade.php (79 lines)

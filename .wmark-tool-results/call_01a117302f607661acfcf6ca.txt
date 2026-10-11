@@ -1,0 +1,14 @@
+358    
+359        // Défilement interne de la zone des messages (desktop comme mobile) :
+360        // les colonnes et le fil doivent pouvoir rétrécir (min-height: 0).
+361        expect($html)
+362            ->toContain('.msg-thread { display: flex; flex-direction: column; min-width: 0; min-height: 0;')
+363            ->toContain('.msg-thread__body { flex: 1; min-height: 0; overflow-y: auto;')
+364            ->toContain('.conv-scroll { flex: 1; min-height: 0; overflow-y: auto; }');
+365    });
+366    
+367    test('la barre d’écriture reste disponible même sans discussion ouverte', function () {
+368        $alice = User::factory()->create(['role' => 'admin', 'nom' => 'Mwamba', 'prenom' => 'Alice']);
+369        User::factory()->create(['role' => 'professeur', 'nom' => 'Kabila', 'prenom' => 'Bruno']);
+
+[showing lines 358-369 of 466; read again with offset=370 for more]

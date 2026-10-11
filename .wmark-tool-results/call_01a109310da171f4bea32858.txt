@@ -1,0 +1,12 @@
+[harness: offset clamped — requested offset 100000 is 99866 past the end of resources/views/titulaire/dashboard.blade.php (134 lines); the requested 10-line window was slid back to start at line 125. Line numbers below are the file's REAL numbers — re-target any pending edit against them]
+
+125                                @endif
+126                            </section>
+127                            <p class="footer-note"><span class="school-brand">{{ $systemSettings->nom_court }}</span> <span aria-hidden="true">·</span> Espace titulaire</p>
+128                        </div>
+129                    </div>
+130                </div>
+131            </main>
+132        </div>
+133    </body>
+134    </html>

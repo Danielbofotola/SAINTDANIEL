@@ -1,0 +1,16 @@
+311            ->toContain('value="tous"')
+312            ->toContain('msg-avatar')
+313            // Liste des correspondants actifs + action « écrire ».
+314            ->toContain('id="contactsContainer"')
+315            ->toContain('onclick="ouvrirDiscussion(')
+316            // La page porte ses propres liens : pas d'injection du bouton flottant.
+317            ->not->toContain('<a class="messagerie-flottante');
+318    });
+319    
+320    test('écrire à un correspondant ouvre une conversation directe unique (sans doublon)', function () {
+321        $alice = User::factory()->create(['role' => 'admin']);
+322        $bruno = User::factory()->create(['role' => 'professeur']);
+323    
+324        // Première ouverture : une conversation est créée.
+
+[showing lines 311-324 of 402; read again with offset=325 for more]

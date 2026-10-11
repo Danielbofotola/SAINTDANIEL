@@ -1,0 +1,31 @@
+Applied patch: 1 file changed (1 updated)
+Updated app/Http/Controllers/PrefectureDashboardController.php (2 hunks applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 2: context matched at lines 149-152 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 157-354:
+157    
+158        /**
+159         * Présence & ponctualité : assiduité des élèves d'une journée, et
+160         * enseignants attendus d'après l'emploi du temps.
+161         */
+162        public function presences(Request $request): View
+163        {
+164            $date = (string) $request->query('date', now()->toDateString());
+      … 182 lines omitted …
+347        private function jourDeLaDate(string $date): ?string
+348        {
+349            try {
+350                return ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'][Carbon::parse($date)->dayOfWeek];
+351            } catch (\Throwable) {
+352                return null;
+353            }
+354        }
+Landed at lines 9-10 (the file's new text; no re-read needed):
+9      use App\Models\EmploiDuTemps;
+10     use App\Models\Evaluation;
+Landed at lines 12-12 (the file's new text; no re-read needed):
+12     use App\Models\Presence;
+Landed at lines 15-15 (the file's new text; no re-read needed):
+15     use App\Models\Tuteur;
+Landed at lines 18-18 (the file's new text; no re-read needed):
+18     use Illuminate\Support\Carbon;

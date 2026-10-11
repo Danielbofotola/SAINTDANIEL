@@ -1,0 +1,15 @@
+286    });
+287    
+288    /**
+289     * Petite image PNG valide, pour tester les pièces jointes sans dépendre de
+290     * l'extension GD (absente sur ce poste).
+291     */
+292    function imagePngDeTest(string $nom = 'image.png'): \Illuminate\Http\UploadedFile
+293    {
+294        $contenu = base64_decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==');
+295    
+296        $chemin = tempnam(sys_get_temp_dir(), 'wmark_').'.png';
+297        file_put_contents($chemin, $contenu);
+298    
+299        return new \Illuminate\Http\UploadedFile($chemin, $nom, 'image/png', null, true);
+300    }

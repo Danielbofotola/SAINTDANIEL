@@ -1,0 +1,35 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\aba9102c187c\20261011-155110-bash-call_01a12b723bef755eb03e11cd.txt (1,122 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Structured view (text):
+[powershell — Windows side]
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Models\AffectationCours.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Models\AnneeScolaire.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Models\Annonce.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Models\ArchiveAnnee.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Models\Deliberation.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Models\DemandeInscription.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Models\Depense.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Models\Eleve.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Models\FraisScolaire.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Models\Inscription.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Models\Periode.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Notifications\AnnonceNotification.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Notifications\DecisionAnnuelleNotification.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Providers\AppServiceProvider.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Support\BulletinRdc.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Support\Caisse.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Support\EspaceProfess
+… 0 chars elided …
+eur.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Support\Jury.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Support\Raccourcis.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Support\SituationEleve.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Support\Tresorerie.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\database\migrations\2026_09_21_020000_create_school_management_tables.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\database\migrations\2026_09_29_000000_create_registration_request_tables.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\database\migrations\2026_10_03_000000_enforce_single_current_school_year.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\da
+… 432 chars elided …
+026_10_20_000000_create_deliberations_module.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\database\migrations\2026_10_23_100000_add_bulletin_settings_to_parametres_systeme_table.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\database\seeders\DatabaseSeeder.php
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

@@ -1,0 +1,13 @@
+Recorded verification for 'frais': Routes admin.frais.index + types.store/toggle-status/destroy + tarifs.store/destroy (role:admin) + FraisController + vue frais/index.blade.php. Tarif unique par (type, classe, année en cours) ; type supprimable seulement sans tarif ; tarif supprimable seulement sans paiement. Test 'an admin can manage fee types and class tariffs' PASS.
+Task 'frais': pending → verified
+Recorded verification for 'paiements': Routes admin.paiements.index/store/destroy + PaiementController + vue paiements/index.blade.php. num_recu généré (REC-<année>-0001), cohérence tarif/classe de l'inscription, total encaissé. Test 'a payment is recorded with a receipt and must match the student class' PASS.
+Task 'paiements': pending → verified
+Recorded verification for 'depenses': Routes admin.depenses.index/store/destroy + categories.store/destroy + DepenseController + vue depenses/index.blade.php. Dépense rattachée à l'année en cours, catégorie supprimable seulement si sans dépense, total affiché. Test 'expenses and categories are managed per school year' PASS.
+Task 'depenses': pending → verified
+Recorded verification for 'archives': Routes admin.archives.index/store/destroy + ArchiveAnneeController + vue archives/index.blade.php. Clôture calcule inscrits/recettes/dépenses/solde (150/40/110), une archive par année, réouverture. Test 'closing a school year computes the summary and can be reopened' PASS.
+Task 'archives': pending → verified
+Recorded verification for 'menu-f': Treeview Finances (admin/dashboard.blade.php) : Types de frais & tarifs, Paiements, Dépenses, Clôture & archives pointent vers admin.frais.index, admin.paiements.index, admin.depenses.index, admin.archives.index. Test 'the finance menu links point to the new modules' PASS.
+Task 'menu-f': pending → verified
+Recorded verification for 'verify-f': php artisan route:list : 16 routes finances/comptabilité enregistrées ; php artisan view:cache OK ; php artisan test = 97 passed (535 assertions), 0 échec.
+Task 'verify-f': pending → verified
+Progress: 6/6 done; all tasks complete

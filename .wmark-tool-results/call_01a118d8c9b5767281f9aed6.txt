@@ -1,0 +1,22 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/MessagerieSuppressionTest.php (2 hunks applied)
+Landed at lines 15-15 (the file's new text; no re-read needed):
+15         foreach (['notifications', 'annonces', 'messages', 'conversation_user', 'conversations', 'parametres_systeme', 'professeurs', 'users'] as $table) {
+Landed at lines 56-77 (the file's new text; no re-read needed):
+56         Schema::create('notifications', function (Blueprint $table) {
+57             $table->uuid('id')->primary();
+58             $table->string('type');
+59             $table->morphs('notifiable');
+60             $table->text('data');
+61             $table->timestamp('read_at')->nullable();
+62             $table->timestamps();
+63         });
+      … 6 lines omitted …
+70             $table->string('lien', 255)->nullable();
+71             $table->string('cible', 30)->default('tous');
+72             $table->unsignedBigInteger('envoye_par')->nullable();
+73             $table->unsignedInteger('destinataires')->default(0);
+74             $table->timestamps();
+75         });
+76     
+77         Schema::create('conversations', function (Blueprint $table) {

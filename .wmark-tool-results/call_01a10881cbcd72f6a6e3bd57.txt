@@ -1,0 +1,35 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\e1ce9c26600a\20261004-210123-bash-call_01a10881cbcd72f6a6e3bd57.txt (512 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+[powershell — Windows side]
+<script src="http://localhost:8000/assets/plugins/Jquery/dist/jquery.min.js"></script>\r\n
+   <script src="http://localhost:8000/assets/plugins/jquery-ui/jquery-ui.min.js"></script>\r\n
+   <script src="http://localhost:8000/assets/plugins/tether/dist/js/tether.min.js"></script>\r\n
+   <script src="http://localhost:8000/assets/plugins/bootstrap/js/bootstrap.min.js"></script>\r\n
+   <script src="http://localhost:8000/assets/plugins/jquery-slimscroll/jquery.slimscroll.js"></script>\r\n
+\r\n
+   <!-- Custom Scripts -->\r\n
+   <script type="text/javascript" src="http://localhost:8000/assets/js/main.min.js"></script>\r\n
+   <script src="http://localhost:8000/assets/js/menu.min.js"></script>\r\n
+\r\n
+</body>\r\n
+</html>
+
+  To contain: Sécurité du compte
+
+  at tests\Feature\AdminUserManagementTest.php:356
+    352▕         ->assertSee('resourcesChart');
+    353▕ 
+    354▕     $this->get(route('admin.profile.show'))
+    355▕         ->assertOk()
+  ➜ 356▕         ->assertSee('Sécurité du compte')
+    357▕         ->assertDontSee('administrationChart')
+    358▕         ->assertDontSee('resourcesChart');
+    359▕ });
+    360▕
+
+
+  Tests:    1 failed, 78 passed (400 assertions)
+  Duration: 5.57s
+
+==exit 1==
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

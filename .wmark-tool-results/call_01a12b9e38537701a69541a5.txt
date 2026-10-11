@@ -1,0 +1,2 @@
+Task 'recu': done → verified. Evidence: Test reçu (ComptableCaisseTest) : paiement enregistré devise=CDF, taux=2800, montant_recu=168000, montant_paye=60 (USD) → le reçu affiche '168 000 FC', 'taux 2 800,00' et '60,00 $'. Suite complète : 275 passed (1764 assertions).
+Progress: 7/7 done (2 verified); all tasks complete

@@ -1,0 +1,19 @@
+[powershell — Windows side]
+array:4 [
+  "status" => 403
+  "exception" => "Symfony\Component\HttpKernel\Exception\HttpException :: Ce cours ne vous est pas affecté."
+  "action" => "App\Http\Controllers\ProfesseurEspaceController@coursShow"
+  "baseResponse" => "Illuminate\Http\Response"
+] // tests\Feature\EspaceProfesseurTest.php:250
+
+   FAIL  Tests\Feature\EspaceProfesseurTest
+  ⨯ a teacher only reaches his own courses and classes                                                           0.20s  
+  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  
+   FAILED  Tests\Feature\EspaceProfesseurTest > a teacher only reaches his own courses and classes                      
+  Expected response status code [403] but received 200.
+Failed asserting that 200 is identical to 403.
+
+  at tests\Feature\EspaceProfesseurTest.php:257
+    253▕         'action' => optional(\Illuminate\Support\Facades\Route::current())->getActionName(),
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

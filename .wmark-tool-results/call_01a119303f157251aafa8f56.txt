@@ -1,0 +1,6 @@
+211        Route::get('/admin/eleves/{eleve}/modifier', [EleveController::class, 'edit'])->middleware('role:admin')->name('admin.eleves.edit');
+212        Route::put('/admin/eleves/{eleve}', [EleveController::class, 'update'])->middleware('role:admin')->name('admin.eleves.update');
+213        Route::post('/admin/eleves/{eleve}/documents', [EleveController::class, 'storeDocument'])->middleware('role:admin')->name('admin.eleves.documents.store');
+214        Route::get('/admin/eleves/{eleve}', [EleveController::class, 'show'])->middleware('role:admin')->name('admin.eleves.show');
+
+[showing lines 211-214 of 300; read again with offset=215 for more]

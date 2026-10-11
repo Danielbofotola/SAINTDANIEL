@@ -1,0 +1,34 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\144c63540b62\20261007-165849-bash-call_01a11716f2ca759393a22d67.txt (732 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Structured view (text):
+[powershell — Windows side]
+✓ a user writes to a colleague who then sees the message                                                       0.28s  
+  ✓ a broadcast reaches every active user                                                                        0.03s  
+  ✓ a participant answers and only the others get an unread message                                              0.03s  
+  ✓ an outsider cannot write into a conversation he does not belong to                                           0.03s  
+  ✓ the messaging page is reserved to authenticated users                                                        0.02s  
+  ✓ a message without recipient or without text is refused                                                       0.04s  
+  ✓ the picture of the correspondent is displayed in the thread and the list                                     0.05s  
+  ✓ an image can be attached to a reply and is shown in the thread                                               0.06s  
+  ✓ an image can be sent without text, the size and the format are checked                                       0.06s  
+  ✓ la page de messagerie du personnel expose le modèle partagé (vocaux, stickers, pièces jointes, diffusion)    0.03s  
+  ✓ écrire à un correspondant ouvre une conversation directe unique (sans doublon)                               0.03s  
+  ✓ on ne peut pas démarrer une discussion avec soi-même                                                         0.02s  
+  ✓ une réponse citée 
+… 0 chars elided …
+apparaît sur la bulle du nouveau message                                                   0.03s  
+  ✓ une réaction émoji est enregistrée, affichée et retirée                                                      0.04s  
+
+   PASS  Tests\Feature\PortailParentTest
+  ✓ un parent accède à son espace quand le module est ouvert                                                     0.06s  
+  ✓ l’espace parent répond 404 quand le module est fermé                                                         0.02s  
+  ✓ l’espace parent est interdit aux autres rôles                                                                0.03s  
+  ✓ un parent envoie un message au personnel depuis le portail                                                   0.03s  
+  ✓ un message vocal est enregistré et rendu par un le
+… 653 chars elided …
+role sees the floating bell with the unread count and the announcements                                0.06s  
+  ✓ the bell is hidden once everything is read                                                                   0.03s  
+
+  Tests:    25 passed (181 assertions)
+  Duration: 1.41s
+
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

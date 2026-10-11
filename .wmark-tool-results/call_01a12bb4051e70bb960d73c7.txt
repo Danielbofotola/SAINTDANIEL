@@ -1,0 +1,20 @@
+[powershell — Windows side]
+index.blade.php:45
+index.blade.php:74
+notes.blade.php:19
+notes.blade.php:35
+notes.blade.php:43
+index.blade.php:69
+index.blade.php:81
+enfants.blade.php:39
+enfants.blade.php:62
+enfants.blade.php:89
+evaluations.blade.php:120
+cours-show.blade.php:64
+eleve-show.blade.php:35
+evaluations.blade.php:41
+notes.blade.php:8
+notes.blade.php:35
+notes.blade.php:42
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

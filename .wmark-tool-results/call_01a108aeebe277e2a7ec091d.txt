@@ -1,0 +1,14 @@
+250        $this->actingAs($professeur)
+251            ->get(route('admin.bulletins.document', $inscriptionId))
+252            ->assertForbidden();
+253    });
+254    
+255    test('the bulletins list links to the RDC document', function () {
+256        $inscriptionId = seedBulletinEleve();
+257        $admin = User::factory()->create(['role' => 'admin']);
+258    
+259        $this->actingAs($admin)
+260            ->get(route('admin.bulletins.index', ['periode_id' => 1, 'classe_id' => 1]))
+261            ->assertOk()
+262            ->assertSee(route('admin.bulletins.document', $inscriptionId), false);
+263    });

@@ -1,0 +1,22 @@
+[powershell — Windows side]
+GET|HEAD   admin/periodes ........................................... admin.periodes.index › PeriodeController@index
+  POST       admin/periodes ........................................... admin.periodes.store › PeriodeController@store
+  DELETE     admin/periodes/{periode} ............................. admin.periodes.destroy › PeriodeController@destroy
+  PATCH      admin/periodes/{periode}/statut ........... admin.periodes.toggle-status › PeriodeController@toggleStatus
+
+                                                                                                    Showing [4] routes
+
+
+  GET|HEAD   admin/evaluations .................................. admin.evaluations.index › EvaluationController@index
+  POST       admin/evaluations .................................. admin.evaluations.store › EvaluationController@store
+  DELETE     admin/evaluations/{evaluation} ................. admin.evaluations.destroy › EvaluationController@destroy
+  GET|HEAD   admin/evaluations/{evaluation}/notes ............... admin.evaluations.notes › EvaluationController@notes
+  POST       admin/evaluations/{evaluation}/notes .... admin.evaluations.notes.store › EvaluationController@storeNotes
+
+                                                                                                    Showing [5] routes
+
+
+  GET|HEAD   admin/bulletins ........................................ admin.bulletins.index › BulletinController@index
+  POST       admin/bulletins/generer .......................... admin.bulletins.generate › BulletinController@generate
+
+                                                                                                    Showing [2] routes

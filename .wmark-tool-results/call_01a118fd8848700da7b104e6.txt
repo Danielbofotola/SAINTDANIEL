@@ -1,0 +1,32 @@
+152                            <a href="{{ route('prefecture.classes') }}">
+153                                <i class="fas fa-table"></i>
+154                                <p>Classes</p>
+155                            </a>
+156                        </li>
+157                        <li class="nav-item {{ request()->routeIs('prefecture.personnel') ? 'active' : '' }}">
+158                            <a href="{{ route('prefecture.personnel') }}">
+159                                <i class="fas fa-users"></i>
+160                                <p>Personnel</p>
+161                            </a>
+162                        </li>
+163                        <li class="nav-item {{ request()->routeIs('notifications.*') ? 'active' : '' }}">
+164                            <a href="{{ route('notifications.index') }}">
+165                                <i class="far fa-bell"></i>
+166                                <p>Notifications</p>
+167                            </a>
+168                        </li>
+169                        <li class="nav-section">
+170                            <span class="sidebar-mini-icon"><i class="fa fa-ellipsis-h"></i></span>
+171                            <h4 class="text-section">Mon compte</h4>
+172                        </li>
+173                        <li class="nav-item {{ request()->routeIs('prefecture.profil') ? 'active' : '' }}">
+174                            <a href="{{ route('prefecture.profil') }}">
+175                                <i class="far fa-user"></i>
+176                                <p>Mon profil</p>
+177                            </a>
+178                        </li>
+179                    </ul>
+180                </div>
+181            </div>
+
+[showing lines 152-181 of 210; read again with offset=182 for more]

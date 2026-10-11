@@ -1,0 +1,37 @@
+Applied patch: 1 file changed (1 updated)
+Updated app/Http/Controllers/PrefectureDashboardController.php (3 hunks applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 2: context matched at lines 134-136 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+  ⚠ hunk 3: context matched at lines 353-353 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 139-143:
+139                'documentsProfesseurs' => DocumentProfesseur::query()
+140                    ->with('professeur')
+141                    ->latest('id')
+142                    ->limit(60)
+143                    ->get(),
+Auto-corrected hunk landed at lines 362-450:
+362        /**
+363         * Périodes académiques : ouverture / fermeture par le préfet.
+364         */
+365        public function periodes(Request $request): View
+366        {
+367            return view('prefecture.periodes', [
+368                'user' => $request->user(),
+369                'schoolYear' => AnneeScolaire::enCours(),
+      … 73 lines omitted …
+443            ]);
+444    
+445            $eleve->update(['statut' => $data['statut']]);
+446    
+447            return back()->with('success', 'Statut de l\'élève mis à jour.');
+448        }
+449    
+450        /** Jour de la semaine (en français) correspondant à une date « AAAA-MM-JJ ». */
+Landed at lines 6-6 (the file's new text; no re-read needed):
+6      use App\Models\Bulletin;
+Landed at lines 9-9 (the file's new text; no re-read needed):
+9      use App\Models\DocumentProfesseur;
+Landed at lines 14-14 (the file's new text; no re-read needed):
+14     use App\Models\Periode;
+Landed at lines 20-20 (the file's new text; no re-read needed):
+20     use Illuminate\Http\RedirectResponse;

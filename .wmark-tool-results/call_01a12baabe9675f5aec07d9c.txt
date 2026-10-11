@@ -1,0 +1,20 @@
+8      beforeEach(function () {
+9          Schema::disableForeignKeyConstraints();
+10         foreach ([
+11             'paiements', 'frais_scolaires', 'types_frais', 'inscriptions', 'periodes', 'eleves', 'tuteurs',
+12             'classes', 'cycles', 'salles', 'annees_scolaires', 'users',
+13         ] as $table) {
+14             Schema::dropIfExists($table);
+15         }
+16         Schema::enableForeignKeyConstraints();
+17     
+18         Schema::create('users', function (Blueprint $table) {
+19             $table->id();
+20             $table->unsignedBigInteger('professeur_id')->nullable()->unique();
+21             $table->string('nom', 50)->nullable();
+22             $table->string('postnom', 50)->nullable();
+23             $table->string('prenom', 50)->nullable();
+24             $table->date('date_naissance')->nullable();
+25             $table->string('username')->unique();
+
+[showing lines 8-25 of 335; read again with offset=26 for more]

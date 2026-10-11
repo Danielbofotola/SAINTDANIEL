@@ -1,0 +1,42 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\b493c9bc81dc\20261008-022900-bash-call_01a11920ef7d75f1b687b5bf.txt (1,415 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Structured view (text):
+[powershell — Windows side]
+>    FAILED  Tests\Feature\DeliberationTest > la décision de fin d’année est notifiée aux comptes parents              
+   
+    Expected response status code [201, 301, 302, 303, 307, 308] but received 500.
+> Failed asserting that false is true.
+  
+> The following exception occurred during the last request:
+  
+> ErrorException: Undefined variable $notifies in 
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Http\Controllers\DeliberationController.php:164
+  Stack trace:
+> #0 C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\vendor\laravel\framework\src\Illuminate\Foundation\Bootst
+rap\HandleExceptions.php(262): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError(2, 'Undefined varia...', 
+'C:\\Users\\danie\\...', 164)
+> #1 C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Http\Controllers\DeliberationController.php(164): 
+Illuminate\Foundation\Bootstrap\HandleExceptions->Illuminate\Foundation\Bootstrap\{closure}(2, 'Undefined varia...', 
+'C:\\Users\\danie\\...', 164)
+  #2 C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\vendor\laravel\framework\src\Illuminate\Database\Concerns
+\ManagesTransactions.php(35): App\Http\Controllers\DeliberationController->App\Http\Controllers\{closure}(Object(Illumi
+nate\Database\SQLiteConnection))
+  #3 C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\vendor\laravel\framework\src\Illuminate\Database\Database
+Manager.php(491): Illuminate\Database\Connection->transact
+… 1,173 chars elided …
+nate\Http\Request), 
+Object(Illuminate\Session\Store), Object(Closure))
+  #29 C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\vendor\laravel\framework\src\Illuminate\Pipeline\Pipelin
+e.php(219): Illuminate\Session\Middleware\StartSession->handle(Object(Illuminate\Http\Request), Object(Closure))
+> #68 C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\vendor\pestphp\pest\src\Support\ExceptionTrace.php(26): 
+P\Tests\Feature\DeliberationTest->Pest\Concerns\{closure}()
+> #69 C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\vendor\pestphp\pest\src\Concerns\Testable.php(419): 
+Pest\Support\ExceptionTrace::ensure(Object(Closure))
+  #70 C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\vendor\pestphp\pest\src\Concerns\Testable.php(321): 
+P\Tests\Feature\DeliberationTe
+… 647 chars elided …
+1 failed (1 assertions)
+    Duration: 3.91s
+  
+
+
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">2</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

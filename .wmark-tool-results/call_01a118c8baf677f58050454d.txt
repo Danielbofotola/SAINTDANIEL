@@ -1,0 +1,9 @@
+[powershell — Windows side]
+33: use App\Http\Controllers\ModuleSwitchController;
+42: use App\Http\Controllers\ParametreSystemeController;
+141: Route::get('/admin/modules', [ModuleSwitchController::class, 'index'])->middleware('role:admin')->name('admin.modules.index');
+142: Route::put('/admin/modules', [ModuleSwitchController::class, 'update'])->middleware('role:admin')->name('admin.modules.update');
+144: Route::get('/admin/profil/parametres', [ParametreSystemeController::class, 'edit'])->middleware('role:admin')->name('admin.profile.settings');
+145: Route::put('/admin/profil/parametres', [ParametreSystemeController::class, 'update'])->middleware('role:admin')->name('admin.profile.settings.update');
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

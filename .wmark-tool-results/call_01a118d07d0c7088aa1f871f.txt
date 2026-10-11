@@ -1,0 +1,33 @@
+130         * Marque la conversation comme lue par cet utilisateur.
+131         */
+132        public static function marquerLu(Conversation $conversation, User $utilisateur): void
+133        {
+134            if ($conversation->participants()->where('user_id', $utilisateur->id)->exists()) {
+135                $conversation->participants()->updateExistingPivot($utilisateur->id, [
+136                    'dernier_lu_at' => now(),
+137                    'dernier_message_id' => (int) $conversation->messages()->max('id'),
+138                ]);
+139            }
+140        }
+141    
+142        /**
+143         * Conversations d'un utilisateur, avec le nombre de messages non lus.
+144         */
+145        public static function conversationsDe(User $utilisateur): Collection
+146        {
+147            return Conversation::query()
+148                ->whereHas('participants', fn ($query) => $query->where('user_id', $utilisateur->id))
+149                ->with(['dernierMessage.auteur', 'createur', 'participants'])
+150                ->orderByDesc('derniere_activite_at')
+151                ->get()
+152                ->each(fn (Conversation $conversation) => $conversation->setAttribute('non_lus', $conversation->nonLusPour($utilisateur)));
+153        }
+154    
+155        /**
+156         * Total des messages non lus (badge du menu).
+157         */
+158        public static function nonLus(User $utilisateur): int
+159        {
+160            return (int) self::conversationsDe($utilisateur)->sum('non_lus');
+161        }
+162    }

@@ -1,0 +1,33 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\aba9102c187c\20261011-163310-apply_patch-call_01a12b98ab25720a87503289.txt (621 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+Applied patch: 2 files changed (2 updated)
+Updated app/Http/Controllers/ComptablePaiementController.php (3 hunks applied)
+Updated app/Http/Controllers/PaiementController.php (3 hunks applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 2: context matched at lines 82-88 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+  ⚠ hunk 3: context matched at lines 112-113 only after leading-whitespace normalization; insert
+
+... 257 chars truncated ...
+
+t lines 91-92:
+91                         .' ('.Monnaie::format($tarif->montant_exige, $tarif->devise).')',
+92                     'devise' => Monnaie::normaliser($tarif->devise),
+Auto-corrected hunk landed at lines 118-119:
+118                'devise' => ['nullable', Rule::in(array_keys(Monnaie::DEVISES))],
+119                'taux' => ['nullable', 'numeric', 'min:0'],
+Landed at lines 10-10 (the file's new text; no re-read needed):
+10     use App\Models\ParametreSysteme;
+Landed at lines 13-13 (the file's new text; no re-read needed):
+13     use App\Support\Monnaie;
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 2: context matched at lines 75-81 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+  ⚠ hunk 3: context matched at lines 95-96 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 82-83:
+82                 'devises' => Monnaie::DEVISES,
+83                 'tauxParDefaut' => ParametreSysteme::tauxChange(),
+Auto-corrected hunk landed at lines 100-101:
+100                'devise' => ['nullable', Rule::in(array_keys(Monnaie::DEVISES))],
+101                'taux' => ['nullable', 'numeric', 'min:0'],
+Landed at lines 10-10 (the file's new text; no re-read needed):
+10     use App\Models\ParametreSysteme;
+Landed at lines 13-13 (the file's new text; no re-read needed):
+13     use App\Support\Monnaie;

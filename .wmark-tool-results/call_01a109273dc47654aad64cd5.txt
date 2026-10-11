@@ -1,0 +1,16 @@
+40             $contexte = $this->contexte($request);
+41             $emplois = EspaceProfesseur::emplois($contexte['affectations']);
+42             $evaluations = EspaceProfesseur::evaluations($contexte['affectations']);
+43     
+44             $effectifs = $this->effectifsParClasse($contexte['affectations'], $contexte['schoolYear']?->id);
+45     
+46             return view('professeur.cours', $contexte + [
+47                 'effectifs' => $effectifs,
+48                 'elevesCount' => (int) $effectifs->sum(),
+49                 'evaluationsParAffectation' => $evaluations->groupBy('affectation_id')->map->count(),
+50                 'creneauxParAffectation' => $emplois->groupBy('affectation_id')->map->count(),
+51                 'heuresParSemaine' => $this->heuresParSemaine($emplois),
+52             ]);
+53         }
+
+[showing lines 40-53 of 209; read again with offset=54 for more]

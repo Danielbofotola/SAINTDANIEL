@@ -1,0 +1,87 @@
+100    
+101        {{-- Effectif --}}
+102        <section class="carte">
+103            <h2><i class="fa-solid fa-users"></i> Effectif à délibérer</h2>
+104            <form method="GET" action="{{ route('admin.deliberations.index') }}" class="rangee">
+105                <select name="classe" onchange="this.form.submit()" style="max-width:320px">
+106                    @foreach ($classes as $c)
+107                        <option value="{{ $c->id }}" @selected($classe && $classe->id === $c->id)>
+108                            {{ $c->nom }}@if ($c->ordre !== null) · niveau {{ $c->ordre }}@endif
+109                        </option>
+110                    @endforeach
+111                </select>
+112                <span style="color:var(--mut);font-size:.8rem">
+113                    @if ($classeSuivante)
+114                        Passage vers : <strong style="color:#fff">{{ $classeSuivante->nom }}</strong>
+115                    @else
+116                        <em>Aucune classe de niveau supérieur définie pour cette classe.</em>
+117                    @endif
+118                </span>
+119            </form>
+120        </section>
+121    
+122        @if ($classe && $lignes->isNotEmpty())
+123            <form method="POST" action="{{ route('admin.deliberations.enregistrer') }}">
+124                @csrf
+125                <input type="hidden" name="annee_scolaire_id" value="{{ $annee->id }}">
+126                <section class="carte">
+127                    <h2><i class="fa-solid fa-list-check"></i> Décisions — {{ $classe->nom }} ({{ $lignes->count() }} élève(s))</h2>
+128                    <table>
+129                        <thead>
+130                            <tr>
+131                                <th>Élève</th><th>Moyenne générale</th><th>Cours en échec</th>
+132                                <th>Proposition du jury</th><th>Décision</th>
+133                            </tr>
+134                        </thead>
+135                        <tbody>
+136                            @foreach ($lignes as $ligne)
+137                                @php($proposee = $ligne['analyse']['decision_proposee'])
+138                                <tr>
+139                                    <td class="nom">
+140                                        {{ $ligne['eleve']?->nom }} {{ $ligne['eleve']?->postnom }} {{ $ligne['eleve']?->prenom }}
+141                                        <div style="color:var(--mut);font-weight:400;font-size:.74rem">{{ $ligne['eleve']?->matricule }}</div>
+142                                    </td>
+143                                    <td>{{ number_format($ligne['analyse']['pourcentage'], 2, ',', ' ') }} %</td>
+144                                    <td>{{ $ligne['analyse']['cours_echoues'] }}</td>
+145                                    <td><span class="pill pill--{{ $proposee }}">{{ $decisions[$proposee] ?? $proposee }}</span></td>
+146                                    <td>
+147                                        <select name="decisions[{{ $ligne['inscription']->id }}]">
+148                                            @foreach ($decisions as $valeur => $libelle)
+149                                                <option value="{{ $valeur }}" @selected($ligne['decision'] === $valeur)>{{ $libelle }}</option>
+150                                            @endforeach
+151                                        </select>
+152                                    </td>
+153                                </tr>
+154                            @endforeach
+155                        </tbody>
+156                    </table>
+157                    <div class="rangee" style="margin-top:14px">
+158                        <button class="btn" type="submit"><i class="fa-solid fa-check"></i> Enregistrer les décisions</button>
+159                    </div>
+160                </section>
+161            </form>
+162        @elseif ($classe)
+163            <div class="carte vide">Aucun élève actif dans cette classe pour l'année en cours.</div>
+164        @endif
+165    
+166        {{-- Application en masse --}}
+167        @if ($annee)
+168            <form method="POST" action="{{ route('admin.deliberations.appliquer') }}">
+169                @csrf
+170                <input type="hidden" name="annee_scolaire_id" value="{{ $annee->id }}">
+171                <section class="carte">
+172                    <h2><i class="fa-solid fa-arrow-up-right-dots"></i> Appliquer le passage (en masse)</h2>
+173                    <p style="color:var(--mut);font-size:.82rem;margin-top:0">
+174                        Les <strong>admis</strong> sont inscrits dans la classe de niveau supérieur,
+175                        les <strong>ajournés</strong> et <strong>redoublants</strong> restent dans la même classe.
+176                        Les inscriptions sont créées « en attente » (à valider à l'encaissement).
+177                    </p>
+178                    <div class="rangee">
+179                        <div style="min-width:260px">
+180                            <label>Année scolaire cible @if ($anneeSuivante) — l'année suivante est {{ $anneeSuivante->libelle }} @endif</label>
+181                            <select name="annee_cible_id" required>
+182                                <option value="">— choisir —</option>
+183                                @foreach ($annees as $a)
+184                                    @continue($a->id === $annee->id)
+
+[showing lines 100-184 of 201; read again with offset=185 for more]

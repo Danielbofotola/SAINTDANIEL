@@ -1,0 +1,36 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\b493c9bc81dc\20261008-004705-bash-call_01a118c3b20b74c3bf2e07d4.txt (905 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Structured view (text):
+[powershell — Windows side]
+app\Http\Controllers\AppelController.php:109
+app\Http\Controllers\AppelController.php:151
+app\Http\Controllers\AppelController.php:26
+app\Http\Controllers\AppelController.php:36
+app\Http\Controllers\MessagerieController.php:168
+app\Http\Controllers\PortailParentController.php:26
+app\Http\Controllers\ProfesseurEspaceController.php:142
+app\Http\Controllers\ProfesseurEspaceController.php:211
+app\Http\Controllers\ProfesseurEvaluationController.php:172
+app\Http\Controllers\UserProfileController.php:30
+app\Http\Middleware\EnsureUserHasRole.php:14
+app\Http\Middleware\EnsureUserHasRole.php:18
+=== authorize()/Gate calls ===
+=== impersonation ===
+app\Http\Controllers\UserProfileController.php:211: public function impersonate(Request $request, User $user): RedirectResponse
+app\Http\Controllers\UserProfileController.php:213: if ($request->session()->has('impersonating_admin_id')) {
+app\Http\Controllers\UserProfileController.php:222: $request->session()->put('impersonating_admin_id', $admin->id);
+app\Http\Controllers\UserProfileController.php:226: Log::notice('Admin started account impersonation', [
+app\Http\Controllers\UserProfileController.php:234: public function stopImpersonation(Request $request): RedirectResponse
+app\Http\Controllers\UserProfileController.php:237: ->whereKey($request->session()->get('impersonating_admin_id'))
+app\Http\Controllers\UserProfileController.php:250: Log::notice('Admin stopped account impersonation', [
+app\Http\Controllers\UserP
+… 0 chars elided …
+rofileController.php:256: $request->session()->forget('impersonating_admin_id');
+app\Http\Middleware\EnsureUserHasRole.php:13: if ($request->session()->has('impersonating_admin_id') && in_array('admin', $roles, true)) {
+app\Models\User.php:47: * Source unique : login, « retour au tableau de bord » et impersonation s'y réfèrent.
+resources\views\admin\profile\accounts.blade.php:248: <form class="d-inline" method="POST" action="{{ route('admin.profile.accounts.impersonate', $user) }}" onsubmit="return confirm('Ouvrir ce compte sans mot de passe ?');">
+resources\views\comptable\dashboard.blade.php:268: @include('partials.impersonation-banner')
+resources\views\partials\impersonation-banner.blade.php:1: @if (session()->has('impersonating_admin_id'))
+resources\views\partials\impersonation-banner.
+… 480 chars elided …
+hp:43: @include('partials.impersonation-banner')
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

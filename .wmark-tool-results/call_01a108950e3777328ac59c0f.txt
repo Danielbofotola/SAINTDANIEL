@@ -1,0 +1,18 @@
+58         Route::delete('/admin/cours/{cours}', [CoursController::class, 'destroy'])->middleware('role:admin')->name('admin.cours.destroy');
+59         Route::get('/admin/emplois-du-temps', [EmploiDuTempsController::class, 'index'])->middleware('role:admin')->name('admin.emplois-du-temps.index');
+60         Route::post('/admin/emplois-du-temps', [EmploiDuTempsController::class, 'store'])->middleware('role:admin')->name('admin.emplois-du-temps.store');
+61         Route::delete('/admin/emplois-du-temps/{emploiDuTemps}', [EmploiDuTempsController::class, 'destroy'])->middleware('role:admin')->name('admin.emplois-du-temps.destroy');
+62         Route::get('/admin/periodes', [PeriodeController::class, 'index'])->middleware('role:admin')->name('admin.periodes.index');
+63         Route::post('/admin/periodes', [PeriodeController::class, 'store'])->middleware('role:admin')->name('admin.periodes.store');
+64         Route::patch('/admin/periodes/{periode}/statut', [PeriodeController::class, 'toggleStatus'])->middleware('role:admin')->name('admin.periodes.toggle-status');
+65         Route::delete('/admin/periodes/{periode}', [PeriodeController::class, 'destroy'])->middleware('role:admin')->name('admin.periodes.destroy');
+66         Route::get('/admin/evaluations', [EvaluationController::class, 'index'])->middleware('role:admin')->name('admin.evaluations.index');
+67         Route::post('/admin/evaluations', [EvaluationController::class, 'store'])->middleware('role:admin')->name('admin.evaluations.store');
+68         Route::get('/admin/evaluations/{evaluation}/notes', [EvaluationController::class, 'notes'])->middleware('role:admin')->name('admin.evaluations.notes');
+69         Route::post('/admin/evaluations/{evaluation}/notes', [EvaluationController::class, 'storeNotes'])->middleware('role:admin')->name('admin.evaluations.notes.store');
+70         Route::delete('/admin/evaluations/{evaluation}', [EvaluationController::class, 'destroy'])->middleware('role:admin')->name('admin.evaluations.destroy');
+71         Route::get('/admin/bulletins', [BulletinController::class, 'index'])->middleware('role:admin')->name('admin.bulletins.index');
+72         Route::post('/admin/bulletins/generer', [BulletinController::class, 'generate'])->middleware('role:admin')->name('admin.bulletins.generate');
+73         Route::get('/admin/profil', [UserProfileController::class, 'show'])->middleware('role:admin')->name('admin.profile.show');
+
+[showing lines 58-73 of 137; read again with offset=74 for more]

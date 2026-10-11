@@ -1,0 +1,14 @@
+49         /**
+50          * Conversation directe entre deux utilisateurs : la retrouve si elle
+51          * existe déjà, sinon la crée (sans message initial). Permet d'écrire à un
+52          * correspondant d'un simple clic, sans passer par le formulaire complet.
+53          */
+54         public static function ouvrirDirecte(User $auteur, User $destinataire): Conversation
+55         {
+56             $existante = Conversation::query()
+57                 ->where('type', 'directe')
+58                 ->whereHas('participants', fn ($query) => $query->where('user_id', $auteur->id))
+59                 ->whereHas('participants', fn ($query) => $query->where('user_id', $destinataire->id))
+60                 ->has('participants', '=', 2)
+
+[showing lines 49-60 of 139; read again with offset=61 for more]

@@ -1,0 +1,50 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\aba9102c187c\20261011-163040-bash-call_01a12b965b8074fca9262a3e.txt (646 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+[powershell — Windows side]
+AnneeEnCoursScopingTest.php:44
+ComptabiliteTest.php:120
+ComptabiliteTest.php:270
+ComptabiliteTest.php:309
+ComptabiliteTest.php:339
+ComptableCaisseTest.php:125
+ComptableCaisseTest.php:170
+ComptableCaisseTest.php:172
+ComptableCaisseTest.php:179
+ComptableCaisseTest.php:214
+ComptableCaisseTest.php:216
+ComptableCaisseTest.php:228
+ComptableCaisseTest.php:246
+ComptableDepenseTest.php:80
+ElevesPagesTest.php:63
+FinancesPagesTest.php:142
+FinancesPagesTest.php:331
+FinancesPagesTest.php:333
+FinancesPagesTest.php:335
+FinancesPagesTest.php:340
+FinancesPagesTest.php:351
+FinancesPagesTest.php:353
+FinancesPagesTest.php:391
+FinancesPagesTest.php:453
+FinancesPagesTest.php:458
+FinancesPagesTest.php:472
+FinancesPagesTest.php:490
+FinancesPagesTest.php:501
+FinancesPagesTest.php:536
+FinancesPagesTest.php:543
+FinancesPagesTest.php:545
+FinancesPagesTest.php:548
+InscriptionValidationTest.php:150
+InscriptionValidationTest.php:192
+InscriptionValidationTest.php:194
+InscriptionValidationTest.php:206
+InscriptionValidationTest.php:208
+InscriptionValidationTest.php:219
+InscriptionValidationTest.php:221
+PrefectureVieScolaireTest.php:250
+RoleDashboardsTest.php:135
+RoleDashboardsTest.php:171
+StatistiquesTest.php:116
+StatistiquesTest.php:187
+TresorerieAlerteTest.php:108
+TresorerieAlerteTest.php:182
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

@@ -1,0 +1,5 @@
+Task 'migr': pending → done
+Task 'monnaie': pending → done
+Task 'caisse': pending → done
+Task 'forms': pending → in_progress
+Progress: 3/7 done; next: forms

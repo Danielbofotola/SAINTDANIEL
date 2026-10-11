@@ -1,0 +1,92 @@
+1      <?php
+2      
+3      use Illuminate\Support\Facades\Route;
+4      use App\Http\Controllers\AuthController;
+5      use App\Http\Controllers\AdminDashboardController;
+6      use App\Http\Controllers\EleveController;
+7      use App\Http\Controllers\EleveInscriptionController;
+8      use App\Http\Controllers\SalleController;
+9      use App\Http\Controllers\ClasseController;
+10     use App\Http\Controllers\UserProfileController;
+11     use App\Http\Controllers\ProfesseurController;
+12     use App\Http\Controllers\ProfesseurDashboardController;
+13     use App\Http\Controllers\SectionOptionController;
+14     use App\Http\Controllers\RegistrationRequestController;
+15     use App\Http\Controllers\AdminRegistrationRequestController;
+16     use App\Http\Controllers\ParametreSystemeController;
+17     
+18     Route::middleware('guest')->group(function () {
+19         Route::get('/', [AuthController::class, 'showLoginForm'])->name('login');
+20         Route::post('/login', [AuthController::class, 'login'])->name('login.store');
+21         Route::get('/connexion-pin', [AuthController::class, 'showPinForm'])->name('login.pin');
+22         Route::post('/connexion-pin', [AuthController::class, 'loginWithPin'])->name('login.pin.store');
+23     });
+24     
+25     Route::get('/demande-inscription', [RegistrationRequestController::class, 'createStudentRequest'])->name('registration.student.create');
+26     Route::post('/demande-inscription', [RegistrationRequestController::class, 'storeStudentRequest'])->middleware('throttle:5,1')->name('registration.student.store');
+27     Route::get('/demande-compte', [RegistrationRequestController::class, 'createAccountRequest'])->name('registration.account.create');
+28     Route::post('/demande-compte', [RegistrationRequestController::class, 'storeAccountRequest'])->middleware('throttle:5,1')->name('registration.account.store');
+29     
+30     Route::post('/deconnexion', [AuthController::class, 'logout'])->middleware('auth')->name('logout');
+31     
+32     Route::middleware('auth')->group(function () {
+33         Route::view('/accueil', 'dashboard')->name('home');
+34         Route::get('/mon-profil', [UserProfileController::class, 'showPersonalProfile'])->name('profile.show');
+35         Route::get('/mon-profil/modifier', [UserProfileController::class, 'editPersonalProfile'])->name('profile.edit');
+36         Route::put('/mon-profil', [UserProfileController::class, 'update'])->name('profile.update');
+37         Route::get('/admin/tableau-de-bord', [AdminDashboardController::class, 'index'])->middleware('role:admin')->name('admin.dashboard');
+38         Route::get('/admin/professeurs/nouveau', [ProfesseurController::class, 'create'])->middleware('role:admin')->name('admin.professeurs.create');
+39         Route::post('/admin/professeurs', [ProfesseurController::class, 'store'])->middleware('role:admin')->name('admin.professeurs.store');
+40         Route::get('/admin/profil', [UserProfileController::class, 'show'])->middleware('role:admin')->name('admin.profile.show');
+41         Route::get('/admin/profil/parametres', [ParametreSystemeController::class, 'edit'])->middleware('role:admin')->name('admin.profile.settings');
+42         Route::put('/admin/profil/parametres', [ParametreSystemeController::class, 'update'])->middleware('role:admin')->name('admin.profile.settings.update');
+43         Route::get('/admin/demandes/inscriptions', [AdminRegistrationRequestController::class, 'studentRequests'])->middleware('role:admin')->name('admin.registration.students');
+44         Route::post('/admin/demandes/inscriptions/{demandeInscription}/accepterta', [AdminRegistrationRequestController::class, 'approveStudent'])->middleware('role:admin')->name('admin.registration.students.approve');
+45         Route::post('/admin/demandes/inscriptions/{demandeInscription}/refuser', [AdminRegistrationRequestController::class, 'rejectStudent'])->middleware('role:admin')->name('admin.registration.students.reject');
+46         Route::get('/admin/demandes/comptes', [AdminRegistrationRequestController::class, 'accountRequests'])->middleware('role:admin')->name('admin.registration.accounts');
+47         Route::post('/admin/demandes/comptes/{demandeCompte}/accepter', [AdminRegistrationRequestController::class, 'approveAccount'])->middleware('role:admin')->name('admin.registration.accounts.approve');
+48         Route::post('/admin/demandes/comptes/{demandeCompte}/refuser', [AdminRegistrationRequestController::class, 'rejectAccount'])->middleware('role:admin')->name('admin.registration.accounts.reject');
+49         Route::get('/admin/profil/statistiques', [UserProfileController::class, 'statistics'])->middleware('role:admin')->name('admin.profile.statistics');
+50         Route::get('/admin/comptes', [UserProfileController::class, 'accounts'])->middleware('role:admin')->name('admin.profile.accounts');
+51         Route::get('/admin/comptes/{user}/modifier', [UserProfileController::class, 'editAccount'])->middleware('role:admin')->name('admin.profile.accounts.edit');
+52         Route::put('/admin/comptes/{user}', [UserProfileController::class, 'updateAccount'])->middleware('role:admin')->name('admin.profile.accounts.update');
+53         Route::post('/admin/comptes/{user}/impersoner', [UserProfileController::class, 'impersonate'])->middleware('role:admin')->name('admin.profile.accounts.impersonate');
+54         Route::get('/admin/comptes/nouveau', [UserProfileController::class, 'createAccount'])->middleware('role:admin')->name('admin.profile.accounts.create');
+55         Route::post('/admin/comptes', [UserProfileController::class, 'storeAccount'])->middleware('role:admin')->name('admin.profile.accounts.store');
+56         Route::get('/admin/profil/modifier', [UserProfileController::class, 'edit'])->middleware('role:admin')->name('admin.profile.edit');
+57         Route::put('/admin/profil', [UserProfileController::class, 'update'])->middleware('role:admin')->name('admin.profile.update');
+58         Route::patch('/admin/profil/mot-de-passe', [UserProfileController::class, 'updatePassword'])->middleware('role:admin')->name('admin.profile.password');
+59         Route::patch('/admin/profil/desactiver', [UserProfileController::class, 'deactivate'])->middleware('role:admin')->name('admin.profile.deactivate');
+60         Route::patch('/admin/comptes/{user}/statut', [UserProfileController::class, 'toggleAccount'])->middleware('role:admin')->name('admin.profile.accounts.toggle');
+61         Route::delete('/admin/comptes/{user}', [UserProfileController::class, 'destroyAccount'])->middleware('role:admin')->name('admin.profile.accounts.destroy');
+62         Route::post('/fin-impersonation', [UserProfileController::class, 'stopImpersonation'])->name('admin.impersonation.stop');
+63         Route::get('/admin/eleves/{eleve}/modifier', [EleveController::class, 'edit'])->middleware('role:admin')->name('admin.eleves.edit');
+64         Route::put('/admin/eleves/{eleve}', [EleveController::class, 'update'])->middleware('role:admin')->name('admin.eleves.update');
+65         Route::post('/admin/eleves/{eleve}/documents', [EleveController::class, 'storeDocument'])->middleware('role:admin')->name('admin.eleves.documents.store');
+66         Route::get('/admin/eleves/{eleve}', [EleveController::class, 'show'])->middleware('role:admin')->name('admin.eleves.show');
+67         Route::get('/admin/eleves/inscription/nouvelle', [EleveInscriptionController::class, 'create'])->middleware('role:admin')->name('admin.eleves.create');
+68         Route::post('/admin/eleves/inscription', [EleveInscriptionController::class, 'store'])->middleware('role:admin')->name('admin.eleves.store');
+69         Route::get('/admin/salles', [SalleController::class, 'index'])->middleware('role:admin')->name('admin.salles.index');
+70         Route::get('/admin/salles/nouvelle', [SalleController::class, 'create'])->middleware('role:admin')->name('admin.salles.create');
+71         Route::post('/admin/salles', [SalleController::class, 'store'])->middleware('role:admin')->name('admin.salles.store');
+72         Route::get('/admin/classes/nouvelle', [ClasseController::class, 'create'])->middleware('role:admin')->name('admin.classes.create');
+73         Route::post('/admin/classes', [ClasseController::class, 'store'])->middleware('role:admin')->name('admin.classes.store');
+74         Route::get('/admin/sections/nouvelle', [SectionOptionController::class, 'createSection'])->middleware('role:admin')->name('admin.sections.create');
+75         Route::post('/admin/sections', [SectionOptionController::class, 'storeSection'])->middleware('role:admin')->name('admin.sections.store');
+76         Route::get('/admin/options/nouvelle', [SectionOptionController::class, 'createOption'])->middleware('role:admin')->name('admin.options.create');
+77         Route::post('/admin/options', [SectionOptionController::class, 'storeOption'])->middleware('role:admin')->name('admin.options.store');
+78         Route::get('/admin/classes', [ClasseController::class, 'index'])->middleware('role:admin')->name('admin.classes.index');
+79         Route::get('/admin/classes/{classe}/eleves', [ClasseController::class, 'students'])->middleware('role:admin')->name('admin.classes.students');
+80         Route::get('/admin/classes/{classe}/modifier', [ClasseController::class, 'edit'])->middleware('role:admin')->name('admin.classes.edit');
+81         Route::put('/admin/classes/{classe}', [ClasseController::class, 'update'])->middleware('role:admin')->name('admin.classes.update');
+82         Route::patch('/admin/classes/{classe}/statut', [ClasseController::class, 'toggleStatus'])->middleware('role:admin')->name('admin.classes.toggle-status');
+83         Route::delete('/admin/classes/{classe}', [ClasseController::class, 'destroy'])->middleware('role:admin')->name('admin.classes.destroy');
+84         Route::get('/admin/salles/{salle}/modifier', [SalleController::class, 'edit'])->middleware('role:admin')->name('admin.salles.edit');
+85         Route::put('/admin/salles/{salle}', [SalleController::class, 'update'])->middleware('role:admin')->name('admin.salles.update');
+86         Route::patch('/admin/salles/{salle}/statut', [SalleController::class, 'toggleStatus'])->middleware('role:admin')->name('admin.salles.toggle-status');
+87         Route::delete('/admin/salles/{salle}', [SalleController::class, 'destroy'])->middleware('role:admin')->name('admin.salles.destroy');
+88         Route::view('/prefecture/tableau-de-bord', 'dashboard', ['role' => 'Préfecture'])->middleware('role:prefetture')->name('prefecture.dashboard');
+89         Route::view('/titulaire/tableau-de-bord', 'dashboard', ['role' => 'Titulaire'])->middleware('role:titulaire')->name('titulaire.dashboard');
+90         Route::get('/professeur/tableau-de-bord', [ProfesseurDashboardController::class, 'index'])->middleware('role:professeur')->name('professeur.dashboard');
+91         Route::view('/comptable/tableau-de-bord', 'dashboard', ['role' => 'Comptable'])->middleware('role:comptable')->name('comptable.dashboard');
+92     });

@@ -1,0 +1,59 @@
+1      <?php
+2      
+3      namespace App\Providers;
+4      
+5      use App\Models\ParametreSysteme;
+6      use App\Models\AnneeScolaire;
+7      use Illuminate\Support\ServiceProvider;
+8      use Illuminate\Support\Facades\View;
+9      
+10     class AppServiceProvider extends ServiceProvider
+11     {
+12         /**
+13          * Register any application services.
+14          */
+15         public function register(): void
+16         {
+17             //
+18         }
+19     
+20         /**
+21          * Bootstrap any application services.
+22          */
+23         public function boot(): void
+24         {
+25             View::composer('*', static function ($view): void {
+26                 $settings = request()->attributes->get('system_settings');
+27                 if (! $settings) {
+28                     $settings = self::firstOrNull(fn () => ParametreSysteme::query()->first());
+29                     $settings ??= ParametreSysteme::defaults();
+30                     request()->attributes->set('system_settings', $settings);
+31                 }
+32     
+33                 $view->with('systemSettings', $settings);
+34     
+35                 if (! request()->attributes->has('annee_en_cours')) {
+36                     request()->attributes->set('annee_en_cours', self::firstOrNull(
+37                         fn () => AnneeScolaire::where('is_encours', true)->first()
+38                     ));
+39                 }
+40     
+41                 $view->with('anneeEnCours', request()->attributes->get('annee_en_cours'));
+42             });
+43         }
+44     
+45         /**
+46          * Exécute une lecture destinée à l'affichage et renvoie null en cas d'échec.
+47          *
+48          * Ces valeurs ne sont que du contexte d'affichage : une table absente ou
+49          * indisponible ne doit jamais faire échouer le rendu d'une page.
+50          */
+51         private static function firstOrNull(callable $query): mixed
+52         {
+53             try {
+54                 return $query();
+55             } catch (\Throwable) {
+56                 return null;
+57             }
+58         }
+59     }

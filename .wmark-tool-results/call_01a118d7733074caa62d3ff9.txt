@@ -1,0 +1,171 @@
+1      <?php
+2      
+3      namespace App\Support;
+4      
+5      use App\Models\Conversation;
+6      use App\Models\Message;
+7      use App\Models\User;
+8      use Illuminate\Database\Eloquent\Builder;
+9      use Illuminate\Support\Collection;
+10     
+11     /**
+12      * Messagerie interne : conversation directe (un ou plusieurs collègues) ou
+13      * diffusion à tous les utilisateurs.
+14      */
+15     class Messagerie
+16     {
+17         /**
+18          * Comptes joignables par messagerie pour un utilisateur donné.
+19          *
+20          * Règle de contact : un parent ne s'adresse qu'au personnel de la
+21          * préfecture — le préfet est son interlocuteur unique. Les autres rôles
+22          * conservent l'accès à tout le personnel actif.
+23          */
+24         public static function correspondantsQuery(User $utilisateur): Builder
+25         {
+26             $query = User::query()
+27                 ->where('statut', 'actif')
+28                 ->where('id', '!=', $utilisateur->id);
+29     
+30             if ($utilisateur->role === 'parent') {
+31                 $query->where('role', 'prefetture');
+32             }
+33     
+34             return $query->orderBy('nom')->orderBy('prenom');
+35         }
+36     
+37         /**
+38          * Crée une conversation, y inscrit l'auteur et les destinataires, puis
+39          * dépose le premier message.
+40          *
+41          * @param  array<int, int>  $destinatairesIds
+42          */
+43         public static function creer(User $auteur, array $destinatairesIds, string $sujet, string $corps): Conversation
+44         {
+45             $destinataires = User::query()
+46                 ->whereIn('id', $destinatairesIds)
+47                 ->where('id', '!=', $auteur->id)
+48                 ->pluck('id');
+49     
+50             $conversation = Conversation::create([
+51                 'sujet' => $sujet,
+52                 'type' => $destinataires->count() > 1 ? 'diffusion' : 'directe',
+53                 'createur_id' => $auteur->id,
+54                 'derniere_activite_at' => now(),
+55             ]);
+56     
+57             $participants = collect([$auteur->id])->merge($destinataires)->unique()->values();
+58     
+59             $conversation->participants()->sync(
+60                 $participants->mapWithKeys(fn (int $id) => [
+61                     $id => ['dernier_lu_at' => $id === $auteur->id ? now() : null],
+62                 ])->all()
+63             );
+64     
+65             self::envoyer($conversation, $auteur, $corps);
+66     
+67             return $conversation;
+68         }
+69     
+70         /**
+71          * Conversation directe entre deux utilisateurs : la retrouve si elle
+72          * existe déjà, sinon la crée (sans message initial). Permet d'écrire à un
+73          * correspondant d'un simple clic, sans passer par le formulaire complet.
+74          */
+75         public static function ouvrirDirecte(User $auteur, User $destinataire): Conversation
+76         {
+77             $existante = Conversation::query()
+78                 ->where('type', 'directe')
+79                 ->whereHas('participants', fn ($query) => $query->where('user_id', $auteur->id))
+80                 ->whereHas('participants', fn ($query) => $query->where('user_id', $destinataire->id))
+81                 ->has('participants', '=', 2)
+82                 ->first();
+83     
+84             if ($existante) {
+85                 return $existante;
+86             }
+87     
+88             $conversation = Conversation::create([
+89                 'sujet' => 'Discussion',
+90                 'type' => 'directe',
+91                 'createur_id' => $auteur->id,
+92                 'derniere_activite_at' => now(),
+93             ]);
+94     
+95             $conversation->participants()->sync([
+96                 $auteur->id => ['dernier_lu_at' => now()],
+97                 $destinataire->id => ['dernier_lu_at' => null],
+98             ]);
+99     
+100            return $conversation;
+101        }
+102    
+103        /**
+104         * Ajoute un message à une conversation.
+105         */
+106        public static function envoyer(
+107            Conversation $conversation,
+108            User $auteur,
+109            string $corps,
+110            ?string $pieceJointe = null,
+111            ?string $pieceJointeNom = null,
+112            ?int $reponseAId = null,
+113        ): Message {
+114            $message = $conversation->messages()->create([
+115                'auteur_id' => $auteur->id,
+116                'corps' => $corps,
+117                'piece_jointe' => $pieceJointe,
+118                'piece_jointe_nom' => $pieceJointeNom,
+119                'reponse_a_id' => $reponseAId,
+120            ]);
+121    
+122            $conversation->forceFill(['derniere_activite_at' => now()])->save();
+123    
+124            self::marquerLu($conversation, $auteur);
+125    
+126            return $message;
+127        }
+128    
+129        /**
+130         * Marque la conversation comme lue par cet utilisateur.
+131         */
+132        public static function marquerLu(Conversation $conversation, User $utilisateur): void
+133        {
+134            if ($conversation->participants()->where('user_id', $utilisateur->id)->exists()) {
+135                $conversation->participants()->updateExistingPivot($utilisateur->id, [
+136                    'dernier_lu_at' => now(),
+137                    'dernier_message_id' => (int) $conversation->messages()->max('id'),
+138                ]);
+139            }
+140        }
+141    
+142        /**
+143         * Conversations d'un utilisateur, avec le nombre de messages non lus.
+144         */
+145        public static function conversationsDe(User $utilisateur): Collection
+146        {
+147            $query = Conversation::query()
+148                ->whereHas('participants', fn ($query) => $query->where('user_id', $utilisateur->id))
+149                ->with(['dernierMessage.auteur', 'createur', 'participants'])
+150                ->orderByDesc('derniere_activite_at');
+151    
+152            // Un parent ne dialogue qu'avec le préfet : les échanges avec les autres
+153            // services restent masqués de sa liste de discussions.
+154            if ($utilisateur->role === 'parent') {
+155                $query->whereDoesntHave('participants', fn ($query) => $query
+156                    ->where('user_id', '!=', $utilisateur->id)
+157                    ->where('users.role', '!=', 'prefetture'));
+158            }
+159    
+160            return $query->get()
+161                ->each(fn (Conversation $conversation) => $conversation->setAttribute('non_lus', $conversation->nonLusPour($utilisateur)));
+162        }
+163    
+164        /**
+165         * Total des messages non lus (badge du menu).
+166         */
+167        public static function nonLus(User $utilisateur): int
+168        {
+169            return (int) self::conversationsDe($utilisateur)->sum('non_lus');
+170        }
+171    }

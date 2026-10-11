@@ -1,0 +1,13 @@
+226            ->assertSee('3e primaire')
+227            ->assertDontSee("n'est pas inscrit pour l'année en cours", false);
+228    });
+229    
+230    test('a pupil file states when the pupil is not enrolled for the current year', function () {
+231        $admin = User::factory()->create(['role' => 'admin']);
+232    
+233        $this->actingAs($admin)
+234            ->get(route('admin.eleves.show', 1))
+235            ->assertOk()
+236            ->assertSee("n'est pas inscrit pour l'année en cours", false)
+237            ->assertDontSee('3e primaire');
+238    });

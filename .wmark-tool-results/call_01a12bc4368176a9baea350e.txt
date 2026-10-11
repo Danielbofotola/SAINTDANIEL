@@ -1,0 +1,16 @@
+37         // Éléments du bulletin réglés dans Paramètres (Administration → Profil → Paramètres).
+38         $bulletinPays = $systemSettings->bulletin_pays ?: 'République Démocratique du Congo';
+39         $bulletinMinistere = $systemSettings->bulletin_ministere ?: "Ministère de l'Enseignement Primaire, Secondaire et Professionnel";
+40         // Titre réel : le cycle de la classe de l'élève (CTEB ou autre), sauf titre
+41         // imposé dans les Paramètres de l'établissement.
+42         $cycleNom = $classe?->cycle?->nom;
+43         $classeNom = $classe?->nom;
+44         $repere = trim(($cycleNom ?? '').' '.($classeNom ?? ''));
+45         $cycleLibelle = preg_match('/cteb|terminal/i', $repere)
+46             ? 'Cycle terminal de l’éducation de base (CTEB)'
+47             : ($cycleNom ?: $classeNom);
+48         $bulletinTitre = $systemSettings->bulletin_titre ?: ('Bulletin annuel'.($cycleLibelle ? ' — '.$cycleLibelle : ''));
+49         $bulletinReference = $systemSettings->bulletin_reference ?: 'EBE/P.S./010';
+50         $bulletinSignataire = $systemSettings->bulletin_signataire ?: 'Le Chef d’Établissement';
+
+[showing lines 37-50 of 239; read again with offset=51 for more]

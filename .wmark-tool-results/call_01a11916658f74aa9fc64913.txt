@@ -1,0 +1,19 @@
+Applied patch: 5 files changed (5 updated)
+Updated routes/web.php (1 hunk applied)
+Updated resources/views/prefecture/layout.blade.php (2 hunks applied)
+Updated resources/views/prefecture/profil.blade.php (2 hunks applied)
+Updated resources/views/profile/show.blade.php (1 hunk applied)
+Updated resources/views/parent/portail.blade.php (1 hunk applied)
+Landed at lines 70-73 (the file's new text; no re-read needed):
+70         // Modification de son propre profil : réservée à l'administrateur. Les autres
+71         // rôles consultent leur fiche (profile.show) mais ne peuvent pas la modifier.
+72         Route::get('/mon-profil/modifier', [UserProfileController::class, 'editPersonalProfile'])->middleware('role:admin')->name('profile.edit');
+73         Route::put('/mon-profil', [UserProfileController::class, 'update'])->middleware('role:admin')->name('profile.update');
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 7-10 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Landed at lines 28-32 (the file's new text; no re-read needed):
+28                 @if (auth()->user()?->role === 'admin')
+29                     <a class="btn btn-primary" href="{{ route('profile.edit') }}"><i class="fa fa-pencil"></i> Modifier mon profil</a>
+30                 @else
+31                     <span class="text-muted"><i class="fa fa-lock"></i> Vos informations et coordonnées sont gérées par l'administration.</span>
+32                 @endif

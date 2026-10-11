@@ -1,0 +1,22 @@
+Applied patch: 1 file changed (1 updated)
+Updated app/Http/Controllers/PrefectureDashboardController.php (1 hunk applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 48-54 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 54-151:
+54     
+55         /**
+56          * Effectifs : répartition par cycle, par classe et par sexe (année en cours).
+57          */
+58         public function effectifs(Request $request): View
+59         {
+60             $parSexe = Eleve::query()
+61                 ->inscritAnneeEnCours()
+      … 82 lines omitted …
+144                'notificationsNonLues' => $utilisateur->notifications()->whereNull('read_at')->count(),
+145                'dernieresNotifications' => $utilisateur->notifications()->latest()->limit(5)->get(),
+146                'effectifTotal' => Eleve::inscritAnneeEnCours()->where('statut', 'actif')->count(),
+147                'classesActives' => Classe::where('statut', 'actif')->count(),
+148                'professeursActifs' => Professeurs::where('statut', 'actif')->count(),
+149                'comptesTotal' => User::count(),
+150            ]);
+151        }

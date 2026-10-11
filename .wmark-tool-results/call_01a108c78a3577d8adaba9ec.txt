@@ -1,0 +1,23 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/ComptableCaisseTest.php (2 hunks applied)
+Landed at lines 196-197 (the file's new text; no re-read needed):
+196            ->assertSee(route('comptable.paiements.index'), false)
+197            ->assertSee(route('comptable.recouvrement.index'), false);
+Landed at lines 207-261 (the file's new text; no re-read needed):
+207    
+208    test('the receipt number is generated automatically and the payment keeps its period', function () {
+209        $comptable = User::factory()->create(['role' => 'comptable']);
+210    
+211        $this->actingAs($comptable)
+212            ->post(route('comptable.paiements.store'), [
+213                'inscription_id' => 1, 'frais_scolaire_id' => 1, 'periode_id' => 1,
+214                'montant_paye' => 50, 'mode_paiement' => 'banque',
+      … 39 lines omitted …
+254            ->assertSee('100 %')
+255            ->assertSee('3e A');
+256    
+257        $this->actingAs($comptable)
+258            ->get(route('comptable.recouvrement.index', ['periode_id' => 1]))
+259            ->assertOk()
+260            ->assertSee('1ère Période');
+261    });

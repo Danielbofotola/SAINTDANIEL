@@ -1,0 +1,19 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\b493c9bc81dc\20261008-011234-bash-call_01a118daffaf7750872e6373.txt (700 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+[powershell — Windows side]
+app\Http\Controllers\AdminRegistrationRequestController.php:12: use App\Models\Tuteur;
+app\Http\Controllers\AdminRegistrationRequestController.php:70: $guardian = Tuteur::create([
+app\Http\Controllers\AdminRegistrationRequestController.php:95: 'tuteur_id' => $guardian->id,
+app\Http\Controllers\EleveController.php:52: $eleve->load(['tuteur', 'sante', 'documents' => fn ($query) => $query->latest('created_at')]);
+app\Http\Controllers\EleveController.php:87: $eleve->tuteu
+
+... 278 chars truncated ...
+
+\EleveInscriptionController.php:9: use App\Models\Tuteur;
+app\Http\Controllers\EleveInscriptionController.php:60: $tuteur = Tuteur::create(collect($data)->only(['nom_mere','telephone_mere','profession_mere','email_mere','adresse_mere','nom_pere','telephone_pere','profession_pere','email_pere','adresse_pere'])->all());
+app\Http\Controllers\EleveInscriptionController.php:64: $eleve = Eleve::create(collect($data)->only(['nom','postnom','prenom','sexe','date_naissance','lieu_naissance'])->merge(['matricule' => 'ELV-'.Str::before($annee->libelle, '-').'-'.$numero, 'tuteur_id' => $tuteur->id, 'photo' => $photo, 'statut' => 'actif'])->all());
+app\Models\Eleve.php:21: 'tuteur_id',
+app\Models\Eleve.php:31: public function tuteur()
+app\Models\Eleve.php:33: return $this->belongsTo(Tuteur::class);
+app\Models\Tuteur.php:7: class Tuteur extends Model
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

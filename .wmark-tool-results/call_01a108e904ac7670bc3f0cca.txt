@@ -1,0 +1,90 @@
+1      <!DOCTYPE html>
+2      <html lang="fr">
+3      <head>
+4          <meta charset="utf-8">
+5          <meta name="viewport" content="width=device-width, initial-scale=1">
+6          <title>Dossier de {{ $professeur->prenom }} {{ $professeur->nom }}</title>
+7          <link rel="stylesheet" href="{{ asset('boostrap/css/css/main.css') }}">
+8          <link rel="stylesheet" href="{{ asset('boostrap/css/font-awesome/css/fa-regular.min.css') }}">
+9          <link rel="stylesheet" href="{{ asset('boostrap/css/font-awesome/css/fontawesome.css') }}">
+10         <link rel="stylesheet" href="{{ asset('boostrap/css/font-awesome/css/fa-solid.css') }}">
+11         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+12         <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap4.min.css">
+13     </head>
+14     <body class="app">
+15         <main class="app-content" style="margin-left:0">
+16             <div class="app-title">
+17                 <div><h1><i class="fa fa-folder-open"></i> Dossier du professeur</h1><p>Identité, compte associé et affectations de l'année en cours.</p></div>
+18                 <div>
+19                     <a class="btn btn-secondary" href="{{ route('admin.professeurs.index') }}"><i class="fa fa-arrow-left"></i> Retour à la liste</a>
+20                     <a class="btn btn-primary" href="{{ route('admin.professeurs.emploi-du-temps', $professeur) }}"><i class="fa fa-calendar"></i> Emploi du temps</a>
+21                     <a class="btn btn-info" href="{{ route('admin.affectations.index') }}"><i class="fa fa-list"></i> Cours &amp; affectation</a>
+22                 </div>
+23             </div>
+24             @if (session('success'))<div class="alert alert-success">{{ session('success') }}</div>@endif
+25     
+26             <div class="tile mb-4">
+27                 <div class="row align-items-center">
+28                     <div class="col-md-3 text-center">
+29                         @if ($professeur->photo)<img src="{{ asset('storage/'.$professeur->photo) }}" alt="Photo de {{ $professeur->prenom }}" width="150" height="180" style="object-fit:cover;border-radius:8px">@else<i class="fa fa-user-circle fa-5x text-secondary"></i>@endif
+30                     </div>
+31                     <div class="col-md-9">
+32                         <h2>{{ $professeur->nom }} {{ $professeur->postnom }} {{ $professeur->prenom }}</h2>
+33                         <p><strong>Matricule :</strong> {{ $professeur->matricule }}</p>
+34                         <span class="badge badge-{{ $professeur->statut === 'actif' ? 'success' : 'secondary' }}">{{ ucfirst($professeur->statut) }}</span>
+35                     </div>
+36                 </div>
+37             </div>
+38     
+39             <div class="row">
+40                 <div class="col-md-6">
+41                     <div class="tile mb-4">
+42                         <h4 class="tile-title"><i class="fa fa-id-card"></i> Identité professionnelle</h4>
+43                         <table class="table table-bordered"><tbody>
+44                             <tr><th>Sexe</th><td>{{ $professeur->sexe === 'M' ? 'Masculin' : 'Féminin' }}</td></tr>
+45                             <tr><th>Spécialité</th><td>{{ $professeur->specialite }}</td></tr>
+46                             <tr><th>Téléphone</th><td>{{ $professeur->telephone }}</td></tr>
+47                             <tr><th>E-mail</th><td>{{ $professeur->email }}</td></tr>
+48                         </tbody></table>
+49                     </div>
+50                     <div class="tile mb-4">
+51                         <h4 class="tile-title"><i class="fa fa-key"></i> Compte utilisateur</h4>
+52                         @if ($professeur->user)
+53                             <table class="table table-bordered"><tbody>
+54                                 <tr><th>Identifiant</th><td>{{ $professeur->user->username }}</td></tr>
+55                                 <tr><th>Rôle</th><td>{{ ucfirst($professeur->user->role) }}</td></tr>
+56                                 <tr><th>Statut</th><td>{{ ucfirst($professeur->user->statut) }}</td></tr>
+57                             </tbody></table>
+58                         @else
+59                             <p class="text-muted mb-0">Aucun compte n'est rattaché à ce professeur.</p>
+60                         @endif
+61                     </div>
+62                 </div>
+63                 <div class="col-md-6">
+64                     <div class="tile mb-4">
+65                         <h4 class="tile-title"><i class="fa fa-graduation-cap"></i> Affectations @if($anneeEnCours)<small class="text-muted">{{ $anneeEnCours->libelle }}</small>@endif</h4>
+66                         @forelse ($professeur->affectationsCours as $affectation)
+67                             <div class="border-bottom py-2">
+68                                 <strong>{{ $affectation->cours?->intitule ?? 'Cours inconnu' }}</strong>
+69                                 <span class="text-muted">— {{ $affectation->classe?->nom ?? 'Classe inconnue' }}</span>
+70                             </div>
+71                         @empty
+72                             <p class="text-muted mb-0">Aucune affectation pour l'année en cours.</p>
+73                         @endforelse
+74                     </div>
+75                     <div class="tile mb-4">
+76                         <h4 class="tile-title"><i class="fa fa-files-o"></i> Documents</h4>
+77                         @forelse ($professeur->documents as $document)
+78                             <div class="border-bottom py-2 d-flex justify-content-between align-items-center">
+79                                 <span><i class="fa fa-file-text-o text-primary"></i> {{ $document->titre }}<br><small class="text-muted">{{ ucfirst(str_replace('_', ' ', $document->type_document)) }} · {{ $document->created_at?->format('d/m/Y') }}</small></span>
+80                                 <a class="btn btn-sm btn-primary" href="{{ asset('storage/'.$document->chemin_fichier) }}" target="_blank" rel="noopener"><i class="fa fa-eye"></i> Ouvrir</a>
+81                             </div>
+82                         @empty
+83                             <p class="text-muted mb-0">Aucun document au dossier.</p>
+84                         @endforelse
+85                     </div>
+86                 </div>
+87             </div>
+88         </main>
+89     </body>
+90     </html>

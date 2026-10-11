@@ -1,0 +1,18 @@
+326        expect(strpos($html, 'chat-input-wrap'))->toBeLessThan(strpos($html, 'id="messageInput"'))
+327            ->and(strpos($html, 'id="messageInput"'))->toBeLessThan(strpos($html, 'id="sendBtn"'))
+328            ->and(strpos($html, 'id="sendBtn"'))->toBeLessThan(strpos($html, '</section>'));
+329    
+330        // Retour (vue mobile) : on revient sur la liste des CORRESPONDANTS, sans
+331        // recharger, et la vue mobile ouvre d'abord sur cette liste.
+332        expect($html)
+333            ->toContain('onclick="retourListe()"')
+334            ->toContain('window.retourListe')
+335            ->toContain("matchMedia('(max-width: 820px)')")
+336            ->toContain('data-cible="correspondants"');
+337    });
+338    
+339    test('la barre d’écriture reste disponible même sans discussion ouverte', function () {
+340        $alice = User::factory()->create(['role' => 'admin', 'nom' => 'Mwamba', 'prenom' => 'Alice']);
+341        User::factory()->create(['role' => 'professeur', 'nom' => 'Kabila', 'prenom' => 'Bruno']);
+
+[showing lines 326-341 of 438; read again with offset=342 for more]

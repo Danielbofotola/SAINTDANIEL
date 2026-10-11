@@ -1,0 +1,14 @@
+8      beforeEach(function () {
+9          Schema::disableForeignKeyConstraints();
+10         foreach (['depenses', 'categories_depenses', 'annees_scolaires', 'users'] as $table) {
+11             // La page des dépenses calcule aussi le signal de charge : il lui faut
+12             // les paiements (recettes) et les paies (salaires).
+13         }
+14         foreach (['paies', 'salaires', 'professeurs', 'paiements', 'frais_scolaires', 'types_frais', 'inscriptions', 'eleves', 'tuteurs', 'classes', 'cycles', 'depenses', 'categories_depenses', 'annees_scolaires', 'users'] as $table) {
+15             Schema::dropIfExists($table);
+16         }
+17         Schema::enableForeignKeyConstraints();
+18     
+19         Schema::create('users', function (Blueprint $table) {
+
+[showing lines 8-19 of 144; read again with offset=20 for more]

@@ -1,0 +1,38 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\b493c9bc81dc\20261008-022508-apply_patch-call_01a1191d75377044942bf004.txt (548 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+Applied patch: 1 file changed (1 updated)
+Updated resources/views/prefecture/layout.blade.php (2 hunks applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 2: context matched at lines 250-252 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 263-264:
+263    {{-- DataTables 1.10.16 (bundle local) : recherche, tri et pagination des tableaux. --}}
+264    <script src="{{ asset('azz
+
+... 217 chars truncated ...
+
+ // désactivés explicitement (data-datatable="off") ou sans en-tête (<thead>).
+269        jQuery(function ($) {
+270            if (! $.fn.DataTable) { return; }
+271    
+272            $('table.table').each(function () {
+273                var $tableau = $(this);
+      … 16 lines omitted …
+290                    order: [],                       // on garde le tri déjà calculé côté serveur
+291                    autoWidth: false,
+292                    paging: $tableau.data('datatable-paging') !== 'off',
+293                    columnDefs: [{ orderable: false, targets: 'no-sort' }]
+294                });
+295            });
+296        });
+297    </script>
+Landed at lines 26-36 (the file's new text; no re-read needed):
+26         <style>
+27             /* DataTables (bundle local Azzara) : contrôles alignés sur le thème. */
+28             .dataTables_wrapper .dataTables_filter { padding-bottom: 8px; }
+29             .dataTables_wrapper .dataTables_filter input,
+30             .dataTables_wrapper .dataTables_length select {
+31                 border: 1px solid #d9d9d9; border-radius: 4px; padding: 4px 8px; height: auto; }
+32             .dataTables_wrapper .dataTables_info { padding-top: 10px; font-size: .82rem; color: #6c757d; }
+33             .dataTables_wrapper .pagination { margin: 0; }
+34             .dataTables_wrapper .table-responsive { overflow: visible; }
+35             table.dataTable thead th { border-bottom: 2px solid #dee2e6; white-space: nowrap; }
+36         </style>

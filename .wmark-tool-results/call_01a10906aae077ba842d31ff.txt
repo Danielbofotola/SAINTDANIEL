@@ -1,0 +1,6 @@
+355                        <li><a class="treeview-item" href="{{ route('admin.depenses.index') }}"><i class="icon fa fa-shopping-cart"></i> Dépenses</a></li>
+356                        <li><a class="treeview-item" href="{{ route('admin.paies.index') }}"><i class="icon fa fa-money"></i> Paie &amp; salaires</a></li>
+357                        <li><a class="treeview-item" href="{{ route('admin.archives.index') }}"><i class="icon fa fa-archive"></i> Clôture &amp; archives</a></li>
+358                    </ul>
+
+[showing lines 355-358 of 724; read again with offset=359 for more]

@@ -1,0 +1,20 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/BulletinDocumentTest.php (1 hunk applied)
+Landed at lines 434-451 (the file's new text; no re-read needed):
+434    
+435    test('la note maximale d’une évaluation est reprise du barème du cours si elle est omise', function () {
+436        DB::table('cours')->where('id', 1)->update(['max_travaux_journaliers' => 30, 'max_examen' => 60]);
+437        $admin = User::factory()->create(['role' => 'admin']);
+438    
+439        foreach ([['interro', 30.0], ['examen', 60.0]] as [$type, $attendu]) {
+440            $this->actingAs($admin)
+441                ->post(route('admin.evaluations.store'), [
+      … 2 lines omitted …
+444                    // max_note volontairement omis → repris du barème de la branche.
+445                ])
+446                ->assertRedirect(route('admin.evaluations.index'));
+447    
+448            $evaluation = DB::table('evaluations')->where('titre', 'Eval '.$type)->first();
+449            expect((float) $evaluation->max_note)->toBe($attendu);
+450        }
+451    });

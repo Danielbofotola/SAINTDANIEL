@@ -1,0 +1,8 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/FinancesPagesTest.php (1 hunk applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 389-391 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 391-393:
+391            ->assertSee(route('admin.depenses.index'), false)
+392            ->assertSee(route('admin.professeurs.index'), false)
+393            ->assertSee(route('admin.emplois-du-temps.index'), false);

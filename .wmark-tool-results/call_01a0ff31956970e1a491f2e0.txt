@@ -1,0 +1,19 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/YearScopedModelsTest.php (1 hunk applied)
+Landed at lines 20-35 (the file's new text; no re-read needed):
+20     use Illuminate\Database\Schema\Blueprint;
+21     use Illuminate\Support\Facades\Schema;
+22     
+23     beforeEach(function () {
+24         // Le scope anneeEnCours() interroge l'année en cours : la table doit exister.
+25         Schema::dropIfExists('annees_scolaires');
+26         Schema::create('annees_scolaires', function (Blueprint $table) {
+27             $table->id();
+28             $table->string('libelle', 20)->unique();
+29             $table->date('date_debut');
+30             $table->date('date_fin');
+31             $table->boolean('is_encours')->default(false);
+32             $table->enum('statut', ['actif', 'inactif'])->default('actif');
+33             $table->timestamps();
+34         });
+35     });

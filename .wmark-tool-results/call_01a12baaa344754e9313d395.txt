@@ -1,0 +1,15 @@
+Applied patch: 2 files changed (2 updated)
+Updated routes/web.php (2 hunks applied)
+Updated resources/views/comptable/dashboard.blade.php (1 hunk applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 2: context matched at lines 285-285 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 287-289:
+287        Route::get('/comptable/profil', [ComptableProfilController::class, 'index'])->middleware('role:comptable')->name('comptable.profil');
+288        Route::put('/comptable/profil', [ComptableProfilController::class, 'update'])->middleware('role:comptable')->name('comptable.profil.update');
+289        Route::patch('/comptable/profil/mot-de-passe', [ComptableProfilController::class, 'updatePassword'])->middleware('role:comptable')->name('comptable.profil.password');
+Landed at lines 36-36 (the file's new text; no re-read needed):
+36     use App\Http\Controllers\ComptableProfilController;
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 299-299 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 300-300:
+300                                         <a href="{{ route('comptable.profil') }}" class="btn btn-sm btn-outline-success mt-1"><i class="bi bi-person-circle me-1"></i>Mon profil</a>

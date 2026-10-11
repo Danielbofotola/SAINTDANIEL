@@ -1,0 +1,15 @@
+database/migrations/ (14 lines, newest first):
+  2026_10_03_000000_enforce_single_current_school_year.php
+  2026_09_29_010000_create_parametres_systeme_table.php
+  2026_09_29_000000_create_registration_request_tables.php
+  2026_09_21_050000_add_profile_fields_to_users_table.php
+  2026_09_21_040000_align_sections_options_schema.php
+  2026_09_21_030000_create_sections_and_options_tables.php
+  2026_09_21_020000_create_school_management_tables.php
+  2026_09_21_010000_create_eleves_table.php
+  2026_09_21_000000_add_professeur_foreign_key_to_users_table.php
+  0001_01_01_000000_create_users_table.php
+  2026_09_20_225243_add_professeur_id_to_users_table.php
+  2026_09_20_222131_create_professeurs_table.php
+  0001_01_01_000001_create_cache_table.php
+  0001_01_01_000002_create_jobs_table.php

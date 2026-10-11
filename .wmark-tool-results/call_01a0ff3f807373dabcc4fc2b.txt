@@ -1,0 +1,5 @@
+Applied patch: 1 file changed (1 updated)
+Updated resources/views/admin/dashboard.blade.php (1 hunk applied)
+Landed at lines 334-335 (the file's new text; no re-read needed):
+334                        <li><a class="treeview-item" href="{{ route('admin.sections.index') }}"><i class="icon fa fa-sitemap"></i> Sections</a></li>
+335                        <li><a class="treeview-item" href="{{ route('admin.options.index') }}"><i class="icon fa fa-list-ul"></i> Options</a></li>

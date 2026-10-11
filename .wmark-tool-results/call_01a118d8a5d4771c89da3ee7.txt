@@ -1,0 +1,22 @@
+[powershell — Windows side]
+----------------------------------------------------------------------------------
+
+SQLSTATE[HY000]: General error: 1 no such table: annonces (Connection: sqlite, Database: :memory:, SQL: select * from "annonces" where ("cible" = tous or "cible" = parent) order by "created_at" desc limit 10)
+
+  at tests\Feature\MessagerieSuppressionTest.php:164
+    160▕ 
+    161▕     // Le portail du parent ne montre plus la discussion, le préfet garde tout.
+    162▕     $this->actingAs($parent)
+    163▕         ->get(route('parent.dashboard'))
+  ➜ 164▕         ->assertOk()
+    165▕         ->assertDontSee('Votre solde est de 20 $.');
+    166▕ 
+    167▕     $this->actingAs($prefet)
+    168▕         ->get(route('messagerie.index', ['conversation' => $conversation->id]))
+
+
+  Tests:    1 failed, 3 passed (16 assertions)
+  Duration: 1.31s
+
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

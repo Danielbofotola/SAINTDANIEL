@@ -1,0 +1,20 @@
+106                                                    </a>
+107                                                @else
+108                                                    <span class="text-muted">—</span>
+109                                                @endif
+110                                            </td>
+111                                            <td class="text-right">
+112                                                @if ($bulletin->approuve_at)
+113                                                    <span class="badge badge-success">
+114                                                        Approuvé le {{ $bulletin->approuve_at->format('d/m/Y') }}
+115                                                    </span>
+116                                                @else
+117                                                    <form method="POST" action="{{ route('prefecture.bulletins.approuver', $bulletin) }}">
+118                                                        @csrf
+119                                                        <button type="submit" class="btn btn-sm btn-round btn-outline-primary">
+120                                                            <i class="fas fa-stamp"></i> Approuver
+121                                                        </button>
+122                                                    </form>
+123                                                @endif
+
+[showing lines 106-123 of 138; read again with offset=124 for more]

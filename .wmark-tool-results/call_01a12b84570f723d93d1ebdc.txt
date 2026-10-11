@@ -1,0 +1,20 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/DeliberationTest.php (1 hunk applied)
+Landed at lines 540-572 (the file's new text; no re-read needed):
+540    
+541    test('la liste des élèves d’une année montre le passage et les nouveaux inscrits', function () {
+542        $s = scenarioDeliberation();
+543    
+544        // Délibérer puis appliquer le passage : A est promu dans la classe cible.
+545        $this->actingAs($s['alice'])->post(route('admin.deliberations.enregistrer'), [
+546            'annee_scolaire_id' => $s['annee']->id,
+547            'decisions' => [Inscription::where('eleve_id', $s['eleves']['A']->id)->value('id') => 'admis'],
+      … 17 lines omitted …
+565            ->assertSee('2027-2028')
+566            ->assertSee('NomA')          // l'élève promu par la délibération
+567            ->assertSee('Passage')       // sa provenance
+568            ->assertSee('Nouveau Eleve'); // le nouvel inscrit
+569    
+570        // Sans la délibération d'origine, le nouvel inscrit est marqué « Nouveau ».
+571        expect(Inscription::where('annee_scolaire_id', $s['cible']->id)->count())->toBe(2);
+572    });

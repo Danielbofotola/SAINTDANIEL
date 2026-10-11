@@ -1,0 +1,24 @@
+261    <body class="p-2">
+262        @php
+263            $displayName = trim(($user->prenom ?: '').' '.($user->nom ?: '')) ?: $user->username;
+264            $money = fn ($value) => number_format((float) $value, 0, ',', ' ');
+265            $angle = min(max((float) $taux, 0), 100) * 1.8;
+266            $dernier = $derniersPaiements->first();
+267        @endphp
+268        @include('partials.impersonation-banner')
+269    
+270        <div class="container-fluid">
+271            <div class="row g-2">
+272    
+273                <!-- PRINCIPAL -->
+274                <div class="col-lg-9">
+275    
+276                    @if (! $schoolYear)
+277                        <div class="alert alert-info py-2 mb-2" role="status"><strong>Aucune année scolaire en cours n’est définie.</strong> Les frais et paiements s’afficheront dès que l’administration en activera une.</div>
+278                    @endif
+279    
+280                    <div class="row g-2 mb-2">
+281                        <!-- Tableau de bord de caisse -->
+282                        <div class="col-md-7">
+
+[showing lines 261-282 of 512; read again with offset=283 for more]

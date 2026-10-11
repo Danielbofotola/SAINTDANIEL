@@ -1,0 +1,22 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/ProfesseursPagesTest.php (1 hunk applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 332-341 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 342-366:
+342    
+343    test('the professor detail page offers a timetable button that renders the weekly grid', function () {
+344        $professeurId = seedProfesseur();
+345        $affectationId = seedAffectation($professeurId, seedCours(), 1);
+346        DB::table('emplois_du_temps')->insert([
+347            'affectation_id' => $affectationId, 'salle_id' => 1, 'jour' => 'lundi',
+348            'heure_debut' => '08:00', 'heure_fin' => '09:30', 'statut' => 'actif',
+349            'created_at' => now(), 'updated_at' => now(),
+      … 9 lines omitted …
+359            ->get(route('admin.professeurs.emploi-du-temps', $professeurId))
+360            ->assertOk()
+361            ->assertSee('Emploi du temps hebdomadaire')
+362            ->assertSee('Mathématiques 6')
+363            ->assertSee('3e A')
+364            ->assertSee('Salle 1')
+365            ->assertSee('08:00');
+366    });

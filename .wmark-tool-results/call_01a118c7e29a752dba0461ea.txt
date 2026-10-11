@@ -1,0 +1,10 @@
+[powershell — Windows side]
+=== routes referencing 'parent' anywhere ===
+48: use App\Http\Controllers\PortailParentController;
+243: // Espace Parent : page de communication dédiée, ouverte aux parents (et à
+245: Route::get('/espace-parent', [PortailParentController::class, 'index'])->middleware('role:parent,admin')->name('parent.dashboard');
+=== admin views linking to parent.dashboard ===
+resources\views\admin\modules\index.blade.php:52: <p class="text-muted mb-0 small">Ouvre l'espace de communication des parents (<code>/espace-parent</code>) : profil, annonces et messagerie avec le personnel.</p>
+resources\views\parent\portail.blade.php:168: 'espaceUrl' => route('parent.dashboard'),
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

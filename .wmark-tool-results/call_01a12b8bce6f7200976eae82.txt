@@ -1,0 +1,62 @@
+255    
+256                                                 <form class="d-inline" method="POST" action="{{ route('admin.profile.accounts.toggle', $user) }}">
+257                                                    @csrf 
+258                                                    @method('PATCH')
+259                                                    <button class="btn btn-sm btn-{{ $user->statut === 'actif' ? 'warning' : 'success' }} waves-effect" type="submit" title="{{ $user->statut === 'actif' ? 'Désactiver' : 'Activer' }}">
+260                                                       <i class="icofont icofont-power"></i>
+261                                                    </button>
+262                                                 </form>
+263    
+264                                                 <form class="d-inline" method="POST" action="{{ route('admin.profile.accounts.destroy', $user) }}" onsubmit="return confirm('Supprimer définitivement ce compte ?');">
+265                                                    @csrf 
+266                                                    @method('DELETE')
+267                                                    <button class="btn btn-sm btn-danger waves-effect" type="submit" title="Supprimer">
+268                                                       <i class="icofont icofont-trash"></i>
+269                                                    </button>
+270                                                 </form>
+271                                              @endif
+272                                           </td>
+273                                        </tr>
+274                                     @empty
+275                                        <tr>
+276                                           <td colspan="7" class="text-center text-muted">Aucun compte utilisateur trouvé.</td>
+277                                        </tr>
+278                                     @endforelse
+279                                  </tbody>
+280                               </table>
+281                            </div>
+282                         </div>
+283                      </div>
+284                   </div>
+285                </div>
+286    
+287             </div>
+288          </div>
+289       </div>
+290    
+291       <!-- Required Scripts -->
+292       <script src="{{ asset('assets/plugins/Jquery/dist/jquery.min.js') }}"></script>
+293       <script src="{{ asset('assets/plugins/jquery-ui/jquery-ui.min.js') }}"></script>
+294       <script src="{{ asset('assets/plugins/tether/dist/js/tether.min.js') }}"></script>
+295       <script src="{{ asset('assets/plugins/bootstrap/js/bootstrap.min.js') }}"></script>
+296       <script src="{{ asset('assets/plugins/jquery-slimscroll/jquery.slimscroll.js') }}"></script>
+297    
+298       <!-- DataTables -->
+299       <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+300       <script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap4.min.js"></script>
+301    
+302       <!-- Custom Scripts -->
+303       <script type="text/javascript" src="{{ asset('assets/js/main.min.js') }}"></script>
+304       <script src="{{ asset('assets/js/menu.min.js') }}"></script>
+305    
+306       <script>
+307          $(document).ready(function() {
+308              $('#accountsTable').DataTable({
+309                  "language": {
+310                      "url": "//cdn.datatables.net/plug-ins/1.13.8/i18n/fr-FR.json"
+311                  }
+312              });
+313          });
+314       </script>
+315    </body>
+316    </html>

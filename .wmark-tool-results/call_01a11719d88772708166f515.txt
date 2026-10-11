@@ -1,0 +1,20 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/MessagerieTest.php (1 hunk applied)
+Landed at lines 320-336 (the file's new text; no re-read needed):
+320    test('la barre d’écriture reste disponible même sans discussion ouverte', function () {
+321        $alice = User::factory()->create(['role' => 'admin', 'nom' => 'Mwamba', 'prenom' => 'Alice']);
+322        User::factory()->create(['role' => 'professeur', 'nom' => 'Kabila', 'prenom' => 'Bruno']);
+323    
+324        // Aucune conversation au départ : on doit pouvoir écrire tout de suite.
+325        $html = $this->actingAs($alice)->get(route('messagerie.index'))->assertOk()->getContent();
+326    
+327        expect($html)
+      … 1 lines omitted …
+329            ->toContain('id="sendBtn"')
+330            ->toContain('id="voiceBtn"')
+331            ->toContain('id="nouveauDest"')            // choisir le destinataire
+332            ->toContain('onclick="toggleVoice()"')
+333            ->toContain('window.toggleVoice')          // la fonction du micro est bien définie
+334            ->toContain('function envoyerVocal');      // et celle qui envoie le vocal
+335    });
+336

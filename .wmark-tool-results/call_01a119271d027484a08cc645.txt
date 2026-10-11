@@ -1,0 +1,20 @@
+118    
+119            return view('parent.enfants', $base + [
+120                'enfants' => $enfants,
+121                'enfantActif' => $enfantActif,
+122                'notes' => $notes,
+123                'travaux' => $travaux,
+124            ]);
+125        }
+126    
+127        /** Fiche du compte parent. */
+128        public function profil(Request $request): View
+129        {
+130            return view('parent.profil', $this->donneesDeBase());
+131        }
+132    
+133        /**
+134         * Données communes à toutes les pages : utilisateur connecté et paramètres.
+135         * Le portail n'existe que si l'administration l'a ouvert.
+
+[showing lines 118-135 of 147; read again with offset=136 for more]

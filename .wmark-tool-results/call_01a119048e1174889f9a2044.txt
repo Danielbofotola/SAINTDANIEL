@@ -1,0 +1,2 @@
+Applied patch: 1 file changed (1 created)
+Created database/migrations/2026_10_22_000000_add_prefet_supervision_columns.php (54 lines)

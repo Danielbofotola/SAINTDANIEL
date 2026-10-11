@@ -1,0 +1,284 @@
+1      <?php
+2      
+3      use App\Models\User;
+4      use Illuminate\Database\Schema\Blueprint;
+5      use Illuminate\Support\Facades\DB;
+6      use Illuminate\Support\Facades\Schema;
+7      
+8      beforeEach(function () {
+9          Schema::disableForeignKeyConstraints();
+10         foreach ([
+11             'paiements', 'frais_scolaires', 'types_frais', 'inscriptions', 'periodes', 'eleves', 'tuteurs',
+12             'classes', 'cycles', 'salles', 'annees_scolaires', 'users',
+13         ] as $table) {
+14             Schema::dropIfExists($table);
+15         }
+16         Schema::enableForeignKeyConstraints();
+17     
+18         Schema::create('users', function (Blueprint $table) {
+19             $table->id();
+20             $table->unsignedBigInteger('professeur_id')->nullable()->unique();
+21             $table->string('nom', 50)->nullable();
+22             $table->string('postnom', 50)->nullable();
+23             $table->string('prenom', 50)->nullable();
+24             $table->date('date_naissance')->nullable();
+25             $table->string('username')->unique();
+26             $table->string('email')->unique();
+27             $table->string('telephone', 20)->nullable();
+28             $table->text('adresse')->nullable();
+29             $table->string('photo')->nullable();
+30             $table->string('password');
+31             $table->string('pin_code')->nullable();
+32             $table->string('role');
+33             $table->string('statut');
+34             $table->dateTime('last_login')->nullable();
+35             $table->rememberToken();
+36             $table->timestamps();
+37         });
+38         Schema::create('annees_scolaires', function (Blueprint $table) {
+39             $table->id();
+40             $table->string('libelle');
+41             $table->date('date_debut');
+42             $table->date('date_fin');
+43             $table->boolean('is_encours')->default(false);
+44             $table->string('statut');
+45             $table->timestamps();
+46         });
+47         Schema::create('cycles', function (Blueprint $table) {
+48             $table->id();
+49             $table->string('nom');
+50             $table->string('statut');
+51             $table->timestamps();
+52         });
+53         Schema::create('salles', function (Blueprint $table) {
+54             $table->id();
+55             $table->string('nom');
+56             $table->string('statut')->default('actif');
+57             $table->timestamps();
+58         });
+59         Schema::create('classes', function (Blueprint $table) {
+60             $table->id();
+61             $table->unsignedBigInteger('cycle_id')->nullable();
+62             $table->unsignedBigInteger('salle_id')->nullable();
+63             $table->string('nom');
+64             $table->string('statut');
+65             $table->timestamps();
+66         });
+67         Schema::create('tuteurs', function (Blueprint $table) {
+68             $table->id();
+69             $table->string('nom_mere');
+70             $table->string('telephone_mere');
+71             $table->string('statut')->default('actif');
+72             $table->timestamps();
+73         });
+74         Schema::create('eleves', function (Blueprint $table) {
+75             $table->id();
+76             $table->string('matricule')->unique();
+77             $table->string('nom');
+78             $table->string('postnom')->nullable();
+79             $table->string('prenom');
+80             $table->string('sexe');
+81             $table->date('date_naissance');
+82             $table->unsignedBigInteger('tuteur_id');
+83             $table->string('statut');
+84             $table->timestamps();
+85         });
+86         Schema::create('inscriptions', function (Blueprint $table) {
+87             $table->id();
+88             $table->unsignedBigInteger('eleve_id');
+89             $table->unsignedBigInteger('classe_id');
+90             $table->unsignedBigInteger('annee_scolaire_id');
+91             $table->date('date_inscription');
+92             $table->string('statut');
+93             $table->timestamps();
+94         });
+95         Schema::create('types_frais', function (Blueprint $table) {
+96             $table->id();
+97             $table->string('nom', 100);
+98             $table->text('description')->nullable();
+99             $table->string('statut')->default('actif');
+100            $table->timestamps();
+101        });
+102        Schema::create('frais_scolaires', function (Blueprint $table) {
+103            $table->id();
+104            $table->unsignedBigInteger('type_frais_id');
+105            $table->unsignedBigInteger('classe_id');
+106            $table->unsignedBigInteger('annee_scolaire_id');
+107            $table->decimal('montant_exige', 10, 2);
+108            $table->date('date_echeance');
+109            $table->string('statut')->default('actif');
+110            $table->timestamps();
+111        });
+112        Schema::create('periodes', function (Blueprint $table) {
+113            $table->id();
+114            $table->unsignedBigInteger('annee_scolaire_id');
+115            $table->string('nom', 50);
+116            $table->string('statut')->default('actif');
+117            $table->timestamps();
+118        });
+119        Schema::create('paiements', function (Blueprint $table) {
+120            $table->id();
+121            $table->string('num_recu', 50)->unique();
+122            $table->unsignedBigInteger('inscription_id');
+123            $table->unsignedBigInteger('frais_scolaire_id');
+124            $table->unsignedBigInteger('periode_id')->nullable();
+125            $table->decimal('montant_paye', 10, 2);
+126            $table->dateTime('date_paiement')->nullable();
+127            $table->string('mode_paiement')->default('especes');
+128            $table->string('reference_transaction', 100)->nullable();
+129            $table->string('statut')->default('actif');
+130            $table->timestamps();
+131        });
+132    
+133        DB::table('annees_scolaires')->insert([
+134            'id' => 1, 'libelle' => '2026-2027', 'date_debut' => '2026-09-01',
+135            'date_fin' => '2027-07-01', 'is_encours' => true, 'statut' => 'actif',
+136        ]);
+137        DB::table('cycles')->insert(['id' => 1, 'nom' => 'Secondaire', 'statut' => 'actif']);
+138        DB::table('periodes')->insert(['id' => 1, 'annee_scolaire_id' => 1, 'nom' => '1ère Période', 'statut' => 'actif', 'created_at' => now(), 'updated_at' => now()]);
+139        DB::table('classes')->insert(['id' => 1, 'cycle_id' => 1, 'nom' => '3e A', 'statut' => 'actif']);
+140        $tuteurId = DB::table('tuteurs')->insertGetId(['nom_mere' => 'Marie', 'telephone_mere' => '0990', 'statut' => 'actif', 'created_at' => now(), 'updated_at' => now()]);
+141        $eleveId = DB::table('eleves')->insertGetId([
+142            'matricule' => 'ELV-2026-0001', 'nom' => 'Mwamba', 'postnom' => 'T', 'prenom' => 'Aline', 'sexe' => 'F',
+143            'date_naissance' => '2014-05-12', 'tuteur_id' => $tuteurId, 'statut' => 'actif', 'created_at' => now(), 'updated_at' => now(),
+144        ]);
+145        DB::table('inscriptions')->insert([
+146            'id' => 1, 'eleve_id' => $eleveId, 'classe_id' => 1, 'annee_scolaire_id' => 1,
+147            'date_inscription' => '2026-09-05', 'statut' => 'actif', 'created_at' => now(), 'updated_at' => now(),
+148        ]);
+149        $typeId = DB::table('types_frais')->insertGetId(['nom' => 'Frais scolaires', 'statut' => 'actif', 'created_at' => now(), 'updated_at' => now()]);
+150        DB::table('frais_scolaires')->insert([
+151            'id' => 1, 'type_frais_id' => $typeId, 'classe_id' => 1, 'annee_scolaire_id' => 1,
+152            'montant_exige' => 150, 'date_echeance' => '2026-10-31', 'statut' => 'actif',
+153            'created_at' => now(), 'updated_at' => now(),
+154        ]);
+155    });
+156    
+157    test('the cashier sees the payment page with a student filter and can record a payment', function () {
+158        $comptable = User::factory()->create(['role' => 'comptable']);
+159    
+160        $this->actingAs($comptable)
+161            ->get(route('comptable.paiements.index'))
+162            ->assertOk()
+163            ->assertSee('Encaisser un paiement')
+164            ->assertSee('eleveSearch')
+165            ->assertSee('Mwamba')
+166            ->assertSee('classesParFrais', false)
+167            ->assertSee('classesParInscription', false);
+168    
+169        $this->actingAs($comptable)
+170            ->post(route('comptable.paiements.store'), [
+171                'inscription_id' => 1, 'frais_scolaire_id' => 1,
+172                'montant_paye' => 75, 'mode_paiement' => 'especes', 'classe_id' => 1,
+173            ])
+174            ->assertRedirect(route('comptable.paiements.index', ['classe_id' => 1]));
+175    
+176        $paiement = DB::table('paiements')->first();
+177        expect($paiement)->not->toBeNull()
+178            ->and($paiement->num_recu)->toBe('REC-2026-2027-0001')
+179            ->and((float) $paiement->montant_paye)->toBe(75.0);
+180    });
+181    
+182    test('the cashier payment page filters the student list by class', function () {
+183        DB::table('classes')->insert(['id' => 2, 'cycle_id' => 1, 'nom' => '4e B', 'statut' => 'actif']);
+184        $comptable = User::factory()->create(['role' => 'comptable']);
+185    
+186        $this->actingAs($comptable)
+187            ->get(route('comptable.paiements.index', ['classe_id' => 2]))
+188            ->assertOk()
+189            ->assertDontSee('Mwamba');
+190    });
+191    
+192    test('the cashier dashboard links to the payment page', function () {
+193        $comptable = User::factory()->create(['role' => 'comptable']);
+194    
+195        $this->actingAs($comptable)
+196            ->get(route('comptable.dashboard'))
+197            ->assertOk()
+198            ->assertSee(route('comptable.paiements.index'), false)
+199            ->assertSee(route('comptable.recouvrement.index'), false);
+200    });
+201    
+202    test('the payment page is restricted to the cashier role', function () {
+203        $admin = User::factory()->create(['role' => 'admin']);
+204    
+205        $this->actingAs($admin)
+206            ->get(route('comptable.paiements.index'))
+207            ->assertForbidden();
+208    });
+209    
+210    test('the receipt number is generated automatically and the payment keeps its period', function () {
+211        $comptable = User::factory()->create(['role' => 'comptable']);
+212    
+213        $this->actingAs($comptable)
+214            ->post(route('comptable.paiements.store'), [
+215                'inscription_id' => 1, 'frais_scolaire_id' => 1, 'periode_id' => 1,
+216                'montant_paye' => 50, 'mode_paiement' => 'banque',
+217            ])
+218            ->assertRedirect();
+219    
+220        $paiement = DB::table('paiements')->first();
+221        expect($paiement->num_recu)->toBe('REC-2026-2027-0001')
+222            ->and((int) $paiement->periode_id)->toBe(1);
+223    });
+224    
+225    test('the receipt page shows the auto-generated number, the student and the period', function () {
+226        DB::table('paiements')->insert([
+227            'num_recu' => 'REC-2026-2027-0001', 'inscription_id' => 1, 'frais_scolaire_id' => 1, 'periode_id' => 1,
+228            'montant_paye' => 60, 'date_paiement' => now(), 'mode_paiement' => 'especes', 'statut' => 'actif',
+229            'created_at' => now(), 'updated_at' => now(),
+230        ]);
+231        $paiementId = DB::table('paiements')->value('id');
+232        $comptable = User::factory()->create(['role' => 'comptable']);
+233    
+234        $this->actingAs($comptable)
+235            ->get(route('comptable.paiements.recu', $paiementId))
+236            ->assertOk()
+237            ->assertSee('REC-2026-2027-0001')
+238            ->assertSee('Généré automatiquement')
+239            ->assertSee('Mwamba')
+240            ->assertSee('1ère Période');
+241    });
+242    
+243    test('the recovery page shows the collection and filters by period', function () {
+244        DB::table('paiements')->insert([
+245            'num_recu' => 'REC-2026-2027-0001', 'inscription_id' => 1, 'frais_scolaire_id' => 1, 'periode_id' => 1,
+246            'montant_paye' => 150, 'date_paiement' => now(), 'mode_paiement' => 'especes', 'statut' => 'actif',
+247            'created_at' => now(), 'updated_at' => now(),
+248        ]);
+249        $comptable = User::factory()->create(['role' => 'comptable']);
+250    
+251        $this->actingAs($comptable)
+252            ->get(route('comptable.recouvrement.index'))
+253            ->assertOk()
+254            ->assertSee('Recouvrement')
+255            ->assertSee('Taux de recouvrement')
+256            ->assertSee('100 %')
+257            ->assertSee('3e A')
+258            ->assertSee('id="tableRecouvrement"', false)
+259            ->assertSee('id="tablePaiements"', false)
+260            ->assertSee('dataTables.bootstrap5.min.js', false);
+261    
+262        $this->actingAs($comptable)
+263            ->get(route('comptable.recouvrement.index', ['periode_id' => 1]))
+264            ->assertOk()
+265            ->assertSee('1ère Période');
+266    });
+267    
+268    test('the cashier payment page only lists the tariffs of the selected class', function () {
+269        DB::table('classes')->insert(['id' => 2, 'cycle_id' => 1, 'nom' => '4e B', 'statut' => 'actif']);
+270        $typeId = DB::table('types_frais')->insertGetId(['nom' => 'Frais scolaires', 'statut' => 'actif', 'created_at' => now(), 'updated_at' => now()]);
+271        DB::table('frais_scolaires')->insert([
+272            'id' => 2, 'type_frais_id' => $typeId, 'classe_id' => 2, 'annee_scolaire_id' => 1,
+273            'montant_exige' => 90, 'date_echeance' => '2026-10-31', 'statut' => 'actif',
+274            'created_at' => now(), 'updated_at' => now(),
+275        ]);
+276        $comptable = User::factory()->create(['role' => 'comptable']);
+277    
+278        $this->actingAs($comptable)
+279            ->get(route('comptable.paiements.index', ['classe_id' => 1]))
+280            ->assertOk()
+281            ->assertSee('tarifsDisponibles', false)
+282            ->assertSee('Frais scolaires — 3e A', false)
+283            ->assertDontSee('— 4e B', false);
+284    });

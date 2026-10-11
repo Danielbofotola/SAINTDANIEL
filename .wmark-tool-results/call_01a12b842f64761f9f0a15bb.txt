@@ -1,0 +1,19 @@
+Applied patch: 1 file changed (1 updated)
+Updated resources/views/admin/eleves/index.blade.php (2 hunks applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 67-68 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+  ⚠ hunk 2: context matched at lines 84-84 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 68-78:
+68                                     @php($decision = $origines[$eleve->id] ?? null)
+69                                     <td>
+70                                         @if ($decision)
+71                                             <span class="badge badge-{{ ['admis' => 'success', 'ajourne' => 'warning', 'redouble' => 'danger'][$decision] ?? 'secondary' }}"
+72                                                   title="Décision de délibération de l'année précédente">
+73                                                 {{ ['admis' => 'Passage', 'ajourne' => 'Ajourné (repêchage)', 'redouble' => 'Redoublant'][$decision] ?? $decision }}
+74                                             </span>
+75                                         @else
+76                                             <span class="badge badge-info">Nouveau</span>
+77                                         @endif
+78                                     </td>
+Auto-corrected hunk landed at lines 95-95:
+95                                 <tr><td colspan="10" class="text-center text-muted">Aucun élève ne correspond à cette recherche.</td></tr>

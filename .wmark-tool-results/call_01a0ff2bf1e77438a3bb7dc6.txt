@@ -1,0 +1,26 @@
+17     <body class="app">
+18         <main class="app-content" style="margin-left:0">
+19             <div class="app-title">
+20                 <div><h1><i class="fa fa-graduation-cap"></i> Classes créées</h1><p>Consultez les classes et leur organisation scolaire.</p></div>
+21                 <div><a href="{{ route('admin.dashboard') }}" class="btn btn-secondary">Retour</a> <a href="{{ route('admin.classes.create') }}" class="btn btn-primary"><i class="fa fa-plus"></i> Créer une classe</a></div>
+22             </div>
+23     
+24             <div class="tile">
+25                 <div class="table-responsive">
+26                     <table class="table table-hover table-bordered">
+27                         @if (session('success'))<div class="alert alert-success">{{ session('success') }}</div>@endif
+28                         @if (session('error'))<div class="alert alert-danger">{{ session('error') }}</div>@endif
+29                         <thead><tr><th>#</th><th>Classe</th><th>Cycle</th><th>Section</th><th>Option</th><th>Salle</th><th>Élèves</th><th>Statut</th><th>Actions</th></tr></thead>
+30                         <tbody>
+31                             @forelse ($classes as $classe)
+32                                 <tr>
+33                                     <td>{{ $loop->iteration }}</td>
+34                                     <td><a href="{{ route('admin.classes.students', $classe) }}"><strong>{{ $classe->nom }}</strong></a>@if ($classe->section_id)<br><small class="text-muted">Section {{ $classe->section?->nom }}</small>@endif</td>
+35                                     <td>{{ $classe->cycle?->nom ?? 'Non renseigné' }}</td>
+36                                     <td>{{ $classe->section?->nom ?? 'Non renseignée' }}</td>
+37                                     <td>{{ $classe->option?->nom ?? 'Non renseignée' }}</td>
+38                                     <td>{{ $classe->salle?->nom ?? 'Non attribuée' }}</td>
+39                                     <td><a href="{{ route('admin.classes.students', $classe) }}" class="badge badge-info">{{ $classe->eleves_count }} élève(s)</a></td>
+40                                     <td><span class="badge badge-{{ $classe->statut === 'actif' ? 'success' : 'secondary' }}">{{ $classe->statut === 'actif' ? 'Active' : 'Inactive' }}</span></td>
+
+[showing lines 17-40 of 64; read again with offset=41 for more]

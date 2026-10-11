@@ -1,0 +1,18 @@
+146        public function updateAccountPassword(Request $request, User $user): RedirectResponse
+147        {
+148            if ($user->is($request->user())) {
+149                return redirect()->route('admin.profile.edit');
+150            }
+151    
+152            $data = $request->validate([
+153                'password' => ['required', 'string', 'min:8', 'confirmed'],
+154                'pin_code' => ['nullable', 'digits:4'],
+155                'remove_pin' => ['nullable', 'boolean'],
+156            ], [
+157                'password.required' => 'Le nouveau mot de passe est obligatoire.',
+158                'password.min' => 'Le mot de passe doit contenir au moins 8 caractères.',
+159                'password.confirmed' => 'La confirmation du mot de passe ne correspond pas.',
+160                'pin_code.digits' => 'Le code PIN doit contenir exactement 4 chiffres.',
+161            ]);
+
+[showing lines 146-161 of 389; read again with offset=162 for more]

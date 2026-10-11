@@ -1,0 +1,32 @@
+138                        option.hidden = terme !== '' && option.text.toLowerCase().indexOf(terme) === -1;
+139                    });
+140                }
+141    
+142                function majSolde() {
+143                    if (!inscriptionSelect || !fraisSelect || !soldeInfo) {
+144                        return;
+145                    }
+146                    var inscription = inscriptionSelect.value;
+147                    var frais = fraisSelect.value;
+148                    if (!inscription || !frais) {
+149                        soldeInfo.classList.add('d-none');
+150                        return;
+151                    }
+152                    var exige = Number(montantsFrais[frais] || 0);
+153                    var paye = Number(payeParPaire[inscription + '-' + frais] || 0);
+154                    var reste = Math.max(exige - paye, 0);
+155                    soldeInfo.classList.remove('d-none');
+156                    soldeInfo.innerHTML = 'Montant exigé : <b>' + exige.toFixed(2) + '</b> · Déjà payé : <b>' + paye.toFixed(2) + '</b> · Reste à payer : <b>' + reste.toFixed(2) + '</b>';
+157                }
+158    
+159                if (recherche) {
+160                    recherche.addEventListener('input', filtrerEleves);
+161                }
+162                if (inscriptionSelect) {
+163                    inscriptionSelect.addEventListener('change', majSolde);
+164                }
+165                if (fraisSelect) {
+166                    fraisSelect.addEventListener('change', majSolde);
+167                }
+
+[showing lines 138-167 of 171; read again with offset=168 for more]

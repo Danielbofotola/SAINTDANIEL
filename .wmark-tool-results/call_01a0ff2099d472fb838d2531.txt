@@ -1,0 +1,38 @@
+1      <?php
+2      
+3      namespace App\Providers;
+4      
+5      use App\Models\ParametreSysteme;
+6      use Illuminate\Support\ServiceProvider;
+7      use Illuminate\Support\Facades\Schema;
+8      use Illuminate\Support\Facades\View;
+9      
+10     class AppServiceProvider extends ServiceProvider
+11     {
+12         /**
+13          * Register any application services.
+14          */
+15         public function register(): void
+16         {
+17             //
+18         }
+19     
+20         /**
+21          * Bootstrap any application services.
+22          */
+23         public function boot(): void
+24         {
+25             View::composer('*', static function ($view): void {
+26                 $settings = request()->attributes->get('system_settings');
+27                 if (! $settings) {
+28                     $settings = Schema::hasTable('parametres_systeme')
+29                         ? ParametreSysteme::query()->first()
+30                         : null;
+31                     $settings ??= ParametreSysteme::defaults();
+32                     request()->attributes->set('system_settings', $settings);
+33                 }
+34     
+35                 $view->with('systemSettings', $settings);
+36             });
+37         }
+38     }

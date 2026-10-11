@@ -1,0 +1,37 @@
+508    
+509    test('une réaction émoji est enregistrée, affichée et retirée', function () {
+510        $alice = User::factory()->create(['role' => 'admin']);
+511        $bruno = User::factory()->create(['role' => 'professeur']);
+512        $conversation = Messagerie::creer($alice, [$bruno->id], 'Sujet', 'Coucou');
+513        $message = $conversation->messages()->first();
+514    
+515        $this->actingAs($bruno)
+516            ->postJson(route('messagerie.reagir', $message), ['reaction' => '👍'])
+517            ->assertOk()
+518            ->assertJsonPath('message.id', $message->id);
+519    
+520        expect($message->fresh()->reaction)->toBe('👍')
+521            ->and($message->fresh()->aReaction())->toBeTrue();
+522    
+523        // Un non-participant ne peut pas réagir.
+524        $etranger = User::factory()->create(['role' => 'comptable']);
+525        $this->actingAs($etranger)->postJson(route('messagerie.reagir', $message), ['reaction' => '❤️'])->assertForbidden();
+526    
+527        // Réaction retirée.
+528        $this->actingAs($bruno)->postJson(route('messagerie.reagir', $message), ['reaction' => ''])->assertOk();
+529        expect($message->fresh()->reaction)->toBeNull();
+530    });
+531    
+532    /**
+533     * Petite image PNG valide, pour tester les pièces jointes sans dépendre de
+534     * l'extension GD (absente sur ce poste).
+535     */
+536    function imagePngDeTest(string $nom = 'image.png'): \Illuminate\Http\UploadedFile
+537    {
+538        $contenu = base64_decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==');
+539    
+540        $chemin = tempnam(sys_get_temp_dir(), 'wmark_').'.png';
+541        file_put_contents($chemin, $contenu);
+542    
+543        return new \Illuminate\Http\UploadedFile($chemin, $nom, 'image/png', null, true);
+544    }

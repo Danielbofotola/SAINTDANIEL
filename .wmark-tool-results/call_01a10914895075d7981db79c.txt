@@ -1,0 +1,119 @@
+1      <?php
+2      
+3      namespace App\Http\Controllers;
+4      
+5      use App\Models\AnneeScolaire;
+6      use App\Models\CategorieDepense;
+7      use App\Models\Depense;
+8      use Illuminate\Http\RedirectResponse;
+9      use Illuminate\Http\Request;
+10     use Illuminate\Validation\Rule;
+11     use Illuminate\View\View;
+12     
+13     /**
+14      * Dépenses du caissier : saisie d'une dépense avec sa NATURE (la nature =
+15      * catégorie de dépense), suivi par nature et par mois, et création rapide
+16      * d'une nouvelle nature.
+17      */
+18     class ComptableDepenseController extends Controller
+19     {
+20         public function index(Request $request): View
+21         {
+22             $annee = AnneeScolaire::enCours();
+23     
+24             $depenses = $annee
+25                 ? Depense::query()
+26                     ->where('annee_scolaire_id', $annee->id)
+27                     ->with('categorie')
+28                     ->latest('date_depense')
+29                     ->latest('id')
+30                     ->get()
+31                 : collect();
+32     
+33             $parNature = $depenses
+34                 ->groupBy(fn (Depense $depense) => $depense->categorie?->nom ?? 'Autre')
+35                 ->map(fn ($groupe) => round((float) $groupe->sum('montant'), 2))
+36                 ->sortDesc();
+37     
+38             $parMois = $depenses
+39                 ->groupBy(fn (Depense $depense) => $depense->date_depense?->format('Y-m') ?? '—')
+40                 ->sortKeys()
+41                 ->map(fn ($groupe) => round((float) $groupe->sum('montant'), 2));
+42     
+43             $moisCourant = $depenses
+44                 ->filter(fn (Depense $depense) => $depense->date_depense?->format('Y-m') === now()->format('Y-m'))
+45                 ->sum('montant');
+46     
+47             return view('comptable.depenses', [
+48                 'user' => $request->user(),
+49                 'annee' => $annee,
+50                 'depenses' => $depenses,
+51                 'natures' => CategorieDepense::where('statut', 'actif')->orderBy('nom')->get(),
+52                 'parNature' => $parNature,
+53                 'parMois' => $parMois,
+54                 'total' => round((float) $depenses->sum('montant'), 2),
+55                 'moisCourant' => round((float) $moisCourant, 2),
+56             ]);
+57         }
+58     
+59         public function store(Request $request): RedirectResponse
+60         {
+61             $annee = AnneeScolaire::enCours();
+62     
+63             if (! $annee) {
+64                 return back()->withInput()->with('error', 'Aucune année scolaire en cours : impossible d’enregistrer une dépense.');
+65             }
+66     
+67             $data = $request->validate([
+68                 'nature_id' => ['required', Rule::exists('categories_depenses', 'id')->where('statut', 'actif')],
+69                 'motif' => ['required', 'string', 'max:255'],
+70                 'montant' => ['required', 'numeric', 'min:0.01'],
+71                 'date_depense' => ['required', 'date'],
+72                 'piece_justificative' => ['nullable', 'string', 'max:255'],
+73             ], [
+74                 'nature_id.required' => 'Choisissez la nature de la dépense.',
+75                 'nature_id.exists' => 'Cette nature de dépense n’existe pas ou est inactive.',
+76                 'motif.required' => 'Le motif de la dépense est obligatoire.',
+77                 'montant.required' => 'Le montant est obligatoire.',
+78                 'montant.min' => 'Le montant doit être supérieur à zéro.',
+79                 'date_depense.required' => 'La date de la dépense est obligatoire.',
+80             ]);
+81     
+82             $nature = CategorieDepense::findOrFail($data['nature_id']);
+83     
+84             Depense::create([
+85                 'annee_scolaire_id' => $annee->id,
+86                 'category_id' => $nature->id,
+87                 'motif' => $data['motif'],
+88                 'montant' => $data['montant'],
+89                 'date_depense' => $data['date_depense'],
+90                 'piece_justificative' => $data['piece_justificative'] ?? null,
+91                 'statut' => 'actif',
+92             ]);
+93     
+94             return redirect()
+95                 ->route('comptable.depenses.index')
+96                 ->with('success', 'Dépense enregistrée — nature : '.$nature->nom.'.');
+97         }
+98     
+99         public function storeNature(Request $request): RedirectResponse
+100        {
+101            $data = $request->validate([
+102                'nom' => ['required', 'string', 'max:100', 'unique:categories_depenses,nom'],
+103            ], [
+104                'nom.required' => 'Le nom de la nature est obligatoire.',
+105                'nom.unique' => 'Cette nature de dépense existe déjà.',
+106            ]);
+107    
+108            CategorieDepense::create($data + ['statut' => 'actif']);
+109    
+110            return back()->with('success', 'La nature de dépense a été créée.');
+111        }
+112    
+113        public function destroy(Depense $depense): RedirectResponse
+114        {
+115            $depense->delete();
+116    
+117            return back()->with('success', 'La dépense a été supprimée.');
+118        }
+119    }

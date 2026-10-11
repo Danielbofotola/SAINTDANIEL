@@ -1,0 +1,47 @@
+305                    <p class="app-sidebar__user-designation mb-0">Administration scolaire</p>
+306                </div>
+307            </div>
+308            <ul class="app-menu">
+309                <li class="menu-section">Pilotage</li>
+310                <li><a class="app-menu__item active" href="{{ route('admin.dashboard') }}"><i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label">Tableau de bord</span></a></li>
+311                <li class="menu-section">Scolarité</li>
+312                <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-users"></i><span class="app-menu__label">Élèves</span><i class="treeview-indicator fa fa-angle-right"></i></a>
+313                    <ul class="treeview-menu">
+314                        <li><a class="treeview-item" href="#"><i class="icon fa fa-circle-o"></i> Liste des élèves</a></li>
+315                        <li><a class="treeview-item" href="{{ route('admin.eleves.create') }}"><i class="icon fa fa-circle-o"></i> Inscrire un élève</a></li>
+316                        <li><a class="treeview-item" href="{{ route('admin.registration.students') }}"><i class="icon fa fa-inbox"></i> Demandes d’inscription</a></li>
+317                    </ul>
+318                </li>
+319                <li class="menu-section">Personnel enseignant</li>
+320                <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-user-md"></i><span class="app-menu__label">Professeurs</span><i class="treeview-indicator fa fa-angle-right"></i></a>
+321                    <ul class="treeview-menu">
+322                        <li><a class="treeview-item" href="{{ route('admin.professeurs.create') }}"><i class="icon fa fa-plus"></i> Créer un professeur</a></li>
+323                    </ul>
+324                </li>
+325                <li class="menu-section">Organisation</li>
+326                <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-graduation-cap"></i><span class="app-menu__label">Classes et salles</span><i class="treeview-indicator fa fa-angle-right"></i></a>
+327                    <ul class="treeview-menu">
+328                        <li><a class="treeview-item" href="#"><i class="icon fa fa-circle-o"></i> Cycles</a></li>
+329                        <li><a class="treeview-item" href="{{ route('admin.classes.index') }}"><i class="icon fa fa-list"></i> Liste des classes</a></li>
+330                        <li><a class="treeview-item" href="{{ route('admin.classes.create') }}"><i class="icon fa fa-plus"></i> Créer une classe</a></li>
+331                        <li><a class="treeview-item" href="{{ route('admin.salles.index') }}"><i class="icon fa fa-list"></i> Liste des salles</a></li>
+332                        <li><a class="treeview-item" href="{{ route('admin.salles.create') }}"><i class="icon fa fa-university"></i> Créer une salle</a></li>
+333                    </ul>
+334                </li>
+335                <li class="menu-section">Finances</li>
+336                <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-money"></i><span class="app-menu__label">Paiements et frais</span><i class="treeview-indicator fa fa-angle-right"></i></a>
+337                    <ul class="treeview-menu">
+338                        <li><a class="treeview-item" href="#"><i class="icon fa fa-circle-o"></i> Types de frais</a></li>
+339                        <li><a class="treeview-item" href="#"><i class="icon fa fa-circle-o"></i> Paiements</a></li>
+340                    </ul>
+341                </li>
+342                <li class="menu-section">Accès</li>
+343                <li><a class="app-menu__item" href="{{ route('admin.registration.accounts') }}"><i class="app-menu__icon fa fa-user-plus"></i><span class="app-menu__label">Demandes de comptes</span></a></li>
+344            </ul>
+345        </aside>
+346    
+347        <!-- CONTENT -->
+348        <main class="app-content">
+349            <div class="app-title border-0 bg-transparent pl-0 pt-0 ">
+
+[showing lines 305-349 of 701; read again with offset=350 for more]

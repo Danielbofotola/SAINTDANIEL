@@ -1,0 +1,16 @@
+324                        <li><a class="treeview-item" href=""><i class="icon fa fa-plus"></i>Liste des professeur</a></li>
+325                        <li><a class="treeview-item" href=""><i class="icon fa fa-plus"></i>Cours & affectation</a></li>
+326                        <li><a class="treeview-item" href=""><i class="icon fa fa-plus"></i>Horaire & Emploi du temps</a></li>
+327                    </ul>
+328                </li>
+329                <li class="menu-section">Organisation</li>
+330                <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon fa fa-graduation-cap"></i><span class="app-menu__label">Classes et salles</span><i class="treeview-indicator fa fa-angle-right"></i></a>
+331                    <ul class="treeview-menu">
+332                        <li><a class="treeview-item" href="#"><i class="icon fa fa-circle-o"></i> Cycles</a></li>
+333                        <li><a class="treeview-item" href="{{ route('admin.classes.index') }}"><i class="icon fa fa-list"></i> Liste des classes</a></li>
+334                        <li><a class="treeview-item" href="{{ route('admin.classes.create') }}"><i class="icon fa fa-plus"></i> Créer une classe</a></li>
+335                        <li><a class="treeview-item" href="{{ route('admin.salles.index') }}"><i class="icon fa fa-list"></i> Liste des salles</a></li>
+336                        <li><a class="treeview-item" href="{{ route('admin.salles.create') }}"><i class="icon fa fa-university"></i> Créer une salle</a></li>
+337                        <li><a class="treeview-item" href="{{ route('admin.annees.index') }}"><i class="icon fa fa-calendar"></i> Années scolaires</a></li>
+
+[showing lines 324-337 of 713; read again with offset=338 for more]

@@ -1,0 +1,52 @@
+1      <?php
+2      
+3      namespace App\Http\Controllers;
+4      
+5      use App\Models\AnneeScolaire;
+6      use App\Models\Classe;
+7      use App\Models\Eleve;
+8      use App\Models\Tuteur;
+9      use Illuminate\Http\RedirectResponse;
+10     use Illuminate\Http\Request;
+11     use Illuminate\Support\Facades\DB;
+12     use Illuminate\Support\Str;
+13     use Illuminate\Validation\Rule;
+14     use Illuminate\View\View;
+15     
+16     class EleveInscriptionController extends Controller
+17     {
+18         public function create(): View
+19         {
+20             return view('admin.eleves.create', [
+21                 'classes' => Classe::with('cycle')->where('statut', 'actif')->whereHas('cycle', fn ($query) => $query->where('statut', 'actif'))->orderBy('nom')->get(),
+22                 'annees' => AnneeScolaire::where('statut', 'actif')->orderByDesc('is_encours')->orderByDesc('date_debut')->get(),
+23             ]);
+24         }
+25     
+26         public function store(Request $request): RedirectResponse
+27         {
+28             $data = $request->validate([
+29                 'classe_id' => ['required', Rule::exists('classes', 'id')->where(fn ($query) => $query
+30                     ->where('statut', 'actif')
+31                     ->whereIn('cycle_id', DB::table('cycles')->where('statut', 'actif')->select('id')))],
+32                 'annee_scolaire_id' => ['required', Rule::exists('annees_scolaires', 'id')->where(fn ($query) => $query->where('statut', 'actif'))],
+33                 'nom' => ['required', 'string', 'max:50'], 'postnom' => ['required', 'string', 'max:50'], 'prenom' => ['required', 'string', 'max:50'],
+34                 'sexe' => ['required', 'in:M,F'], 'date_naissance' => ['required', 'date', 'before:today'], 'lieu_naissance' => ['nullable', 'string', 'max:100'],
+35                 'photo' => ['nullable', 'image', 'max:2048'],
+36                 'nom_mere' => ['required', 'string', 'max:100'], 'telephone_mere' => ['required', 'string', 'max:20'], 'profession_mere' => ['nullable', 'string', 'max:100'], 'email_mere' => ['nullable', 'email', 'max:100'], 'adresse_mere' => ['nullable', 'string'],
+37                 'nom_pere' => ['nullable', 'string', 'max:100'], 'telephone_pere' => ['nullable', 'string', 'max:20'], 'profession_pere' => ['nullable', 'string', 'max:100'], 'email_pere' => ['nullable', 'email', 'max:100'], 'adresse_pere' => ['nullable', 'string'],
+38                 'groupe_sanguin' => ['nullable', 'string', 'max:5'], 'allergies_pathologies' => ['nullable', 'string'], 'traitements_urgences' => ['nullable', 'string'], 'medecin_referent' => ['nullable', 'string', 'max:150'],
+39                 'acte_naissance' => ['nullable', 'file', 'mimes:pdf,jpg,jpeg,png', 'max:4096'], 'bulletin' => ['nullable', 'file', 'mimes:pdf,jpg,jpeg,png', 'max:4096'], 'certificat_medical' => ['nullable', 'file', 'mimes:pdf,jpg,jpeg,png', 'max:4096'],
+40             ], [
+41                 'photo.max' => 'La photo ne doit pas dépasser 2 Mo.',
+42                 'acte_naissance.max' => "L'acte de naissance ne doit pas dépasser 4 Mo.",
+43                 'bulletin.max' => 'Le bulletin ne doit pas dépasser 4 Mo.',
+44                 'certificat_medical.max' => 'Le certificat médical ne doit pas dépasser 4 Mo.',
+45                 '*.mimes' => 'Le fichier doit être au format PDF, JPG, JPEG ou PNG.',
+46             ]);
+47     
+48             $eleve = DB::transaction(function () use ($request, $data) {
+49                 $tuteur = Tuteur::create(collect($data)->only(['nom_mere','telephone_mere','profession_mere','email_mere','adresse_mere','nom_pere','telephone_pere','profession_pere','email_pere','adresse_pere'])->all());
+50                 $photo = $request->file('photo')?->store('eleves/photos', 'public');
+
+[showing lines 1-50 of 62; read again with offset=51 for more]

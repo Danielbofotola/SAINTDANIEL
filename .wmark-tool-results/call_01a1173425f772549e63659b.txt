@@ -1,0 +1,15 @@
+364            ->toContain('.conv-scroll { flex: 1; min-height: 0; overflow-y: auto; }');
+365    
+366        // Anti-doublon : verrou sur la requête de flux et refus d'insérer deux fois
+367        // la même bulle.
+368        expect($html)
+369            ->toContain('let requeteEnCours = false;')
+370            ->toContain('if (requeteEnCours) return;')
+371            ->toContain('Anti-doublon');
+372    });
+373    
+374    test('la barre d’écriture reste disponible même sans discussion ouverte', function () {
+375        $alice = User::factory()->create(['role' => 'admin', 'nom' => 'Mwamba', 'prenom' => 'Alice']);
+376        User::factory()->create(['role' => 'professeur', 'nom' => 'Kabila', 'prenom' => 'Bruno']);
+
+[showing lines 364-377 of 473; read again with offset=378 for more]

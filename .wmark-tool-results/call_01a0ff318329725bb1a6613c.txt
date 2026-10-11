@@ -1,0 +1,24 @@
+[powershell — Windows side]
+SQLSTATE[HY000]: General error: 1 no such table: annees_scolaires (Connection: sqlite, Database: :memory:, SQL: select * from "annees_scolaires" where "is_encours" = 1 limit 1)
+
+  at vendor\laravel\framework\src\Illuminate\Database\Connection.php:420
+    416▕             // For select statements, we'll simply execute the query and return an array
+    417▕             // of the database result set. Each element in the array will be a single
+    418▕             // row from the database table, and will either be an array or objects.
+    419▕             $statement = $this->prepared(
+  ➜ 420▕                 $this->getPdoForSelect($useReadPdo)->prepare($query)
+    421▕             );
+    422▕ 
+    423▕             $this->bindValues($statement, $this->prepareBindings($bindings));
+    424▕
+
+  1   vendor\laravel\framework\src\Illuminate\Database\Connection.php:420
+  2   vendor\laravel\framework\src\Illuminate\Database\Connection.php:827
+
+
+  Tests:    1 failed, 2 passed (25 assertions)
+  Duration: 0.41s
+
+
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

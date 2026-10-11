@@ -1,0 +1,41 @@
+86                             </div>
+87                             <button class="btn btn-success mt-3 w-100 fw-bold" type="submit" style="--green-btn:#107c41;background:var(--green-btn);" @disabled(! $annee)><i class="bi bi-check2-circle me-1"></i> Encaisser le paiement</button>
+88                         </form>
+89                     @endif
+90                 </div>
+91             </div>
+92     
+93             <div class="col-lg-5">
+94                 <div class="caisse-card">
+95                     <div class="card-title-header"><i class="bi bi-receipt me-1"></i> Derniers paiements</div>
+96                     <div class="table-responsive">
+97                         <table class="table table-sm table-caisse align-middle mb-0">
+98                             <thead><tr><th>Reçu</th><th>Élève</th><th class="text-end">Montant</th></tr></thead>
+99                             <tbody>
+100                                @forelse ($paiements as $paiement)
+101                                    <tr>
+102                                        <td><span class="fw-bold">{{ $paiement->num_recu }}</span><br><small class="text-muted">{{ $paiement->date_paiement?->format('d/m/Y H:i') }}</small></td>
+103                                        <td>{{ $paiement->inscription?->eleve?->nom }} {{ $paiement->inscription?->eleve?->prenom }}<br><small class="text-muted">{{ $paiement->inscription?->classe?->nom }} · {{ $paiement->fraisScolaire?->typeFrais?->nom }}</small></td>
+104                                        <td class="text-end fw-bold">{{ $money($paiement->montant_paye) }}</td>
+105                                    </tr>
+106                                @empty
+107                                    <tr><td colspan="3" class="text-center text-muted">Aucun paiement enregistré.</td></tr>
+108                                @endforelse
+109                            </tbody>
+110                        </table>
+111                    </div>
+112                </div>
+113            </div>
+114        </div>
+115    </div>
+116    
+117    <script>
+118        (function () {
+119            var payeParPaire = @json($soldePaye);
+120            var montantsFrais = @json($montantsFrais);
+121            var recherche = document.getElementById('eleveSearch');
+122            var inscriptionSelect = document.getElementById('inscriptionSelect');
+123            var fraisSelect = document.getElementById('fraisSelect');
+124            var soldeInfo = document.getElementById('soldeInfo');
+
+[showing lines 86-125 of 153; read again with offset=126 for more]

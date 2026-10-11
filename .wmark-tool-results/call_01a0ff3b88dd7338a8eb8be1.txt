@@ -1,0 +1,28 @@
+Applied patch: 1 file changed (1 updated)
+Updated app/Http/Controllers/UserProfileController.php (1 hunk applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 109-117 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 115-121:
+115                'password' => ['nullable', 'string', 'min:8', 'confirmed'],
+116                'pin_code' => ['nullable', 'digits:4'],
+117                'remove_pin' => ['nullable', 'boolean'],
+118            ], [
+119                'password.min' => 'Le mot de passe doit contenir au moins 8 caractères.',
+120                'password.confirmed' => 'La confirmation du mot de passe ne correspond pas.',
+121                'pin_code.digits' => 'Le code PIN doit contenir exactement 4 chiffres.',
+Auto-corrected hunk landed at lines 124-138:
+124            unset($data['remove_pin']);
+125    
+126            // Champ laissé vide = identifiant inchangé.
+127            if (! filled($data['password'] ?? null)) {
+128                unset($data['password']); // le cast « hashed » du modèle se charge du hachage
+129            }
+130    
+131            if (filled($data['pin_code'] ?? null)) {
+132                $data['pin_code'] = Hash::make($data['pin_code']);
+133            } elseif ($request->boolean('remove_pin')) {
+134                $data['pin_code'] = null;
+135            } else {
+136                unset($data['pin_code']);
+137            }
+138

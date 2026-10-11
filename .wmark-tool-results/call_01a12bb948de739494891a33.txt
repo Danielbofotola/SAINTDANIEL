@@ -1,0 +1,17 @@
+[powershell — Windows side]
+OK    | init ISO visible -> "01/09/2026"
+OK    | init ISO cache -> "2026-09-01"
+OK    | init nom déplacé (visible) -> null
+OK    | init nom déplacé (cache) -> "date_paiement"
+OK    | placeholder posé -> "jj/mm/aaaa"
+OK    | masque 15032026 -> "15/03/2026"
+OK    | cache après frappe -> "2026-03-15"
+OK    | clamp 8 chiffres -> "15/03/2026"
+OK    | clamp vide (visible) -> ""
+OK    | clamp vide (cache) -> ""
+OK    | vide init visible -> ""
+OK    | vide init cache -> ""
+ECHEC | date incomplète transmise brute -> "99/99" (attendu "9999")
+RESULTAT: ECHECS
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

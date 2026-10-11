@@ -1,0 +1,1 @@
+Wrote resources/views/admin/sections/create.blade.php (53 lines)

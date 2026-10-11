@@ -1,0 +1,25 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\e1ce9c26600a\20261005-001312-bash-call_01a109315f11707dbdb0361a.txt (523 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+[powershell — Windows side]
+INFO  Blade templates cached successfully.  
+
+
+  ✓ a student below the pass threshold is declared failed and listed for retake                                  0.02s 
+ 
+   FAIL  Tests\Feature\ClocheNotificationsTest
+  ⨯ the bell is hidden once everything is read                                                                   0.03s 
+ 
+   FAILED  Tests\Feature\ClocheNotificationsTest > the bell is hidden once everything is read                          
+ 
+  Tests:    1 failed, 175 passed (1022 assertions)
+ENVOI annonce -> HTTP 302 | annonces=2 | notifications=6
+admin       /admin/tableau-de-bord       -> 200 | cloche=oui | badge=oui
+comptable   /comptable/tableau-de-bord   -> 200 | cloche=oui | badge=oui
+prefetture  /prefecture/tableau-de-bord  -> 200 | cloche=oui | badge=oui
+titulaire   /titulaire/tableau-de-bord   -> 200 | cloche=oui | badge=oui
+professeur  /professeur/tableau-de-bord  -> 200 | cloche=oui | badge=oui
+BOITE /notifications (professeur) -> 200 | annonce visible=OUI
+APRES NETTOYAGE : annonces=0 | notifications=5
+
+
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">2</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

@@ -1,0 +1,6 @@
+145        Route::post('/admin/demandes/comptes/{demandeCompte}/refuser', [AdminRegistrationRequestController::class, 'rejectAccount'])->middleware('role:admin')->name('admin.registration.accounts.reject');
+146        Route::get('/admin/profil/statistiques', [UserProfileController::class, 'statistics'])->middleware('role:admin')->name('admin.profile.statistics');
+147        Route::get('/admin/comptes', [UserProfileController::class, 'accounts'])->middleware('role:admin')->name('admin.profile.accounts');
+148        Route::get('/admin/comptes/{user}/modifier', [UserProfileController::class, 'editAccount'])->middleware('role:admin')->name('admin.profile.accounts.edit');
+
+[showing lines 145-148 of 224; read again with offset=149 for more]

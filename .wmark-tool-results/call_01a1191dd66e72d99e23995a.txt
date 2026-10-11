@@ -1,0 +1,17 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\b493c9bc81dc\20261008-022544-bash-call_01a1191dd66e72d99e23995a.txt (509 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+[powershell — Windows side]
+bundle DataTables local : True
+/prefecture/presences          200  tables:1  avec thead:2  bundle:oui
+/prefecture/horaires           200  tables:2  avec thead:3  bundle:oui
+/prefecture/evaluations        200  tables:1  avec thead:2  bundle:oui
+/prefecture/eleves             200  tables:1  avec thead:2  bundle:oui
+/prefecture/tuteurs            200  tables:2  avec thead:3  bundle:oui
+/prefecture/personnel          200  tables:3  avec thead:4  bundle:oui
+/prefecture/periodes           200  tables:1  avec thead:2  bundle:oui
+/prefecture/bulletins          200  tables:1  avec thead:2  bundle:oui
+/prefecture/classes            200  tables:1  avec thead:2  bundle:oui
+/prefecture/effectifs          200  tables:4  avec thead:5  bundle:oui
+=== SUITE ===
+  Tests:    251 passed (1574 assertions)
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

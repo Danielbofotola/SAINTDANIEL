@@ -1,0 +1,20 @@
+79     
+80                         <div class="col-md-6 form-group">
+81                             <div class="d-flex justify-content-between align-items-center"><label class="form-label mb-2" for="section_id">Section</label><a class="btn btn-sm btn-outline-primary mb-2" href="{{ route('admin.sections.create') }}" target="_blank" rel="noopener"><i class="fa fa-plus"></i> Nouvelle section</a></div>
+82                             <select class="form-control" id="section_id" name="section_id">
+83                                 <option value="">Aucune section</option>
+84                                 @foreach ($sections as $section)
+85                                     <option value="{{ $section->id }}" @selected($selectedSectionId == $section->id)>{{ $section->nom }}</option>
+86                                 @endforeach
+87                             </select>
+88                             @error('section_id')<div class="error">{{ $message }}</div>@enderror
+89                         </div>
+90     
+91                         <div class="col-md-6 form-group">
+92                             <div class="d-flex justify-content-between align-items-center"><label class="form-label mb-2" for="option_id">Option</label><a class="btn btn-sm btn-outline-primary mb-2" id="create-option-link" href="{{ route('admin.options.create', ['section_id' => old('section_id', request('section_id', $classe->section_id ?? null))]) }}" target="_blank" rel="noopener"><i class="fa fa-plus"></i> Nouvelle option</a></div>
+93                             <select class="form-control" id="option_id" name="option_id">
+94                                 <option value="">Aucune option</option>
+95                                 @foreach ($options as $option)
+96                                     <option value="{{ $option->id }}" data-section-id="{{ $option->section_id }}" @if (!$selectedSectionId || $option->section_id != $selectedSectionId) hidden disabled @endif @selected(old('option_id', request('option_id', $classe->option_id ?? null)) == $option->id)>{{ $option->nom }}</option>
+
+[showing lines 79-96 of 149; read again with offset=97 for more]

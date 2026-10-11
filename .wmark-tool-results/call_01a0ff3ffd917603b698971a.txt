@@ -1,0 +1,16 @@
+[powershell — Windows side]
+No syntax errors detected in app\Http\Controllers\SectionOptionController.php
+No syntax errors detected in app\Models\Section.php
+No syntax errors detected in app\Models\Option.php
+
+   FAILED  Tests\Feature\AdminUserManagementTest > a professor without an assigned teacher record can open the profe…   
+   FAILED  Tests\Feature\AdminUserManagementTest > a professor dashboard shows the teacher assigned courses and eval…   
+   FAILED  Tests\Feature\AdminUserManagementTest > admin can view account and school charts on a dedicated statistic…   
+   FAILED  Tests\Feature\AdminUserManagementTest > admin can create a section and option before returning to the cla…   
+Failed asserting that 302 is identical to 200.
+  Tests:    4 failed, 58 passed (290 assertions)
+
+
+
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

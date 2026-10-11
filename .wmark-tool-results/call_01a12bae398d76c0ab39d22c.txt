@@ -1,0 +1,20 @@
+322    
+323        $this->actingAs($admin)
+324            ->post(route('admin.cours.store'), [
+325                'code' => 'GEO', 'intitule' => 'Géographie', 'ponderation' => 2,
+326                'max_travaux_journaliers' => 10, 'max_examen' => 20,
+327            ])
+328            ->assertRedirect(route('admin.affectations.index'));
+329    
+330        $cours = DB::table('cours')->where('code', 'GEO')->first();
+331        expect((int) $cours->max_travaux_journaliers)->toBe(10)
+332            ->and((int) $cours->max_examen)->toBe(20);
+333    });
+334    
+335    test('the settings screen saves the application options and the bulletin settings', function () {
+336        $admin = User::factory()->create(['role' => 'admin']);
+337    
+338        $this->actingAs($admin)
+339            ->get(route('admin.profile.settings'))
+
+[showing lines 322-339 of 433; read again with offset=340 for more]

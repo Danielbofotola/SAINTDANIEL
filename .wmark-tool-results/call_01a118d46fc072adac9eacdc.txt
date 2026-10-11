@@ -1,0 +1,41 @@
+880            const bouton = document.getElementById('btnBas');
+881            if (bouton) bouton.classList.remove('on');
+882        };
+883    
+884        /* Vue mobile : on ouvre d'abord sur les correspondants (les autres personnes). */
+885        if (window.matchMedia('(max-width: 820px)').matches) {
+886            const onglet = document.querySelector('.msg-tab[data-cible="correspondants"]');
+887            if (onglet) window.msgTab('correspondants', onglet);
+888        }
+889    
+890        window.ouvrirDiscussion = async function (id) {
+891            try {
+892                const donnees = new FormData();
+893                donnees.append('_token', CSRF);
+894                donnees.append('destinataire', id);
+895                const rep = await fetch(DEMARRER_URL, {
+896                    method: 'POST',
+897                    headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'application/json' },
+898                    body: donnees,
+899                    credentials: 'same-origin',
+900                });
+901                const json = await rep.json();
+902                if (!rep.ok) throw json;
+903                window.location.assign(ESPACE_URL + '?conversation=' + json.conversation_id);
+904            } catch (e) {
+905                alert('Impossible d’ouvrir cette conversation.');
+906            }
+907        };
+908    
+909        /* ---------- Nouvelle conversation ---------- */
+910        window.ouvrirCompose = () => document.getElementById('composeModal').classList.add('on');
+911        window.fermerCompose = () => document.getElementById('composeModal').classList.remove('on');
+912    
+913        document.getElementById('composeSend')?.addEventListener('click', async function () {
+914            const select = document.getElementById('composeDest');
+915            const choix = Array.from(select.selectedOptions).map(o => o.value).filter(Boolean);
+916            const sujet = document.getElementById('composeSujet').value.trim();
+917            const corps = document.getElementById('composeCorps').value.trim();
+918            if (!choix.length || !sujet || !corps) { alert('Destinataire, objet et message sont obligatoires.'); return; }
+
+[showing lines 880-919 of 957; read again with offset=920 for more]

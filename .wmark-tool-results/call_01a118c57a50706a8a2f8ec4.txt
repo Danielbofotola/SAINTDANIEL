@@ -1,0 +1,33 @@
+Output saved to C:\Users\danie\.wmark\tool-outputs\b493c9bc81dc\20261008-004901-bash-call_01a118c57a50706a8a2f8ec4.txt (856 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+[powershell — Windows side]
+14: Schema::create('users', function (Blueprint $table) {
+36: test('admin can temporarily access an active user account and return to their own session', function () {
+40: $this->actingAs($admin)
+59: test('admin cannot impersonate another admin or an inactive account', function () {
+64: $this->actingAs($admin)
+74: test('an impersonated session cannot access admin routes if the user role changes', function () {
+78: $this->actingAs($admin)
+89: test('admin can edit user 
+
+... 1,286 chars truncated ...
+
+aluations', function (Blueprint $table) {
+311: $this->actingAs($professor)
+322: test('admin can view account and school charts on a dedicated statistics page', function () {
+327: Schema::create('eleves', function (Blueprint $table) {
+331: Schema::create('classes', function (Blueprint $table) {
+335: Schema::create('professeurs', function (Blueprint $table) {
+339: Schema::create('salles', function (Blueprint $table) {
+346: $this->actingAs($admin)
+361: test('admin can create a section and option before returning to the class form', function () {
+367: Schema::create('sections', function (Blueprint $table) {
+372: Schema::create('options', function (Blueprint $table) {
+382: $this->actingAs($admin)
+409: Schema::create('cycles', function (Blueprint $table) {
+414: Schema::create('salles', function (Blueprint $table) {
+420: Schema::create('classes', function (Blueprint $table) {
+438: $this->withSession(['_old_input' => []])
+445: test('admin dashboard detail action supplies the student data to its modal', function () {
+465: $this->actingAs(User::factory()->create(['role' => 'admin']))
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

@@ -1,0 +1,28 @@
+1      <?php
+2      
+3      namespace App\Models;
+4      
+5      use App\Models\Concerns\BelongsToAnneeScolaire;
+6      use Illuminate\Database\Eloquent\Model;
+7      
+8      class Depense extends Model
+9      {
+10         use BelongsToAnneeScolaire;
+11     
+12         protected $table = 'depenses';
+13     
+14         protected $fillable = ['annee_scolaire_id', 'category_id', 'motif', 'montant', 'date_depense', 'piece_justificative', 'statut'];
+15     
+16         protected function casts(): array
+17         {
+18             return [
+19                 'montant' => 'decimal:2',
+20                 'date_depense' => 'date',
+21             ];
+22         }
+23     
+24         public function categorie()
+25         {
+26             return $this->belongsTo(CategorieDepense::class, 'category_id');
+27         }
+28     }

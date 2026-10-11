@@ -1,0 +1,30 @@
+420                                        <span class="fw-bold">{{ $dernier->inscription?->eleve?->nom }} {{ $dernier->inscription?->eleve?->prenom }}</span>
+421                                        <small class="text-muted d-block mt-1" style="font-size: 0.7rem;">Classe :</small>
+422                                        <span class="fw-semibold">{{ $dernier->inscription?->classe?->nom ?? 'Classe inconnue' }}</span>
+423                                    </div>
+424                                    <div class="bg-light p-2 rounded border mb-2">
+425                                        <div class="d-flex justify-content-between mb-1"><span class="text-muted">Date :</span><span class="fw-semibold">{{ $dernier->date_paiement?->format('d/m/Y H:i') }}</span></div>
+426                                        <hr class="my-1 border-secondary opacity-25">
+427                                        <div class="d-flex justify-content-between align-items-center pt-1"><span class="fw-bold text-uppercase">Total :</span><span class="fw-bold text-success" style="font-size: 0.95rem;">{{ $money($dernier->montant_paye) }}</span></div>
+428                                    </div>
+429                                    <div class="row pt-1 text-center" style="font-size: 0.65rem;">
+430                                        <div class="col-6"><p class="mb-3 text-muted">Signature tuteur</p><div class="border-bottom mx-1"></div></div>
+431                                        <div class="col-6"><p class="mb-3 text-muted">Cachet caisse</p><div class="border-bottom mx-1"></div></div>
+432                                    </div>
+433                                @else
+434                                    <div class="text-center text-muted py-3">Aucun reçu à afficher.</div>
+435                                @endif
+436                            </div>
+437                            @if ($dernier)
+438                                <div class="card-footer bg-white border-top-0 text-end py-2 no-print">
+439                                    <button type="button" class="btn btn-outline-secondary btn-sm" onclick="window.print();"><i class="bi bi-printer me-1"></i>Imprimer le reçu</button>
+440                                </div>
+441                            @endif
+442                        </div>
+443    
+444                        <!-- Calculatrice -->
+445                        <div class="caisse-card no-print">
+446                            <div class="card-title-header mb-1">Calculatrice</div>
+447                            <div class="calc-display-box fs-5 mb-2" id="calcDisplay">0</div>
+
+[showing lines 420-447 of 515; read again with offset=448 for more]

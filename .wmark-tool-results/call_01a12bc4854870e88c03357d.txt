@@ -1,0 +1,19 @@
+Applied patch: 4 files changed (1 created, 3 updated)
+Created database/migrations/2026_10_25_030000_clear_default_bulletin_titre.php (31 lines)
+Updated resources/views/admin/bulletins/document.blade.php (1 hunk applied)
+Updated app/Http/Controllers/BulletinController.php (1 hunk applied)
+Updated tests/Feature/BulletinDocumentTest.php (1 hunk applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 40-48 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 40-46:
+40         // Titre réel : cycle, section et option de la classe de l'élève
+41         // (dédoublonnés), sauf titre imposé dans les Paramètres de l'établissement.
+42         $structure = collect([$classe?->cycle?->nom, $classe?->section?->nom, $classe?->option?->nom])
+43             ->filter(fn ($valeur) => filled($valeur))
+44             ->unique()
+45             ->implode(' — ');
+46         $bulletinTitre = $systemSettings->bulletin_titre ?: ('Bulletin annuel'.($structure !== '' ? ' — '.$structure : ''));
+Landed at lines 56-56 (the file's new text; no re-read needed):
+56             $inscription->load(['eleve', 'classe.cycle', 'classe.section', 'classe.option', 'anneeScolaire']);
+Landed at lines 461-461 (the file's new text; no re-read needed):
+461            ->assertSee('Bulletin annuel — Secondaire')

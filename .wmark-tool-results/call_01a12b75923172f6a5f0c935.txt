@@ -1,0 +1,7 @@
+Updated app/Http/Controllers/ClasseController.php: replaced 7 lines with 5 lines (fuzzy match: indent-shift)
+Auto-corrected edit landed at lines 102-106:
+102                'classesSuivantes' => Classe::with('cycle')
+103                    ->where('statut', 'actif')
+104                    ->when($classe, fn ($query) => $query->where('id', '!=', $classe->id))
+105                    ->orderBy('nom')
+106                    ->get(),

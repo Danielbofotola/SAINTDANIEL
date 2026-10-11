@@ -1,0 +1,7 @@
+25                 <div>
+26                     <a class="btn btn-secondary" href="{{ route('admin.comptabilite.index') }}"><i class="fa fa-calculator"></i> Comptabilité</a>
+27                     <a class="btn btn-info" href="{{ route('admin.paies.index') }}"><i class="fa fa-money"></i> Paie</a>
+28                 </div>
+29             </div>
+
+[showing lines 25-30 of 166; read again with offset=31 for more]

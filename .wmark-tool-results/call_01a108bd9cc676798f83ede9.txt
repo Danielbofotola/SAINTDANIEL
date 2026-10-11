@@ -1,0 +1,62 @@
+1      <!DOCTYPE html>
+2      <html lang="fr">
+3      <head>
+4          <meta charset="UTF-8">
+5          <meta name="viewport" content="width=device-width, initial-scale=1">
+6          <title>Espace comptable | {{ $systemSettings->nom_court }}</title>
+7          <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+8          <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+9           <!-- Icons FontAwesome & Themify -->
+10         <link rel="stylesheet" href="{{ asset('boostrap/css/font-awesome/css/fontawesome.css') }}">
+11         <link rel="stylesheet" href="{{ asset('boostrap/css/font-awesome/css/fa-solid.css') }}">
+12         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+13     
+14         <!-- DataTables Bootstrap 4 -->
+15         <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap4.min.css">
+16     
+17         <!-- Able Pro / Main Styling -->
+18         <link rel="stylesheet" href="{{ asset('boostrap/css/css/main.css') }}">
+19     
+20         <!-- Chart.js -->
+21         <script src="{{ asset('boostrap/css/js/plugins/chart.umd.js') }}"></script>
+22         <style>
+23             :root {
+24                 --bg-canvas: #d0dbe5;
+25                 --card-bg: #f2f5f8;
+26                 --card-border: #b0c2d0;
+27                 --green-btn: #107c41;
+28                 --green-hover: #0b582e;
+29                 --red-btn: #a80000;
+30                 --accent-gold: #c19a32;
+31                 --bottom-nav-height: 70px;
+32             }
+33     
+34             body {
+35                 background-color: var(--bg-canvas);
+36                 font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+37                 color: #1e293b;
+38                 font-size: 0.82rem;
+39                 padding-bottom: calc(var(--bottom-nav-height) + 15px);
+40             }
+41     
+42             .caisse-card {
+43                 background-color: var(--card-bg);
+44                 border: 1px solid var(--card-border);
+45                 border-radius: 8px;
+46                 padding: 12px;
+47                 box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+48                 height: 100%;
+49             }
+50     
+51             .card-title-header {
+52                 font-size: 0.95rem;
+53                 font-weight: 700;
+54                 text-align: center;
+55                 color: #0f172a;
+56                 margin-bottom: 8px;
+57                 text-transform: uppercase;
+58             }
+59     
+60             .inner-block {
+
+[showing lines 1-60 of 499; read again with offset=61 for more]

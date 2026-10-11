@@ -1,0 +1,20 @@
+Applied patch: 1 file changed (1 updated)
+Updated tests/Feature/ElevesPagesTest.php (1 hunk applied)
+Landed at lines 328-351 (the file's new text; no re-read needed):
+328    
+329    test('la liste et les statistiques ne comptent que les élèves inscrits dans l’année', function () {
+330        seedEleve();   // Mwamba, inscrit en 2026-2027
+331    
+332        // Un élève sans aucune inscription dans l'année : ni listé, ni compté.
+333        $tuteurId = DB::table('tuteurs')->insertGetId([
+334            'nom_mere' => 'Sans', 'telephone_mere' => '0990000001', 'statut' => 'actif',
+335            'created_at' => now(), 'updated_at' => now(),
+      … 8 lines omitted …
+344    
+345        $this->actingAs($admin)
+346            ->get(route('admin.eleves.index'))
+347            ->assertOk()
+348            ->assertSee('Mwamba Kabila Aline')
+349            ->assertDontSee('SansInscription')
+350            ->assertSee('<h4>Élèves</h4><p><b>1</b></p>', false);
+351    });

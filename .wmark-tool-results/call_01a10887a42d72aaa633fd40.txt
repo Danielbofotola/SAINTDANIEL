@@ -1,0 +1,5 @@
+Updated resources/views/admin/dashboard.blade.php: replaced 3 lines with 3 lines (fuzzy match: indent-shift)
+Auto-corrected edit landed at lines 324-326:
+324                        <li><a class="treeview-item" href="{{ route('admin.professeurs.index') }}"><i class="icon fa fa-list"></i> Liste des professeurs</a></li>
+325                        <li><a class="treeview-item" href="{{ route('admin.affectations.index') }}"><i class="icon fa fa-book"></i> Cours &amp; affectation</a></li>
+326                        <li><a class="treeview-item" href="{{ route('admin.emplois-du-temps.index') }}"><i class="icon fa fa-clock-o"></i> Horaire &amp; Emploi du temps</a></li>

@@ -1,0 +1,16 @@
+Applied patch: 1 file changed (1 updated)
+Updated resources/views/admin/eleves/index.blade.php (1 hunk applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 38-50 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 39-45:
+39                     <div class="col-md-4 form-group mb-md-0"><input class="form-control" type="search" name="q" value="{{ $search }}" placeholder="Rechercher par nom, post-nom, prénom ou matricule…"></div>
+40                     <div class="col-md-3 form-group mb-md-0"><select class="form-control" name="annee" onchange="this.form.submit()">
+41                         <option value="">Année en cours</option>
+42                         @foreach ($annees as $a)
+43                             <option value="{{ $a->id }}" @selected(($annee?->id) === $a->id)>{{ $a->libelle }}@if ($a->is_encours) · en cours @endif</option>
+44                         @endforeach
+45                     </select></div>
+Auto-corrected hunk landed at lines 52-52:
+52                     <div class="col-md-2"><button class="btn btn-info btn-block" type="submit"><i class="fa fa-filter"></i> Filtrer</button></div>
+Auto-corrected hunk landed at lines 56-56:
+56                         <thead><tr><th>#</th><th>Photo</th><th>Matricule</th><th>Nom complet</th><th>Sexe</th><th>Naissance</th><th>Classe @if(!empty($anneeVue))<small>{{ $anneeVue->libelle }}</small>@endif</th><th>Origine</th><th>Statut</th><th>Actions</th></tr></thead>

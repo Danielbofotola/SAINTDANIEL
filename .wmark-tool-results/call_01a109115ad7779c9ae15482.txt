@@ -1,0 +1,10 @@
+18     @php($money = fn ($v) => number_format((float) $v, 2, ',', ' '))
+19         <main class="app-content" style="margin-left:0">
+20             <div class="app-title">
+21                 <div>
+22                     <h1><i class="fa fa-line-chart"></i> Statistiques &amp; évolution</h1>
+23                     <p>Évolution mensuelle et répartitions de toute l’activité@if ($annee) — année <strong>{{ $annee->libelle }}</strong>@endif.</p>
+24                 </div>
+25                 <div>
+
+[showing lines 18-25 of 166; read again with offset=26 for more]

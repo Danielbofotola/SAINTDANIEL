@@ -1,0 +1,11 @@
+Applied patch: 1 file changed (1 updated)
+Updated app/Http/Controllers/PortailParentController.php (1 hunk applied)
+Fuzzy-apply corrections (review — object if wrong):
+  ⚠ hunk 1: context matched at lines 49-50 only after leading-whitespace normalization; inserted lines were re-indented to the file's depth. Verify the result.
+Auto-corrected hunk landed at lines 50-55:
+50                 // Enfants rattachés à ce compte parent (lien posé par l'admin).
+51                 'enfants' => $utilisateur->eleves()
+52                     ->with(['inscriptions' => fn ($query) => $query->anneeEnCours()->with('classe')])
+53                     ->orderBy('nom')
+54                     ->orderBy('prenom')
+55                     ->get(),

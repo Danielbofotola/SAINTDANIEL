@@ -1,0 +1,17 @@
+[powershell — Windows side]
+PASS  Tests\Feature\PortailParentTest
+  ✓ un parent accède à son espace quand le module est ouvert                                                     0.18s  
+  ✓ l’espace parent répond 404 quand le module est fermé                                                         0.02s  
+  ✓ l’espace parent est interdit aux autres rôles                                                                0.02s  
+  ✓ un administrateur connecté peut ouvrir le portail parent                                                     0.02s  
+  ✓ un admin qui consulte un compte parent accède au portail                                                     0.02s  
+  ✓ en consultation, une route strictement réservée à l’admin reste interdite                                    0.02s  
+  ✓ un parent envoie un message au personnel depuis le portail                                                   0.03s  
+  ✓ un message vocal est enregistré et rendu par un lecteur audio                                                0.04s  
+  ✓ les stickers (emojis seuls) reçoivent un habillage dédié                                                     0.02s  
+
+  Tests:    9 passed (36 assertions)
+  Duration: 0.55s
+
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

@@ -1,0 +1,22 @@
+62         public function toggleStatus(Professeurs $professeur): RedirectResponse
+63         {
+64             $professeur->update(['statut' => $professeur->statut === 'actif' ? 'inactif' : 'actif']);
+65     
+66             return back()->with('success', 'Le statut du professeur a été mis à jour.');
+67         }
+68     
+69         public function create(): View
+70         {
+71             return view('admin.professeurs.create');
+72         }
+73     
+74         public function store(Request $request): RedirectResponse
+75         {
+76             $data = $request->validate([
+77                 'nom' => ['required', 'string', 'max:50'],
+78                 'postnom' => ['required', 'string', 'max:50'],
+79                 'prenom' => ['required', 'string', 'max:50'],
+80                 'sexe' => ['required', 'in:M,F'],
+81                 'specialite' => ['required', 'string', 'max:100'],
+
+[showing lines 62-81 of 107; read again with offset=82 for more]

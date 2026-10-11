@@ -1,0 +1,90 @@
+1      <?php
+2      
+3      namespace App\Models;
+4      
+5      use App\Support\Monnaie;
+6      use Illuminate\Database\Eloquent\Model;
+7      
+8      class ParametreSysteme extends Model
+9      {
+10         protected $table = 'parametres_systeme';
+11     
+12         /** Seuil de réussite appliqué au bulletin lorsque rien n'est configuré. */
+13         public const SEUIL_REUSSITE_DEFAUT = 50.0;
+14     
+15         protected $fillable = [
+16             'nom_etablissement', 'nom_court', 'telephone', 'email', 'adresse', 'saisie_notes_active', 'portail_parents_actif',
+17             'deliberation_active', 'deliberation_seuil_admission', 'deliberation_seuil_repechage',
+18             'deliberation_max_cours_echoues', 'deliberation_note_min_cours',
+19             'bulletin_pays', 'bulletin_ministere', 'bulletin_titre', 'bulletin_reference',
+20             'bulletin_province', 'bulletin_ville', 'bulletin_commune', 'bulletin_code_ecole',
+21             'bulletin_lieu_signature', 'bulletin_signataire', 'bulletin_seuil_reussite',
+22             'bulletin_afficher_place', 'bulletin_afficher_conduite',
+23             'devise', 'taux_change',
+24         ];
+25     
+26         protected function casts(): array
+27         {
+28             return [
+29                 'saisie_notes_active' => 'boolean',
+30                 'portail_parents_actif' => 'boolean',
+31                 'deliberation_active' => 'boolean',
+32                 'deliberation_seuil_admission' => 'decimal:2',
+33                 'deliberation_seuil_repechage' => 'decimal:2',
+34                 'deliberation_max_cours_echoues' => 'integer',
+35                 'deliberation_note_min_cours' => 'decimal:2',
+36                 'bulletin_seuil_reussite' => 'decimal:2',
+37                 'bulletin_afficher_place' => 'boolean',
+38                 'bulletin_afficher_conduite' => 'boolean',
+39                 'taux_change' => 'decimal:2',
+40             ];
+41         }
+42     
+43         /** Taux de change par défaut : CDF pour 1 USD (2800 si non configuré). */
+44         public static function tauxChange(): float
+45         {
+46             $taux = (float) (static::current()->taux_change ?? 0);
+47     
+48             return $taux > 0 ? $taux : Monnaie::TAUX_DEFAUT;
+49         }
+50     
+51         /**
+52          * Réglages en vigueur (ligne unique), ou valeurs par défaut si aucune n'existe.
+53          */
+54         public static function current(): self
+55         {
+56             try {
+57                 return static::query()->first() ?? static::defaults();
+58             } catch (\Throwable) {
+59                 // Table absente ou base indisponible (installation en cours, test isolé) :
+60                 // les valeurs par défaut sont utilisées plutôt que de faire échouer la page.
+61                 return static::defaults();
+62             }
+63         }
+64     
+65         /** Seuil de réussite du bulletin, configuré par l'administration (50 % par défaut). */
+66         public static function seuilReussiteBulletin(): float
+67         {
+68             $seuil = static::current()->bulletin_seuil_reussite;
+69     
+70             return $seuil === null || (float) $seuil <= 0 ? self::SEUIL_REUSSITE_DEFAUT : (float) $seuil;
+71         }
+72     
+73         public static function defaults(): self
+74         {
+75             return new self([
+76                 'nom_etablissement' => 'COMPLEXE SCOLAIRE BABAZIN',
+77                 'nom_court' => 'C.S. Moty',
+78                 'saisie_notes_active' => true,
+79                 'portail_parents_actif' => false,
+80                 'bulletin_pays' => 'République Démocratique du Congo',
+81                 'bulletin_ministere' => "Ministère de l'Enseignement Primaire, Secondaire et Professionnel",
+82                 'bulletin_titre' => 'Bulletin annuel — Cycle terminal de l’éducation de base (CTEB)',
+83                 'bulletin_reference' => 'EBE/P.S./010',
+84                 'bulletin_signataire' => 'Le Chef d’Établissement',
+85                 'bulletin_seuil_reussite' => self::SEUIL_REUSSITE_DEFAUT,
+86                 'bulletin_afficher_place' => true,
+87                 'bulletin_afficher_conduite' => true,
+88             ]);
+89         }
+90     }

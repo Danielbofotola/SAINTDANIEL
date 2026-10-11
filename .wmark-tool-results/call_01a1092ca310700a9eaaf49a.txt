@@ -1,0 +1,21 @@
+Applied patch: 1 file changed (1 updated)
+Updated app/Http/Controllers/UserProfileController.php (2 hunks applied)
+Landed at lines 10-10 (the file's new text; no re-read needed):
+10     use App\Support\PresenceUtilisateurs;
+Landed at lines 261-276 (the file's new text; no re-read needed):
+261        /**
+262         * Utilisateurs actuellement en ligne (sessions actives).
+263         */
+264        public function online(Request $request): View
+265        {
+266            $sessions = PresenceUtilisateurs::enLigne();
+267            $connectes = $sessions->where('est_connecte', true);
+268    
+269            return view('admin.profile.online', [
+270                'user' => $request->user(),
+271                'sessions' => $sessions,
+272                'connectes' => $connectes,
+273                'fenetre' => PresenceUtilisateurs::FENETRE_MINUTES,
+274            ]);
+275        }
+276

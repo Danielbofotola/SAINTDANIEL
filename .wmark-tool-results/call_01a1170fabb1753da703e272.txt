@@ -1,0 +1,28 @@
+[powershell — Windows side]
+✓ the statistics page is restricted to the admin role                                                          0.02s  
+
+   PASS  Tests\Feature\SystemSettingsTest
+  ✓ admin can update persistent school identity and contact settings                                             0.03s  
+  ✓ non-admin users cannot change establishment settings                                                         0.02s  
+
+   PASS  Tests\Feature\TresorerieAlerteTest
+  ✓ a charge that pushes the treasury negative raises a danger signal                                            0.02s  
+  ✓ the signal is raised as soon as an over-heavy expense is recorded                                            0.03s  
+  ✓ an affordable charge raises no signal and a high charge rate warns                                           0.04s  
+  ✓ the admin expense page also displays the charge signal                                                       0.03s  
+
+   PASS  Tests\Feature\UtilisateursEnLigneTest
+  ✓ the admin sees the accounts currently online, not the stale sessions                                         0.03s  
+  ✓ online users page is reserved to the admin role                                                              0.03s  
+  ✓ the device label is derived from the user agent                                                              0.01s  
+
+   PASS  Tests\Feature\YearScopedModelsTest
+  ✓ the new models map to the expected tables                                                                    0.02s  
+  ✓ every model that carries a school year exposes the year relation and scope                                   0.02s  
+  ✓ relation foreign keys match the database schema                                                              0.02s  
+
+  Tests:    200 passed (1189 assertions)
+  Duration: 8.10s
+
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

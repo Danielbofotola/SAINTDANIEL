@@ -1,0 +1,4 @@
+Created 3 tasks:
+  [pending] 1: Télécharger Font Awesome 4.7.0 (CSS + webfonts) en local dans public/assets (2 criteria)
+  [pending] 2: Remplacer le lien CDN maxcdn par le chemin local asset() dans tous les fichiers du projet (1 criteria)
+  [pending] 3: Vider le cache des vues compilées et vérifier (2 criteria)

@@ -1,0 +1,1745 @@
+# wmark session b493c9bc81dc:sub:0
+
+## User
+Dans ce projet Laravel (C.S. Moty, dossier = racine du workspace), j'ai besoin de tout ce qui permet d'afficher, pour UN élève donné : (a) son historique scolaire année par année et (b) sa situation financière (frais attendus, paiements, dette).
+
+Rapporte, de façon COMPACTE et factuelle (chemins + extraits de code réels, pas de suppositions) :
+
+1. Les modèles/tables concernés et leurs champs utiles :
+   - `app/Models/Inscription.php` (champs + relations : classe, anneeScolaire, bulletins, paiements…)
+   - `app/Models/Paiement.php` (fillable complet, relations, casts)
+   - le modèle des frais (probablement `FraisScolaire`) : fillable/relations
+   - `app/Models/Bulletin.php` : champs de synthèse (pourcentage, place, mention, décision…)
+   - `app/Models/Deliberation.php` : décision de fin d'année
+   - `app/Models/AnneeScolaire.php` : comment lister toutes les années (tri)
+
+2. LA formule canonique déjà utilisée dans l'application pour le solde/dette d'une inscription ou d'un élève : quel fichier + quelle méthode/requête exacte (total attendu, total payé, reste). Cite le code. Regarde notamment `app/Http/Controllers/ComptablePaiementController.php`, tout `app/Support/*.php` lié aux paiements, et les vues `resources/views/comptable/**`.
+
+3. Les vues existantes qui affichent déjà des paiements/soldes d'un élève (chemins) avec le libellé des colonnes/états utilisés (ex. statut 'actif'/'en_attente', type de paiement, période/mois couvert).
+
+4. Comment un élève est relié à ses inscriptions des années PASSÉES (relation + comment ne pas se limiter à l'année en cours) et si une table archive existe pour les années clôturées.
+
+Ne modifie AUCUN fichier. Ne lance pas la suite de tests. Réponds en listes courtes avec extraits de code (max ~15 lignes chacun).
+
+### Tool call — bash
+```
+{"command":"Get-ChildItem -Path . -Directory | Select-Object Name; Write-Host \"---\"; Get-ChildItem app/Models | Select-Object Name","description":"List root dirs and models"}
+```
+
+### Tool call — glob
+```
+{"pattern":"app/Support/*.php"}
+```
+
+### Tool call — glob
+```
+{"pattern":"app/Http/Controllers/ComptablePaiementController.php"}
+```
+
+### Tool result
+```
+Output saved to C:\Users\danie\.wmark\tool-outputs\b493c9bc81dc-sub-0\20261008-024925-bash-call_01a11933b37d75fbb53f910c.txt (804 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+[powershell — Windows side]
+---
+Name                  
+----                  
+.wmark-subagents      
+.wmark-tool-results   
+app                   
+bootstrap             
+config                
+database              
+node_modules          
+public                
+resources             
+routes                
+storage               
+tests                 
+vendor                
+Concerns              
+AffectationCours.php  
+AnneeScolaire.php     
+Annonce.php           
+Appel.php             
+ArchiveA
+
+... 929 chars truncated ...
+
+4/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="information" RefId="2"><TN RefId="1"><T>System.Management.Automation.InformationRecord</T><T>System.Object</T></TN><ToString>---</ToString><Props><Obj N="MessageData" RefId="3"><TN RefId="2"><T>System.Management.Automation.HostInformationMessage</T><T>System.Object</T></TN><ToString>---</ToString><Props><S N="Message">---</S><B N="NoNewLine">false</B><S N="ForegroundColor">Gray</S><S N="BackgroundColor">Black</S></Props></Obj><S N="Source">Write-Host</S><DT N="TimeGenerated">2026-10-08T02:49:25.2854068+01:00</DT><Obj N="Tags" RefId="4"><TN RefId="3"><T>System.Collections.Generic.List`1[[System.String, mscorlib, Version=4.0.0.0, Culture=neu
+```
+
+### Tool result
+```
+app/Support/ (10 lines, newest first):
+  Messagerie.php
+  Raccourcis.php
+  Jury.php
+  PresenceUtilisateurs.php
+  EspaceProfesseur.php
+  Tresorerie.php
+  Comptabilite.php
+  Paie.php
+  Caisse.php
+  BulletinRdc.php
+```
+
+### Tool result
+```
+app/Http/Controllers/ComptablePaiementController.php
+```
+
+### Tool call — glob
+```
+{"pattern":"app/Models/*.php"}
+```
+
+### Tool call — read_file
+```
+{"path":"app/Models/Inscription.php"}
+```
+
+### Tool call — read_file
+```
+{"path":"app/Models/Paiement.php"}
+```
+
+### Tool result
+```
+app/Models/ (41 lines, newest first):
+  Eleve.php
+  Evaluation.php
+  Bulletin.php
+  User.php
+  Conversation.php
+  ParametreSysteme.php
+  Classe.php
+  Deliberation.php
+  Message.php
+  Appel.php
+  Annonce.php
+  Presence.php
+  LigneEcriture.php
+  Ecriture.php
+  CompteComptable.php
+  ArchiveAnnee.php
+  Paie.php
+  Salaire.php
+  Inscription.php
+  TypeFrais.php
+  Paiement.php
+  Cours.php
+  Professeurs.php
+  DemandeInscription.php
+  Option.php
+  Section.php
+  Cycle.php
+  AnneeScolaire.php
+  DocumentProfesseur.php
+  Depense.php
+  CategorieDepense.php
+  FraisScolaire.php
+  EmploiDuTemps.php
+  Note.php
+  AffectationCours.php
+  Periode.php
+  DemandeCompte.php
+  Salle.php
+  DocumentEleve.php
+  EleveSante.php
+  Tuteur.php
+```
+
+### Tool result
+```
+1      <?php
+2      
+3      namespace App\Models;
+4      
+5      use App\Models\Concerns\BelongsToAnneeScolaire;
+6      use Illuminate\Database\Eloquent\Model;
+7      
+8      class Inscription extends Model
+9      {
+10         use BelongsToAnneeScolaire;
+11     
+12         public const STATUT_EN_ATTENTE = 'en_attente';
+13     
+14         public const STATUT_ACTIF = 'actif';
+15     
+16         protected $fillable = ['eleve_id', 'classe_id', 'annee_scolaire_id', 'date_inscription', 'statut'];
+17     
+18         /**
+19          * Valide l'inscription : elle devient active (généralement après le
+20          * règlement du frais d'inscription par la caisse).
+21          */
+22         public function valider(): void
+23         {
+24             if ($this->statut !== self::STATUT_ACTIF) {
+25                 $this->update(['statut' => self::STATUT_ACTIF]);
+26             }
+27         }
+28     
+29         public function estEnAttente(): bool
+30         {
+31             return $this->statut === self::STATUT_EN_ATTENTE;
+32         }
+33     
+34         protected function casts(): array
+35         {
+36             return ['date_inscription' => 'date'];
+37         }
+38     
+39         public function eleve()
+40         {
+41             return $this->belongsTo(Eleve::class);
+42         }
+43     
+44         public function classe()
+45         {
+46             return $this->belongsTo(Classe::class);
+47         }
+48     
+49         public function bulletins()
+50         {
+51             return $this->hasMany(Bulletin::class);
+52         }
+53     
+54         public function paiements()
+55         {
+56             return $this->hasMany(Paiement::class);
+57         }
+58     }
+```
+
+### Tool result
+```
+1      <?php
+2      
+3      namespace App\Models;
+4      
+5      use Illuminate\Database\Eloquent\Model;
+6      
+7      class Paiement extends Model
+8      {
+9          protected $table = 'paiements';
+10     
+11         protected $fillable = [
+12             'num_recu', 'inscription_id', 'frais_scolaire_id', 'periode_id', 'montant_paye',
+13             'date_paiement', 'mode_paiement', 'reference_transaction', 'statut',
+14         ];
+15     
+16         protected function casts(): array
+17         {
+18             return [
+19                 'montant_paye' => 'decimal:2',
+20                 'date_paiement' => 'datetime',
+21             ];
+22         }
+23     
+24         public function inscription()
+25         {
+26             return $this->belongsTo(Inscription::class);
+27         }
+28     
+29         public function fraisScolaire()
+30         {
+31             return $this->belongsTo(FraisScolaire::class);
+32         }
+33     
+34         public function periode()
+35         {
+36             return $this->belongsTo(Periode::class);
+37         }
+38     }
+```
+
+### Tool call — read_file
+```
+{"path":"app/Models/FraisScolaire.php"}
+```
+
+### Tool call — read_file
+```
+{"path":"app/Models/Bulletin.php"}
+```
+
+### Tool call — read_file
+```
+{"path":"app/Models/Deliberation.php"}
+```
+
+### Tool call — read_file
+```
+{"path":"app/Models/AnneeScolaire.php"}
+```
+
+### Tool call — read_file
+```
+{"path":"app/Models/Concerns/BelongsToAnneeScolaire.php"}
+```
+
+### Tool call — read_file
+```
+{"path":"app/Models/ArchiveAnnee.php"}
+```
+
+### Tool call — read_file
+```
+{"path":"app/Models/Eleve.php"}
+```
+
+### Tool result
+```
+1      <?php
+2      
+3      namespace App\Models;
+4      
+5      use App\Models\Concerns\BelongsToAnneeScolaire;
+6      use Illuminate\Database\Eloquent\Model;
+7      
+8      class FraisScolaire extends Model
+9      {
+10         use BelongsToAnneeScolaire;
+11     
+12         protected $table = 'frais_scolaires';
+13     
+14         protected $fillable = ['type_frais_id', 'classe_id', 'annee_scolaire_id', 'montant_exige', 'date_echeance', 'statut'];
+15     
+16         protected function casts(): array
+17         {
+18             return [
+19                 'montant_exige' => 'decimal:2',
+20                 'date_echeance' => 'date',
+21             ];
+22         }
+23     
+24         public function typeFrais()
+25         {
+26             return $this->belongsTo(TypeFrais::class, 'type_frais_id');
+27         }
+28     
+29         public function classe()
+30         {
+31             return $this->belongsTo(Classe::class);
+32         }
+33     
+34         public function paiements()
+35         {
+36             return $this->hasMany(Paiement::class);
+37         }
+38     }
+```
+
+### Tool result
+```
+1      <?php
+2      
+3      namespace App\Models;
+4      
+5      use Illuminate\Database\Eloquent\Model;
+6      
+7      class Bulletin extends Model
+8      {
+9          protected $table = 'bulletins';
+10     
+11         protected $fillable = [
+12             'inscription_id', 'periode_id', 'total_points', 'max_possible', 'pourcentage',
+13             'place_classe', 'mention', 'application', 'conduite', 'chemin_pdf', 'statut',
+14         ];
+15     
+16         protected function casts(): array
+17         {
+18             return [
+19                 'total_points' => 'decimal:2',
+20                 'max_possible' => 'decimal:2',
+21                 'pourcentage' => 'decimal:2',
+22                 'approuve_at' => 'datetime',
+23             ];
+24         }
+25     
+26         public function inscription()
+27         {
+28             return $this->belongsTo(Inscription::class);
+29         }
+30     
+31         public function periode()
+32         {
+33             return $this->belongsTo(Periode::class);
+34         }
+35     }
+```
+
+### Tool result
+```
+1      <?php
+2      
+3      namespace App\Models;
+4      
+5      use Illuminate\Database\Eloquent\Model;
+6      
+7      /**
+8       * Décision de fin d'année pour une inscription : la moyenne vient du bulletin,
+9       * la décision (admis / ajourné / redouble) du jury et de ses critères.
+10      */
+11     class Deliberation extends Model
+12     {
+13         public const DECISIONS = [
+14             'admis' => 'Admis (passe)',
+15             'ajourne' => 'Ajourné (repêchage)',
+16             'redouble' => 'Redoublant',
+17         ];
+18     
+19         protected $fillable = [
+20             'inscription_id', 'annee_scolaire_id', 'pourcentage_general', 'cours_echoues',
+21             'decision', 'critere', 'manuelle', 'classe_suivante_id', 'decide_par', 'decide_le', 'commentaire',
+22         ];
+23     
+24         protected function casts(): array
+25         {
+26             return [
+27                 'pourcentage_general' => 'decimal:2',
+28                 'manuelle' => 'boolean',
+29                 'decide_le' => 'datetime',
+30             ];
+31         }
+32     
+33         public function inscription()
+34         {
+35             return $this->belongsTo(Inscription::class);
+36         }
+37     
+38         public function anneeScolaire()
+39         {
+40             return $this->belongsTo(AnneeScolaire::class);
+41         }
+42     
+43         public function classeSuivante()
+44         {
+45             return $this->belongsTo(Classe::class, 'classe_suivante_id');
+46         }
+47     
+48         public function decidePar()
+49         {
+50             return $this->belongsTo(User::class, 'decide_par');
+51         }
+52     
+53         public function libelleDecision(): string
+54         {
+55             return self::DECISIONS[$this->decision] ?? $this->decision;
+56         }
+57     }
+```
+
+### Tool result
+```
+1      <?php
+2      
+3      namespace App\Models;
+4      
+5      use Illuminate\Database\Eloquent\Model;
+6      use Illuminate\Support\Facades\DB;
+7      use Illuminate\Support\Facades\Schema;
+8      
+9      class AnneeScolaire extends Model
+10     {
+11         /**
+12          * Tables portant une clé étrangère vers annees_scolaires.
+13          */
+14         private const TABLES_LIEES = [
+15             'inscriptions',
+16             'periodes',
+17             'affectations_cours',
+18             'frais_scolaires',
+19             'depenses',
+20             'demandes_inscription',
+21         ];
+22     
+23         protected $table = 'annees_scolaires';
+24         protected $fillable = ['libelle', 'date_debut', 'date_fin', 'is_encours', 'statut'];
+25     
+26         protected function casts(): array
+27         {
+28             return [
+29                 'date_debut' => 'date',
+30                 'date_fin' => 'date',
+31                 'is_encours' => 'boolean',
+32             ];
+33         }
+34     
+35         /**
+36          * L'année scolaire « en cours » (unique), ou null si aucune n'est définie.
+37          */
+38         public static function enCours(): ?self
+39         {
+40             return static::where('is_encours', true)->first();
+41         }
+42     
+43         /**
+44          * Les inscriptions rattachées à cette année scolaire.
+45          */
+46         public function inscriptions()
+47         {
+48             return $this->hasMany(Inscription::class);
+49         }
+50     
+51         public function periodes()
+52         {
+53             return $this->hasMany(Periode::class);
+54         }
+55     
+56         public function affectationsCours()
+57         {
+58             return $this->hasMany(AffectationCours::class);
+59         }
+60     
+61         public function fraisScolaires()
+62         {
+63             return $this->hasMany(FraisScolaire::class);
+64         }
+65     
+66         public function depenses()
+67         {
+68             return $this-
+```
+
+### Tool result
+```
+1      <?php
+2      
+3      namespace App\Models\Concerns;
+4      
+5      use App\Models\AnneeScolaire;
+6      use Illuminate\Database\Eloquent\Builder;
+7      use Illuminate\Database\Eloquent\Relations\BelongsTo;
+8      
+9      /**
+10      * À utiliser sur tout modèle dont la table porte une colonne `annee_scolaire_id`.
+11      *
+12      * Fournit la relation vers l'année et un scope qui restreint la requête à
+13      * l'année en cours (et à rien du tout s'il n'y a pas d'année en cours, pour
+14      * éviter de fuiter les données des années passées).
+15      */
+16     trait BelongsToAnneeScolaire
+17     {
+18         public function anneeScolaire(): BelongsTo
+19         {
+20             return $this->belongsTo(AnneeScolaire::class);
+21         }
+22     
+23         public function scopeAnneeEnCours(Builder $query): Builder
+24         {
+25             $anneeId = AnneeScolaire::enCours()?->id;
+26     
+27             return $anneeId
+28                 ? $query->where('annee_scolaire_id', $anneeId)
+29                 : $query->whereRaw('1 = 0');
+30         }
+31     }
+```
+
+### Tool result
+```
+1      <?php
+2      
+3      namespace App\Models;
+4      
+5      use App\Models\Concerns\BelongsToAnneeScolaire;
+6      use Illuminate\Database\Eloquent\Model;
+7      
+8      /**
+9       * Synthèse figée d'une année clôturée (archives_annees ne stocke que created_at).
+10      */
+11     class ArchiveAnnee extends Model
+12     {
+13         use BelongsToAnneeScolaire;
+14     
+15         protected $table = 'archives_annees';
+16     
+17         public const UPDATED_AT = null;
+18     
+19         protected $fillable = [
+20             'annee_scolaire_id', 'total_eleves_inscrits', 'total_recettes',
+21             'total_depenses', 'solde_final', 'total_attendu', 'total_impayes',
+22             'total_salaires', 'nombre_paies',
+23             'eleves_garcons', 'eleves_filles', 'total_bulletins', 'total_notes',
+24             'date_cloture', 'remarques',
+25         ];
+26     
+27         protected function casts(): array
+28         {
+29             return [
+30                 'date_cloture' => 'datetime',
+31                 'total_recettes' => 'decimal:2',
+32                 'total_depenses' => 'decimal:2',
+33                 'solde_final' => 'decimal:2',
+34                 'total_attendu' => 'decimal:2',
+35                 'total_impayes' => 'decimal:2',
+36                 'total_salaires' => 'decimal:2',
+37             ];
+38         }
+39     }
+```
+
+### Tool result
+```
+1      <?php
+2      
+3      namespace App\Models;
+4      
+5      use Illuminate\Database\Eloquent\Builder;
+6      use Illuminate\Database\Eloquent\Factories\HasFactory;
+7      use Illuminate\Database\Eloquent\Model;
+8      
+9      class Eleve extends Model
+10     {
+11         use HasFactory;
+12     
+13         protected $fillable = [
+14             'nom',
+15             'matricule',
+16             'postnom',
+17             'prenom',
+18             'sexe',
+19             'date_naissance',
+20             'lieu_naissance',
+21             'tuteur_id',
+22             'photo',
+23             'statut',
+24         ];
+25     
+26         protected function casts(): array
+27         {
+28             return ['date_naissance' => 'date'];
+29         }
+30     
+31         public function tuteur()
+32         {
+33             return $this->belongsTo(Tuteur::class);
+34         }
+35     
+36         /**
+37          * Comptes parents rattachés à cet élève.
+38          */
+39         public function parents()
+40         {
+41             return $this->belongsToMany(User::class, 'eleve_user')->withTimestamps();
+42         }
+43     
+44         /**
+45          * Élèves visibles dans l'application : tout sauf les élèves désactivés.
+46          * Un élève « inactif » disparaît des listes, des effectifs et des écrans de suivi.
+47          */
+48         public function scopeVisibles(Builder $query): Builder
+49         {
+50             return $query->where('statut', '!=', 'inactif');
+51         }
+52     
+53         /**
+54          * Limite la requête aux élèves inscrits (inscription active) pour l'année en cours.
+55          * Les élèves désactivés sont exclus : l'application ne les affiche plus.
+56          */
+57         public function scopeInscritAnneeEnCours(Builder $query): Builder
+58         {
+59             return $query->visibles()->whereHas('inscriptions', fn (Builder $inscription) => $inscription
+60                 ->anneeEnCours()
+61                 ->where('statut', 'actif'));
+62       
+```
+
+### Tool call — read_file
+```
+{"path":"app/Http/Controllers/ComptablePaiementController.php"}
+```
+
+### Tool call — read_file
+```
+{"path":"app/Support/Comptabilite.php"}
+```
+
+### Tool call — read_file
+```
+{"path":"app/Support/Tresorerie.php"}
+```
+
+### Tool call — glob
+```
+{"pattern":"resources/views/comptable/**"}
+```
+
+### Tool result
+```
+1      <?php
+2      
+3      namespace App\Http\Controllers;
+4      
+5      use App\Models\AnneeScolaire;
+6      use App\Models\Classe;
+7      use App\Models\FraisScolaire;
+8      use App\Models\Inscription;
+9      use App\Models\Paiement;
+10     use App\Models\Periode;
+11     use App\Support\Caisse;
+12     use Illuminate\Http\RedirectResponse;
+13     use Illuminate\Http\Request;
+14     use Illuminate\Validation\Rule;
+15     use Illuminate\View\View;
+16     use RuntimeException;
+17     
+18     /**
+19      * Caisse du comptable : filtrage des élèves (classe + nom) puis encaissement
+20      * d'un paiement, avec affichage du reste à payer de l'élève.
+21      */
+22     class ComptablePaiementController extends Controller
+23     {
+24         private const MODES = ['especes' => 'Espèces', 'banque' => 'Banque', 'mobile_money' => 'Mobile Money'];
+25     
+26         public function index(Request $request): View
+27         {
+28             $annee = AnneeScolaire::enCours();
+29             $classeId = $request->query('classe_id');
+30     
+31             $inscriptions = $annee
+32                 ? Inscription::query()
+33                     ->where('annee_scolaire_id', $annee->id)
+34                     ->whereIn('statut', ['actif', 'en_attente'])
+35                     ->when($classeId, fn ($query) => $query->where('classe_id', $classeId))
+36                     ->with(['eleve', 'classe'])
+37                     ->get()
+38                 : collect();
+39     
+40             $tarifs = $annee
+41                 ? FraisScolaire::query()
+42                     ->where('annee_scolaire_id', $annee->id)
+43                     ->where('statut', 'actif')
+44                     ->when($classeId, fn ($query) => $query->where('classe_id', $classeId))
+45                     ->with(['typeFrais', 'classe'])
+46                     ->get()
+47                 : collect();
+48     
+49             $soldePaye = $annee
+50                 ? Paiement::query()
+51                     ->where('statut', '
+```
+
+### Tool result
+```
+1      <?php
+2      
+3      namespace App\Support;
+4      
+5      use App\Models\CompteComptable;
+6      use App\Models\Depense;
+7      use App\Models\Ecriture;
+8      use App\Models\LigneEcriture;
+9      use App\Models\Paie;
+10     use App\Models\Paiement;
+11     use Illuminate\Support\Collection;
+12     use Illuminate\Support\Facades\DB;
+13     use RuntimeException;
+14     
+15     /**
+16      * Comptabilité SYSCOHADA (OHADA) : saisie d'écritures équilibrées, balance
+17      * générale, et synchronisation automatique avec les opérations du système
+18      * (paiements d'élèves, dépenses, salaires versés).
+19      */
+20     class Comptabilite
+21     {
+22         /**
+23          * Comptes de charge utilisés selon le libellé de la nature de dépense.
+24          */
+25         private const CHARGE_PAR_MOT_CLE = [
+26             'fournitur' => '605', 'crai' => '605', 'papeteri' => '605', 'eau' => '605', 'electric' => '605',
+27             'entretien' => '624', 'repar' => '624', 'maintenance' => '624',
+28             'transport' => '611', 'carburant' => '611',
+29             'loyer' => '622', 'location' => '622',
+30             'assur' => '625',
+31             'publicit' => '627',
+32             'banque' => '631',
+33             'honoraire' => '632', 'intermediaire' => '632',
+34             'impot' => '641', 'taxe' => '641',
+35             'salaire' => '661', 'personnel' => '661', 'prime' => '668',
+36         ];
+37     
+38         /**
+39          * Crée une écriture en partie double. Les lignes vides sont ignorées et
+40          * l'écriture est refusée si débit ≠ crédit.
+41          *
+42          * @param  array<int, array{numero: string, debit?: float|string, credit?: float|string, libelle?: string}>  $lignes
+43          *
+44          * @throws RuntimeException si l'écriture est déséquilibrée ou un compte inconnu.
+45          */
+46         public static function ecriture(
+47             string $date,
+48             string $journal,
+49             string $libelle,
+50    
+```
+
+### Tool result
+```
+1      <?php
+2      
+3      namespace App\Support;
+4      
+5      use App\Models\AnneeScolaire;
+6      use App\Models\Depense;
+7      use App\Models\Paie;
+8      use App\Models\Paiement;
+9      
+10     /**
+11      * État de trésorerie et alertes de charge : les « charges » regroupent les
+12      * dépenses et les salaires versés. Le système signale une trésorerie négative
+13      * ou un niveau de charges trop élevé par rapport aux recettes.
+14      */
+15     class Tresorerie
+16     {
+17         /**
+18          * Seuil (en % des recettes) au-delà duquel la charge est signalée.
+19          */
+20         public const SEUIL_CHARGES = 80.0;
+21     
+22         public static function etat(?AnneeScolaire $annee = null): array
+23         {
+24             $annee ??= AnneeScolaire::enCours();
+25     
+26             $recettes = (float) Paiement::query()
+27                 ->where('statut', 'actif')
+28                 ->when($annee, fn ($query) => $query->whereHas('inscription', fn ($inscription) => $inscription->where('annee_scolaire_id', $annee->id)))
+29                 ->sum('montant_paye');
+30     
+31             $depenses = (float) Depense::query()
+32                 ->where('statut', 'actif')
+33                 ->when($annee, fn ($query) => $query->where('annee_scolaire_id', $annee->id))
+34                 ->sum('montant');
+35     
+36             $requetePaies = Paie::query()->where('statut', 'actif');
+37             if ($annee?->date_debut && $annee?->date_fin) {
+38                 $requetePaies->whereBetween('periode', [$annee->date_debut->format('Y-m'), $annee->date_fin->format('Y-m')]);
+39             }
+40             $salaires = (float) $requetePaies->sum('montant_net');
+41     
+42             $charges = $depenses + $salaires;
+43     
+44             return [
+45                 'recettes' => round($recettes, 2),
+46                 'depenses' => round($depenses, 2),
+47                 'salaires' => round($salaires, 2),
+48                 'charges' => round($charges, 2)
+```
+
+### Tool result
+```
+resources/views/comptable/ (5 lines, newest first):
+  paiements.blade.php
+  dashboard.blade.php
+  depenses.blade.php
+  paies.blade.php
+  recouvrement.blade.php
+```
+
+### Tool call — read_file
+```
+{"path":"app/Support/Caisse.php"}
+```
+
+### Tool call — grep
+```
+{"pattern":"reste|solde|dette|impaye|total_attendu|montant_exige","glob":"**/*.php","output_mode":"files_with_matches"}
+```
+
+### Tool call — glob
+```
+{"pattern":"app/Http/Controllers/*Recouvrement*.php"}
+```
+
+### Tool call — glob
+```
+{"pattern":"resources/views/comptable/recouvrement.blade.php"}
+```
+
+### Tool result
+```
+1      <?php
+2      
+3      namespace App\Support;
+4      
+5      use App\Models\AnneeScolaire;
+6      use App\Models\FraisScolaire;
+7      use App\Models\Inscription;
+8      use App\Models\Paiement;
+9      use RuntimeException;
+10     
+11     /**
+12      * Encaissement d'un paiement : vérifie la cohérence tarif/classe de l'élève,
+13      * génère un numéro de reçu unique puis enregistre le paiement.
+14      */
+15     class Caisse
+16     {
+17         /**
+18          * @param  array{inscription_id: int|string, frais_scolaire_id: int|string, montant_paye: float|string, mode_paiement: string, periode_id?: int|string|null, reference_transaction?: string|null, date_paiement?: string|null}  $data
+19          *
+20          * @throws RuntimeException lorsque le tarif ne correspond pas à la classe de l'élève.
+21          */
+22         public static function enregistrer(AnneeScolaire $annee, array $data): Paiement
+23         {
+24             $inscription = Inscription::findOrFail($data['inscription_id']);
+25             $frais = FraisScolaire::findOrFail($data['frais_scolaire_id']);
+26     
+27             if ((int) $frais->classe_id !== (int) $inscription->classe_id) {
+28                 throw new RuntimeException('tarif_classe');
+29             }
+30     
+31             $prefix = 'REC-'.$annee->libelle.'-';
+32             $numero = Paiement::where('num_recu', 'like', $prefix.'%')->count() + 1;
+33             do {
+34                 $numRecu = $prefix.str_pad((string) $numero++, 4, '0', STR_PAD_LEFT);
+35             } while (Paiement::where('num_recu', $numRecu)->exists());
+36     
+37             $paiement = Paiement::create([
+38                 'num_recu' => $numRecu,
+39                 'inscription_id' => $data['inscription_id'],
+40                 'frais_scolaire_id' => $data['frais_scolaire_id'],
+41                 'periode_id' => $data['periode_id'] ?? null,
+42                 'montant_paye' => $data['montant_paye'],
+43                 'mode_paiement' => $data['mode_paiem
+```
+
+### Tool result
+```
+Error: ripgrep (rg) is not available, so the grep tool cannot run. Use the bash tool with grep/find instead. environment: native Windows. Install ripgrep with 'winget install BurntSushi.ripgrep.MSVC' (or 'choco install ripgrep'). If wmark came from the official Windows binary, the bundled vendor\windows\rg.exe is missing — reinstall wmark.
+```
+
+### Tool result
+```
+app/Http/Controllers/ComptableRecouvrementController.php
+```
+
+### Tool result
+```
+resources/views/comptable/recouvrement.blade.php
+```
+
+### Tool call — read_file
+```
+{"path":"app/Http/Controllers/ComptableRecouvrementController.php"}
+```
+
+### Tool call — read_file
+```
+{"path":"resources/views/comptable/recouvrement.blade.php"}
+```
+
+### Tool result
+```
+1      <?php
+2      
+3      namespace App\Http\Controllers;
+4      
+5      use App\Models\AnneeScolaire;
+6      use App\Models\Classe;
+7      use App\Models\FraisScolaire;
+8      use App\Models\Inscription;
+9      use App\Models\Paiement;
+10     use App\Models\Periode;
+11     use Illuminate\Http\Request;
+12     use Illuminate\View\View;
+13     
+14     /**
+15      * Recouvrement : niveau d'encaissement global, évolution des paiements
+16      * (par période et par mois) et détail filtrable par classe et par période.
+17      */
+18     class ComptableRecouvrementController extends Controller
+19     {
+20         public function index(Request $request): View
+21         {
+22             $annee = AnneeScolaire::enCours();
+23             $classeId = $request->query('classe_id');
+24             $periodeId = $request->query('periode_id');
+25     
+26             $definis = 0.0;
+27             $encaisse = 0.0;
+28             $taux = 0.0;
+29             $parClasse = collect();
+30             $parPeriode = collect();
+31             $parMois = collect();
+32             $paiements = collect();
+33     
+34             if ($annee) {
+35                 $definis = (float) FraisScolaire::query()
+36                     ->anneeEnCours()
+37                     ->when($classeId, fn ($query) => $query->where('classe_id', $classeId))
+38                     ->sum('montant_exige');
+39     
+40                 $requete = fn () => Paiement::query()
+41                     ->where('statut', 'actif')
+42                     ->whereHas('inscription', fn ($query) => $query->where('annee_scolaire_id', $annee->id))
+43                     ->when($classeId, fn ($query) => $query->whereHas('inscription', fn ($inscription) => $inscription->where('classe_id', $classeId)))
+44                     ->when($periodeId, fn ($query) => $query->where('periode_id', $periodeId));
+45     
+46                 $encaisse = (float) $requete()->sum('montant_paye');
+47                 $taux = $definis > 0 ? round($encaisse / $defi
+```
+
+### Tool result
+```
+1      <!DOCTYPE html>
+2      <html lang="fr">
+3      <head>
+4          <meta charset="UTF-8">
+5          <meta name="viewport" content="width=device-width, initial-scale=1">
+6          <title>Recouvrement | {{ $systemSettings->nom_court }}</title>
+7          <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+8          <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+9          <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap5.min.css">
+10         <link rel="stylesheet" href="{{ asset('boostrap/css/css/main.css') }}">
+11         <style>
+12             :root { --bg-canvas:#d0dbe5; --card-bg:#f2f5f8; --card-border:#b0c2d0; }
+13             body { background: var(--bg-canvas); font-family:'Segoe UI', system-ui, sans-serif; color:#1e293b; font-size:.82rem; }
+14             .caisse-card { background: var(--card-bg); border:1px solid var(--card-border); border-radius:8px; padding:14px; box-shadow:0 2px 6px rgba(0,0,0,.06); height:100%; }
+15             .card-title-header { font-size:.95rem; font-weight:700; color:#0f172a; margin-bottom:8px; text-transform:uppercase; }
+16             .widget { background:#fff; border:1px solid #cbd5e1; border-radius:8px; padding:12px; text-align:center; }
+17             .widget .valeur { font-size:1.35rem; font-weight:700; }
+18             .barre { height:16px; background:#e2e8f0; border-radius:8px; overflow:hidden; }
+19             .barre > span { display:block; height:100%; background:#107c41; }
+20              div.dataTables_wrapper .dataTables_filter input { border:1px solid #94a3b8; border-radius:6px; padding:3px 8px; }
+21              table.dataTable thead th { background:#cbd5e1; }
+22         </style>
+23     </head>
+24     <body class="p-3">
+25     @php($money = fn ($v) => number_format((float) $v, 2, ',', ' '))
+26     @php($maxPeriode = $parPeriode->max() ?: 0)
+27     @php($maxMois =
+```
+
+### Tool call — read_file
+```
+{"path":"resources/views/comptable/paiements.blade.php"}
+```
+
+### Tool call — bash
+```
+{"command":"Select-String -Path app\\**\\*.php,resources\\views\\**\\*.blade.php,routes\\*.php -Pattern 'historique|Historique|annees|anneeScolaire|deliberation|Deliberation' -List | Select-Object -ExpandProperty Path | Sort-Object -Unique","description":"Find files mentioning historique/deliberation"}
+```
+
+### Tool result
+```
+1      <!DOCTYPE html>
+2      <html lang="fr">
+3      <head>
+4          <meta charset="UTF-8">
+5          <meta name="viewport" content="width=device-width, initial-scale=1">
+6          <title>Caisse — Encaisser un paiement | {{ $systemSettings->nom_court }}</title>
+7          <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+8          <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+9          <link rel="stylesheet" href="{{ asset('boostrap/css/font-awesome/css/fontawesome.css') }}">
+10         <link rel="stylesheet" href="{{ asset('boostrap/css/font-awesome/css/fa-solid.css') }}">
+11         <link rel="stylesheet" href="{{ asset('assets/css/font-awesome.min.css') }}">
+12         <link rel="stylesheet" href="{{ asset('boostrap/css/css/main.css') }}">
+13         <style>
+14             :root { --bg-canvas:#d0dbe5; --card-bg:#f2f5f8; --card-border:#b0c2d0; --green-btn:#107c41; }
+15             body { background-color: var(--bg-canvas); font-family: 'Segoe UI', system-ui, sans-serif; color:#1e293b; font-size:.82rem; }
+16             .caisse-card { background: var(--card-bg); border:1px solid var(--card-border); border-radius:8px; padding:14px; box-shadow:0 2px 6px rgba(0,0,0,.06); height:100%; }
+17             .card-title-header { font-size:.95rem; font-weight:700; color:#0f172a; margin-bottom:8px; text-transform:uppercase; }
+18             .table-caisse thead th { background:#cbd5e1; }
+19         </style>
+20     </head>
+21     <body class="p-3">
+22     @php($money = fn ($v) => number_format((float) $v, 2, ',', ' '))
+23     <div class="container-fluid">
+24     
+25         <div class="caisse-card mb-3 d-flex flex-wrap align-items-center justify-content-between">
+26             <div>
+27                 <div class="card-title-header mb-0"><i class="bi bi-cash-coin me-2"></i>Caisse — Encaisser un paiement</div>
+28                 <small class="text-muted">{{ $sy
+```
+
+### Tool result
+```
+Output saved to C:\Users\danie\.wmark\tool-outputs\b493c9bc81dc-sub-0\20261008-024932-bash-call_01a11933d15f77eaaffb4760.txt (852 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+[powershell — Windows side]
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Models\AffectationCours.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Models\AnneeScolaire.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Models\ArchiveAnnee.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Models\Deliberation.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Models\DemandeInscription.php
+C:\Users\danie\AppData\Roaming\Compo
+
+... 590 chars truncated ...
+
+ers\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Support\Caisse.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Support\EspaceProfesseur.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Support\Jury.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Support\Raccourcis.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Support\Tresorerie.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\resources\views\admin\annonces.blade.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\resources\views\admin\dashboard.blade.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\resources\views\comptable\dashboard.blade.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\resources\views\paiements\recu.blade.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\resources\views\prefecture\eleve-fiche.blade.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\resources\views\professeur\presences.blade.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\routes\web.php
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN Re
+```
+
+### Tool call — bash
+```
+{"command":"Get-ChildItem app\\Http\\Controllers -Recurse -Filter *.php | Select-Object -ExpandProperty FullName","description":"List controllers"}
+```
+
+### Tool call — read_file
+```
+{"path":"resources/views/prefecture/eleve-fiche.blade.php"}
+```
+
+### Tool result
+```
+Output saved to C:\Users\danie\.wmark\tool-outputs\b493c9bc81dc-sub-0\20261008-024934-bash-call_01a11933d6e476e988d7b82a.txt (1,713 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+[powershell — Windows side]
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Http\Controllers\AdminDashboardController.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Http\Controllers\AdminMessagerieController.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Http\Controllers\AdminRegistrationRequestController.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Http\Controllers\AffectationCoursController.php
+C:\Users\danie\AppData\Roaming\
+
+... 3,901 chars truncated ...
+
+troller.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Http\Controllers\ProfesseursController.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Http\Controllers\RecuController.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Http\Controllers\RegistrationRequestController.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Http\Controllers\SalleController.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Http\Controllers\SectionOptionController.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Http\Controllers\StatistiquesController.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Http\Controllers\TitulaireDashboardController.php
+C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Http\Controllers\UserProfileController.php
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed<
+```
+
+### Tool result
+```
+1      @extends('prefecture.layout')
+2      
+3      @section('titre', "Dossier de l'élève")
+4      
+5      @push('styles')
+6          <style>
+7              /* Couverture du dossier */
+8              .dossier-cover { border: 0; border-radius: 14px; overflow: hidden; box-shadow: 0 6px 24px rgba(0,0,0,.08); }
+9              .dossier-cover__band { height: 92px; background: linear-gradient(120deg, #6a1b9a 0%, #0866ff 100%); }
+10             .dossier-cover__body { padding: 0 22px 20px; margin-top: -46px; }
+11             .dossier-avatar { width: 104px; height: 104px; border-radius: 50%; background: #fff; border: 4px solid #fff;
+12                 box-shadow: 0 4px 14px rgba(0,0,0,.18); display: flex; align-items: center; justify-content: center;
+13                 font-size: 2.3rem; font-weight: 700; color: #6a1b9a; overflow: hidden; }
+14             .dossier-avatar img { width: 100%; height: 100%; object-fit: cover; }
+15             .dossier-nom { font-size: 1.5rem; font-weight: 700; line-height: 1.2; margin: 0; }
+16             .dossier-meta { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 10px; font-size: .86rem; color: #6c757d; }
+17             .dossier-meta i { color: #6a1b9a; }
+18     
+19             /* Bloc d'informations : libellé / valeur, lisible et sans tableau */
+20             .info-bloc { display: flex; justify-content: space-between; align-items: baseline; gap: 14px;
+21                 padding: 8px 0; border-bottom: 1px dashed #e9ecef; font-size: .9rem; }
+22             .info-bloc:last-child { border-bottom: 0; }
+23             .info-bloc__cle { color: #6c757d; }
+24             .info-bloc__val { font-weight: 600; text-align: right; }
+25             .section-titre { font-size: .95rem; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+26             .contact-carte { border: 1px solid #e9ecef; border-radius: 10px; padding: 10px 12px; margin-bottom: 8px; }
+27     
+28             /* Version papier du dossier */
+29             @media 
+```
+
+### Tool call — read_file
+```
+{"path":"resources/views/prefecture/eleve-fiche.blade.php","offset":217}
+```
+
+### Tool call — read_file
+```
+{"path":"C:\\Users\\danie\\.wmark\\tool-outputs\\b493c9bc81dc-sub-0\\20261008-024934-bash-call_01a11933d6e476e988d7b82a.txt"}
+```
+
+### Tool result
+```
+217                        <form method="POST" action="{{ route('prefecture.eleves.statut', $eleve) }}">
+218                            @csrf
+219                            @method('PATCH')
+220                            <label class="mb-1 fw-bold" for="statut-disciplinaire">Nouveau statut</label>
+221                            <select name="statut" id="statut-disciplinaire" class="form-control mb-2">
+222                                @foreach (['actif' => 'Actif — suit normalement les cours', 'suspendu' => 'Suspendu — exclu temporairement', 'exclu' => 'Exclu — radiation de l\'établissement'] as $valeur => $libelle)
+223                                    <option value="{{ $valeur }}" @selected($eleve->statut === $valeur)>{{ $libelle }}</option>
+224                                @endforeach
+225                            </select>
+226                            <button class="btn btn-primary btn-round btn-block" type="submit">
+227                                <i class="fas fa-check"></i> Appliquer la décision
+228                            </button>
+229                        </form>
+230                    </div>
+231                </div>
+232            </div>
+233        </div>
+234    
+235        <div class="row">
+236            {{-- ==================== TUTEUR & CONTACTS ==================== --}}
+237            <div class="col-lg-6">
+238                <div class="card h-100">
+239                    <div class="card-header">
+240                        <div class="card-title section-titre"><i class="fas fa-user-friends text-info"></i> Tuteur &amp; contacts</div>
+241                    </div>
+242                    <div class="card-body">
+243                        @if ($eleve->tuteur)
+244                            @if ($eleve->tuteur->nom_pere)
+245                                <div class="contact-carte">
+246                                    <div class="d-flex justify-content-between">
+247                                        <strong>Père — {{ $eleve->tuteu
+```
+
+### Tool result
+```
+1      [powershell — Windows side]
+2      C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Http\Controllers\AdminDashboardController.php
+3      C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Http\Controllers\AdminMessagerieController.php
+4      C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Http\Controllers\AdminRegistrationRequestController.php
+5      C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Http\Controllers\AffectationCoursController.php
+6      C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Http\Controllers\AnneeScolaireController.php
+7      C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Http\Controllers\AnnonceController.php
+8      C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Http\Controllers\AppelController.php
+9      C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Http\Controllers\ArchiveAnneeController.php
+10     C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Http\Controllers\AuthController.php
+11     C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Http\Controllers\BulletinController.php
+12     C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Http\Controllers\ClasseController.php
+13     C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Http\Controllers\ComptabiliteController.php
+14     C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Http\Controllers\ComptableDashboardController.php
+15     C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Http\Controllers\ComptableDepenseController.php
+16     C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Http\Controllers\ComptablePaiementController.php
+17     C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Http\Controllers\ComptableRecouvrementController.php
+18     C:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole\app\Http\Controllers\Controller.php
+19     C:\Users\danie\AppData\Roaming\Composer\vendor\bin
+```
+
+### Tool call — bash
+```
+{"command":"Select-String -Path app\\Http\\Controllers\\*.php,app\\Support\\*.php -Pattern 'eleve-fiche|inscriptions|->inscriptions|with\\(\\[.*inscription|Deliberation|deliberations|bulletins' | ForEach-Object { \"$($_.Filename):$($_.LineNumber): $($_.Line.Trim())\" }","description":"Find inscription loading in controllers"}
+```
+
+### Tool call — read_file
+```
+{"path":"app/Http/Controllers/PrefectureDashboardController.php"}
+```
+
+### Tool call — read_file
+```
+{"path":"app/Http/Controllers/PortailParentController.php"}
+```
+
+### Tool result
+```
+Output saved to C:\Users\danie\.wmark\tool-outputs\b493c9bc81dc-sub-0\20261008-024937-bash-call_01a11933e2ec745aa74886d6.txt (4,301 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large).
+```
+
+### Tool result
+```
+1      <?php
+2      
+3      namespace App\Http\Controllers;
+4      
+5      use App\Models\AnneeScolaire;
+6      use App\Models\Bulletin;
+7      use App\Models\Classe;
+8      use App\Models\Cycle;
+9      use App\Models\DocumentProfesseur;
+10     use App\Models\Eleve;
+11     use App\Models\EmploiDuTemps;
+12     use App\Models\Evaluation;
+13     use App\Models\Option;
+14     use App\Models\Periode;
+15     use App\Models\Presence;
+16     use App\Models\Professeurs;
+17     use App\Models\Section;
+18     use App\Models\Tuteur;
+19     use App\Models\User;
+20     use Illuminate\Http\RedirectResponse;
+21     use Illuminate\Http\Request;
+22     use Illuminate\Support\Carbon;
+23     use Illuminate\View\View;
+24     
+25     class PrefectureDashboardController extends Controller
+26     {
+27         /**
+28          * Espace préfecture : vue de supervision de l'établissement pour l'année en cours.
+29          *
+30          * Consultation seule — aucun écran d'administration n'est exposé ici.
+31          */
+32         public function index(Request $request): View
+33         {
+34             return view('prefecture.dashboard', [
+35                 'user' => $request->user(),
+36                 'schoolYear' => AnneeScolaire::enCours(),
+37                 'effectifTotal' => Eleve::inscritAnneeEnCours()->where('statut', 'actif')->count(),
+38                 'classesActives' => Classe::where('statut', 'actif')->count(),
+39                 'professeursActifs' => Professeurs::where('statut', 'actif')->count(),
+40                 'sectionsCount' => Section::count(),
+41                 'optionsCount' => Option::count(),
+42                 'effectifsParCycle' => Cycle::query()
+43                     ->where('statut', 'actif')
+44                     ->withCount(['inscriptions as effectif' => fn ($query) => $query
+45                         ->anneeEnCours()
+46                         ->where('inscriptions.statut', 'actif')])
+47                     ->orderBy('nom')
+48                     ->get(
+```
+
+### Tool result
+```
+1      <?php
+2      
+3      namespace App\Http\Controllers;
+4      
+5      use App\Models\Annonce;
+6      use App\Models\Evaluation;
+7      use App\Models\Note;
+8      use App\Models\ParametreSysteme;
+9      use App\Support\Messagerie;
+10     use Illuminate\Http\Request;
+11     use Illuminate\View\View;
+12     
+13     /**
+14      * Espace Parent : communication dédiée aux parents, ouverte seulement quand
+15      * l'administrateur active le module « Portail Parents ».
+16      *
+17      * Chaque rubrique possède SA propre page (actualités, notifications, messages,
+18      * enfants, profil) : une requête ne charge que les données de la rubrique
+19      * affichée, ce qui évite l'embouteillage d'une page unique tout-en-un.
+20      */
+21     class PortailParentController extends Controller
+22     {
+23         /** Communique les annonces de l'établissement. */
+24         public function index(Request $request): View
+25         {
+26             return view('parent.actualites', $this->donneesDeBase() + [
+27                 'annonces' => Annonce::query()
+28                     ->where(fn ($query) => $query->where('cible', 'tous')->orWhere('cible', 'parent'))
+29                     ->latest()
+30                     ->limit(10)
+31                     ->get(),
+32             ]);
+33         }
+34     
+35         /** Liste les notifications du parent. */
+36         public function notifications(Request $request): View
+37         {
+38             $base = $this->donneesDeBase();
+39     
+40             return view('parent.notifications', $base + [
+41                 'notifications' => $base['user']->notifications()->latest()->limit(50)->get(),
+42             ]);
+43         }
+44     
+45         /** Messagerie du parent (un seul interlocuteur : la préfecture). */
+46         public function messages(Request $request): View
+47         {
+48             $base = $this->donneesDeBase();
+49             $utilisateur = $base['user'];
+50     
+51             $conversations = Messagerie::convers
+```
+
+### Tool call — read_file
+```
+{"path":"C:\\Users\\danie\\.wmark\\tool-outputs\\b493c9bc81dc-sub-0\\20261008-024937-bash-call_01a11933e2ec745aa74886d6.txt"}
+```
+
+### Tool call — bash
+```
+{"command":"Get-ChildItem database\\migrations -Filter *.php | Where-Object { $_.Name -match 'paiement|inscription|frais|bulletin|deliberation|archive|annee|periode' } | Select-Object -ExpandProperty Name","description":"List relevant migrations"}
+```
+
+### Tool result
+```
+1      [powershell — Windows side]
+2      AdminDashboardController.php:16: 'eleves' => Eleve::with(['inscriptions.classe.cycle'])
+3      AdminDashboardController.php:27: ->withCount(['inscriptions as eleves_count' => fn ($query) => $query->anneeEnCours()->where('statut', 'actif')])
+4      AdminDashboardController.php:33: ->withCount(['inscriptions as total' => fn ($query) => $query
+5      AdminDashboardController.php:35: ->where('inscriptions.statut', 'actif')])
+6      AdminRegistrationRequestController.php:100: DB::table('inscriptions')->insert([
+7      AnneeScolaireController.php:69: return back()->with('error', "Suppression impossible : l'année « {$annee->libelle} » est déjà rattachée à des inscriptions, périodes ou données financières.");
+8      ArchiveAnneeController.php:54: ->withCount(['inscriptions as eleves_count' => fn ($query) => $query
+9      ArchiveAnneeController.php:63: ->whereHas('inscriptions', fn ($query) => $query->where('annee_scolaire_id', $anneeId)->where('statut', 'actif'))
+10     ArchiveAnneeController.php:68: ->whereHas('inscriptions', fn ($query) => $query->where('annee_scolaire_id', $anneeId)->where('statut', 'actif'))
+11     ArchiveAnneeController.php:106: ->with(['inscription.eleve', 'inscription.classe', 'fraisScolaire.typeFrais'])
+12     ArchiveAnneeController.php:154: // effectifs par sexe et résultats (bulletins / notes).
+13     ArchiveAnneeController.php:158: ->whereHas('inscriptions', fn ($query) => $query->where('annee_scolaire_id', $anneeId)->where('statut', 'actif'))
+14     ArchiveAnneeController.php:161: ->whereHas('inscriptions', fn ($query) => $query->where('annee_scolaire_id', $anneeId)->where('statut', 'actif'))
+15     ArchiveAnneeController.php:163: $bulletins = Bulletin::query()
+16     ArchiveAnneeController.php:170: DB::transaction(function () use ($anneeId, $data, $recettes, $depenses, $salaires, $nombrePaies, $totalEleves, $attendu, $garcons, $filles, $bulletins, $notes) {
+17     ArchiveAnneeController.php:183: 'total_
+```
+
+### Tool result
+```
+[powershell — Windows side]
+2026_10_05_000000_add_periode_to_paiements_table.php
+2026_10_06_000000_add_est_inscription_to_types_frais_table.php
+2026_10_07_000000_widen_statut_on_inscriptions_table.php
+2026_10_08_000000_add_details_to_archives_annees_table.php
+2026_10_10_000000_add_salaires_to_archives_annees_table.php
+2026_10_20_000000_create_deliberations_module.php
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>
+```
+
+### Tool call — read_file
+```
+{"path":"app/Http/Controllers/EleveController.php","offset":1,"limit":170}
+```
+
+### Tool call — read_file
+```
+{"path":"app/Http/Controllers/PaiementController.php"}
+```
+
+### Tool result
+```
+1      <?php
+2      
+3      namespace App\Http\Controllers;
+4      
+5      use App\Models\DocumentEleve;
+6      use App\Models\Eleve;
+7      use Illuminate\Http\RedirectResponse;
+8      use Illuminate\Http\Request;
+9      use Illuminate\Support\Facades\DB;
+10     use Illuminate\View\View;
+11     
+12     class EleveController extends Controller
+13     {
+14         /**
+15          * Active ou désactive un élève : « inactif » le fait disparaître des
+16          * listes, des effectifs et des écrans de suivi (sa fiche reste
+17          * consultable par son URL directe).
+18          */
+19         public function toggleStatut(Request $request, Eleve $eleve): RedirectResponse
+20         {
+21             $eleve->update(['statut' => $eleve->statut === 'actif' ? 'inactif' : 'actif']);
+22     
+23             $nom = trim($eleve->nom.' '.$eleve->prenom);
+24     
+25             return back()->with('success', $eleve->statut === 'actif'
+26                 ? $nom.' est activé : il est de nouveau visible dans l\'application.'
+27                 : $nom.' est désactivé : il n\'apparaît plus dans les listes ni les effectifs.');
+28         }
+29     
+30         public function index(Request $request): View
+31         {
+32             $search = trim((string) $request->query('q', ''));
+33             $statut = (string) $request->query('statut', '');
+34     
+35             $eleves = Eleve::query()
+36                 ->with(['inscriptions' => fn ($query) => $query
+37                     ->anneeEnCours()
+38                     ->whereIn('statut', ['actif', 'en_attente'])
+39                     ->with('classe')])
+40                 ->when($search !== '', fn ($query) => $query->where(function ($query) use ($search) {
+41                     $query->where('nom', 'like', "%{$search}%")
+42                         ->orWhere('postnom', 'like', "%{$search}%")
+43                         ->orWhere('prenom', 'like', "%{$search}%")
+44                         ->orWhere('matricule', 'like', "%{$search}%");
+
+```
+
+### Tool result
+```
+1      <?php
+2      
+3      namespace App\Http\Controllers;
+4      
+5      use App\Models\AnneeScolaire;
+6      use App\Models\Classe;
+7      use App\Models\FraisScolaire;
+8      use App\Models\Inscription;
+9      use App\Models\Paiement;
+10     use App\Models\Periode;
+11     use App\Support\Caisse;
+12     use Illuminate\Http\RedirectResponse;
+13     use Illuminate\Http\Request;
+14     use Illuminate\Validation\Rule;
+15     use Illuminate\View\View;
+16     
+17     class PaiementController extends Controller
+18     {
+19         private const MODES = ['especes' => 'Espèces', 'banque' => 'Banque', 'mobile_money' => 'Mobile Money'];
+20     
+21         public function index(Request $request): View
+22         {
+23             $annee = AnneeScolaire::enCours();
+24             $classeId = $request->query('classe_id');
+25             $periodeId = $request->query('periode_id');
+26             $search = trim((string) $request->query('q', ''));
+27     
+28             $paiements = Paiement::query()
+29                 ->with(['inscription.eleve', 'inscription.classe', 'fraisScolaire.typeFrais', 'fraisScolaire.classe'])
+30                 ->whereHas('inscription', fn ($query) => $query->when($annee, fn ($inscription) => $inscription->where('annee_scolaire_id', $annee->id)))
+31                 ->when($classeId, fn ($query) => $query->whereHas('inscription', fn ($inscription) => $inscription->where('classe_id', $classeId)))
+32                 ->when($periodeId, fn ($query) => $query->where('periode_id', $periodeId))
+33                 ->when($search !== '', fn ($query) => $query->where(function ($query) use ($search) {
+34                     $query->where('num_recu', 'like', "%{$search}%")
+35                         ->orWhereHas('inscription.eleve', fn ($eleve) => $eleve
+36                             ->where('nom', 'like', "%{$search}%")
+37                             ->orWhere('postnom', 'like', "%{$search}%")
+38                             ->orWhere('prenom', 'like', "%{$search}%
+```
+
+### Tool call — read_file
+```
+{"path":"app/Models/Periode.php"}
+```
+
+### Tool call — read_file
+```
+{"path":"app/Models/TypeFrais.php"}
+```
+
+### Tool call — read_file
+```
+{"path":"database/migrations/2026_10_05_000000_add_periode_to_paiements_table.php"}
+```
+
+### Tool result
+```
+1      <?php
+2      
+3      namespace App\Models;
+4      
+5      use App\Models\Concerns\BelongsToAnneeScolaire;
+6      use Illuminate\Database\Eloquent\Model;
+7      
+8      class Periode extends Model
+9      {
+10         use BelongsToAnneeScolaire;
+11     
+12         protected $table = 'periodes';
+13     
+14         protected $fillable = ['annee_scolaire_id', 'nom', 'statut'];
+15     
+16         public function evaluations()
+17         {
+18             return $this->hasMany(Evaluation::class);
+19         }
+20     
+21         public function bulletins()
+22         {
+23             return $this->hasMany(Bulletin::class);
+24         }
+25     }
+```
+
+### Tool result
+```
+1      <?php
+2      
+3      namespace App\Models;
+4      
+5      use Illuminate\Database\Eloquent\Model;
+6      
+7      class TypeFrais extends Model
+8      {
+9          protected $table = 'types_frais';
+10     
+11         protected $fillable = ['nom', 'description', 'est_inscription', 'statut'];
+12     
+13         protected function casts(): array
+14         {
+15             return ['est_inscription' => 'boolean'];
+16         }
+17     
+18         /**
+19          * Ce type de frais déclenche-t-il la validation de l'inscription ?
+20          * (explicitement coché, ou nommé « frais d'inscription »).
+21          */
+22         public function estFraisInscription(): bool
+23         {
+24             return $this->est_inscription
+25                 || str_contains(mb_strtolower((string) $this->nom), 'inscription');
+26         }
+27     
+28         public function fraisScolaires()
+29         {
+30             return $this->hasMany(FraisScolaire::class, 'type_frais_id');
+31         }
+32     }
+```
+
+### Tool result
+```
+1      <?php
+2      
+3      use Illuminate\Database\Migrations\Migration;
+4      use Illuminate\Database\Schema\Blueprint;
+5      use Illuminate\Support\Facades\Schema;
+6      
+7      return new class extends Migration
+8      {
+9          public function up(): void
+10         {
+11             if (! Schema::hasColumn('paiements', 'periode_id')) {
+12                 Schema::table('paiements', function (Blueprint $table) {
+13                     $table->foreignId('periode_id')->nullable()->after('frais_scolaire_id')->constrained('periodes')->nullOnDelete();
+14                 });
+15             }
+16         }
+17     
+18         public function down(): void
+19         {
+20             if (Schema::hasColumn('paiements', 'periode_id')) {
+21                 Schema::table('paiements', function (Blueprint $table) {
+22                     $table->dropConstrainedForeignId('periode_id');
+23                 });
+24             }
+25         }
+26     };
+```
+
+### Tool call — bash
+```
+{"command":"Select-String -Path app\\Http\\Controllers\\AnneeScolaireController.php -Pattern 'orderBy|AnneeScolaire::|libelle|function index' | ForEach-Object { \"$($_.LineNumber): $($_.Line.Trim())\" }","description":"Check AnneeScolaire ordering"}
+```
+
+### Tool result
+```
+[powershell — Windows side]
+17: public function index(): View
+20: 'annees' => AnneeScolaire::orderByDesc('date_debut')
+21: ->orderByDesc('libelle')
+36: AnneeScolaire::create($data);
+40: ->with('success', "L'année scolaire « {$data['libelle']} » a été créée avec succès.");
+60: ->with('success', "L'année scolaire « {$annee->libelle} » a été modifiée avec succès.");
+69: return back()->with('error', "Suppression impossible : l'année « {$annee->libelle} » est déjà rattachée à des inscriptions, périodes ou données financières.");
+72: $libelle = $annee->libelle;
+77: ->with('success', "L'année scolaire « {$libelle} » a été supprimée.");
+91: AnneeScolaire::query()->update(['is_encours' => false]);
+94: AnneeScolaire::whereKey($annee->id)->update(['is_encours' => $activation]);
+100: ? "L'année « {$annee->libelle} » est désormais l'année en cours."
+101: : "L'année « {$annee->libelle} » n'est plus l'année en cours."
+111: 'libelle' => ['required', 'string', 'max:20', Rule::unique('annees_scolaires', 'libelle')->ignore($annee?->id)],
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Préparation des modules à la première utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>
+```
+
+## Assistant
+Aucun fichier modifié. Rapport factuel (chemins réels, extraits vérifiés) :
+
+## 1. Modèles / tables
+
+**`app/Models/Inscription.php`** — table `inscriptions`, trait `BelongsToAnneeScolaire`
+```php
+const STATUT_EN_ATTENTE = 'en_attente';
+const STATUT_ACTIF = 'actif';
+protected $fillable = ['eleve_id','classe_id','annee_scolaire_id','date_inscription','statut'];
+protected function casts(): array { return ['date_inscription' => 'date']; }
+public function eleve(){ return $this->belongsTo(Eleve::class); }
+public function classe(){ return $this->belongsTo(Classe::class); }
+public function bulletins(){ return $this->hasMany(Bulletin::class); }
+public function paiements(){ return $this->hasMany(Paiement::class); }
+// + anneeScolaire() via le trait, valider(), estEnAttente()
+```
+
+**`app/Models/Paiement.php`** — table `paiements`
+```php
+protected $fillable = ['num_recu','inscription_id','frais_scolaire_id','periode_id','montant_paye',
+    'date_paiement','mode_paiement','reference_transaction','statut'];
+protected function casts(): array {
+    return ['montant_paye'=>'decimal:2','date_paiement'=>'datetime']; }
+public function inscription(){ return $this->belongsTo(Inscription::class); }
+public function fraisScolaire(){ return $this->belongsTo(FraisScolaire::class); }
+public function periode(){ return $this->belongsTo(Periode::class); }
+```
+`statut` : seul `'actif'` apparaît filtré partout (créé dans `Caisse::enregistrer`). `mode_paiement` ∈ `especes|banque|mobile_money`. `periode_id` nullable (migration `2026_10_05_add_periode_to_paiements_table`).
+
+**`app/Models/FraisScolaire.php`** — table `frais_scolaires`, trait `BelongsToAnneeScolaire`
+```php
+protected $fillable = ['type_frais_id','classe_id','annee_scolaire_id','montant_exige','date_echeance','statut'];
+// casts: montant_exige decimal:2, date_echeance date
+public function typeFrais(){ return $this->belongsTo(TypeFrais::class,'type_frais_id'); }
+public function classe(){ return $this->belongsTo(Classe::class); }
+public function paiements(){ return $this->hasMany(Paiement::class); }
+```
+`TypeFrais` (`app/Models/TypeFrais.php`) : `estFraisInscription()` = bool `est_inscription` ou nom contenant « inscription ».
+
+**`app/Models/Bulletin.php`** — champs de synthèse
+```php
+protected $fillable = ['inscription_id','periode_id','total_points','max_possible','pourcentage',
+    'place_classe','mention','application','conduite','chemin_pdf','statut'];
+// casts: total_points/max_possible/pourcentage decimal:2, approuve_at datetime
+public function inscription(){ return $this->belongsTo(Inscription::class); }
+public function periode(){ return $this->belongsTo(Periode::class); }
+```
+
+**`app/Models/Deliberation.php`** — décision de fin d'année
+```php
+const DECISIONS = ['admis'=>'Admis (passe)','ajourne'=>'Ajourné (repêchage)','redouble'=>'Redoublant'];
+protected $fillable = ['inscription_id','annee_scolaire_id','pourcentage_general','cours_echoues',
+    'decision','critere','manuelle','classe_suivante_id','decide_par','decide_le','commentaire'];
+public function libelleDecision(): string { return self::DECISIONS[$this->decision] ?? $this->decision; }
+```
+
+**`app/Models/AnneeScolaire.php`** — table `annees_scolaires`, fillable `['libelle','date_debut','date_fin','is_encours','statut']`. **Pas de tri par défaut** :
+```php
+public static function enCours(): ?self { return static::where('is_encours', true)->first(); }
+```
+Tri utilisé par l'app (`AnneeScolaireController::index`) : `AnneeScolaire::orderByDesc('date_debut')->orderByDesc('libelle')`.
+
+## 2. Formule canonique du solde / dette
+
+Aucune méthode « dette » centralisée. La formule répétée dans toute l'app est **attendu − payé, plancher 0** :
+
+- **`app/Http/Controllers/ComptableRecouvrementController.php`** (globale / par classe) :
+```php
+$definis = (float) FraisScolaire::query()->anneeEnCours()->…->sum('montant_exige');
+$encaisse = (float) $requete()->sum('montant_paye');   // Paiement statut 'actif'
+'reste' => max($definis - $encaisse, 0),
+```
+`recouvrementParClasse()` fait de même via `SUM(montant_exige)` groupé par `classe_id` et `SUM(paiements.montant_paye)` joint sur `inscriptions.annee_scolaire_id`.
+
+- **`app/Http/Controllers/ComptablePaiementController.php`** (par couple inscription+frais) :
+```php
+$soldePaye = Paiement::query()->where('statut','actif')
+    ->whereHas('inscription', fn ($q) => $q->where('annee_scolaire_id', $annee->id))
+    ->get(['inscription_id','frais_scolaire_id','montant_paye'])
+    ->groupBy(fn ($p) => $p->inscription_id.'-'.$p->frais_scolaire_id)
+    ->map(fn ($g) => round((float) $g->sum('montant_paye'), 2));
+```
+- **`app/Http/Controllers/PaiementController.php`** : exactement le même bloc `$soldePaye` (lignes 51‑58).
+
+La consommation finale (reste affiché) est en JS dans `resources/views/comptable/paiements.blade.php` :
+```js
+var exige = Number(montantsFrais[frais] || 0);
+var paye  = Number(payeeParPaire[inscription + '-' + frais] || 0);
+var reste = Math.max(exige - paye, 0);
+// 'Montant exigé : … · Déjà payé : … · Reste à payer : …'
+```
+`app/Support/Caisse.php` ne calcule pas de solde : il encaisse (`Caisse::enregistrer`) en vérifiant `frais->classe_id === inscription->classe_id`, génère `REC-{libelle}-0001`, `statut='actif'`.
+
+## 3. Vues affichant paiements / soldes
+
+| Vue | Contenu |
+|---|---|
+| `resources/views/comptable/paiements.blade.php` | Caisse : formulaire d'encaissement + `soldeInfo` (Montant exigé / Déjà payé / Reste à payer). « Derniers paiements » : Reçu, Élève, Montant. |
+| `resources/views/comptable/recouvrement.blade.php` | Widgets **Frais définis / Encaissé / Reste à percevoir / Taux** ; tableau par classe (`Défini`, `Encaissé`, `Reste`, `Avancement`) ; détail paiements : `Reçu, Date, Élève, Classe, Tarif, Période, Montant`. |
+| `resources/views/paiements/recu.blade.php` | Reçu (voir `RecuController`). |
+| `resources/views/admin/paiements/index.blade.php` | Même logique côté admin (utilise `$soldePaye`/`$montantsFrais`). |
+
+Libellés de statut utilisés : `Inscription::statut` = `'actif'` / `'en_attente'` ; `Paiement::statut` filtré `'actif'` ; période via `$paiement->periode->nom` (sinon « — »/« Non attribuée »).
+
+## 4. Élève ↔ inscriptions des années passées + archives
+
+- **`app/Models/Eleve.php`** : relation **non filtrée** par année —
+```php
+public function inscriptions(){ return $this->hasMany(Inscription::class); }
+```
+Chaque `Inscription` porte `annee_scolaire_id` → `inscription->anneeScolaire->libelle`.
+- **Preuve de l'usage « toutes années »** : `PrefectureDashboardController::eleveFiche()` fait `$eleve->load(['…','inscriptions.classe'])` **sans `anneeEnCours()`**, et `resources/views/prefecture/eleve-fiche.blade.php` boucle `@foreach ($eleve->inscriptions as $inscription)` → colonnes *Année scolaire / Classe / Cycle / Date d'inscription / Statut*. C'est le dossier élève historique complet.
+- À l'inverse, les listes/e effectifs limitent à l'année : `Eleve::scopeInscritAnneeEnCours()` et `->inscriptions()->anneeEnCours()` (scope du trait `BelongsToAnneeScolaire`, qui force `where('annee_scolaire_id', enCours()->id)` ou `whereRaw('1 = 0')`).
+- **Pas de table archive par élève.** `archives_annees` (`app/Models/ArchiveAnnee.php`) ne stocke qu'une **synthèse financière globale par année** (`total_eleves_inscrits, total_recettes, total_attendus, total_impayes, solde_final…`) — aucun détail par élève. L'historique individuel repose entièrement sur les lignes `inscriptions` (et leurs `bulletins`/`paiements`/`deliberations`), qui restent en base pour les années clôturées (consultables dès qu'on ne filtre pas par `anneeEnCours`).
+
+Point d'attention : `DeliberationController` génère l'inscription de l'année suivante ; le parcours pluriannuel d'un élève se reconstruit en enchaînant ses `inscriptions` par `annee_scolaire_id` + `Deliberation` (décision/classe suivante).

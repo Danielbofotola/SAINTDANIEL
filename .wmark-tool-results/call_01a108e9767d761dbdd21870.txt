@@ -1,0 +1,20 @@
+Applied patch: 1 file changed (1 updated)
+Updated app/Http/Controllers/ProfesseurController.php (1 hunk applied)
+Landed at lines 108-182 (the file's new text; no re-read needed):
+108    
+109        public function edit(Professeurs $professeur): View
+110        {
+111            return view('admin.professeurs.edit', compact('professeur'));
+112        }
+113    
+114        public function update(Request $request, Professeurs $professeur): RedirectResponse
+115        {
+      … 59 lines omitted …
+175    
+176        public function destroyDocument(DocumentProfesseur $document): RedirectResponse
+177        {
+178            Storage::disk('public')->delete($document->chemin_fichier);
+179            $document->delete();
+180    
+181            return back()->with('success', 'Le document a été supprimé du dossier.');
+182        }
