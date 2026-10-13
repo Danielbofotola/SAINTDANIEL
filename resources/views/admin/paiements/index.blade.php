@@ -44,7 +44,7 @@
                     <div class="row">
                         <div class="col-md-4 form-group"><label class="form-label">Rechercher l'élève</label><input class="form-control" type="text" id="eleveSearch" placeholder="Tapez un nom pour filtrer la liste…" autocomplete="off"></div>
                         <div class="col-md-4 form-group"><label class="form-label">Élève inscrit *</label><select class="form-control" id="inscriptionSelect" name="inscription_id" required><option value="">Choisir un élève</option>@foreach ($inscriptions as $inscription)<option value="{{ $inscription->id }}" @selected(old('inscription_id') == $inscription->id)>{{ $inscription->eleve?->nom }} {{ $inscription->eleve?->postnom }} {{ $inscription->eleve?->prenom }} — {{ $inscription->classe?->nom }}</option>@endforeach</select></div>
-                        <div class="col-md-4 form-group"><label class="form-label">Tarif *</label><select class="form-control" id="fraisSelect" name="frais_scolaire_id" required><option value="">Choisir un tarif</option>@foreach ($tarifs as $tarif)<option value="{{ $tarif->id }}" @selected(old('frais_scolaire_id') == $tarif->id)>{{ $tarif->typeFrais?->nom }} — {{ $tarif->classe?->nom }} ({{ $money((float) $tarif->montant_exige, $tarif->devise) }})</option>@endforeach</select></div>
+                        <div class="col-md-4 form-group"><label class="form-label" id="tarifLabel">Tarif *</label><select class="form-control" id="fraisSelect" name="frais_scolaire_id" required><option value="">Choisir un tarif</option>@foreach ($tarifs as $tarif)<option value="{{ $tarif->id }}" @selected(old('frais_scolaire_id') == $tarif->id)>{{ $tarif->typeFrais?->nom }} — {{ $tarif->classe?->nom }} ({{ $money((float) $tarif->montant_exige, $tarif->devise) }})</option>@endforeach</select></div>
                         <div class="col-md-12"><div class="alert alert-info d-none" id="soldeInfo"></div></div>
                         <div class="col-md-2 form-group"><label class="form-label">Période · auto</label>
                             @if ($periodeCourante)
@@ -131,6 +131,9 @@
             var inscriptionSelect = document.getElementById('inscriptionSelect');
             var fraisSelect = document.getElementById('fraisSelect');
             var soldeInfo = document.getElementById('soldeInfo');
+            var classesParInscription = @json($classesParInscription ?? []);
+            var tarifsDisponibles = @json($tarifsDisponibles ?? []);
+            var nomsClasses = @json($nomsClasses ?? []);
 
             function filtrerEleves() {
                 if (!recherche || !inscriptionSelect) {
@@ -170,15 +173,60 @@
                  if (montantInput) { montantInput.value = reste > 0 ? reste.toFixed(2) : ''; }
             }
 
+            // Reconstruit la liste des tarifs : ne garde QUE ceux de la classe de
+            // l'élève sélectionné (les tarifs des autres classes sont retirés).
+            function rendreTarifs() {
+                if (!fraisSelect) {
+                    return;
+                }
+                var inscription = inscriptionSelect ? inscriptionSelect.value : '';
+                var classe = inscription ? String(classesParInscription[inscription] || '') : '';
+                var courant = fraisSelect.value;
+                var disponibles = tarifsDisponibles.filter(function (tarif) {
+                    return classe === '' || String(tarif.classe) === classe;
+                });
+
+                var label = document.getElementById('tarifLabel');
+                if (label) {
+                    label.textContent = (classe !== '' && nomsClasses[classe])
+                        ? 'Tarif * (classe ' + nomsClasses[classe] + ')'
+                        : "Tarif de la classe de l'élève *";
+                }
+
+                fraisSelect.innerHTML = '';
+                var vide = document.createElement('option');
+                vide.value = '';
+                vide.textContent = (classe !== '' && nomsClasses[classe])
+                    ? 'Choisir un tarif de ' + nomsClasses[classe]
+                    : 'Choisir un tarif';
+                fraisSelect.appendChild(vide);
+
+                disponibles.forEach(function (tarif) {
+                    var option = document.createElement('option');
+                    option.value = tarif.id;
+                    option.textContent = tarif.libelle;
+                    fraisSelect.appendChild(option);
+                });
+
+                if (disponibles.some(function (tarif) { return String(tarif.id) === String(courant); })) {
+                    fraisSelect.value = courant;
+                } else if (disponibles.length === 1) {
+                    fraisSelect.value = disponibles[0].id;
+                }
+
+                majSolde();
+            }
+
             if (recherche) {
                 recherche.addEventListener('input', filtrerEleves);
             }
             if (inscriptionSelect) {
-                inscriptionSelect.addEventListener('change', majSolde);
+                inscriptionSelect.addEventListener('change', rendreTarifs);
             }
             if (fraisSelect) {
                 fraisSelect.addEventListener('change', majSolde);
             }
+            rendreTarifs();
         })();
     </script>
     <script src="{{ asset('js/date-fr.js') }}"></script>

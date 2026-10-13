@@ -36,6 +36,7 @@ class ParametreSystemeController extends Controller
             'saisie_notes_active' => ['nullable', 'boolean'],
             'portail_parents_actif' => ['nullable', 'boolean'],
             'deliberation_active' => ['nullable', 'boolean'],
+            'prefet_valide_inscriptions' => ['nullable', 'boolean'],
             'module_recus_actif' => ['nullable', 'boolean'],
             'module_recouvrement_actif' => ['nullable', 'boolean'],
 
@@ -70,6 +71,7 @@ class ParametreSystemeController extends Controller
         // les options transmises sont donc toujours explicites. Un réglage absent du
         // formulaire est laissé intact au lieu d'être écrasé.
         foreach (['saisie_notes_active', 'portail_parents_actif', 'deliberation_active',
+            'prefet_valide_inscriptions',
             'module_recus_actif', 'module_recouvrement_actif',
             'bulletin_afficher_place', 'bulletin_afficher_conduite'] as $case) {
             if ($request->has($case)) {
@@ -83,7 +85,7 @@ class ParametreSystemeController extends Controller
         }
 
         // Colonnes optionnelles : ignorées si la table n'est pas migrée.
-        foreach (['devise', 'taux_change', 'module_recus_actif', 'module_recouvrement_actif'] as $colonne) {
+        foreach (['devise', 'taux_change', 'module_recus_actif', 'module_recouvrement_actif', 'prefet_valide_inscriptions'] as $colonne) {
             if (! Schema::hasColumn('parametres_systeme', $colonne)) {
                 unset($data[$colonne]);
             }

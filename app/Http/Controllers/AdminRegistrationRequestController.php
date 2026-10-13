@@ -8,9 +8,11 @@ use App\Models\DemandeCompte;
 use App\Models\DemandeInscription;
 use App\Models\Eleve;
 use App\Models\Inscription;
+use App\Models\ParametreSysteme;
 use App\Models\Professeurs;
 use App\Models\Tuteur;
 use App\Models\User;
+use App\Support\Permissions;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -20,8 +22,10 @@ use Illuminate\View\View;
 
 class AdminRegistrationRequestController extends Controller
 {
-    public function studentRequests(): View
+    public function studentRequests(Request $request): View
     {
+        $this->autoriserValidationInscriptions($request);
+
         return view('admin.registration.student-requests', [
             'requests' => DemandeInscription::with(['classe', 'anneeScolaire'])
                 ->where('statut', 'en_attente')
@@ -34,6 +38,8 @@ class AdminRegistrationRequestController extends Controller
 
     public function studentHistory(Request $request): View
     {
+        $this->autoriserValidationInscriptions($request);
+
         $statut = (string) $request->query('statut', '');
 
         return view('admin.registration.student-history', [
@@ -53,6 +59,8 @@ class AdminRegistrationRequestController extends Controller
 
     public function approveStudent(Request $request, DemandeInscription $demandeInscription): RedirectResponse
     {
+        $this->autoriserValidationInscriptions($request);
+
         $data = $request->validate([
             'classe_id' => ['required', Rule::exists('classes', 'id')->where('statut', 'actif')],
             'annee_scolaire_id' => ['required', Rule::exists('annees_scolaires', 'id')->where('statut', 'actif')],
@@ -124,6 +132,8 @@ class AdminRegistrationRequestController extends Controller
 
     public function rejectStudent(Request $request, DemandeInscription $demandeInscription): RedirectResponse
     {
+        $this->autoriserValidationInscriptions($request);
+
         $data = $request->validate(['motif_refus' => ['nullable', 'string', 'max:1000']]);
         $updated = DemandeInscription::query()
             ->whereKey($demandeInscription->id)
@@ -220,5 +230,33 @@ class AdminRegistrationRequestController extends Controller
             ]);
 
         return back()->with($updated ? 'success' : 'error', $updated ? 'La demande de compte a été refusée.' : 'Cette demande a déjà été traitée.');
+    }
+
+    /**
+     * Autorise la validation des demandes d'inscription (élèves) :
+     *  - l'administrateur, toujours ;
+     *  - le Préfet des Études, UNIQUEMENT si l'administration l'a autorisé
+     *    (réglage « prefet_valide_inscriptions ») ;
+     *  - tout autre poste disposant de la fonctionnalité « inscriptions ».
+     */
+    private function autoriserValidationInscriptions(Request $request): void
+    {
+        $role = $request->user()?->role;
+
+        if ($role === 'admin') {
+            return;
+        }
+
+        if ($role === 'prefetture') {
+            abort_unless(
+                ParametreSysteme::prefetValideInscriptions(),
+                403,
+                'L’administration n’a pas autorisé le préfet à valider les demandes d’inscription.'
+            );
+
+            return;
+        }
+
+        abort_unless(Permissions::autorise($role, 'inscriptions'), 403, 'Accès non autorisé.');
     }
 }

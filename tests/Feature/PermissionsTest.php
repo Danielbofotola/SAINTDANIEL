@@ -94,11 +94,24 @@ test('le poste de travail liste les droits du rôle', function () {
 
 test('les fonctionnalités exécutives et le poste Disciplinaire sont dans la matrice', function () {
     expect(in_array('disciplinaire', Permissions::roles(), true))->toBeTrue()
+        ->and(in_array('titulaire', Permissions::roles(), true))->toBeTrue()
         ->and(Permissions::autorise('prefetture', 'decisions'))->toBeTrue()
         ->and(Permissions::niveau('prefetture', 'decisions'))->toBe('oui')
         ->and(Permissions::autorise('prefetture', 'flux_academique'))->toBeTrue()
         ->and(Permissions::autorise('disciplinaire', 'discipline'))->toBeTrue()
         ->and(Permissions::niveau('disciplinaire', 'discipline'))->toBe('oui')
         ->and(Permissions::autorise('disciplinaire', 'modules'))->toBeFalse()
-        ->and(Permissions::autorise('secretaire', 'discipline'))->toBeFalse();
+        ->and(Permissions::autorise('secretaire', 'discipline'))->toBeFalse()
+        // Validation des inscriptions et activation des classes/cycles : pilotées par la matrice.
+        ->and(Permissions::autorise('directeur_etudes', 'inscriptions'))->toBeTrue()
+        ->and(Permissions::autorise('professeur', 'inscriptions'))->toBeFalse()
+        ->and(Permissions::autorise('directeur_etudes', 'structures'))->toBeTrue()
+        ->and(Permissions::autorise('professeur', 'structures'))->toBeFalse();
+});
+
+test('la validation des demandes d’inscription est pilotée par la matrice des permissions', function () {
+    // Le professeur n'a pas la fonctionnalité « inscriptions » → accès refusé.
+    $this->actingAs(User::factory()->create(['role' => 'professeur']))
+        ->get(route('admin.registration.students'))
+        ->assertForbidden();
 });

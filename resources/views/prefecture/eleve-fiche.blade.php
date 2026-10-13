@@ -45,6 +45,9 @@
         <button type="button" class="btn btn-light btn-round" onclick="window.print()">
             <i class="fas fa-print"></i> Imprimer le dossier
         </button>
+        <a href="{{ route('admin.eleves.edit', $eleve) }}" class="btn btn-light btn-round">
+            <i class="fas fa-pen"></i> Modifier le dossier
+        </a>
     </div>
 @endsection
 

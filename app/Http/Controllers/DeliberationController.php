@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AnneeScolaire;
+use App\Models\Certification;
 use App\Models\Classe;
 use App\Models\Deliberation;
 use App\Models\Inscription;
@@ -41,6 +42,10 @@ class DeliberationController extends Controller
 
         $jury = Jury::regles();
         $lignes = collect();
+        // Fin de parcours : diplôme déclaré sur le cycle, ou classe sans débouché.
+        $donneDiplome = $classe?->donneDiplome() ?? false;
+        // Fin de cycle (dernier niveau) : certification éventuelle annoncée.
+        $clotCycle = $classe?->clotUnCycle() ?? false;
 
         if ($annee && $classe) {
             $inscriptions = Inscription::query()
@@ -60,6 +65,10 @@ class DeliberationController extends Controller
                 $analyse = $jury->analyser($inscription);
                 $enregistree = $enregistrees->get($inscription->id);
 
+                if ($donneDiplome && $analyse['decision_proposee'] === 'admis') {
+                    $analyse['decision_proposee'] = 'diplome';
+                }
+
                 $lignes->push([
                     'inscription' => $inscription,
                     'eleve' => $inscription->eleve,
@@ -70,6 +79,14 @@ class DeliberationController extends Controller
             }
         }
 
+        // L'option « Diplômé » n'a de sens que si la classe clôt le parcours :
+        // on la retire du choix sinon (mais on la garde si une décision l'a
+        // déjà mémorisée, pour ne pas la perdre à l'affichage).
+        $decisions = Deliberation::DECISIONS;
+        if (! $donneDiplome && ! $lignes->contains(fn (array $ligne) => $ligne['decision'] === 'diplome')) {
+            unset($decisions['diplome']);
+        }
+
         return view('admin.deliberations.index', [
             'parametres' => ParametreSysteme::current(),
             'annee' => $annee,
@@ -78,9 +95,16 @@ class DeliberationController extends Controller
             'classe' => $classe,
             'lignes' => $lignes,
             'synthese' => $this->synthese($lignes),
-            'decisions' => Deliberation::DECISIONS,
+            'decisions' => $decisions,
             'annees' => AnneeScolaire::query()->orderByDesc('date_debut')->get(),
             'classeSuivante' => $classe?->suivante(),
+            // Classes d'accueil possibles : si > 1, le choix section/option se fait
+            // par élève (typiquement le passage éducation de base → humanités).
+            'candidats' => $classe ? $classe->candidats()->map(fn (Classe $c) => $c->load(['section', 'option'])) : collect(),
+            'passageAmbigu' => $classe?->passageAmbigu() ?? false,
+            'donneDiplome' => $donneDiplome,
+            'clotCycle' => $clotCycle,
+            'cycleFin' => $classe?->cycle,
             'regles' => $jury->critere(),
         ]);
     }
@@ -161,7 +185,11 @@ class DeliberationController extends Controller
         $data = $request->validate([
             'annee_scolaire_id' => ['required', 'exists:annees_scolaires,id'],
             'decisions' => ['required', 'array'],
-            'decisions.*' => ['required', 'in:admis,ajourne,redouble'],
+            'decisions.*' => ['required', 'in:admis,ajourne,redouble,diplome'],
+            // Destination choisie par élève quand le passage est à choix multiple
+            // (section/option). Clé = id d'inscription, valeur = id de classe cible.
+            'destinations' => ['nullable', 'array'],
+            'destinations.*' => ['nullable', 'integer', 'exists:classes,id'],
         ], [
             'decisions.required' => 'Aucune décision à enregistrer.',
         ]);
@@ -182,6 +210,12 @@ class DeliberationController extends Controller
                 $analyse = $jury->analyser($inscription);
                 $choix = $data['decisions'][$inscription->id];
 
+                $cible = $this->classeCible(
+                    $inscription,
+                    $choix,
+                    $data['destinations'][$inscription->id] ?? null,
+                );
+
                 $deliberation = Deliberation::updateOrCreate(
                     ['inscription_id' => $inscription->id, 'annee_scolaire_id' => $data['annee_scolaire_id']],
                     [
@@ -190,7 +224,7 @@ class DeliberationController extends Controller
                         'decision' => $choix,
                         'critere' => json_encode($critere),
                         'manuelle' => $choix !== $analyse['decision_proposee'],
-                        'classe_suivante_id' => $choix === 'admis' ? $inscription->classe?->suivante()?->id : null,
+                        'classe_suivante_id' => $choix === 'admis' ? $cible?->id : null,
                         'decide_par' => $request->user()->id,
                         'decide_le' => now(),
                     ]
@@ -236,9 +270,11 @@ class DeliberationController extends Controller
 
         $promus = 0;
         $maintenus = 0;
+        $diplomes = 0;
         $ignores = 0;
+        $sansChoix = 0;
 
-        DB::transaction(function () use ($data, &$promus, &$maintenus, &$ignores): void {
+        DB::transaction(function () use ($data, &$promus, &$maintenus, &$diplomes, &$ignores, &$sansChoix): void {
             $decisions = Deliberation::query()
                 ->with('inscription.classe')
                 ->where('annee_scolaire_id', $data['annee_scolaire_id'])
@@ -251,13 +287,32 @@ class DeliberationController extends Controller
                     continue;
                 }
 
-                // Admis → classe d'ordre supérieur ; ajourné / redoublant → même classe.
-                $classeCible = $decision->decision === 'admis'
-                    ? $inscription->classe?->suivante()
-                    : $inscription->classe;
+                // Diplômé : fin du dernier cycle — l'élève sort, aucune réinscription.
+                if ($decision->decision === 'diplome') {
+                    $inscription->eleve?->update(['statut' => 'diplome']);
+                    $this->delivrerCertification($inscription);
+                    $diplomes++;
+                    continue;
+                }
+
+                // Fin de parcours (diplôme déclaré sur le cycle, ou plus aucune
+                // classe d'accueil) : un admis sort diplômé plutôt que promu.
+                if ($decision->decision === 'admis' && $inscription->classe?->donneDiplome()) {
+                    $inscription->eleve?->update(['statut' => 'diplome']);
+                    $decision->update(['decision' => 'diplome']);
+                    $this->delivrerCertification($inscription);
+                    $diplomes++;
+                    continue;
+                }
+
+                // Admis → classe d'accueil (choisie par élève si plusieurs) ;
+                // ajourné / redoublant → même classe.
+                $classeCible = $this->classeCible($inscription, $decision->decision, $decision->classe_suivante_id);
 
                 if (! $classeCible) {
-                    $ignores++;   // plus de classe supérieure, ou classe d'origine absente
+                    // Admis dont le passage exige un choix de section/option non
+                    // renseigné : on ne peut pas décider à sa place.
+                    $decision->decision === 'admis' ? $sansChoix++ : $ignores++;
                     continue;
                 }
 
@@ -280,10 +335,80 @@ class DeliberationController extends Controller
                 ]);
 
                 $decision->update(['classe_suivante_id' => $classeCible->id]);
+
+                // Cycle clôturé par un certificat : l'élève le reçoit, puis passe
+                // de classe (il est promu ci-dessous).
+                if ($decision->decision === 'admis') {
+                    $this->delivrerCertification($inscription);
+                }
+
                 $decision->decision === 'admis' ? $promus++ : $maintenus++;
             }
         });
 
-        return back()->with('success', $promus.' élève(s) promu(s), '.$maintenus.' maintenu(s), '.$ignores.' ignoré(s).');
+        $message = $promus.' élève(s) promu(s), '.$maintenus.' maintenu(s), '.$diplomes.' diplômé(s), '.$ignores.' ignoré(s).';
+
+        if ($sansChoix > 0) {
+            return back()->with('error', $message.' '.$sansChoix.' élève(s) admis sans section/option : renseignez leur destination puis réappliquez.');
+        }
+
+        return back()->with('success', $message);
+    }
+
+    /**
+     * Classe d'accueil d'une inscription pour la décision donnée.
+     *
+     * - Non-admis : la classe d'origine (maintien).
+     * - Admis : la destination explicitement choisie si elle fait partie des
+     *   candidats de la classe, sinon l'unique candidat s'il n'y en a qu'un.
+     *   Renvoie null quand le passage est ambigu et qu'aucun choix valide n'est
+     *   fourni (section/option manquante).
+     */
+    private function classeCible(Inscription $inscription, string $decision, mixed $destinationId): ?Classe
+    {
+        if ($decision !== 'admis') {
+            return $inscription->classe;
+        }
+
+        $candidats = $inscription->classe?->candidats() ?? collect();
+        $choix = $destinationId !== null ? (int) $destinationId : null;
+
+        if ($choix !== null && $candidats->contains('id', $choix)) {
+            return $candidats->firstWhere('id', $choix);
+        }
+
+        return $candidats->count() === 1 ? $candidats->first() : null;
+    }
+
+    /**
+     * Délivre le certificat / diplôme de fin de cycle à l'élève quand il clôt un
+     * cycle dont la fin est déclarée. Idempotent : un seul document par élève,
+     * cycle et année.
+     */
+    private function delivrerCertification(Inscription $inscription): void
+    {
+        $classe = $inscription->classe;
+
+        if (! $classe?->clotUnCycle()) {
+            return;
+        }
+
+        $cycle = $classe->cycle;
+
+        if (! $cycle || (! $cycle->delivreCertificat() && ! $cycle->delivreDiplome())) {
+            return;
+        }
+
+        $libelle = $cycle->fin_libelle
+            ?: ($cycle->fin_type === 'diplome' ? 'Diplôme de fin de parcours' : 'Certificat de fin de cycle');
+
+        Certification::firstOrCreate(
+            [
+                'eleve_id' => $inscription->eleve_id,
+                'cycle_id' => $cycle->id,
+                'annee_scolaire_id' => $inscription->annee_scolaire_id,
+            ],
+            ['libelle' => $libelle, 'date_obtention' => now()->toDateString()]
+        );
     }
 }

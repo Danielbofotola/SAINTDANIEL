@@ -357,6 +357,27 @@ test('a payment is recorded with a receipt and must match the student class', fu
     expect(DB::table('paiements')->count())->toBe(1);
 });
 
+test('la page de paiement associe chaque élève à sa classe pour ne proposer que ses tarifs', function () {
+    $inscriptionId = seedInscription();
+    seedFrais();
+    $admin = User::factory()->create(['role' => 'admin']);
+
+    // Une classe et un tarif d'une AUTRE classe, à ne pas rattacher à l'élève.
+    DB::table('classes')->insert(['id' => 2, 'cycle_id' => 1, 'nom' => '4e B', 'statut' => 'actif']);
+    DB::table('frais_scolaires')->insert([
+        'type_frais_id' => DB::table('types_frais')->value('id'), 'classe_id' => 2, 'annee_scolaire_id' => 1,
+        'montant_exige' => 120, 'date_echeance' => '2026-10-31', 'statut' => 'actif',
+        'created_at' => now(), 'updated_at' => now(),
+    ]);
+
+    // Liaisons transmises au JS : id d'inscription → id de classe, et tarif → classe.
+    $this->actingAs($admin)->get(route('admin.paiements.index'))
+        ->assertOk()
+        ->assertSee('"'.$inscriptionId.'":1', false)
+        ->assertSee('"classe":1', false)
+        ->assertSee('"classe":2', false);
+});
+
 test('expenses and categories are managed per school year', function () {
     $admin = User::factory()->create(['role' => 'admin']);
 

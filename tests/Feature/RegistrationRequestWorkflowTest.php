@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Schema;
 beforeEach(function () {
     Schema::disableForeignKeyConstraints();
     foreach ([
-        'demandes_comptes', 'demandes_inscription', 'inscriptions', 'eleve_sante', 'eleves',
+        'parametres_systeme', 'demandes_comptes', 'demandes_inscription', 'inscriptions', 'eleve_sante', 'eleves',
         'tuteurs', 'classes', 'cycles', 'annees_scolaires', 'professeurs', 'users',
     ] as $table) {
         Schema::dropIfExists($table);
@@ -145,6 +145,16 @@ beforeEach(function () {
         $table->text('motif_refus')->nullable();
         $table->timestamps();
     });
+    Schema::create('parametres_systeme', function (Blueprint $table) {
+        $table->id();
+        $table->string('nom_etablissement', 150)->default('Etablissement');
+        $table->string('nom_court', 60)->default('Ecole');
+        $table->boolean('saisie_notes_active')->default(true);
+        $table->boolean('portail_parents_actif')->default(false);
+        $table->boolean('deliberation_active')->default(false);
+        $table->boolean('prefet_valide_inscriptions')->default(false);
+        $table->timestamps();
+    });
 
     DB::table('cycles')->insert(['id' => 1, 'nom' => 'Secondaire', 'statut' => 'actif']);
     DB::table('classes')->insert(['id' => 1, 'cycle_id' => 1, 'nom' => '3e A', 'statut' => 'actif']);
@@ -156,6 +166,7 @@ beforeEach(function () {
         'is_encours' => true,
         'statut' => 'actif',
     ]);
+    DB::table('parametres_systeme')->insert(['nom_court' => 'École test', 'prefet_valide_inscriptions' => false, 'created_at' => now(), 'updated_at' => now()]);
 });
 
 function makeAdminForRegistrationRequests(): User
@@ -348,3 +359,69 @@ test('a school year submitted by the client is ignored in favour of the current 
 
     expect((int) DB::table('demandes_inscription')->value('annee_scolaire_id'))->toBe(1);
 });
+
+test('le préfet ne peut pas valider les demandes d’inscription sans l’autorisation de l’administration', function () {
+    $prefet = User::factory()->create(['role' => 'prefetture']);
+
+    $this->actingAs($prefet)
+        ->get(route('admin.registration.students'))
+        ->assertForbidden();
+});
+
+test('le préfet autorisé par l’administration valide une demande d’inscription', function () {
+    DB::table('parametres_systeme')->update(['prefet_valide_inscriptions' => true]);
+
+    $demandeId = DB::table('demandes_inscription')->insertGetId([
+        'nom' => 'Kabongo', 'postnom' => 'Mbuyi', 'prenom' => 'Esther', 'sexe' => 'F',
+        'date_naissance' => '2015-04-10', 'lieu_naissance' => 'Kinshasa',
+        'nom_mere' => 'Mama', 'telephone_mere' => '0990000000',
+        'statut' => 'en_attente', 'created_at' => now(), 'updated_at' => now(),
+    ]);
+    $prefet = User::factory()->create(['role' => 'prefetture']);
+
+    $this->actingAs($prefet)
+        ->get(route('admin.registration.students'))
+        ->assertOk()
+        ->assertSee('Kabongo');
+
+    $this->actingAs($prefet)->post(route('admin.registration.students.approve', $demandeId), [
+        'classe_id' => 1,
+        'annee_scolaire_id' => 1,
+    ])->assertRedirect();
+
+    expect(DB::table('eleves')->count())->toBe(1)
+        ->and(DB::table('demandes_inscription')->where('id', $demandeId)->value('statut'))->toBe('acceptee');
+});
+
+ test('le préfet autorisé voit et traite les demandes depuis son espace', function () {
+     DB::table('parametres_systeme')->update(['prefet_valide_inscriptions' => true]);
+
+     $demandeId = DB::table('demandes_inscription')->insertGetId([
+         'nom' => 'Ilunga', 'postnom' => 'Kasongo', 'prenom' => 'Marie', 'sexe' => 'F',
+         'date_naissance' => '2014-02-02', 'lieu_naissance' => 'Lubumbashi',
+         'nom_mere' => 'Maman', 'telephone_mere' => '0810000000',
+         'statut' => 'en_attente', 'created_at' => now(), 'updated_at' => now(),
+     ]);
+     $prefet = User::factory()->create(['role' => 'prefetture']);
+
+     // Il voit ses demandes dans SON espace préfecture.
+     $this->actingAs($prefet)->get(route('prefecture.demandes.inscriptions'))
+         ->assertOk()
+         ->assertSee('Ilunga')
+         ->assertSee("Demandes d'inscription en attente", false);
+
+     // Et il peut accepter, sans quitter son espace.
+     $this->actingAs($prefet)->post(route('prefecture.demandes.inscriptions.approve', $demandeId), [
+         'classe_id' => 1,
+         'annee_scolaire_id' => 1,
+     ])->assertRedirect(route('prefecture.demandes.inscriptions'));
+
+     expect(DB::table('eleves')->count())->toBe(1)
+         ->and(DB::table('demandes_inscription')->where('id', $demandeId)->value('statut'))->toBe('acceptee');
+ });
+
+ test('le préfet n’a pas accès à sa page de demandes sans autorisation', function () {
+     $prefet = User::factory()->create(['role' => 'prefetture']);
+
+     $this->actingAs($prefet)->get(route('prefecture.demandes.inscriptions'))->assertForbidden();
+ });

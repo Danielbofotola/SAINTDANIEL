@@ -43,6 +43,9 @@ beforeEach(function () {
     Schema::create('cycles', function (Blueprint $table) {
         $table->id();
         $table->string('nom', 50)->unique();
+        $table->unsignedInteger('ordre')->nullable();
+        $table->string('fin_type', 20)->default('aucune');
+        $table->string('fin_libelle', 100)->nullable();
         $table->enum('statut', ['actif', 'inactif'])->default('actif');
         $table->timestamps();
     });
@@ -120,6 +123,19 @@ test('an admin can list, create and toggle cycles', function () {
         ->patch(route('admin.cycles.toggle-status', 1))
         ->assertRedirect();
     expect(DB::table('cycles')->where('id', 1)->value('statut'))->toBe('inactif');
+});
+
+test('l’activation d’un cycle est pilotée par la matrice des permissions', function () {
+    DB::table('cycles')->insert(['id' => 3, 'nom' => 'Maternelle', 'statut' => 'actif', 'created_at' => now(), 'updated_at' => now()]);
+    $directeur = User::factory()->create(['role' => 'directeur_etudes']);
+    $professeur = User::factory()->create(['role' => 'professeur']);
+
+    // Le directeur des études détient la permission « structures ».
+    $this->actingAs($directeur)->patch(route('admin.cycles.toggle-status', 3))->assertRedirect();
+    expect(DB::table('cycles')->where('id', 3)->value('statut'))->toBe('inactif');
+
+    // Un professeur ne l'a pas : accès refusé.
+    $this->actingAs($professeur)->patch(route('admin.cycles.toggle-status', 3))->assertForbidden();
 });
 
 test('a cycle with classes cannot be deleted', function () {

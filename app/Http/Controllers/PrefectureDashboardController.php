@@ -206,34 +206,69 @@ class PrefectureDashboardController extends Controller
     }
 
     /**
-     * Horaire : emploi du temps actif, filtrable par jour, classe ou enseignant.
+     * Horaire : vue globale de l'emploi du temps de chaque classe et de chaque
+     * enseignant, sous forme de grille hebdomadaire. Filtrable par classe ou
+     * par enseignant.
      */
     public function horaires(Request $request): View
     {
-        $jour = $request->query('jour');
         $classeId = $request->query('classe');
         $professeurId = $request->query('professeur');
 
         $emplois = EmploiDuTemps::query()
             ->where('statut', 'actif')
-            ->when($jour, fn ($query) => $query->where('jour', $jour))
             ->when($classeId, fn ($query) => $query->whereHas('affectation', fn ($affectation) => $affectation->where('classe_id', $classeId)))
             ->when($professeurId, fn ($query) => $query->whereHas('affectation', fn ($affectation) => $affectation->where('professeur_id', $professeurId)))
             ->with(['affectation.cours', 'affectation.professeur', 'affectation.classe', 'salle'])
             ->orderBy('heure_debut')
             ->get();
 
+        $jours = ['lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'];
+        $aujourdhui = $jours[now()->dayOfWeekIso - 1] ?? null;
+
+        // Séances normalisées, réexploitables pour la grille d'une classe ou d'un enseignant.
+        $seances = $emplois->map(fn (EmploiDuTemps $emploi) => [
+            'classe_id' => $emploi->affectation?->classe_id,
+            'professeur_id' => $emploi->affectation?->professeur_id,
+            'jour' => $emploi->jour,
+            'debut' => substr((string) $emploi->heure_debut, 0, 5),
+            'fin' => substr((string) $emploi->heure_fin, 0, 5),
+            'cours' => $emploi->affectation?->cours?->intitule ?? 'Cours',
+            'classe' => $emploi->affectation?->classe?->nom ?? 'Classe —',
+            'professeur' => trim(($emploi->affectation?->professeur?->nom ?? '') . ' ' . ($emploi->affectation?->professeur?->prenom ?? '')) ?: '—',
+            'salle' => $emploi->salle?->nom,
+        ]);
+
+        $classes = Classe::query()
+            ->where('statut', 'actif')
+            ->when($classeId, fn ($query) => $query->where('id', $classeId))
+            ->orderBy('nom')
+            ->get();
+
+        $professeurs = Professeurs::query()
+            ->where('statut', 'actif')
+            ->when($professeurId, fn ($query) => $query->where('id', $professeurId))
+            ->orderBy('nom')
+            ->get();
+
         return view('prefecture.horaires', [
             'user' => $request->user(),
             'schoolYear' => AnneeScolaire::enCours(),
-            'jour' => $jour,
             'classeId' => $classeId,
             'professeurId' => $professeurId,
-            'jours' => ['lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'],
+            'jours' => $jours,
+            'aujourdhui' => $aujourdhui,
             'classes' => Classe::query()->where('statut', 'actif')->orderBy('nom')->get(),
             'professeurs' => Professeurs::query()->where('statut', 'actif')->orderBy('nom')->get(),
-            'creneaux' => $emplois->groupBy('jour'),
             'total' => $emplois->count(),
+            'parClasse' => $classes->map(fn (Classe $classe) => [
+                'titre' => $classe->nom,
+                'seances' => $seances->where('classe_id', $classe->id)->values()->all(),
+            ]),
+            'parProfesseur' => $professeurs->map(fn (Professeurs $professeur) => [
+                'titre' => trim($professeur->nom . ' ' . $professeur->prenom),
+                'seances' => $seances->where('professeur_id', $professeur->id)->values()->all(),
+            ]),
         ]);
     }
 

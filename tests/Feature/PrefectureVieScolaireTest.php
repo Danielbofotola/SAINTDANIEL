@@ -436,3 +436,69 @@ test('les pages périodes et bulletins sont accessibles au préfet', function ()
     $this->actingAs($prefet)->get(route('prefecture.bulletins'))->assertOk()
         ->assertSee('Aicha')->assertSee('Grande distinction')->assertSee('Approuver');
 });
+
+ test('le préfet contrôle l’emploi du temps (consultation, création)', function () {
+     $prefet = User::where('role', 'prefetture')->first();
+
+     $this->actingAs($prefet)->get(route('admin.emplois-du-temps.index'))
+         ->assertOk()
+         ->assertSee('Mathématiques');
+
+     $this->actingAs($prefet)->post(route('admin.emplois-du-temps.store'), [
+         'affectation_id' => 1,
+         'jour' => 'mardi',
+         'heure_debut' => '10:00',
+         'heure_fin' => '11:00',
+         'salle_id' => 1,
+     ])->assertRedirect(route('admin.emplois-du-temps.index'));
+
+     expect(DB::table('emplois_du_temps')->where('jour', 'mardi')->count())->toBe(1);
+ });
+
+ test('le préfet modifie le dossier d’un élève', function () {
+     $prefet = User::where('role', 'prefetture')->first();
+     $eleve = Eleve::find(1);
+
+     $this->actingAs($prefet)->get(route('admin.eleves.edit', $eleve))->assertOk();
+
+     $this->actingAs($prefet)->put(route('admin.eleves.update', $eleve), [
+         'nom' => 'Banzolo', 'postnom' => 'Nsimba', 'prenom' => 'Aicha', 'sexe' => 'F',
+         'date_naissance' => '2017-05-12', 'lieu_naissance' => 'Kinshasa', 'statut' => 'actif',
+         'nom_mere' => 'Mama', 'telephone_mere' => '0990000000',
+     ])->assertRedirect();
+
+     expect(Eleve::find(1)->postnom)->toBe('Nsimba');
+ });
+
+ test('un professeur ne peut ni piloter les horaires ni modifier un dossier élève', function () {
+     $professeur = User::factory()->create(['role' => 'professeur']);
+     $eleve = Eleve::find(1);
+
+     $this->actingAs($professeur)->get(route('admin.emplois-du-temps.index'))->assertForbidden();
+     $this->actingAs($professeur)->get(route('admin.eleves.edit', $eleve))->assertForbidden();
+ });
+
+  test('le préfet contrôle les affectations et mutations des professeurs', function () {
+      $prefet = User::where('role', 'prefetture')->first();
+
+      $this->actingAs($prefet)->get(route('admin.affectations.index'))
+          ->assertOk()
+          ->assertSee('Mathématiques');
+
+      // Mutation : on réaffecte la classe de l'affectation existante.
+      DB::table('classes')->insert(['id' => 2, 'nom' => '4e primaire', 'cycle_id' => 1, 'salle_id' => 1, 'statut' => 'actif']);
+
+      $this->actingAs($prefet)->patch(route('admin.affectations.muter', 1), [
+          'professeur_id' => 1,
+          'cours_id' => 1,
+          'classe_id' => 2,
+      ])->assertRedirect();
+
+      expect((int) DB::table('affectations_cours')->where('id', 1)->value('classe_id'))->toBe(2);
+  });
+
+  test('un professeur n’a pas accès au module d’affectations', function () {
+      $professeur = User::factory()->create(['role' => 'professeur']);
+
+      $this->actingAs($professeur)->get(route('admin.affectations.index'))->assertForbidden();
+  });

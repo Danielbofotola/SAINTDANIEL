@@ -203,6 +203,35 @@
             </div>
         </div>
 
+        {{-- ==================== CERTIFICATS & DIPLÔMES ==================== --}}
+        @if ($certifications->isNotEmpty())
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="dossier-carte">
+                        <h4 class="dossier-carte__titre">
+                            <i class="fa fa-certificate" style="color:var(--dossier)"></i> Certificats &amp; diplômes
+                            <small class="text-muted ml-2">{{ $certifications->count() }} document(s)</small>
+                        </h4>
+                        <div class="table-responsive">
+                            <table class="table table-sm">
+                                <thead><tr><th>Intitulé</th><th>Cycle</th><th>Année</th><th>Délivré le</th></tr></thead>
+                                <tbody>
+                                    @foreach ($certifications as $certification)
+                                        <tr>
+                                            <td>{{ $certification->libelle }}</td>
+                                            <td>{{ $certification->cycle?->nom ?? '—' }}</td>
+                                            <td>{{ $certification->anneeScolaire?->libelle ?? '—' }}</td>
+                                            <td>{{ $certification->date_obtention?->format('d/m/Y') }}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
+
         {{-- ==================== PARCOURS & HISTORIQUE ==================== --}}
         <div class="row">
             <div class="col-md-12">

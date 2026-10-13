@@ -49,6 +49,12 @@ class PaiementController extends Controller
             ? FraisScolaire::query()->where('annee_scolaire_id', $annee->id)->where('statut', 'actif')->with(['typeFrais', 'classe'])->get()
             : collect();
 
+        $classes = Classe::where('statut', 'actif')->orderBy('nom')->get();
+
+        $inscriptions = $annee
+            ? Inscription::query()->where('annee_scolaire_id', $annee->id)->whereIn('statut', ['actif', 'en_attente'])->with(['eleve', 'classe'])->get()
+            : collect();
+
         // Montant déjà réglé par couple (inscription, tarif) pour l'année en cours :
         // sert à afficher le reste à payer lorsque le règlement se fait par tranches.
         $soldePaye = $annee
@@ -67,15 +73,24 @@ class PaiementController extends Controller
             'periodeId' => $periodeId,
             'search' => $search,
             'modes' => self::MODES,
-            'classes' => Classe::where('statut', 'actif')->orderBy('nom')->get(),
+            'classes' => $classes,
             'periodes' => Periode::anneeEnCours()->orderBy('id')->get(),
             'periodeCourante' => Periode::courante($annee),
-            'inscriptions' => $annee
-                ? Inscription::query()->where('annee_scolaire_id', $annee->id)->whereIn('statut', ['actif', 'en_attente'])->with(['eleve', 'classe'])->get()
-                : collect(),
+            'inscriptions' => $inscriptions,
             'tarifs' => $tarifs,
             'soldePaye' => $soldePaye,
             'montantsFrais' => $tarifs->pluck('montant_exige', 'id'),
+            // Liaisons utilisées par le formulaire pour n'afficher QUE les tarifs
+            // de la classe de l'élève sélectionné.
+            'classesParInscription' => $inscriptions->pluck('classe_id', 'id'),
+            'nomsClasses' => $classes->pluck('nom', 'id'),
+            'tarifsDisponibles' => $tarifs->map(fn ($tarif) => [
+                'id' => $tarif->id,
+                'classe' => $tarif->classe_id,
+                'libelle' => ($tarif->typeFrais?->nom ?? 'Tarif').' — '.($tarif->classe?->nom ?? '—')
+                    .' ('.Monnaie::format($tarif->montant_exige, $tarif->devise).')',
+                'devise' => Monnaie::normaliser($tarif->devise),
+            ])->values(),
             'totalEncaisse' => $annee
                 ? (float) Paiement::query()->where('statut', 'actif')
                     ->whereHas('inscription', fn ($query) => $query->where('annee_scolaire_id', $annee->id))

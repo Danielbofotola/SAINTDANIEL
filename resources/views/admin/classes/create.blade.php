@@ -125,6 +125,24 @@
                         @error('option_id')<div class="error">{{ $message }}</div>@enderror
                     </div>
 
+                    <div class="col-12 form-group">
+                        <label class="form-label" for="destinations">Destinations multiples (passage à choix)</label>
+                        <select class="form-control" id="destinations" name="destinations[]" multiple size="6">
+                            @foreach ($destinations as $candidat)
+                                <option value="{{ $candidat->id }}" @selected(collect(old('destinations', $destinationsSelectionnees))->contains(fn ($v) => (int) $v === $candidat->id))>
+                                    {{ $candidat->nom }}{{ $candidat->section ? ' — '.$candidat->section->nom : '' }}{{ $candidat->option ? ' · '.$candidat->option->nom : '' }}{{ $candidat->cycle ? ' ('.$candidat->cycle->nom.')' : '' }}
+                                </option>
+                            @endforeach
+                        </select>
+                        <small class="text-muted">
+                            Pour une classe terminale de cycle (ex. fin de l'éducation de base) : cochez les classes
+                            d'accueil (les 1res humanités). S'il y a plusieurs choix, la délibération demandera la
+                            section/option de chaque élève admis. Vide = passage déduit du niveau.
+                        </small>
+                        @error('destinations')<div class="error">{{ $message }}</div>@enderror
+                        @error('destinations.*')<div class="error">{{ $message }}</div>@enderror
+                    </div>
+
                     <div class="col-md-6 form-group">
                         <label class="form-label" for="statut">Statut *</label>
                         <select class="form-control" id="statut" name="statut" required>

@@ -42,14 +42,16 @@ class TitulaireDashboardController extends Controller
                 ->with(['cycle', 'salle'])
                 ->withCount(['inscriptions as effectif' => fn ($query) => $query
                     ->anneeEnCours()
-                    ->where('statut', 'actif')])
+                    ->where('statut', 'actif')
+                    ->whereHas('eleve', fn ($eleve) => $eleve->visibles())])
                 ->orderBy('nom')
                 ->get();
 
             $inscriptions = Inscription::query()
                 ->anneeEnCours()
                 ->whereIn('classe_id', $classeIds)
-                ->where('statut', 'actif');
+                ->where('statut', 'actif')
+                ->whereHas('eleve', fn ($eleve) => $eleve->visibles());
 
             $effectif = (clone $inscriptions)->distinct()->count('eleve_id');
 

@@ -21,6 +21,9 @@
             </div>
             <div>
                 <a href="{{ route('admin.dashboard') }}" class="btn btn-secondary">Retour</a>
+                <a href="{{ route('admin.eleves.desactives') }}" class="btn btn-secondary"><i class="fa fa-user-slash"></i> Désactivés</a>
+                <a href="{{ route('admin.eleves.archives') }}" class="btn btn-secondary"><i class="fa fa-box-archive"></i> Archives</a>
+                <a href="{{ route('admin.inscriptions.attente') }}" class="btn btn-warning"><i class="fa fa-hourglass-half"></i> Inscriptions en attente</a>
                 <a href="{{ route('admin.eleves.create') }}" class="btn btn-primary"><i class="fa fa-user-plus"></i> Inscrire un élève</a>
             </div>
         </div>

@@ -1,0 +1,873 @@
+# wmark session 9f19a8c29c30:sub:0
+
+## User
+Contexte : application Laravel de gestion scolaire (racine du workspace). Je dois créer/compléter « l'interface titulaire » (l'instituteur titulaire d'une classe). Je connais déjà : app/Http/Controllers/TitulaireDashboardController.php (méthode index → vue resources/views/titulaire/dashboard.blade.php), et la route `Route::get('/titulaire/tableau-de-bord', …)->middleware('role:titulaire')->name('titulaire.dashboard')` dans routes/web.php.
+
+Rends-moi un rapport factuel et CONCIS (listes, chemins + n° de ligne), avec ces points précis :
+
+1. Le rôle « titulaire » : où est-il autorisé/déclaré ? Cherche dans : la/les migration(s) qui définissent users.role (enum ou string, quelles valeurs), app/Models/User.php (méthodes dashboardRouteNameFor / rôles), config/permissions.php (la clé 'roles' et toute entrée 'titulaire' dans les niveaux de features), et toutes les occurrences de « titulaire » dans routes/web.php et app/. Dis si « titulaire » est un rôle assignable ou s'il n'existe que comme middleware.
+
+2. Ce qui existe déjà pour le titulaire : liste des routes, contrôleurs et vues dont le nom ou le chemin contient titulaire.
+
+3. L'espace professeur (modèle à imiter) : liste des routes (noms) et contrôleurs + vues sous app/Http/Controllers/*Professeur* et resources/views/professeur/. Précise quelles pages existent : saisie de notes, présences/appels, effectif/classe, bulletins, évaluations. Donne les noms de routes ('professeur.*').
+
+4. Le rattachement d'un professeur/titulaire à une classe : comment savoir qui est titulaire d'une classe ? Cherche une colonne `classe.titulaire_id` ou `titulaire_id`, ou un lien via professeurs/affectations_cours. Liste les colonnes pertinentes de `classes` et `professeurs` et des tables de liaison.
+
+5. tests/Feature/RoleDashboardsTest.php : que vérifie-t-il exactement pour le rôle titulaire (lignes) ?
+
+Condition d'arrêt : dès que ces 5 points sont couverts, arrête-toi. Ne propose pas de code, ne modifie rien. Réponds en français, format compact.
+
+### Tool call — glob
+```
+{"pattern":"app/Http/Controllers/*Titulaire*"}
+```
+
+### Tool call — glob
+```
+{"pattern":"app/Http/Controllers/*Professeur*"}
+```
+
+### Tool call — glob
+```
+{"pattern":"resources/views/titulaire/**"}
+```
+
+### Tool call — glob
+```
+{"pattern":"resources/views/professeur/**"}
+```
+
+### Tool call — glob
+```
+{"pattern":"database/migrations/**"}
+```
+
+### Tool call — grep
+```
+{"pattern":"titulaire","output_mode":"files_with_matches"}
+```
+
+### Tool result
+```
+app/Http/Controllers/TitulaireDashboardController.php
+```
+
+### Tool result
+```
+app/Http/Controllers/ (6 lines, newest first):
+  ProfesseurController.php
+  ProfesseurEvaluationController.php
+  ProfesseurEspaceController.php
+  ProfesseurPresenceController.php
+  ProfesseurDashboardController.php
+  ProfesseursController.php
+```
+
+### Tool result
+```
+resources/views/titulaire/dashboard.blade.php
+```
+
+### Tool result
+```
+resources/views/professeur/ (11 lines, newest first):
+  evaluations.blade.php
+  layout.blade.php
+  presences.blade.php
+  profil.blade.php
+  dashboard.blade.php
+  eleve-show.blade.php
+  eleves.blade.php
+  notes.blade.php
+  cours-show.blade.php
+  cours.blade.php
+  planning.blade.php
+```
+
+### Tool result
+```
+Output saved to C:\Users\danie\.wmark\tool-outputs\9f19a8c29c30-sub-0\20261012-235730-glob-call_01a13255df0072f8bb48fc5d.txt (967 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+database/migrations/ (49 lines, newest first):
+  2026_10_30_000000_add_fin_to_cycles_table.php
+  2026_10_29_000000_add_ordre_to_cycles_and_diplome_statut.php
+  2026_10_28_000000_create_classe_destinations_table.php
+  2026_10_27_000000_add_remember_token_to_users_table.php
+  2026_10_26_010000_create_journal_decisions_table.php
+  2026_10_26_000000_add_postes_roles_to_users_table.php
+  2026_10_25_030000_clear_default_bulletin_titre.php
+  2026_10_25_020000_add_optional_modules_flags.php
+  2026_10_25
+
+... 782 chars truncated ...
+
+4_010000_add_dernier_message_id_to_conversation_user_table.php
+  2026_10_14_000000_create_messagerie_tables.php
+  2026_10_13_000000_create_annonces_and_notifications_tables.php
+  2026_10_12_000000_create_presences_table.php
+  2026_10_11_000000_create_comptabilite_tables.php
+  2026_10_10_000000_add_salaires_to_archives_annees_table.php
+  2026_10_09_000000_create_salaires_and_paies_tables.php
+  2026_10_08_000000_add_details_to_archives_annees_table.php
+  2026_10_07_000000_widen_statut_on_inscriptions_table.php
+  2026_10_06_000000_add_est_inscription_to_types_frais_table.php
+  2026_10_05_000000_add_periode_to_paiements_table.php
+  2026_10_04_010000_add_maxima_to_cours_table.php
+  2026_10_04_000000_add_module_switches_to_parametres_systeme_table.php
+  2026_10_03_000000_enforce_single_current_school_year.php
+  2026_09_29_010000_create_parametres_systeme_table.php
+  2026_09_29_000000_create_registration_request_tables.php
+  2026_09_21_050000_add_profile_fields_to_users_table.php
+  2026_09_21_040000_align_sections_options_schema.php
+  2026_09_21_030000_create_sections_and_options_tables.php
+  2026_09_21_020000_create_school_management_tables.php
+  2026_09_21_010000_create_eleves_table.php
+  2026_09_21_0
+```
+
+### Tool result
+```
+Error: ripgrep (rg) is not available, so the grep tool cannot run. Use the bash tool with grep/find instead. environment: native Windows. Install ripgrep with 'winget install BurntSushi.ripgrep.MSVC' (or 'choco install ripgrep'). If wmark came from the official Windows binary, the bundled vendor\windows\rg.exe is missing — reinstall wmark.
+```
+
+### Tool call — python
+```
+{"code":"\nimport os, re\nroot = os.getcwd()\npat = re.compile(r'titulaire', re.I)\nexts = ('.php','.blade.php','.json','.env','.yaml','.yml')\nskip = ('vendor','node_modules','.git','storage','public/build', '.wmark')\nhits = {}\nfor dp, dn, fn in os.walk(root):\n    if any(s in dp.replace('\\\\','/') for s in skip):\n        continue\n    for f in fn:\n        if not (f.endswith(exts)):\n            continue\n        p = os.path.join(dp, f)\n        try:\n            lines = open(p, encoding='utf-8', errors='ignore').read().splitlines()\n        except: continue\n        for i,l in enumerate(lines,1):\n            if pat.search(l):\n                hits.setdefault(os.path.relpath(p, root), []).append((i,l.strip()[:180]))\nfor p in sorted(hits):\n    print(\"=== \"+p)\n    for i,l in hits[p]:\n        print(f\"  {i}: {l}\")\nprint(\"TOTAL FILES:\", len(hits))\n"}
+```
+
+### Tool result
+```
+TOTAL FILES: 0
+```
+
+## User
+[SYSTEM] This python payload was long (832 chars) and has been persisted to: ~\.wmark\tool-outputs\9f19a8c29c30-sub-0\code-d1bd7bbe7b2e.py
+To tweak and re-run: use update(file_path=..., old_string=..., new_string=...) on that file, then re-run its content with the python tool (or bash: python3 C:\Users\danie\.wmark\tool-outputs\9f19a8c29c30-sub-0\code-d1bd7bbe7b2e.py). Do NOT re-type the whole payload — edit the file. (Re-running the same long payload rewrites that file and bumps its mtime, which invalidates a prior read for the edit guard.)
+
+### Tool call — python
+```
+{"code":"\nimport os\nprint(\"cwd:\", os.getcwd())\nprint(os.listdir(os.getcwd())[:50])\n"}
+```
+
+### Tool call — glob
+```
+{"pattern":"routes/web.php"}
+```
+
+### Tool result
+```
+cwd: c:\Users\danie\AppData\Roaming\Composer\vendor\bin\ecole
+['.editorconfig', '.env', '.env.example', '.git', '.gitattributes', '.gitignore', '.wmark-subagents', '.wmark-tasks.json', '.wmark-tool-results', 'app', 'artisan', 'bootstrap', 'composer.json', 'composer.lock', 'config', 'database', 'ngrok.exe', 'node_modules', 'package-lock.json', 'package.json', 'phpunit.xml', 'public', 'README.md', 'resources', 'routes', 'storage', 'tests', 'vendor', 'vite.config.js']
+```
+
+### Tool result
+```
+routes/web.php
+```
+
+### Tool call — python
+```
+{"code":"\nimport os, re\nroot = os.getcwd()\npat = re.compile(r'titulaire', re.I)\nexts = ('.php','.blade.php','.json','.env','.yaml','.yml')\nskip = ('/vendor/','/node_modules/','/.git/','/storage/','/public/build/','/.wmark')\nhits = {}\nfor dp, dn, fn in os.walk(root):\n    rel = os.path.relpath(dp, root).replace('\\\\','/')\n    if any(s.strip('/') and s in '/'+rel+'/' for s in skip) or rel=='.git':\n        continue\n    for f in fn:\n        if not f.endswith(exts): continue\n        p = os.path.join(dp, f)\n        try: lines = open(p, encoding='utf-8', errors='ignore').read().splitlines()\n        except: continue\n        for i,l in enumerate(lines,1):\n            if pat.search(l):\n                hits.setdefault(os.path.relpath(p, root).replace('\\\\','/'), []).append((i,l.strip()[:200]))\nfor p in sorted(hits):\n    print(\"=== \"+p)\n    for i,l in hits[p]: print(f\"  {i}: {l}\")\nprint(\"TOTAL FILES:\", len(hits))\n"}
+```
+
+### Tool result
+```
+Output saved to C:\Users\danie\.wmark\tool-outputs\9f19a8c29c30-sub-0\20261012-235737-python-call_01a13255f1bc729482c5e1a1.txt (2,256 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+=== app/Http/Controllers/AdminRegistrationRequestController.php
+  162: 'role' => ['required', 'in:prefetture,titulaire,professeur,comptable,parent'],
+=== app/Http/Controllers/PaieController.php
+  26: private const ROLES_PERSONNEL = ['comptable', 'titulaire', 'prefetture'];
+=== app/Http/Controllers/RegistrationRequestController.php
+  93: 'role_souhaite' => ['required', 'in:prefetture,titulaire,professeur,comptable,parent'],
+=== app/Http/Controllers/TitulaireDashboardController.php
+  12: class Tit
+
+... 6,032 chars truncated ...
+
+true"></i> {{ $schoolYear?->libelle ?: 'Espace titulaire' }}</span>
+  65: <h2>{{ $classes->isNotEmpty() ? 'Suivi de vos classes' : 'Votre espace de titulaire' }}</h2>
+  77: <div class="link-notice" role="status"><i class="fa fa-info-circle" aria-hidden="true"></i><div><strong>Aucune classe ne vous est rattachée pour cette année.</strong><p>Un titulaire voit les classes o
+  80: <section class="stat-grid" aria-label="Mes indicateurs de titulaire">
+  104: <div class="schedule-panel"><div class="empty-state"><div><i class="fa fa-graduation-cap" aria-hidden="true"></i><strong>Aucune classe à afficher</strong><span>Vos classes titulaires apparaîtront ici 
+  128: <p class="footer-note"><span class="school-brand">{{ $systemSettings->nom_court }}</span> <span aria-hidden="true">·</span> Espace titulaire</p>
+=== routes/web.php
+  54: use App\Http\Controllers\TitulaireDashboardController;
+  316: Route::get('/titulaire/tableau-de-bord', [TitulaireDashboardController::class, 'index'])->middleware('role:titulaire')->name('titulaire.dashboard');
+=== tests/Feature/ClocheNotificationsTest.php
+  75: $titulaire = User::factory()->create(['role' => 'titulaire', 'username' => 'titulaire.test']);
+  84: foreach ([
+```
+
+## User
+[SYSTEM] Long python payload also persisted to ~\.wmark\tool-outputs\9f19a8c29c30-sub-0\code-874ad44c0630.py — edit that file in place and re-run the persisted command/script. (Re-running the same long payload rewrites that file and bumps its mtime, which invalidates a prior read for the edit guard.)
+
+### Tool call — read_file
+```
+{"path":"C:\\Users\\danie\\.wmark\\tool-outputs\\9f19a8c29c30-sub-0\\20261012-235737-python-call_01a13255f1bc729482c5e1a1.txt"}
+```
+
+### Tool result
+```
+1      === app/Http/Controllers/AdminRegistrationRequestController.php
+2        162: 'role' => ['required', 'in:prefetture,titulaire,professeur,comptable,parent'],
+3      === app/Http/Controllers/PaieController.php
+4        26: private const ROLES_PERSONNEL = ['comptable', 'titulaire', 'prefetture'];
+5      === app/Http/Controllers/RegistrationRequestController.php
+6        93: 'role_souhaite' => ['required', 'in:prefetture,titulaire,professeur,comptable,parent'],
+7      === app/Http/Controllers/TitulaireDashboardController.php
+8        12: class TitulaireDashboardController extends Controller
+9        15: * Les classes suivies par le titulaire et leurs effectifs de l'année en cours.
+10       17: * Un titulaire est rattaché à sa fiche professeur (users.professeur_id) ;
+11       63: return view('titulaire.dashboard', [
+12     === app/Http/Controllers/UserProfileController.php
+13       320: 'labels' => ['Administrateurs', 'Préfecture', 'Titulaires', 'Professeurs', 'Comptables'],
+14       324: $roleCounts->get('titulaire', 0),
+15     === app/Models/Annonce.php
+16       23: 'titulaire' => 'Titulaires',
+17     === app/Models/User.php
+18       35: public const ROLES = ['admin', 'systeme', 'prefetture', 'directeur_etudes', 'secretaire', 'disciplinaire', 'titulaire', 'professeur', 'comptable', 'parent'];
+19       45: 'titulaire' => 'Titulaire',
+20       71: 'titulaire' => 'titulaire.dashboard',
+21     === app/Support/Raccourcis.php
+22       45: 'titulaire' => [
+23       46: 'direct' => ['libelle' => 'Mon espace', 'icone' => 'fa-dashboard', 'url' => route('titulaire.dashboard')],
+24       48: ['Mon tableau de bord', 'fa-dashboard', route('titulaire.dashboard')],
+25     === database/migrations/0001_01_01_000000_create_users_table.php
+26       22: $table->enum('role', ['admin', 'prefetture', 'titulaire', 'professeur', 'comptable'])->default('professeur');
+27     === database/migrations/2026_10_09_000000_create_salaires_and_paies_tables.php
+28       15: // personnel (compte uti
+```
+
+### Tool call — read_file
+```
+{"path":"app/Models/User.php","limit":120}
+```
+
+### Tool call — read_file
+```
+{"path":"tests/Feature/RoleDashboardsTest.php"}
+```
+
+### Tool call — read_file
+```
+{"path":"app/Http/Controllers/TitulaireDashboardController.php"}
+```
+
+### Tool call — glob
+```
+{"pattern":"config/permissions.php"}
+```
+
+### Tool call — glob
+```
+{"pattern":"**/*create_classes*"}
+```
+
+### Tool call — glob
+```
+{"pattern":"**/*create_professeurs*"}
+```
+
+### Tool call — glob
+```
+{"pattern":"**/*affectations*"}
+```
+
+### Tool result
+```
+1      <?php
+2      
+3      namespace App\Models;
+4      
+5      // use Illuminate\Contracts\Auth\MustVerifyEmail;
+6      use Database\Factories\UserFactory;
+7      use Illuminate\Database\Eloquent\Factories\HasFactory;
+8      use Illuminate\Foundation\Auth\User as Authenticatable;
+9      use Illuminate\Notifications\Notifiable;
+10     
+11     class User extends Authenticatable
+12     {
+13         /** @use HasFactory<UserFactory> */
+14         use HasFactory, Notifiable;
+15     
+16         public function professeur()
+17         {
+18             return $this->belongsTo(Professeurs::class, 'professeur_id');
+19         }
+20     
+21         /**
+22          * Enfants rattachés à ce compte (utile pour un compte parent).
+23          */
+24         public function eleves()
+25         {
+26             return $this->belongsToMany(Eleve::class, 'eleve_user')->withTimestamps();
+27         }
+28     
+29         /**
+30          * Rôles reconnus, dans l'ordre d'affichage : source unique pour les listes
+31          * de validation et les sélecteurs de rôle.
+32          *
+33          * @var list<string>
+34          */
+35         public const ROLES = ['admin', 'systeme', 'prefetture', 'directeur_etudes', 'secretaire', 'disciplinaire', 'titulaire', 'professeur', 'comptable', 'parent'];
+36     
+37         /** Libellé lisible d'un rôle. */
+38         public const ROLE_LABELS = [
+39             'admin' => 'Administrateur',
+40             'systeme' => 'Système',
+41             'prefetture' => 'Préfecture',
+42             'directeur_etudes' => 'Directeur des Études',
+43             'secretaire' => 'Secrétaire',
+44             'disciplinaire' => 'Disciplinaire / Conseiller Pédagogique',
+45             'titulaire' => 'Titulaire',
+46             'professeur' => 'Professeur',
+47             'comptable' => 'Comptable',
+48             'parent' => 'Parent',
+49         ];
+50     
+51         public static function libelleRole(?string $role): string
+52         {
+53             return self::ROLE_LABEL
+```
+
+### Tool result
+```
+1      <?php
+2      
+3      use App\Models\User;
+4      use Illuminate\Database\Schema\Blueprint;
+5      use Illuminate\Support\Facades\DB;
+6      use Illuminate\Support\Facades\Schema;
+7      
+8      beforeEach(function () {
+9          $tables = [
+10             'paiements', 'frais_scolaires', 'types_frais', 'affectations_cours', 'cours',
+11             'inscriptions', 'eleves', 'classes', 'cycles', 'salles', 'professeurs', 'annees_scolaires', 'users',
+12         ];
+13     
+14         foreach ($tables as $table) {
+15             Schema::dropIfExists($table);
+16         }
+17     
+18         Schema::create('users', function (Blueprint $table) {
+19             $table->id();
+20             $table->unsignedBigInteger('professeur_id')->nullable();
+21             $table->string('nom', 50)->nullable();
+22             $table->string('prenom', 50)->nullable();
+23             $table->string('username', 50)->unique();
+24             $table->string('email', 100)->unique();
+25             $table->string('photo')->nullable();
+26             $table->string('password');
+27             $table->string('pin_code')->nullable();
+28             $table->string('role');
+29             $table->string('statut');
+30             $table->rememberToken();
+31             $table->timestamps();
+32         });
+33     
+34         Schema::create('professeurs', function (Blueprint $table) {
+35             $table->id();
+36             $table->string('matricule');
+37             $table->string('nom');
+38             $table->string('postnom')->nullable();
+39             $table->string('prenom');
+40             $table->string('specialite')->nullable();
+41             $table->string('photo')->nullable();
+42             $table->string('statut')->default('actif');
+43             $table->timestamps();
+44         });
+45     
+46         Schema::create('annees_scolaires', function (Blueprint $table) {
+47             $table->id();
+48             $table->string('libelle', 20)->unique();
+49             $table->date(
+```
+
+### Tool result
+```
+1      <?php
+2      
+3      namespace App\Http\Controllers;
+4      
+5      use App\Models\AffectationCours;
+6      use App\Models\AnneeScolaire;
+7      use App\Models\Classe;
+8      use App\Models\Inscription;
+9      use Illuminate\Http\Request;
+10     use Illuminate\View\View;
+11     
+12     class TitulaireDashboardController extends Controller
+13     {
+14         /**
+15          * Les classes suivies par le titulaire et leurs effectifs de l'année en cours.
+16          *
+17          * Un titulaire est rattaché à sa fiche professeur (users.professeur_id) ;
+18          * ses classes sont celles où il assure au moins une affectation de cours
+19          * pour l'année scolaire en cours.
+20          */
+21         public function index(Request $request): View
+22         {
+23             $user = $request->user();
+24             $professor = $user->professeur;
+25             $schoolYear = AnneeScolaire::enCours();
+26     
+27             $classes = collect();
+28             $eleves = collect();
+29             $effectif = 0;
+30             $nbCours = 0;
+31     
+32             if ($professor && $schoolYear) {
+33                 $affectations = AffectationCours::query()
+34                     ->anneeEnCours()
+35                     ->where('professeur_id', $professor->id);
+36     
+37                 $nbCours = (clone $affectations)->count();
+38                 $classeIds = (clone $affectations)->pluck('classe_id')->unique()->values();
+39     
+40                 $classes = Classe::query()
+41                     ->whereIn('id', $classeIds)
+42                     ->with(['cycle', 'salle'])
+43                     ->withCount(['inscriptions as effectif' => fn ($query) => $query
+44                         ->anneeEnCours()
+45                         ->where('statut', 'actif')])
+46                     ->orderBy('nom')
+47                     ->get();
+48     
+49                 $inscriptions = Inscription::query()
+50                     ->anneeEnCours()
+51                     ->whereIn
+```
+
+### Tool result
+```
+config/permissions.php
+```
+
+### Tool result
+```
+No files match '**/*create_classes*'.
+```
+
+### Tool result
+```
+[awaiting: glob, glob — outputs follow as they complete]
+```
+
+### Tool result
+```
+database/migrations/2026_09_20_222131_create_professeurs_table.php
+```
+
+### Tool result
+```
+[awaiting: glob — outputs follow as they complete]
+```
+
+### Tool result
+```
+No files match '**/*affectations*'.
+```
+
+### Tool call — read_file
+```
+{"path":"config/permissions.php"}
+```
+
+### Tool call — grep
+```
+{"pattern":"Schema::create\\('(classes|affectations_cours|professeurs|inscriptions)'","path":"database/migrations","output_mode":"files_with_matches"}
+```
+
+### Tool call — grep
+```
+{"pattern":"professeur","path":"routes/web.php","output_mode":"content","-n":true}
+```
+
+### Tool call — read_file
+```
+{"path":"database/migrations/2026_09_20_222131_create_professeurs_table.php"}
+```
+
+### Tool result
+```
+1      <?php
+2      
+3      /**
+4       * Matrice des permissions par poste : source unique des droits, affichée sur la
+5       * page « Matrice des permissions » et appliquée par le middleware `permission`.
+6       *
+7       * Niveaux : total, oui, non, lecture, avis, suivi, validation, rapports.
+8       * Tout niveau autre que « non » autorise l'accès à l'écran (consultation et
+9       * modification). Le rôle `admin` reste le super-administrateur (accès total).
+10      */
+11     return [
+12         // Postes de la matrice, dans l'ordre d'affichage.
+13         'roles' => ['systeme', 'prefetture', 'directeur_etudes', 'secretaire', 'comptable', 'professeur', 'disciplinaire'],
+14     
+15         'labels' => [
+16             'total' => 'Total',
+17             'oui' => 'Oui',
+18             'non' => 'Non',
+19             'lecture' => 'Lecture',
+20             'avis' => 'Avis',
+21             'suivi' => 'Suivi',
+22             'validation' => 'Validation',
+23             'rapports' => 'Rapports',
+24         ],
+25     
+26         'features' => [
+27             'modules' => [
+28                 'libelle' => 'Commuter les modules (Saisie Notes, Portail Parents)',
+29                 'niveaux' => ['systeme' => 'total'],
+30             ],
+31             'decisions' => [
+32                 'libelle' => 'Publier des Décisions Exécutives & Injonctions',
+33                 // Le Préfet publie les décisions/injonctions (§4) ; le Système peut aussi.
+34                 'niveaux' => ['systeme' => 'oui', 'prefetture' => 'oui'],
+35             ],
+36             'bulletins_validation' => [
+37                 'libelle' => 'Validation Finale des Bulletins Trimestriels',
+38                 'niveaux' => ['systeme' => 'oui', 'prefetture' => 'avis'],
+39             ],
+40             'emplois_du_temps' => [
+41                 'libelle' => 'Gestion & Modification des Emplois du Temps',
+42                 'niveaux' => ['systeme' => 'lecture', 'prefetture' => 'oui'],
+43             ],
+44         
+```
+
+### Tool result
+```
+Error: ripgrep (rg) is not available, so the grep tool cannot run. Use the bash tool with grep/find instead. environment: native Windows. Install ripgrep with 'winget install BurntSushi.ripgrep.MSVC' (or 'choco install ripgrep'). If wmark came from the official Windows binary, the bundled vendor\windows\rg.exe is missing — reinstall wmark.
+```
+
+### Tool result
+```
+Error: ripgrep (rg) is not available, so the grep tool cannot run. Use the bash tool with grep/find instead. environment: native Windows. Install ripgrep with 'winget install BurntSushi.ripgrep.MSVC' (or 'choco install ripgrep'). If wmark came from the official Windows binary, the bundled vendor\windows\rg.exe is missing — reinstall wmark.
+```
+
+### Tool result
+```
+1      <?php
+2      
+3      use Illuminate\Database\Migrations\Migration;
+4      use Illuminate\Database\Schema\Blueprint;
+5      use Illuminate\Support\Facades\Schema;
+6      
+7      return new class extends Migration
+8      {
+9          public function up(): void
+10         {
+11             Schema::create('professeurs', function (Blueprint $table) {
+12                 $table->id();
+13                 $table->string('matricule', 30)->unique();
+14                 $table->string('nom', 50);
+15                 $table->string('postnom', 50);
+16                 $table->string('prenom', 50);
+17                 $table->enum('sexe', ['M', 'F']);
+18                 $table->string('specialite', 100);
+19                 $table->string('telephone', 20);
+20                 $table->string('email', 100)->unique();
+21                 $table->string('photo', 255)->nullable();
+22                 $table->enum('statut', ['actif', 'inactif'])->default('actif');
+23                 $table->timestamps();
+24             });
+25         }
+26     
+27         public function down(): void
+28         {
+29             Schema::dropIfExists('professeurs');
+30         }
+31     };
+```
+
+### Tool call — python
+```
+{"code":"\nimport os,re\nroot=os.getcwd()\n# 1. find migrations creating classes / affectations_cours\nmig=os.path.join(root,'database','migrations')\nfor f in sorted(os.listdir(mig)):\n    p=os.path.join(mig,f)\n    t=open(p,encoding='utf-8',errors='ignore').read()\n    for tbl in ['classes','affectations_cours','inscriptions']:\n        if re.search(r\"Schema::create\\('\"+tbl+r\"'\", t):\n            print(f\"MIGRATION {f} creates {tbl}\")\nprint('---- routes/web.php professeur+prof lines ----')\nr=open(os.path.join(root,'routes','web.php'),encoding='utf-8',errors='ignore').read().splitlines()\nfor i,l in enumerate(r,1):\n    if re.search(r'professeur|titulaire', l, re.I):\n        print(f\"{i}: {l.strip()}\")\n"}
+```
+
+### Tool result
+```
+Output saved to C:\Users\danie\.wmark\tool-outputs\9f19a8c29c30-sub-0\20261012-235742-python-call_01a1325609a876d78733bf62.txt (1,127 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+MIGRATION 2026_09_21_020000_create_school_management_tables.php creates classes
+MIGRATION 2026_09_21_020000_create_school_management_tables.php creates affectations_cours
+MIGRATION 2026_09_21_020000_create_school_management_tables.php creates inscriptions
+---- routes/web.php professeur+prof lines ----
+12: use App\Http\Controllers\ProfesseurController;
+13: use App\Http\Controllers\ProfesseurDashboardController;
+14: use App\Http\Controllers\ProfesseurEspaceController;
+15: use App\Http\Controllers\
+
+... 2,612 chars truncated ...
+
+ware('role:professeur')->name('professeur.cours');
+335: Route::get('/professeur/cours/{affectation}', [ProfesseurEspaceController::class, 'coursShow'])->middleware('role:professeur')->name('professeur.cours.show');
+336: Route::get('/professeur/eleves', [ProfesseurEspaceController::class, 'eleves'])->middleware('role:professeur')->name('professeur.eleves');
+337: Route::get('/professeur/eleves/{eleve}', [ProfesseurEspaceController::class, 'eleveShow'])->middleware('role:professeur')->name('professeur.eleves.show');
+338: Route::get('/professeur/evaluations', [ProfesseurEvaluationController::class, 'index'])->middleware('role:professeur')->name('professeur.evaluations');
+339: Route::post('/professeur/evaluations', [ProfesseurEvaluationController::class, 'store'])->middleware('role:professeur')->name('professeur.evaluations.store');
+340: Route::get('/professeur/evaluations/{evaluation}/notes', [ProfesseurEvaluationController::class, 'notes'])->middleware('role:professeur')->name('professeur.notes');
+341: Route::post('/professeur/evaluations/{evaluation}/notes', [ProfesseurEvaluationController::class, 'storeNotes'])->middleware('role:professeur')->name('professeur.notes.store');
+342: Route::get('
+```
+
+## User
+[SYSTEM] Long python payload also persisted to ~\.wmark\tool-outputs\9f19a8c29c30-sub-0\code-299464096d51.py — edit that file in place and re-run the persisted command/script. (Re-running the same long payload rewrites that file and bumps its mtime, which invalidates a prior read for the edit guard.)
+
+### Tool call — read_file
+```
+{"path":"C:\\Users\\danie\\.wmark\\tool-outputs\\9f19a8c29c30-sub-0\\20261012-235742-python-call_01a1325609a876d78733bf62.txt"}
+```
+
+### Tool call — read_file
+```
+{"path":"database/migrations/2026_09_21_020000_create_school_management_tables.php"}
+```
+
+### Tool result
+```
+1      MIGRATION 2026_09_21_020000_create_school_management_tables.php creates classes
+2      MIGRATION 2026_09_21_020000_create_school_management_tables.php creates affectations_cours
+3      MIGRATION 2026_09_21_020000_create_school_management_tables.php creates inscriptions
+4      ---- routes/web.php professeur+prof lines ----
+5      12: use App\Http\Controllers\ProfesseurController;
+6      13: use App\Http\Controllers\ProfesseurDashboardController;
+7      14: use App\Http\Controllers\ProfesseurEspaceController;
+8      15: use App\Http\Controllers\ProfesseurEvaluationController;
+9      16: use App\Http\Controllers\ProfesseurPresenceController;
+10     54: use App\Http\Controllers\TitulaireDashboardController;
+11     101: Route::get('/admin/professeurs/nouveau', [ProfesseurController::class, 'create'])->middleware('role:admin')->name('admin.professeurs.create');
+12     102: Route::post('/admin/professeurs', [ProfesseurController::class, 'store'])->middleware('role:admin')->name('admin.professeurs.store');
+13     103: Route::get('/admin/professeurs', [ProfesseurController::class, 'index'])->middleware('role:admin')->name('admin.professeurs.index');
+14     104: Route::get('/admin/professeurs/{professeur}', [ProfesseurController::class, 'show'])->middleware('role:admin')->name('admin.professeurs.show');
+15     105: Route::get('/admin/professeurs/{professeur}/carte', [ProfesseurController::class, 'carte'])->middleware('role:admin')->name('admin.professeurs.carte');
+16     106: Route::get('/admin/professeurs/{professeur}/emploi-du-temps', [ProfesseurController::class, 'emploiDuTemps'])->middleware('role:admin')->name('admin.professeurs.emploi-du-temps');
+17     107: Route::get('/admin/professeurs/{professeur}/modifier', [ProfesseurController::class, 'edit'])->middleware('role:admin')->name('admin.professeurs.edit');
+18     108: Route::put('/admin/professeurs/{professeur}', [ProfesseurController::class, 'update'])->middleware('role:admin')->name('admin.professeurs.update'
+```
+
+### Tool result
+```
+1      <?php
+2      
+3      use Illuminate\Database\Migrations\Migration;
+4      use Illuminate\Database\Schema\Blueprint;
+5      use Illuminate\Support\Facades\Schema;
+6      
+7      return new class extends Migration
+8      {
+9          public function up(): void
+10         {
+11             Schema::create('annees_scolaires', function (Blueprint $t) { $t->id(); $t->string('libelle', 20)->unique(); $t->date('date_debut'); $t->date('date_fin'); $t->boolean('is_encours')->default(false); $t->enum('statut', ['actif', 'inactif'])->default('actif'); $t->timestamps(); });
+12             Schema::create('cycles', function (Blueprint $t) { $t->id(); $t->string('nom', 50)->unique(); $t->enum('statut', ['actif', 'inactif'])->default('actif'); $t->timestamps(); });
+13             Schema::create('salles', function (Blueprint $t) { $t->id(); $t->string('nom', 50)->unique(); $t->unsignedInteger('capacite')->nullable(); $t->enum('statut', ['actif', 'inactif'])->default('actif'); $t->timestamps(); });
+14             Schema::create('cours', function (Blueprint $t) { $t->id(); $t->string('code', 20)->unique(); $t->string('intitule', 100); $t->unsignedInteger('ponderation')->default(1); $t->enum('statut', ['actif', 'inactif'])->default('actif'); $t->timestamps(); });
+15             Schema::create('tuteurs', function (Blueprint $t) { $t->id(); $t->string('nom_pere', 100)->nullable(); $t->string('profession_pere', 100)->nullable(); $t->string('telephone_pere', 20)->nullable(); $t->string('email_pere', 100)->nullable(); $t->text('adresse_pere')->nullable(); $t->string('nom_mere', 100); $t->string('profession_mere', 100)->nullable(); $t->string('telephone_mere', 20); $t->string('email_mere', 100)->nullable(); $t->text('adresse_mere')->nullable(); $t->enum('statut', ['actif', 'inactif'])->default('actif'); $t->timestamps(); });
+16             Schema::create('periodes', function (Blueprint $t) { $t->id(); $t->foreignId('annee_scolaire_id')->constrained('annees_scolaires')->cascadeOnDelete();
+```
+
+### Tool call — python
+```
+{"code":"\nimport os,re\nroot=os.getcwd()\nmig=os.path.join(root,'database','migrations')\nprint(\"--- titulaire_id occurrences in migrations ---\")\nfor f in sorted(os.listdir(mig)):\n    t=open(os.path.join(mig,f),encoding='utf-8',errors='ignore').read()\n    if 'titulaire_id' in t: print(f, \"-> titulaire_id\")\n    if re.search(r\"(table|Schema::table)\\('classes'\", t): print(f, \"-> alters classes\")\nprint(\"--- migrations altering classes or professeurs ---\")\nfor f in sorted(os.listdir(mig)):\n    t=open(os.path.join(mig,f),encoding='utf-8',errors='ignore').read()\n    for tbl in ['classes','professeurs']:\n        if re.search(r\"Schema::table\\('\"+tbl+r\"'\", t):\n            print(f, \"alters\", tbl)\nprint(\"--- professeur views/controllers pages ---\")\nimport glob\nfor p in sorted(glob.glob(os.path.join(root,'app/Http/Controllers/Professeur*'))):\n    t=open(p,encoding='utf-8',errors='ignore').read()\n    fns=re.findall(r'function (\\w+)\\(', t)\n    print(os.path.basename(p), \"->\", fns)\n"}
+```
+
+### Tool result
+```
+--- titulaire_id occurrences in migrations ---
+2026_09_21_030000_create_sections_and_options_tables.php -> alters classes
+2026_10_20_000000_create_deliberations_module.php -> alters classes
+2026_10_24_000000_add_classe_suivante_to_classes_table.php -> alters classes
+--- migrations altering classes or professeurs ---
+2026_09_21_030000_create_sections_and_options_tables.php alters classes
+2026_10_20_000000_create_deliberations_module.php alters classes
+2026_10_24_000000_add_classe_suivante_to_classes_table.php alters classes
+--- professeur views/controllers pages ---
+ProfesseurController.php -> ['index', 'show', 'carte', 'toggleStatus', 'emploiDuTemps', 'create', 'edit', 'update', 'storeDocument', 'destroyDocument', 'store']
+ProfesseurDashboardController.php -> ['index', 'findNextClass']
+ProfesseurEspaceController.php -> ['planning', 'cours', 'profil', 'coursShow', 'eleves', 'eleveShow', 'contexte', 'autoriser', 'heuresParSemaine', 'effectifsParClasse']
+ProfesseurEvaluationController.php -> ['index', 'store', 'notes', 'storeNotes', 'contexteEvaluation']
+ProfesseurPresenceController.php -> ['index', 'store']
+ProfesseursController.php -> []
+```
+
+## User
+[SYSTEM] Long python payload also persisted to ~\.wmark\tool-outputs\9f19a8c29c30-sub-0\code-23097a081a31.py — edit that file in place and re-run the persisted command/script. (Re-running the same long payload rewrites that file and bumps its mtime, which invalidates a prior read for the edit guard.)
+
+### Tool call — python
+```
+{"code":"\nimport os,re\nroot=os.getcwd()\nr=open(os.path.join(root,'routes','web.php'),encoding='utf-8',errors='ignore').read().splitlines()\nprint(\"--- routes with 'bulletin' ---\")\nfor i,l in enumerate(r,1):\n    if re.search(r'bulletin', l, re.I): print(f\"{i}: {l.strip()}\")\nprint(\"--- views referencing professeur bulletins ---\")\nfor dp,dn,fn in os.walk(os.path.join(root,'resources','views')):\n    for f in fn:\n        if 'bulletin' in f.lower(): print(os.path.relpath(os.path.join(dp,f),root).replace('\\\\','/'))\nprint(\"--- users professeur_id migrations ---\")\nfor f in ['2026_09_20_225243_add_professeur_id_to_users_table.php','2026_09_21_000000_add_professeur_foreign_key_to_users_table.php','2026_10_26_000000_add_postes_roles_to_users_table.php']:\n    p=os.path.join(root,'database','migrations',f)\n    if os.path.exists(p):\n        print(\"=== \"+f)\n        print(open(p,encoding='utf-8',errors='ignore').read())\n"}
+```
+
+### Tool result
+```
+Output saved to C:\Users\danie\.wmark\tool-outputs\9f19a8c29c30-sub-0\20261012-235748-python-call_01a1325621df75f4b5b7bf1c.txt (1,110 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+--- routes with 'bulletin' ---
+25: use App\Http\Controllers\BulletinController;
+136: Route::get('/admin/bulletins', [BulletinController::class, 'index'])->middleware('role:admin')->name('admin.bulletins.index');
+137: Route::post('/admin/bulletins/generer', [BulletinController::class, 'generate'])->middleware('role:admin')->name('admin.bulletins.generate');
+138: Route::get('/admin/bulletins/{inscription}/document', [BulletinController::class, 'document'])->middleware('role:admin')->name('admin.bu
+
+... 2,788 chars truncated ...
+
+r_id_foreign');
+
+        if (! $foreignKeyExists) {
+            return;
+        }
+
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropForeign(['professeur_id']);
+        });
+    }
+};
+
+=== 2026_10_26_000000_add_postes_roles_to_users_table.php
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\DB;
+
+/**
+ * Nouveaux postes de la matrice des permissions : « Système », « Secrétaire » et
+ * « Directeur des Études ». L'énumération MySQL de la colonne `role` est
+ * étendue (les autres moteurs utilisent une colonne texte, rien à faire).
+ */
+return new class extends Migration
+{
+    private const ROLES = "'admin','systeme','prefetture','directeur_etudes','secretaire','titulaire','professeur','comptable','parent'";
+
+    public function up(): void
+    {
+        if (DB::getDriverName() === 'mysql') {
+            DB::statement('ALTER TABLE users MODIFY role ENUM('.self::ROLES.") NOT NULL DEFAULT 'professeur'");
+        }
+    }
+
+    public function down(): void
+    {
+        if (DB::getDriverName() !== 'mysql') {
+            return;
+        }
+
+        foreach (['systeme', 'directeur_etudes', 'secretaire'] as $role) {
+            DB::table('u
+```
+
+## User
+[SYSTEM] Long python payload also persisted to ~\.wmark\tool-outputs\9f19a8c29c30-sub-0\code-2501e66e9218.py — edit that file in place and re-run the persisted command/script. (Re-running the same long payload rewrites that file and bumps its mtime, which invalidates a prior read for the edit guard.)
+
+### Tool call — read_file
+```
+{"path":"C:\\Users\\danie\\.wmark\\tool-outputs\\9f19a8c29c30-sub-0\\20261012-235748-python-call_01a1325621df75f4b5b7bf1c.txt"}
+```
+
+### Tool result
+```
+1      --- routes with 'bulletin' ---
+2      25: use App\Http\Controllers\BulletinController;
+3      136: Route::get('/admin/bulletins', [BulletinController::class, 'index'])->middleware('role:admin')->name('admin.bulletins.index');
+4      137: Route::post('/admin/bulletins/generer', [BulletinController::class, 'generate'])->middleware('role:admin')->name('admin.bulletins.generate');
+5      138: Route::get('/admin/bulletins/{inscription}/document', [BulletinController::class, 'document'])->middleware('role:admin')->name('admin.bulletins.document');
+6      308: Route::get('/prefecture/bulletins', [PrefectureDashboardController::class, 'bulletins'])->middleware('role:prefetture', 'permission:bulletins_validation')->name('prefecture.bulletins');
+7      309: Route::post('/prefecture/bulletins/{bulletin}/approuver', [PrefectureDashboardController::class, 'approuverBulletin'])->middleware('role:prefetture', 'permission:bulletins_validation')->name('prefecture.bulletins.approuver');
+8      310: Route::get('/prefecture/bulletins/{inscription}/document', [\App\Http\Controllers\BulletinController::class, 'document'])->middleware('role:prefetture', 'permission:bulletins_validation')->name('prefecture.bulletins.document');
+9      --- views referencing professeur bulletins ---
+10     resources/views/prefecture/bulletins.blade.php
+11     --- users professeur_id migrations ---
+12     === 2026_09_20_225243_add_professeur_id_to_users_table.php
+13     <?php
+14     
+15     use Illuminate\Database\Migrations\Migration;
+16     use Illuminate\Database\Schema\Blueprint;
+17     use Illuminate\Support\Facades\Schema;
+18     
+19     return new class extends Migration
+20     {
+21         /**
+22          * Run the migrations.
+23          */
+24         public function up(): void
+25         {
+26             Schema::table('users', function (Blueprint $table) {
+27                 // Place la colonne professeur_id après 'id' (optionnel)
+28                 $table->foreignId('professeur_id')
+29      
+```
+
+## Assistant
+# Rapport — rôle et espace « titulaire »
+
+## 1. Le rôle « titulaire » : où
+
+**Colonne `users.role` (enum) — `titulaire` présent dès la base :**
+- `database/migrations/0001_01_01_000000_create_users_table.php:22` → `enum('role', ['admin','prefetture','titulaire','professeur','comptable'])->default('professeur')`
+- Étendue à `parent` : `2026_10_16_000000_add_parent_role_to_users_table.php:22,37`
+- Enum complet (`systeme`, `directeur_etudes`, `secretaire`, `disciplinaire`…) : `2026_10_26_010000_create_journal_decisions_table.php:34,38` ; `2026_10_26_000000_add_postes_roles_to_users_table.php:13,34`. Note : `…journal_decisions…:44` reclasse les comptes `disciplinaire` en `titulaire`.
+
+**Model `app/Models/User.php` :** `ROLES` (l.35), libellé `'titulaire' => 'Titulaire'` (l.45), `dashboardRouteNameFor` → `'titulaire.dashboard'` (l.71).
+
+**`config/permissions.php` :** clé `'roles'` (l.13) = `['systeme','prefetture','directeur_etudes','secretaire','comptable','professeur','disciplinaire']` → **`titulaire` ABSENT** de la matrice ; **aucune** entrée `titulaire` dans un `features.*.niveaux`.
+
+**`routes/web.php` :** `use` l.54 ; unique route l.316.
+
+**Assignable ?** **OUI, c'est un rôle assignable** (valeur d'`users.role`, dans `User::ROLES`, proposé dans les formulaires) :
+- `resources/views/admin/profile/account-create.blade.php:231` et `account-edit.blade.php:229`
+- `resources/views/registration/account-request.blade.php:83`
+- `RegistrationRequestController.php:93` et `AdminRegistrationRequestController.php:162` (validation `in:…,titulaire,…`)
+- **Mais** il n'est **pas** un poste de la matrice de permissions (au contraire de `professeur`). Il sert aussi de cible au middleware `role:titulaire`.
+
+---
+
+## 2. Ce qui existe déjà pour le titulaire
+
+| Élément | Chemin / ligne |
+|---|---|
+| Route | `routes/web.php:316` — `titulaire.dashboard` |
+| Contrôleur | `app/Http/Controllers/TitulaireDashboardController.php` (`index`, l.21-72) |
+| Vue | `resources/views/titulaire/dashboard.blade.php` (seule vue, autonome, pas de `layout.blade.php` dans `titulaire/`) |
+| Raccourcis | `app/Support/Raccourcis.php:45-48` |
+| Tests | `tests/Feature/RoleDashboardsTest.php`, `HomeRedirectTest.php:36,59`, `ClocheNotificationsTest.php:75,84` |
+
+Rien d'autre : pas de controllers/routes/vues `titulaire.*` au-delà du dashboard.
+
+---
+
+## 3. Espace professeur (modèle à imiter)
+
+**Routes `professeur.*` (`routes/web.php`) :** `dashboard` (317) · `planning` (332) · `profil` (333) · `cours` (334) · `cours.show` (335) · `eleves` (336) · `eleves.show` (337) · `evaluations` (338) · `evaluations.store` (339) · `notes` (340) · `notes.store` (341) · `presences` (342) · `presences.store` (343). Toutes avec `middleware('role:professeur')`.
+
+**Contrôleurs (`app/Http/Controllers/`)** — méthodes : `ProfesseurDashboardController` (index, findNextClass) · `ProfesseurEspaceController` (planning, cours, profil, coursShow, eleves, eleveShow, contexte, autoriser, heuresParSemaine, effectifsParClasse) · `ProfesseurEvaluationController` (index, store, notes, storeNotes, contexteEvaluation) · `ProfesseurPresenceController` (index, store) · `ProfesseurController` (CRUD **admin**) · `ProfesseursController` (vide).
+
+**Vues `resources/views/professeur/` :** `layout`, `dashboard`, `planning`, `profil`, `cours`, `cours-show`, `eleves`, `eleve-show`, `notes`, `evaluations`, `presences`.
+
+**Pages existantes :**
+- Saisie de notes → **OUI** (`notes.blade.php` + `professeur.notes` / `notes.store`)
+- Présences / appels → **OUI** (`presences.blade.php` + `professeur.presences`)
+- Effectif / classe → **partiel** : via `cours`/`eleves` (`eleves.blade.php`, `effectifsParClasse`, `eleve-show`) — **pas de vue « classe » dédiée**
+- Évaluations → **OUI** (`evaluations.blade.php`)
+- Bulletins → **NON** (aucune route/vue `professeur.bulletins` ; bulletins gérés côté `admin` l.136-138 et `prefecture` l.308-310 seulement)
+
+---
+
+## 4. Rattachement d'un titulaire/professeur à une classe
+
+**Il n'existe AUCUNE colonne `titulaire_id`** (vérifié sur toutes les migrations) ni table `titulaires`. La titularité **n'est pas modélisée** ; elle est **déduite** des affectations de cours.
+
+- `users.professeur_id` : nullable, **unique**, FK → `professeurs` — `2026_09_20_225243_add_professeur_id_to_users_table.php:28-33` ; `2026_09_21_000000_add_professeur_foreign_key_to_users_table.php:67-71`.
+- Table `professeurs` : `id, matricule, nom, postnom, prenom, sexe, specialite, telephone, email, photo, statut` — `2026_09_20_222131_create_professeurs_table.php:11-24`.
+- Table `classes` : `id, cycle_id, salle_id, nom, section_id, option_id, statut, timestamps` — `2026_09_21_020000_create_school_management_tables.php:17` (puis `classe_suivante` via `2026_10_24_…`). **Aucun `titulaire_id`.**
+- Table de liaison `affectations_cours` : `id, professeur_id, cours_id, classe_id, annee_scolaire_id, statut` — `create_school_management_tables.php:22`.
+
+**Mécanisme réel** (`TitulaireDashboardController::index`, l.32-47) : classes du titulaire = `AffectationCours` où `professeur_id = user.professeur_id` et année en cours → `classe_id` distincts. **Un titulaire = un professeur ayant des affectations de cours.**
+
+---
+
+## 5. `tests/Feature/RoleDashboardsTest.php` — cas titulaire
+
+- Fixture (l.174-182) : professeur `id=1` + 1 `affectation_cours` (professeur 1 / cours 1 / classe 1 / année en cours).
+- **l.210-221** `the homeroom dashboard shows the classes and pupils of the current year` : user `role=titulaire, professeur_id=1` → GET `titulaire.dashboard` → `assertOk` + voit `Espace titulaire`, `3e primaire`, `2 élève(s)`, `Banzolo`, `Annie`.
+- **l.223-230** `warns when the account is not linked to a teacher record` : `professeur_id=null` → `assertOk` + voit `Aucune fiche enseignant`.
+- **l.232-239** `each role space is closed to the other roles` : titulaire → `assertForbidden` sur `comptable.dashboard` et `professeur.dashboard` ; comptable → `assertForbidden` sur `titulaire.dashboard`.
+
+Ces tests **confirment le modèle du point 4** (rattachement par `professeur_id` + `affectations_cours`).
+
+*Fin du rapport — 5 points couverts, aucune modification effectuée.*

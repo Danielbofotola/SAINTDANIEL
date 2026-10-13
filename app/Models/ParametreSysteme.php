@@ -16,6 +16,7 @@ class ParametreSysteme extends Model
         'nom_etablissement', 'nom_court', 'telephone', 'email', 'adresse', 'saisie_notes_active', 'portail_parents_actif',
         'deliberation_active', 'deliberation_seuil_admission', 'deliberation_seuil_repechage',
         'deliberation_max_cours_echoues', 'deliberation_note_min_cours',
+        'prefet_valide_inscriptions',
         'bulletin_pays', 'bulletin_ministere', 'bulletin_titre', 'bulletin_reference',
         'bulletin_province', 'bulletin_ville', 'bulletin_commune', 'bulletin_code_ecole',
         'bulletin_lieu_signature', 'bulletin_signataire', 'bulletin_seuil_reussite',
@@ -30,6 +31,7 @@ class ParametreSysteme extends Model
             'saisie_notes_active' => 'boolean',
             'portail_parents_actif' => 'boolean',
             'deliberation_active' => 'boolean',
+            'prefet_valide_inscriptions' => 'boolean',
             'deliberation_seuil_admission' => 'decimal:2',
             'deliberation_seuil_repechage' => 'decimal:2',
             'deliberation_max_cours_echoues' => 'integer',
@@ -53,6 +55,21 @@ class ParametreSysteme extends Model
     public static function recouvrementActif(): bool
     {
         return static::drapeauModule('module_recouvrement_actif');
+    }
+
+    /**
+     * L'administration a-t-elle autorisé le Préfet des Études à valider les
+     * demandes d'inscription ? Faux par défaut (colonne absente ou décochée).
+     */
+    public static function prefetValideInscriptions(): bool
+    {
+        $reglages = static::current();
+
+        if (! array_key_exists('prefet_valide_inscriptions', $reglages->getAttributes())) {
+            return false;
+        }
+
+        return (bool) $reglages->prefet_valide_inscriptions;
     }
 
     /**

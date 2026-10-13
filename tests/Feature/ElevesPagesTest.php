@@ -261,7 +261,7 @@ test('désactiver un élève le rend invisible et l’activation le rétablit', 
 
 test('the student list can be filtered by search term and by status', function () {
     seedEleve();
-    seedEleve(['matricule' => 'ELV-2026-0002', 'nom' => 'Ilunga', 'postnom' => 'Mukendi', 'prenom' => 'David', 'sexe' => 'M', 'statut' => 'inactif']);
+    seedEleve(['matricule' => 'ELV-2026-0002', 'nom' => 'Ilunga', 'postnom' => 'Mukendi', 'prenom' => 'David', 'sexe' => 'M', 'statut' => 'suspendu']);
     $admin = User::factory()->create(['role' => 'admin']);
 
     $this->actingAs($admin)
@@ -271,10 +271,23 @@ test('the student list can be filtered by search term and by status', function (
         ->assertDontSee('Mwamba Kabila Aline');
 
     $this->actingAs($admin)
-        ->get(route('admin.eleves.index', ['statut' => 'inactif']))
+        ->get(route('admin.eleves.index', ['statut' => 'suspendu']))
         ->assertOk()
         ->assertSee('Ilunga Mukendi David')
         ->assertDontSee('Mwamba Kabila Aline');
+
+    // Un élève DÉSACTIVÉ ne figure plus dans la liste active : il a sa page dédiée.
+    seedEleve(['matricule' => 'ELV-2026-0003', 'nom' => 'Kasongo', 'postnom' => 'Desactive', 'prenom' => 'Zoé', 'sexe' => 'F', 'statut' => 'inactif']);
+
+    $this->actingAs($admin)
+        ->get(route('admin.eleves.index', ['q' => 'Kasongo']))
+        ->assertOk()
+        ->assertDontSee('Kasongo Desactive Zoé');
+
+    $this->actingAs($admin)
+        ->get(route('admin.eleves.desactives', ['q' => 'Kasongo']))
+        ->assertOk()
+        ->assertSee('Kasongo Desactive Zoé');
 });
 
 test('the enrollment history lists processed applications and hides pending ones', function () {

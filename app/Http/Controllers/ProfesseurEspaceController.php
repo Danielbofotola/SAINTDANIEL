@@ -25,6 +25,20 @@ class ProfesseurEspaceController extends Controller
         $now = now();
         $jourCourant = self::JOURS[$now->dayOfWeekIso - 1] ?? null;
 
+        $professeur = $contexte['professor'];
+        $enseignantNom = trim(($professeur?->nom ?? '').' '.($professeur?->prenom ?? ''));
+
+        // Séances normalisées pour la grille hebdomadaire réutilisable.
+        $seances = $emplois->map(fn (object $creneau) => [
+            'jour' => $creneau->jour,
+            'debut' => substr((string) $creneau->heure_debut, 0, 5),
+            'fin' => substr((string) $creneau->heure_fin, 0, 5),
+            'cours' => $creneau->cours_nom,
+            'classe' => $creneau->classe_nom,
+            'professeur' => $enseignantNom,
+            'salle' => $creneau->salle_nom,
+        ])->values()->all();
+
         return view('professeur.planning', $contexte + [
             'emplois' => $emplois,
             'parJour' => $emplois->groupBy('jour'),
@@ -32,6 +46,7 @@ class ProfesseurEspaceController extends Controller
             'jourCourant' => $jourCourant,
             'aujourdhui' => $emplois->where('jour', $jourCourant)->values(),
             'heuresParSemaine' => $this->heuresParSemaine($emplois),
+            'seances' => $seances,
         ]);
     }
 

@@ -5,12 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\AnneeScolaire;
 use App\Models\Bulletin;
 use App\Models\Classe;
-use App\Models\Evaluation;
 use App\Models\Inscription;
-use App\Models\Note;
-use App\Models\ParametreSysteme;
 use App\Models\Periode;
-use App\Support\BulletinRdc;
+use App\Support\BulletinDocument;
+use App\Support\ClassementClasse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -37,7 +35,7 @@ class BulletinController extends Controller
             $classe = $classes->firstWhere('id', (int) $classeId);
 
             if ($periode && $classe) {
-                $rows = collect($this->computeForClasse($classe, $periode))->map(function (array $row) use ($periode) {
+                $rows = collect(ClassementClasse::pour($classe, $periode))->map(function (array $row) use ($periode) {
                     $row['bulletin'] = Bulletin::query()
                         ->where('periode_id', $periode->id)
                         ->where('inscription_id', $row['inscription']->id)
@@ -53,33 +51,7 @@ class BulletinController extends Controller
 
     public function document(Inscription $inscription): View
     {
-        $inscription->load(['eleve', 'classe.cycle', 'classe.section', 'classe.option', 'anneeScolaire']);
-
-        // Seuil de réussite configuré dans les paramètres : lu une seule fois pour
-        // tout le classement de la classe (évite une requête par élève).
-        $seuilReussite = ParametreSysteme::seuilReussiteBulletin();
-
-        $data = BulletinRdc::for($inscription, $seuilReussite)->build();
-
-        // Classement de l'élève dans sa classe par pourcentage général.
-        $classement = Inscription::query()
-            ->where('classe_id', $inscription->classe_id)
-            ->where('annee_scolaire_id', $inscription->annee_scolaire_id)
-            ->where('statut', 'actif')
-            ->get()
-            ->map(fn (Inscription $item) => [
-                'id' => $item->id,
-                'pourcentage' => BulletinRdc::for($item, $seuilReussite)->build()['pourcentage_general'],
-            ])
-            ->sortByDesc('pourcentage')
-            ->values();
-
-        $position = $classement->search(fn (array $row) => $row['id'] === $inscription->id);
-
-        return view('admin.bulletins.document', $data + [
-            'place' => $position === false ? null : $position + 1,
-            'nombre_eleves' => $classement->count(),
-        ]);
+        return view('admin.bulletins.document', BulletinDocument::donnees($inscription));
     }
 
     public function generate(Request $request): RedirectResponse
@@ -99,7 +71,7 @@ class BulletinController extends Controller
             return back()->withInput()->with('error', 'Période ou classe introuvable pour l’année en cours.');
         }
 
-        $rows = $this->computeForClasse($classe, $periode);
+        $rows = ClassementClasse::pour($classe, $periode);
 
         if ($rows === []) {
             return back()->with('error', 'Aucun élève inscrit dans cette classe pour l’année en cours.');
@@ -124,73 +96,5 @@ class BulletinController extends Controller
         return redirect()
             ->route('admin.bulletins.index', ['periode_id' => $periode->id, 'classe_id' => $classe->id])
             ->with('success', 'Les bulletins de la classe ont été générés.');
-    }
-
-    /**
-     * Calcule, pour chaque élève inscrit de la classe, le total des points obtenus,
-     * le maximum possible sur les évaluations notées de la période, le pourcentage,
-     * la place et la mention.
-     *
-     * @return array<int, array{inscription: \App\Models\Inscription, total: float, max: float, pourcentage: float, mention: string, nb_notes: int, place: int}>
-     */
-    private function computeForClasse(Classe $classe, Periode $periode): array
-    {
-        $evaluations = Evaluation::query()
-            ->where('periode_id', $periode->id)
-            ->where('statut', 'actif')
-            ->whereHas('affectation', fn ($query) => $query->where('classe_id', $classe->id)->anneeEnCours())
-            ->get(['id', 'max_note']);
-
-        $maxParEvaluation = $evaluations->pluck('max_note', 'id');
-
-        $inscriptions = $classe->inscriptions()
-            ->anneeEnCours()
-            ->where('statut', 'actif')
-            ->with('eleve')
-            ->get();
-
-        $notes = Note::query()
-            ->whereIn('evaluation_id', $evaluations->pluck('id'))
-            ->whereIn('eleve_id', $inscriptions->pluck('eleve_id'))
-            ->where('statut', 'actif')
-            ->get(['evaluation_id', 'eleve_id', 'note_obtenue'])
-            ->groupBy('eleve_id');
-
-        $rows = [];
-        foreach ($inscriptions as $inscription) {
-            $eleveNotes = $notes->get($inscription->eleve_id, collect());
-            $total = round((float) $eleveNotes->sum('note_obtenue'), 2);
-            $max = round((float) $eleveNotes->sum(fn ($note) => (float) ($maxParEvaluation[$note->evaluation_id] ?? 0)), 2);
-            $pourcentage = $max > 0 ? round($total / $max * 100, 2) : 0.0;
-
-            $rows[] = [
-                'inscription' => $inscription,
-                'total' => $total,
-                'max' => $max,
-                'pourcentage' => $pourcentage,
-                'mention' => $this->mention($pourcentage),
-                'nb_notes' => $eleveNotes->count(),
-            ];
-        }
-
-        usort($rows, fn (array $a, array $b) => $b['pourcentage'] <=> $a['pourcentage']);
-
-        foreach ($rows as $index => &$row) {
-            $row['place'] = $index + 1;
-        }
-        unset($row);
-
-        return $rows;
-    }
-
-    private function mention(float $pourcentage): string
-    {
-        return match (true) {
-            $pourcentage >= 80 => 'Distinction',
-            $pourcentage >= 70 => 'Satisfaction',
-            $pourcentage >= 60 => 'Passable',
-            $pourcentage >= 50 => 'Faible',
-            default => 'Insuffisant',
-        };
     }
 }

@@ -29,6 +29,7 @@
                 <a class="active" href="{{ route('titulaire.dashboard') }}" aria-current="page"><i class="fa fa-th-large"></i><span class="nav-label">Vue générale</span></a>
                 <a href="#classes"><i class="fa fa-graduation-cap"></i><span class="nav-label">Mes classes</span></a>
                 <a href="#eleves"><i class="fa fa-users"></i><span class="nav-label">Mes élèves</span></a>
+                <a href="{{ route('titulaire.bulletins.index') }}"><i class="fa fa-file-text-o"></i><span class="nav-label">Bulletins &amp; synthèse</span></a>
             </nav>
             <div class="sidebar-bottom">
                 <a class="profile-shortcut" href="{{ route('profile.show') }}" title="Ouvrir mon profil">

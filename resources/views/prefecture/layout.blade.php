@@ -245,6 +245,14 @@
                             <p>Personnel</p>
                         </a>
                     </li>
+                    @if (\App\Support\Permissions::autorise(auth()->user()?->role, 'affectations'))
+                        <li class="nav-item {{ request()->routeIs('admin.affectations*') ? 'active' : '' }}">
+                            <a href="{{ route('admin.affectations.index') }}">
+                                <i class="fas fa-random"></i>
+                                <p>Affectations &amp; mutations</p>
+                            </a>
+                        </li>
+                    @endif
                     <li class="nav-section">
                         <span class="sidebar-mini-icon"><i class="fa fa-ellipsis-h"></i></span>
                         <h4 class="text-section">Vie scolaire</h4>
@@ -258,6 +266,12 @@
                                           title="{{ $aSuivreAujourdhui }} absence(s) ou retard(s) aujourd'hui">{{ $aSuivreAujourdhui }}</span>
                                 @endif
                             </p>
+                        </a>
+                    </li>
+                    <li class="nav-item {{ request()->routeIs('prefecture.discipline*') ? 'active' : '' }}">
+                        <a href="{{ route('prefecture.discipline.index') }}">
+                            <i class="fas fa-gavel"></i>
+                            <p>Discipline &amp; sanctions</p>
                         </a>
                     </li>
                     <li class="nav-item {{ request()->routeIs('prefecture.horaires') ? 'active' : '' }}">
@@ -284,6 +298,14 @@
                             <p>Tuteurs &amp; parents</p>
                         </a>
                     </li>
+                    @if (\App\Models\ParametreSysteme::prefetValideInscriptions())
+                        <li class="nav-item {{ request()->routeIs('prefecture.demandes.inscriptions*') ? 'active' : '' }}">
+                            <a href="{{ route('prefecture.demandes.inscriptions') }}">
+                                <i class="fas fa-user-check"></i>
+                                <p>Demandes d'inscription</p>
+                            </a>
+                        </li>
+                    @endif
                     <li class="nav-item {{ request()->routeIs('prefecture.bulletins*') ? 'active' : '' }}">
                         <a href="{{ route('prefecture.bulletins') }}">
                             <i class="fas fa-file-alt"></i>

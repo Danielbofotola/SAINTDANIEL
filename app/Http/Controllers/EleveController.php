@@ -42,11 +42,10 @@ class EleveController extends Controller
         $anneeId = $request->integer('annee') ?: AnneeScolaire::enCours()?->id;
         $annee = $anneeId ? AnneeScolaire::find($anneeId) : null;
 
-        // Portée commune : seuls les élèves inscrits dans l'année observée
-        // (inscription active ou « en attente » — nouveaux, délibérés, autres
-        // inscrits). Un élève sans inscription dans l'année n'est ni listé ni
-        // compté dans les statistiques.
-        $inscritsAnnee = fn () => Eleve::query()->when($annee, fn ($query) => $query->whereHas(
+        // Portée commune : élèves SCOLARISÉS (hors désactivés et hors archivés)
+        // inscrits dans l'année observée (inscription active ou « en attente »).
+        // Les désactivés ont leur page dédiée ; les diplômés/renvoyés, les archives.
+        $inscritsAnnee = fn () => Eleve::query()->scolarises()->when($annee, fn ($query) => $query->whereHas(
             'inscriptions',
             fn ($inscription) => $inscription
                 ->where('annee_scolaire_id', $annee->id)
@@ -64,7 +63,7 @@ class EleveController extends Controller
                     ->orWhere('prenom', 'like', "%{$search}%")
                     ->orWhere('matricule', 'like', "%{$search}%");
             }))
-            ->when(in_array($statut, ['actif', 'inactif', 'suspendu', 'exclu'], true), fn ($query) => $query->where('statut', $statut))
+            ->when(in_array($statut, ['actif', 'suspendu'], true), fn ($query) => $query->where('statut', $statut))
             ->orderBy('nom')
             ->orderBy('postnom')
             ->orderBy('prenom')
@@ -90,6 +89,52 @@ class EleveController extends Controller
                 'inscrits' => $inscritsAnnee()->count(),
             ],
         ]);
+    }
+
+    /** Page dédiée aux élèves désactivés (retirés des listes actives). */
+    public function desactives(Request $request): View
+    {
+        $search = trim((string) $request->query('q', ''));
+
+        $eleves = Eleve::query()
+            ->desactives()
+            ->with(['tuteur', 'inscriptions' => fn ($query) => $query->with('classe.cycle')->latest('id')])
+            ->when($search !== '', fn ($query) => $this->recherche($query, $search))
+            ->orderBy('nom')->orderBy('postnom')->orderBy('prenom')
+            ->paginate(25)
+            ->withQueryString();
+
+        return view('admin.eleves.desactives', compact('eleves', 'search'));
+    }
+
+    /** Archives : élèves sortis de l'école (diplômés, renvoyés), conservés. */
+    public function archives(Request $request): View
+    {
+        $search = trim((string) $request->query('q', ''));
+
+        $eleves = Eleve::query()
+            ->archives()
+            ->with([
+                'inscriptions' => fn ($query) => $query->with('classe.cycle')->latest('id'),
+                'certifications' => fn ($query) => $query->with('cycle')->latest('date_obtention'),
+            ])
+            ->when($search !== '', fn ($query) => $this->recherche($query, $search))
+            ->orderBy('nom')->orderBy('postnom')->orderBy('prenom')
+            ->paginate(25)
+            ->withQueryString();
+
+        return view('admin.eleves.archives', compact('eleves', 'search'));
+    }
+
+    /** Filtre de recherche commun (nom, postnom, prénom, matricule). */
+    private function recherche($query, string $search)
+    {
+        return $query->where(function ($query) use ($search) {
+            $query->where('nom', 'like', "%{$search}%")
+                ->orWhere('postnom', 'like', "%{$search}%")
+                ->orWhere('prenom', 'like', "%{$search}%")
+                ->orWhere('matricule', 'like', "%{$search}%");
+        });
     }
 
     /**
@@ -228,6 +273,9 @@ class EleveController extends Controller
             'parcours' => $parcours,
             'detteTotale' => SituationEleve::detteTotale($parcours),
             'paiements' => $inscription ? SituationEleve::paiements($inscription) : collect(),
+            'certifications' => Schema::hasTable('certifications')
+                ? $eleve->certifications()->with('cycle')->orderByDesc('date_obtention')->get()
+                : collect(),
         ]);
     }
 

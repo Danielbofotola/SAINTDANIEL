@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Décision de fin d'année pour une inscription : la moyenne vient du bulletin,
- * la décision (admis / ajourné / redouble) du jury et de ses critères.
+ * la décision (admis / ajourné / redouble / diplômé) du jury et de ses critères.
  */
 class Deliberation extends Model
 {
@@ -14,6 +14,7 @@ class Deliberation extends Model
         'admis' => 'Admis (passe)',
         'ajourne' => 'Ajourné (repêchage)',
         'redouble' => 'Redoublant',
+        'diplome' => 'Diplômé (fin de cycle)',
     ];
 
     protected $fillable = [

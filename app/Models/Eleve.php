@@ -10,6 +10,12 @@ class Eleve extends Model
 {
     use HasFactory;
 
+    /** Élèves encore scolarisés : visibles dans la liste principale. */
+    public const STATUTS_SCOLARISES = ['actif', 'suspendu'];
+
+    /** Élèves sortis de l'école : diplômés ou renvoyés (exclus). À archiver. */
+    public const STATUTS_ARCHIVES = ['diplome', 'exclu'];
+
     protected $fillable = [
         'nom',
         'matricule',
@@ -50,6 +56,24 @@ class Eleve extends Model
         return $query->where('statut', '!=', 'inactif');
     }
 
+    /** Élèves scolarisés (actifs ou suspendus), hors désactivés et hors archives. */
+    public function scopeScolarises(Builder $query): Builder
+    {
+        return $query->whereIn('statut', self::STATUTS_SCOLARISES);
+    }
+
+    /** Élèves désactivés — page dédiée. */
+    public function scopeDesactives(Builder $query): Builder
+    {
+        return $query->where('statut', 'inactif');
+    }
+
+    /** Élèves archivés (diplômés, renvoyés) — conservés mais hors des listes actives. */
+    public function scopeArchives(Builder $query): Builder
+    {
+        return $query->whereIn('statut', self::STATUTS_ARCHIVES);
+    }
+
     /**
      * Limite la requête aux élèves inscrits (inscription active) pour l'année en cours.
      * Les élèves désactivés sont exclus : l'application ne les affiche plus.
@@ -74,5 +98,17 @@ class Eleve extends Model
     public function documents()
     {
         return $this->hasMany(DocumentEleve::class);
+    }
+
+    /** Certificats / diplômes de fin de cycle obtenus par l'élève. */
+    public function certifications()
+    {
+        return $this->hasMany(Certification::class);
+    }
+
+    /** Sanctions disciplinaires de l'élève. */
+    public function sanctions()
+    {
+        return $this->hasMany(Sanction::class);
     }
 }

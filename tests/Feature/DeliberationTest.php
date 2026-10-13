@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Schema;
 beforeEach(function () {
     Schema::disableForeignKeyConstraints();
     foreach ([
-        'deliberations', 'notes', 'evaluations', 'periodes', 'affectations_cours', 'cours',
+        'classe_destinations', 'deliberations', 'notes', 'evaluations', 'periodes', 'affectations_cours', 'cours',
         'inscriptions', 'eleves', 'classes', 'cycles', 'salles', 'annees_scolaires',
         'sections', 'options',
         'notifications', 'professeurs', 'parametres_systeme', 'users',
@@ -77,6 +77,7 @@ beforeEach(function () {
     Schema::create('cycles', function (Blueprint $table) {
         $table->id();
         $table->string('nom');
+        $table->unsignedInteger('ordre')->nullable();
         $table->string('statut')->default('actif');
         $table->timestamps();
     });
@@ -107,6 +108,13 @@ beforeEach(function () {
         $table->string('option_id')->nullable();
         $table->string('statut')->default('actif');
         $table->timestamps();
+    });
+    Schema::create('classe_destinations', function (Blueprint $table) {
+        $table->id();
+        $table->unsignedBigInteger('classe_id');
+        $table->unsignedBigInteger('destination_id');
+        $table->timestamps();
+        $table->unique(['classe_id', 'destination_id']);
     });
     Schema::create('eleves', function (Blueprint $table) {
         $table->id();
@@ -320,7 +328,9 @@ test('l’écran de délibération liste les élèves et leurs propositions', fu
         ->assertSee('3e primaire')
         ->assertSee('4e primaire')       // classe suivante annoncée
         ->assertSee('NomA')
-        ->assertSee('Admis');
+        ->assertSee('Admis')
+        // Une classe qui n'est pas une fin de parcours n'offre pas « Diplômé ».
+        ->assertDontSee('Diplômé');
 });
 
 test('l’enregistrement des décisions est persisté et marqué manuel si forcé', function () {

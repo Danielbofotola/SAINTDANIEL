@@ -2,14 +2,12 @@
 
 @section('titre', 'Horaire des cours')
 
+@push('styles')
+    @include('partials.horaire-grid-styles')
+@endpush
+
 @section('actions')
     <form method="GET" class="form-inline">
-        <select name="jour" class="form-control mr-2">
-            <option value="">Tous les jours</option>
-            @foreach ($jours as $j)
-                <option value="{{ $j }}" @selected($jour === $j)>{{ ucfirst($j) }}</option>
-            @endforeach
-        </select>
         <select name="classe" class="form-control mr-2">
             <option value="">Toutes les classes</option>
             @foreach ($classes as $classe)
@@ -26,6 +24,9 @@
         </select>
         <button class="btn btn-light btn-round" type="submit"><i class="fas fa-filter"></i> Filtrer</button>
     </form>
+    <a href="{{ route('admin.emplois-du-temps.index') }}" class="btn btn-light btn-round">
+        <i class="fas fa-pen"></i> Modifier l'horaire
+    </a>
 @endsection
 
 @section('contenu')
@@ -40,53 +41,61 @@
         </div>
     </div>
 
-    @forelse ($creneaux as $nomJour => $liste)
-        <div class="row row-card-no-pd">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-head-row">
-                            <h4 class="card-title">{{ ucfirst($nomJour) }}</h4>
-                            <div class="card-category">{{ $liste->count() }} séance(s)</div>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>Horaire</th>
-                                        <th>Cours</th>
-                                        <th>Classe</th>
-                                        <th>Enseignant</th>
-                                        <th>Salle</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($liste->sortBy('heure_debut') as $creneau)
-                                        <tr>
-                                            <td class="fw-bold">{{ substr($creneau->heure_debut, 0, 5) }} – {{ substr($creneau->heure_fin, 0, 5) }}</td>
-                                            <td>{{ $creneau->affectation?->cours?->intitule ?? '—' }}</td>
-                                            <td>{{ $creneau->affectation?->classe?->nom ?? '—' }}</td>
-                                            <td>
-                                                @php($prof = $creneau->affectation?->professeur)
-                                                {{ $prof ? trim($prof->nom.' '.$prof->prenom) : '—' }}
-                                            </td>
-                                            <td>{{ $creneau->salle?->nom ?? '—' }}</td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    @php
+        $pause = ['debut' => '11:00', 'fin' => '11:30', 'label' => 'Pause Récréation'];
+    @endphp
+
+    {{-- Vue globale de l'horaire de chaque classe --}}
+    <div class="row">
+        <div class="col-md-12">
+            <h5 class="section-titre mt-2 mb-3"><i class="fas fa-table mr-2"></i> Horaire par classe</h5>
         </div>
+    </div>
+
+    @forelse ($parClasse as $grille)
+        @include('partials.tableau-horaire', [
+            'titre' => $grille['titre'],
+            'sousTitre' => 'Emploi du temps hebdomadaire',
+            'seances' => $grille['seances'],
+            'afficherProfesseur' => true,
+            'jours' => $jours,
+            'aujourdhui' => $aujourdhui,
+            'pause' => $pause,
+            'vide' => 'Aucun créneau planifié pour cette classe.',
+        ])
     @empty
         <div class="row">
             <div class="col-md-12">
                 <div class="card"><div class="card-body text-center text-muted">
-                    Aucun créneau ne correspond à ce filtre.
+                    Aucune classe ne correspond à ce filtre.
+                </div></div>
+            </div>
+        </div>
+    @endforelse
+
+    {{-- Vue globale de l'horaire de chaque enseignant --}}
+    <div class="row">
+        <div class="col-md-12">
+            <h5 class="section-titre mt-4 mb-3"><i class="fas fa-user-clock mr-2"></i> Horaire par enseignant</h5>
+        </div>
+    </div>
+
+    @forelse ($parProfesseur as $grille)
+        @include('partials.tableau-horaire', [
+            'titre' => $grille['titre'],
+            'sousTitre' => 'Emploi du temps hebdomadaire',
+            'seances' => $grille['seances'],
+            'afficherClasse' => true,
+            'jours' => $jours,
+            'aujourdhui' => $aujourdhui,
+            'pause' => $pause,
+            'vide' => 'Aucun créneau planifié pour cet enseignant.',
+        ])
+    @empty
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card"><div class="card-body text-center text-muted">
+                    Aucun enseignant ne correspond à ce filtre.
                 </div></div>
             </div>
         </div>

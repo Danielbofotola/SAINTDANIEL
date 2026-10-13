@@ -1,0 +1,862 @@
+# wmark session 9f19a8c29c30:sub:1
+
+## User
+Application Laravel de gestion scolaire (racine du workspace). Je veux cartographier « l'espace Préfet des Études » existant pour savoir ce qui manque par rapport à ses attributions (supervision pédagogique, discipline/présences, validation des bulletins, décisions de passage, documents officiels, réunions).
+
+Rends un rapport factuel et CONCIS (listes, chemins + n° de ligne), sur ces points :
+
+1. Toutes les routes dont le nom commence par `prefecture.` dans routes/web.php : nom, méthode HTTP, URI, contrôleur@méthode, middleware (role/permission).
+2. Les contrôleurs préfet : `app/Http/Controllers/PrefectureDashboardController.php` et `PrefectureVieScolaireController.php` — liste des méthodes publiques et, pour chacune, ce qu'elle fait en 1 ligne (données chargées, vue rendue).
+3. Les vues sous `resources/views/prefecture/` (noms de fichiers) et leurs sections principales.
+4. Le rôle `prefetture` : dans config/permissions.php, quelles `features` lui accordent quel niveau ? Et où le rôle est utilisé dans les middlewares (routes `role:prefetture`).
+5. Les modules réutilisables par le préfet qui existent déjà ailleurs : validation des bulletins (cherche `approuver`/`bulletins_validation`/`approuve_at`), présences/appels (AppelController, Presence), discipline (cherche 'discipline'/'sanction'/'consigne'), emplois du temps, saisie de notes, flux académique. Pour chacun : fichier + n° de ligne + route éventuelle.
+6. Existe-t-il déjà une notion de « visite de classe », « sanction », « conseil de discipline », « procès-verbal de délibération », « palmarès » ? Cherche ces mots dans app/ et resources/views → dis simplement oui/non + fichier:ligne si oui.
+
+Condition d'arrêt : ces 6 points couverts, arrête-toi. Ne modifie rien, ne propose pas de code. Réponds en français, compact.
+
+### Tool call — read_file
+```
+{"path":"routes/web.php"}
+```
+
+### Tool call — glob
+```
+{"pattern":"app/Http/Controllers/Prefecture*.php"}
+```
+
+### Tool call — glob
+```
+{"pattern":"resources/views/prefecture/**"}
+```
+
+### Tool call — glob
+```
+{"pattern":"config/permissions.php"}
+```
+
+### Tool result
+```
+1      <?php
+2      
+3      use Illuminate\Support\Facades\Route;
+4      use App\Http\Controllers\AuthController;
+5      use App\Http\Controllers\AdminDashboardController;
+6      use App\Http\Controllers\EleveController;
+7      use App\Http\Controllers\EleveInscriptionController;
+8      use App\Http\Controllers\InscriptionAttenteController;
+9      use App\Http\Controllers\SalleController;
+10     use App\Http\Controllers\ClasseController;
+11     use App\Http\Controllers\UserProfileController;
+12     use App\Http\Controllers\ProfesseurController;
+13     use App\Http\Controllers\ProfesseurDashboardController;
+14     use App\Http\Controllers\ProfesseurEspaceController;
+15     use App\Http\Controllers\ProfesseurEvaluationController;
+16     use App\Http\Controllers\ProfesseurPresenceController;
+17     use App\Http\Controllers\AnnonceController;
+18     use App\Http\Controllers\NotificationController;
+19     use App\Http\Controllers\MessagerieController;
+20     use App\Http\Controllers\AffectationCoursController;
+21     use App\Http\Controllers\CoursController;
+22     use App\Http\Controllers\EmploiDuTempsController;
+23     use App\Http\Controllers\PeriodeController;
+24     use App\Http\Controllers\EvaluationController;
+25     use App\Http\Controllers\BulletinController;
+26     use App\Http\Controllers\FraisController;
+27     use App\Http\Controllers\PaiementController;
+28     use App\Http\Controllers\DepenseController;
+29     use App\Http\Controllers\PaieController;
+30     use App\Http\Controllers\ComptabiliteController;
+31     use App\Http\Controllers\StatistiquesController;
+32     use App\Http\Controllers\InstallationController;
+33     use App\Http\Controllers\ArchiveAnneeController;
+34     use App\Http\Controllers\CycleController;
+35     use App\Http\Controllers\ModuleSwitchController;
+36     use App\Http\Controllers\PermissionController;
+37     use App\Http\Controllers\PosteController;
+38     use App\Http\Controllers\JournalDecisionController;
+39     use App\Http\Contr
+```
+
+### Tool result
+```
+app/Http/Controllers/PrefectureDashboardController.php
+```
+
+### Tool result
+```
+resources/views/prefecture/ (16 lines, newest first):
+  decisions.blade.php
+  flux.blade.php
+  layout.blade.php
+  presences.blade.php
+  eleve-fiche.blade.php
+  eleves.blade.php
+  profil.blade.php
+  bulletins.blade.php
+  evaluations.blade.php
+  personnel.blade.php
+  periodes.blade.php
+  tuteurs.blade.php
+  horaires.blade.php
+  classes.blade.php
+  effectifs.blade.php
+  dashboard.blade.php
+```
+
+### Tool result
+```
+config/permissions.php
+```
+
+### Tool call — grep
+```
+{"pattern":"prefecture\\.","path":"routes/web.php","output_mode":"content","-n":true}
+```
+
+### Tool call — glob
+```
+{"pattern":"app/Http/Controllers/PrefectureVieScolaireController.php"}
+```
+
+### Tool call — read_file
+```
+{"path":"config/permissions.php"}
+```
+
+### Tool result
+```
+Error: ripgrep (rg) is not available, so the grep tool cannot run. Use the bash tool with grep/find instead. environment: native Windows. Install ripgrep with 'winget install BurntSushi.ripgrep.MSVC' (or 'choco install ripgrep'). If wmark came from the official Windows binary, the bundled vendor\windows\rg.exe is missing — reinstall wmark.
+```
+
+### Tool result
+```
+No files match 'app/Http/Controllers/PrefectureVieScolaireController.php'.
+```
+
+### Tool result
+```
+1      <?php
+2      
+3      /**
+4       * Matrice des permissions par poste : source unique des droits, affichée sur la
+5       * page « Matrice des permissions » et appliquée par le middleware `permission`.
+6       *
+7       * Niveaux : total, oui, non, lecture, avis, suivi, validation, rapports.
+8       * Tout niveau autre que « non » autorise l'accès à l'écran (consultation et
+9       * modification). Le rôle `admin` reste le super-administrateur (accès total).
+10      */
+11     return [
+12         // Postes de la matrice, dans l'ordre d'affichage. « titulaire » y figure pour
+13         // être visible, mais sa matrice reste vide : son espace (tableau de bord,
+14         // bulletins de sa classe) est piloté par son rôle, pas par ces droits.
+15         'roles' => ['systeme', 'prefetture', 'directeur_etudes', 'secretaire', 'comptable', 'professeur', 'titulaire', 'disciplinaire'],
+16     
+17         'labels' => [
+18             'total' => 'Total',
+19             'oui' => 'Oui',
+20             'non' => 'Non',
+21             'lecture' => 'Lecture',
+22             'avis' => 'Avis',
+23             'suivi' => 'Suivi',
+24             'validation' => 'Validation',
+25             'rapports' => 'Rapports',
+26         ],
+27     
+28         'features' => [
+29             'modules' => [
+30                 'libelle' => 'Commuter les modules (Saisie Notes, Portail Parents)',
+31                 'niveaux' => ['systeme' => 'total'],
+32             ],
+33             'decisions' => [
+34                 'libelle' => 'Publier des Décisions Exécutives & Injonctions',
+35                 // Le Préfet publie les décisions/injonctions (§4) ; le Système peut aussi.
+36                 'niveaux' => ['systeme' => 'oui', 'prefetture' => 'oui'],
+37             ],
+38             'bulletins_validation' => [
+39                 'libelle' => 'Validation Finale des Bulletins Trimestriels',
+40                 'niveaux' => ['systeme' => 'oui', 'prefetture' => 'avis'],
+41             ],
+42             'em
+```
+
+### Tool call — read_file
+```
+{"path":"routes/web.php","offset":163}
+```
+
+### Tool call — bash
+```
+{"command":"Select-String -Path routes/web.php -Pattern 'prefecture\\.' | ForEach-Object { \"$($_.LineNumber): $($_.Line.Trim())\" }","description":"Find prefecture routes"}
+```
+
+### Tool result
+```
+163        Route::get('/admin/comptabilite/plan', [ComptabiliteController::class, 'plan'])->middleware('role:admin')->name('admin.comptabilite.plan');
+164        Route::post('/admin/comptabilite/plan', [ComptabiliteController::class, 'storeCompte'])->middleware('role:admin')->name('admin.comptabilite.plan.store');
+165        Route::delete('/admin/comptabilite/plan/{compte}', [ComptabiliteController::class, 'destroyCompte'])->middleware('role:admin')->name('admin.comptabilite.plan.destroy');
+166        Route::get('/admin/comptabilite/balance', [ComptabiliteController::class, 'balance'])->middleware('role:admin')->name('admin.comptabilite.balance');
+167        Route::get('/admin/statistiques', [StatistiquesController::class, 'index'])->middleware('role:admin')->name('admin.statistiques.index');
+168        Route::get('/admin/statistiques/evolution', [StatistiquesController::class, 'evolution'])->middleware('role:admin')->name('admin.statistiques.evolution');
+169        Route::get('/admin/archives', [ArchiveAnneeController::class, 'index'])->middleware('role:admin')->name('admin.archives.index');
+170        Route::get('/admin/archives/{archiveAnnee}', [ArchiveAnneeController::class, 'show'])->middleware('role:admin')->name('admin.archives.show');
+171        Route::post('/admin/archives', [ArchiveAnneeController::class, 'store'])->middleware('role:admin')->name('admin.archives.store');
+172        Route::delete('/admin/archives/{archiveAnnee}', [ArchiveAnneeController::class, 'destroy'])->middleware('role:admin')->name('admin.archives.destroy');
+173        Route::get('/admin/cycles', [CycleController::class, 'index'])->middleware('role:admin')->name('admin.cycles.index');
+174        Route::post('/admin/cycles', [CycleController::class, 'store'])->middleware('role:admin')->name('admin.cycles.store');
+175        Route::patch('/admin/cycles/{cycle}', [CycleController::class, 'update'])->middleware('role:admin')->name('admin.cycles.update');
+176        Route::patch('/admin/cy
+```
+
+### Tool result
+```
+Output saved to C:\Users\danie\.wmark\tool-outputs\9f19a8c29c30-sub-1\20261013-023152-bash-call_01a132e331367542981be6fc.txt (1,172 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+[powershell — Windows side]
+295: Route::get('/prefecture/tableau-de-bord', [PrefectureDashboardController::class, 'index'])->middleware('role:prefetture')->name('prefecture.dashboard');
+296: Route::get('/prefecture/effectifs', [PrefectureDashboardController::class, 'effectifs'])->middleware('role:prefetture')->name('prefecture.effectifs');
+297: Route::get('/prefecture/classes', [PrefectureDashboardController::class, 'classes'])->middleware('role:prefetture')->name('prefecture.classes');
+298: Rou
+
+... 2,395 chars truncated ...
+
+re/bulletins/{inscription}/document', [\App\Http\Controllers\BulletinController::class, 'document'])->middleware('role:prefetture', 'permission:bulletins_validation')->name('prefecture.bulletins.document');
+316: Route::get('/prefecture/decisions', [JournalDecisionController::class, 'index'])->middleware('role:prefetture', 'permission:decisions')->name('prefecture.decisions.index');
+317: Route::post('/prefecture/decisions', [JournalDecisionController::class, 'store'])->middleware('role:prefetture', 'permission:decisions')->name('prefecture.decisions.store');
+318: Route::get('/prefecture/flux-academique', [FluxAcademiqueController::class, 'index'])->middleware('role:prefetture', 'permission:flux_academique')->name('prefecture.flux.index');
+319: Route::put('/prefecture/flux-academique', [FluxAcademiqueController::class, 'update'])->middleware('role:prefetture', 'permission:flux_academique')->name('prefecture.flux.update');
+357: Route::get('/prefecture/paiements/{paiement}/recu', [RecuController::class, 'show'])->middleware('role:prefetture')->name('prefecture.paiements.recu');
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><T
+```
+
+### Tool call — read_file
+```
+{"path":"C:\\Users\\danie\\.wmark\\tool-outputs\\9f19a8c29c30-sub-1\\20261013-023152-bash-call_01a132e331367542981be6fc.txt"}
+```
+
+### Tool call — read_file
+```
+{"offset":273,"path":"routes/web.php"}
+```
+
+### Tool result
+```
+1      [powershell — Windows side]
+2      295: Route::get('/prefecture/tableau-de-bord', [PrefectureDashboardController::class, 'index'])->middleware('role:prefetture')->name('prefecture.dashboard');
+3      296: Route::get('/prefecture/effectifs', [PrefectureDashboardController::class, 'effectifs'])->middleware('role:prefetture')->name('prefecture.effectifs');
+4      297: Route::get('/prefecture/classes', [PrefectureDashboardController::class, 'classes'])->middleware('role:prefetture')->name('prefecture.classes');
+5      298: Route::get('/prefecture/personnel', [PrefectureDashboardController::class, 'personnel'])->middleware('role:prefetture')->name('prefecture.personnel');
+6      299: Route::get('/prefecture/profil', [PrefectureDashboardController::class, 'profil'])->middleware('role:prefetture')->name('prefecture.profil');
+7      301: Route::get('/prefecture/presences', [PrefectureDashboardController::class, 'presences'])->middleware('role:prefetture')->name('prefecture.presences');
+8      302: Route::get('/prefecture/horaires', [PrefectureDashboardController::class, 'horaires'])->middleware('role:prefetture')->name('prefecture.horaires');
+9      303: Route::get('/prefecture/evaluations', [PrefectureDashboardController::class, 'evaluations'])->middleware('role:prefetture')->name('prefecture.evaluations');
+10     304: Route::get('/prefecture/eleves', [PrefectureDashboardController::class, 'eleves'])->middleware('role:prefetture')->name('prefecture.eleves');
+11     305: Route::get('/prefecture/eleves/{eleve}', [PrefectureDashboardController::class, 'eleveFiche'])->middleware('role:prefetture')->name('prefecture.eleves.fiche');
+12     306: Route::get('/prefecture/tuteurs', [PrefectureDashboardController::class, 'tuteurs'])->middleware('role:prefetture')->name('prefecture.tuteurs');
+13     308: Route::patch('/prefecture/eleves/{eleve}/statut', [PrefectureDashboardController::class, 'modifierStatutEleve'])->middleware('role:prefetture')->name('prefecture.eleves.statut'
+```
+
+### Tool result
+```
+273        Route::delete('/admin/annees/{annee}', [AnneeScolaireController::class, 'destroy'])->middleware('role:admin')->name('admin.annees.destroy');
+274        Route::patch('/admin/annees/{annee}/statut', [AnneeScolaireController::class, 'toggle'])->middleware('role:admin')->name('admin.annees.toggle');
+275        Route::get('/admin/salles/nouvelle', [SalleController::class, 'create'])->middleware('role:admin')->name('admin.salles.create');
+276        Route::post('/admin/salles', [SalleController::class, 'store'])->middleware('role:admin')->name('admin.salles.store');
+277        Route::get('/admin/classes/nouvelle', [ClasseController::class, 'create'])->middleware('role:admin')->name('admin.classes.create');
+278        Route::post('/admin/classes', [ClasseController::class, 'store'])->middleware('role:admin')->name('admin.classes.store');
+279        Route::get('/admin/sections', [SectionOptionController::class, 'indexSections'])->middleware('role:admin')->name('admin.sections.index');
+280        Route::get('/admin/sections/nouvelle', [SectionOptionController::class, 'createSection'])->middleware('role:admin')->name('admin.sections.create');
+281        Route::post('/admin/sections', [SectionOptionController::class, 'storeSection'])->middleware('role:admin')->name('admin.sections.store');
+282        Route::get('/admin/options', [SectionOptionController::class, 'indexOptions'])->middleware('role:admin')->name('admin.options.index');
+283        Route::get('/admin/options/nouvelle', [SectionOptionController::class, 'createOption'])->middleware('role:admin')->name('admin.options.create');
+284        Route::post('/admin/options', [SectionOptionController::class, 'storeOption'])->middleware('role:admin')->name('admin.options.store');
+285        Route::get('/admin/classes', [ClasseController::class, 'index'])->middleware('role:admin')->name('admin.classes.index');
+286        Route::get('/admin/classes/{classe}/eleves', [ClasseController::class, 'students'])->middleware('r
+```
+
+### Tool call — read_file
+```
+{"path":"app/Http/Controllers/PrefectureDashboardController.php"}
+```
+
+### Tool call — glob
+```
+{"pattern":"resources/views/prefecture/*.blade.php"}
+```
+
+### Tool result
+```
+1      <?php
+2      
+3      namespace App\Http\Controllers;
+4      
+5      use App\Models\AnneeScolaire;
+6      use App\Models\Bulletin;
+7      use App\Models\Classe;
+8      use App\Models\Cycle;
+9      use App\Models\DocumentProfesseur;
+10     use App\Models\Eleve;
+11     use App\Models\EmploiDuTemps;
+12     use App\Models\Evaluation;
+13     use App\Models\Option;
+14     use App\Models\Periode;
+15     use App\Models\Presence;
+16     use App\Models\Professeurs;
+17     use App\Models\Section;
+18     use App\Models\Tuteur;
+19     use App\Models\User;
+20     use App\Support\SituationEleve;
+21     use Illuminate\Http\RedirectResponse;
+22     use Illuminate\Http\Request;
+23     use Illuminate\Support\Carbon;
+24     use Illuminate\View\View;
+25     
+26     class PrefectureDashboardController extends Controller
+27     {
+28         /**
+29          * Espace préfecture : vue de supervision de l'établissement pour l'année en cours.
+30          *
+31          * Consultation seule — aucun écran d'administration n'est exposé ici.
+32          */
+33         public function index(Request $request): View
+34         {
+35             return view('prefecture.dashboard', [
+36                 'user' => $request->user(),
+37                 'schoolYear' => AnneeScolaire::enCours(),
+38                 'effectifTotal' => Eleve::inscritAnneeEnCours()->where('statut', 'actif')->count(),
+39                 'classesActives' => Classe::where('statut', 'actif')->count(),
+40                 'professeursActifs' => Professeurs::where('statut', 'actif')->count(),
+41                 'sectionsCount' => Section::count(),
+42                 'optionsCount' => Option::count(),
+43                 'effectifsParCycle' => Cycle::query()
+44                     ->where('statut', 'actif')
+45                     ->withCount(['inscriptions as effectif' => fn ($query) => $query
+46                         ->anneeEnCours()
+47                         ->where('inscriptions.statut', 'actif')])
+48                     ->order
+```
+
+### Tool result
+```
+resources/views/prefecture/ (16 lines, newest first):
+  decisions.blade.php
+  flux.blade.php
+  layout.blade.php
+  presences.blade.php
+  eleve-fiche.blade.php
+  eleves.blade.php
+  profil.blade.php
+  bulletins.blade.php
+  evaluations.blade.php
+  personnel.blade.php
+  periodes.blade.php
+  tuteurs.blade.php
+  horaires.blade.php
+  classes.blade.php
+  effectifs.blade.php
+  dashboard.blade.php
+```
+
+### Tool call — read_file
+```
+{"offset":347,"path":"app/Http/Controllers/PrefectureDashboardController.php"}
+```
+
+### Tool call — bash
+```
+{"command":"$terms = 'visite.{0,3}classe|conseil.{0,5}discipline|proc[eè]s.{0,3}verbal|palmar|sanction|approuv|bulletins_validation|approuve_at'\nGet-ChildItem -Path app,resources/views,config,database -Recurse -Include *.php,*.blade.php | Select-String -Pattern $terms -CaseSensitive:$false | ForEach-Object { \"$($_.Path.Replace((Get-Location).Path + '\\','')):$($_.LineNumber): $($_.Line.Trim())\" } | Select-Object -First 120","description":"Search domain keywords"}
+```
+
+### Tool result
+```
+347        public function tuteurs(Request $request): View
+348        {
+349            $eleves = Eleve::query()
+350                ->visibles()
+351                ->with([
+352                    'tuteur',
+353                    'parents',
+354                    'inscriptions' => fn ($query) => $query->anneeEnCours()->with('classe'),
+355                ])
+356                ->orderBy('nom')
+357                ->orderBy('prenom')
+358                ->get();
+359    
+360            return view('prefecture.tuteurs', [
+361                'user' => $request->user(),
+362                'schoolYear' => AnneeScolaire::enCours(),
+363                'parTuteur' => $eleves->filter(fn (Eleve $eleve) => $eleve->tuteur_id !== null)->groupBy('tuteur_id'),
+364                'sansTuteur' => $eleves->whereNull('tuteur_id')->count(),
+365                'comptesParents' => User::query()
+366                    ->where('role', 'parent')
+367                    ->with('eleves')
+368                    ->orderBy('nom')
+369                    ->orderBy('prenom')
+370                    ->get(),
+371            ]);
+372        }
+373    
+374        /**
+375         * Périodes académiques : ouverture / fermeture par le préfet.
+376         */
+377        public function periodes(Request $request): View
+378        {
+379            return view('prefecture.periodes', [
+380                'user' => $request->user(),
+381                'schoolYear' => AnneeScolaire::enCours(),
+382                'periodes' => Periode::query()
+383                    ->anneeEnCours()
+384                    ->withCount(['evaluations', 'bulletins'])
+385                    ->orderBy('nom')
+386                    ->get(),
+387            ]);
+388        }
+389    
+390        /** Ouvre ou ferme une période (statut actif ↔ inactif). */
+391        public function togglePeriode(Request $request, Periode $periode): RedirectResponse
+392        {
+393            $periode->update(['statut' => $periode->statut === 'actif' ? 'inactif' : 'actif
+```
+
+### Tool result
+```
+Output saved to C:\Users\danie\.wmark\tool-outputs\9f19a8c29c30-sub-1\20261013-023158-bash-call_01a132e343e470dca8c3e809.txt (908 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+[powershell — Windows side]
+app\Http\Controllers\PrefectureDashboardController.php:423: 'approuves' => $bulletins->filter(fn (Bulletin $bulletin) => $bulletin->approuve_at !== null)->count(),
+app\Http\Controllers\PrefectureDashboardController.php:428: /** Approuve un bulletin (trace la date et l'auteur). */
+app\Http\Controllers\PrefectureDashboardController.php:429: public function approuverBulletin(Request $request, Bulletin $bulletin): RedirectResponse
+app\Http\Controllers\PrefectureDashboardC
+
+... 988 chars truncated ...
+
+etins.approuver', $bulletin) }}">
+resources\views\prefecture\bulletins.blade.php:117: <i class="fas fa-stamp"></i> Approuver
+config\permissions.php:38: 'bulletins_validation' => [
+database\migrations\2026_10_22_000000_add_prefet_supervision_columns.php:30: if (Schema::hasTable('bulletins') && ! Schema::hasColumn('bulletins', 'approuve_at')) {
+database\migrations\2026_10_22_000000_add_prefet_supervision_columns.php:32: $table->timestamp('approuve_at')->nullable()->after('statut');
+database\migrations\2026_10_22_000000_add_prefet_supervision_columns.php:33: $table->unsignedBigInteger('approuve_par')->nullable()->after('approuve_at');
+database\migrations\2026_10_22_000000_add_prefet_supervision_columns.php:46: foreach (['evaluations' => ['validee_at', 'validee_par'], 'bulletins' => ['approuve_at', 'approuve_par']] as $table => $colonnes) {
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><
+```
+
+### Tool call — read_file
+```
+{"path":"C:\\Users\\danie\\.wmark\\tool-outputs\\9f19a8c29c30-sub-1\\20261013-023158-bash-call_01a132e343e470dca8c3e809.txt"}
+```
+
+### Tool call — bash
+```
+{"command":"$terms='discipline|sanction|consigne|délibération|deliberation|visite|palmar|procès|proces.verbal|conseil'\nGet-ChildItem -Path app,resources/views,config,database,routes -Recurse -Include *.php,*.blade.php | Select-String -Pattern $terms -CaseSensitive:$false | ForEach-Object { \"$($_.Path.Replace((Get-Location).Path + '\\','')):$($_.LineNumber): $($_.Line.Trim())\" } | Select-Object -First 150","description":"Search discipline keywords"}
+```
+
+### Tool result
+```
+1      [powershell — Windows side]
+2      app\Http\Controllers\PrefectureDashboardController.php:423: 'approuves' => $bulletins->filter(fn (Bulletin $bulletin) => $bulletin->approuve_at !== null)->count(),
+3      app\Http\Controllers\PrefectureDashboardController.php:428: /** Approuve un bulletin (trace la date et l'auteur). */
+4      app\Http\Controllers\PrefectureDashboardController.php:429: public function approuverBulletin(Request $request, Bulletin $bulletin): RedirectResponse
+5      app\Http\Controllers\PrefectureDashboardController.php:432: 'approuve_at' => now(),
+6      app\Http\Controllers\PrefectureDashboardController.php:433: 'approuve_par' => $request->user()->id,
+7      app\Http\Controllers\PrefectureDashboardController.php:436: return back()->with('success', 'Bulletin approuv�.');
+8      app\Models\Bulletin.php:22: 'approuve_at' => 'datetime',
+9      resources\views\page publique pour les inscription et info\apropos.blade.php:12: ['icone' => 'bi-shield-check', 'titre' => 'Discipline & s�curit�', 'texte' => 'Appel journalier, suivi des absences, sanctions et notes de conduite consign�es.'],
+10     resources\views\prefecture\bulletins.blade.php:40: <p class="card-category">Approuv�s</p><h4 class="card-title">{{ $approuves }}</h4>
+11     resources\views\prefecture\bulletins.blade.php:109: @if ($bulletin->approuve_at)
+12     resources\views\prefecture\bulletins.blade.php:111: Approuv� le {{ $bulletin->approuve_at->format('d/m/Y') }}
+13     resources\views\prefecture\bulletins.blade.php:114: <form method="POST" action="{{ route('prefecture.bulletins.approuver', $bulletin) }}">
+14     resources\views\prefecture\bulletins.blade.php:117: <i class="fas fa-stamp"></i> Approuver
+15     config\permissions.php:38: 'bulletins_validation' => [
+16     database\migrations\2026_10_22_000000_add_prefet_supervision_columns.php:30: if (Schema::hasTable('bulletins') && ! Schema::hasColumn('bulletins', 'approuve_at')) {
+17     database\migrations\2026_10_22_000000_add_prefet
+```
+
+### Tool result
+```
+Output saved to C:\Users\danie\.wmark\tool-outputs\9f19a8c29c30-sub-1\20261013-023200-bash-call_01a132e34c397387ba768562.txt (5,370 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large).
+```
+
+### Tool call — read_file
+```
+{"path":"C:\\Users\\danie\\.wmark\\tool-outputs\\9f19a8c29c30-sub-1\\20261013-023200-bash-call_01a132e34c397387ba768562.txt"}
+```
+
+### Tool result
+```
+1      [powershell — Windows side]
+2      app\Http\Controllers\DeliberationController.php:8: use App\Models\Deliberation;
+3      app\Http\Controllers\DeliberationController.php:21: * D�lib�ration de fin d'ann�e : le jury applique les crit�res de
+4      app\Http\Controllers\DeliberationController.php:27: class DeliberationController extends Controller
+5      app\Http\Controllers\DeliberationController.php:58: $enregistrees = Deliberation::query()
+6      app\Http\Controllers\DeliberationController.php:85: $decisions = Deliberation::DECISIONS;
+7      app\Http\Controllers\DeliberationController.php:90: return view('admin.deliberations.index', [
+8      app\Http\Controllers\DeliberationController.php:139: foreach (array_keys(Deliberation::DECISIONS) as $cle) {
+9      app\Http\Controllers\DeliberationController.php:151: /** Enregistre les crit�res de d�lib�ration (seuils et plafond). */
+10     app\Http\Controllers\DeliberationController.php:155: 'deliberation_seuil_admission' => ['required', 'numeric', 'min:0', 'max:100'],
+11     app\Http\Controllers\DeliberationController.php:156: 'deliberation_seuil_repechage' => ['required', 'numeric', 'min:0', 'max:100'],
+12     app\Http\Controllers\DeliberationController.php:157: 'deliberation_max_cours_echoues' => ['nullable', 'integer', 'min:0', 'max:50'],
+13     app\Http\Controllers\DeliberationController.php:158: 'deliberation_note_min_cours' => ['nullable', 'numeric', 'min:0', 'max:100'],
+14     app\Http\Controllers\DeliberationController.php:160: 'deliberation_seuil_admission.required' => 'Indiquez le seuil d'admission.',
+15     app\Http\Controllers\DeliberationController.php:161: 'deliberation_seuil_repechage.required' => 'Indiquez le seuil de rep�chage.',
+16     app\Http\Controllers\DeliberationController.php:164: if ((float) $data['deliberation_seuil_repechage'] > (float) $data['deliberation_seuil_admission']) {
+17     app\Http\Controllers\DeliberationController.php:172: 'deliberation_active' => $request->boolean('deliberatio
+```
+
+### Tool call — read_file
+```
+{"offset":107,"path":"C:\\Users\\danie\\.wmark\\tool-outputs\\9f19a8c29c30-sub-1\\20261013-023200-bash-call_01a132e34c397387ba768562.txt"}
+```
+
+### Tool call — bash
+```
+{"command":"Get-ChildItem -Path app,database,routes -Recurse -Include *.php | Select-String -Pattern 'discipline|sanction|consigne|conduite' -CaseSensitive:$false | ForEach-Object { \"$($_.Path.Replace((Get-Location).Path + '\\','')):$($_.LineNumber): $($_.Line.Trim())\" } | Select-Object -First 80\nWrite-Output '----MODELS----'\nGet-ChildItem -Path app/Models -Recurse -Include *.php | Select-Object -ExpandProperty Name\nWrite-Output '----DISCIPLINE MIDDLEWARE ROUTES----'\nSelect-String -Path routes/web.php -Pattern 'discipline|disciplinaire|permission:' | ForEach-Object { \"$($_.LineNumber): $($_.Line.Trim())\" }","description":"Search discipline models and middleware"}
+```
+
+### Tool result
+```
+107    resources\views\page publique pour les inscription et info\apropos.blade.php:16: ['icone' => 'bi-eye', 'titre' => 'Pr�fecture des �tudes', 'texte' => 'Supervision p�dagogique : �valuations, saisie des cotes, d�lib�rations et vie scolaire.'],
+108    resources\views\page publique pour les inscription et info\apropos.blade.php:50: r�els, des d�lib�rations �quitables et une administration qui r�pond rapidement aux demandes des parents.
+109    resources\views\prefecture\eleve-fiche.blade.php:170: {{-- ==================== IDENTIT� & DISCIPLINE ==================== --}}
+110    resources\views\prefecture\eleve-fiche.blade.php:210: <div class="card-title section-titre"><i class="fas fa-gavel text-warning"></i> Discipline &amp; statut</div>
+111    resources\views\prefecture\flux.blade.php:21: <p>Ouvrez ou fermez l'encodage des points par les enseignants - pour garantir l'int�grit� des d�lib�rations.</p>
+112    resources\views\prefecture\flux.blade.php:38: <div class="text-muted small">D�coch� : les enseignants ne peuvent plus saisir de notes (p�riode ferm�e pour d�lib�ration).</div>
+113    resources\views\registration\account-request.blade.php:119: <li class="mb-2"><span class="fw-bolder text-dark">Pr�fecture</span> - supervision p�dagogique : �valuations, cotes, d�lib�rations.</li>
+114    config\permissions.php:68: 'discipline' => [
+115    config\permissions.php:69: 'libelle' => 'Assiduit� & discipline (pr�sences, conduite)',
+116    database\migrations\2026_10_20_000000_create_deliberations_module.php:8: * Module de d�lib�ration : un ordre de progression sur les classes (qui
+117    database\migrations\2026_10_20_000000_create_deliberations_module.php:13: * n'est dupliqu�e ici, la d�lib�ration ne fait que d�cider.
+118    database\migrations\2026_10_20_000000_create_deliberations_module.php:29: if (! Schema::hasColumn('parametres_systeme', 'deliberation_active')) {
+119    database\migrations\2026_10_20_000000_create_deliberations_module.php:30: $table->boolean('deliber
+```
+
+### Tool result
+```
+Output saved to C:\Users\danie\.wmark\tool-outputs\9f19a8c29c30-sub-1\20261013-023203-bash-call_01a132e359d2727cb4051e6c.txt (1,971 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+[powershell — Windows side]
+app\Http\Controllers\ParametreSystemeController.php:59: 'bulletin_afficher_conduite' => ['nullable', 'boolean'],
+app\Http\Controllers\ParametreSystemeController.php:74: 'bulletin_afficher_place', 'bulletin_afficher_conduite'] as $case) {
+app\Http\Controllers\TitulaireBulletinController.php:24: * appr�ciations (conduite / application) et document annuel (norme RDC).
+app\Http\Controllers\TitulaireBulletinController.php:99: 'conduite' => $existant?->conduite,
+app\Http\Co
+
+... 4,933 chars truncated ...
+
+ueController::class, 'index'])->middleware('role:prefetture', 'permission:flux_academique')->name('prefecture.flux.index');
+319: Route::put('/prefecture/flux-academique', [FluxAcademiqueController::class, 'update'])->middleware('role:prefetture', 'permission:flux_academique')->name('prefecture.flux.update');
+352: Route::get('/comptable/paiements', [ComptablePaiementController::class, 'index'])->middleware('role:comptable', 'permission:frais_recus')->name('comptable.paiements.index');
+353: Route::post('/comptable/paiements', [ComptablePaiementController::class, 'store'])->middleware('role:comptable', 'permission:frais_recus')->name('comptable.paiements.store');
+354: Route::get('/comptable/paiements/{paiement}/recu', [RecuController::class, 'show'])->middleware('role:comptable', 'permission:frais_recus')->name('comptable.paiements.recu');
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed<
+```
+
+### Tool call — read_file
+```
+{"path":"C:\\Users\\danie\\.wmark\\tool-outputs\\9f19a8c29c30-sub-1\\20261013-023203-bash-call_01a132e359d2727cb4051e6c.txt"}
+```
+
+### Tool result
+```
+1      [powershell — Windows side]
+2      app\Http\Controllers\ParametreSystemeController.php:59: 'bulletin_afficher_conduite' => ['nullable', 'boolean'],
+3      app\Http\Controllers\ParametreSystemeController.php:74: 'bulletin_afficher_place', 'bulletin_afficher_conduite'] as $case) {
+4      app\Http\Controllers\TitulaireBulletinController.php:24: * appr�ciations (conduite / application) et document annuel (norme RDC).
+5      app\Http\Controllers\TitulaireBulletinController.php:99: 'conduite' => $existant?->conduite,
+6      app\Http\Controllers\TitulaireBulletinController.php:112: /** Enregistre les appr�ciations (conduite / application) de la classe. */
+7      app\Http\Controllers\TitulaireBulletinController.php:118: 'conduite' => ['nullable', 'array'],
+8      app\Http\Controllers\TitulaireBulletinController.php:119: 'conduite.*' => ['nullable', 'string', 'max:50'],
+9      app\Http\Controllers\TitulaireBulletinController.php:130: $conduites = (array) $request->input('conduite', []);
+10     app\Http\Controllers\TitulaireBulletinController.php:135: DB::transaction(function () use ($rows, $periode, $conduites, $applications) {
+11     app\Http\Controllers\TitulaireBulletinController.php:147: 'conduite' => $conduites[$inscriptionId] ?? null,
+12     app\Models\Bulletin.php:13: 'place_classe', 'mention', 'application', 'conduite', 'chemin_pdf', 'statut',
+13     app\Models\ParametreSysteme.php:22: 'bulletin_afficher_place', 'bulletin_afficher_conduite',
+14     app\Models\ParametreSysteme.php:39: 'bulletin_afficher_conduite' => 'boolean',
+15     app\Models\ParametreSysteme.php:119: 'bulletin_afficher_conduite' => true,
+16     database\migrations\2026_09_21_020000_create_school_management_tables.php:27: Schema::create('bulletins', function (Blueprint $t) { $t->id(); $t->foreignId('inscription_id')->constrained()->cascadeOnDelete(); $t->foreignId('periode_id')->constrained()->cascadeOnDelete(); $t->decimal('total_points', 7, 2)->default(0); $t->decimal('max_possible', 7, 2)-
+```
+
+### Tool call — bash
+```
+{"command":"Get-ChildItem -Path resources/views/prefecture -Include *.blade.php -Recurse | Select-String -Pattern '<h1|<h2|<h3|section-titre|card-category|<title' -CaseSensitive:$false | ForEach-Object { \"$($_.Path.Replace((Get-Location).Path + '\\','')):$($_.LineNumber): $($_.Line.Trim())\" } | Select-Object -First 200","description":"List prefecture view sections"}
+```
+
+### Tool call — bash
+```
+{"command":"Write-Output '==VISITE=='; Get-ChildItem -Path app,resources/views,config,database -Recurse -Include *.php,*.blade.php | Select-String -Pattern 'visite|palmar|procès|proces-verb|conseil de discipline|conseil_de' -CaseSensitive:$false | ForEach-Object { \"$($_.Path.Replace((Get-Location).Path + '\\','')):$($_.LineNumber): $($_.Line.Trim())\" } | Select-Object -First 40\nWrite-Output '==PRESENCE MODEL=='; Get-Content app/Models/Presence.php | Select-Object -First 40\nWrite-Output '==APPEL CONTROLLER HEAD=='; Get-Content app/Http/Controllers/AppelController.php | Select-Object -First 25","description":"Confirm visit/sanction and Presence/Appel"}
+```
+
+### Tool result
+```
+Output saved to C:\Users\danie\.wmark\tool-outputs\9f19a8c29c30-sub-1\20261013-023209-bash-call_01a132e36db671ad83cd5c67.txt (3,602 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+[powershell — Windows side]
+resources\views\prefecture\bulletins.blade.php:30: <p class="card-category">Bulletins</p><h4 class="card-title">{{ $bulletins->count() }}</h4>
+resources\views\prefecture\bulletins.blade.php:40: <p class="card-category">Approuv�s</p><h4 class="card-title">{{ $approuves }}</h4>
+resources\views\prefecture\bulletins.blade.php:50: <p class="card-category">Avec document PDF</p><h4 class="card-title">{{ $avecPdf }}</h4>
+resources\views\prefecture\bulletins.blade.php:63: <div
+
+... 10,012 chars truncated ...
+
+</div>
+resources\views\prefecture\profil.blade.php:218: <div class="col-3"><h3 class="mb-0 fw-bold">{{ $comptesTotal }}</h3><small>Comptes</small></div>
+resources\views\prefecture\tuteurs.blade.php:16: <p class="card-category">Fiches tuteurs</p><h4 class="card-title">{{ $tuteurs->count() }}</h4>
+resources\views\prefecture\tuteurs.blade.php:26: <p class="card-category">�l�ves sans tuteur</p><h4 class="card-title">{{ $sansTuteur }}</h4>
+resources\views\prefecture\tuteurs.blade.php:36: <p class="card-category">Comptes parents</p><h4 class="card-title">{{ $comptesParents->count() }}</h4>
+resources\views\prefecture\tuteurs.blade.php:49: <div class="card-category">R�ception des parents � {{ $schoolYear?->libelle }}</div>
+resources\views\prefecture\tuteurs.blade.php:115: <div class="card-category">Rattachement d�fini par l'administration</div>
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed
+```
+
+### Tool result
+```
+Output saved to C:\Users\danie\.wmark\tool-outputs\9f19a8c29c30-sub-1\20261013-023209-bash-call_01a132e3701c72d188a91b34.txt (780 tokens) — read it with the read_file tool for the full content (page through it with offset/limit if it is large). Preview:
+[powershell — Windows side]
+==VISITE==
+app\Http\Controllers\PublicSiteController.php:70: // Pi��ge anti-robot : un champ masquǸ aux visiteurs. S'il est rempli,
+app\Models\MessageContact.php:76: /** Identifiant lisible affich� au visiteur apr�s l'envoi (ex. � CMS-000042 �). */
+resources\views\admin\profile\online.blade.php:97: <h4 class="tile-title">Sessions invit�es (page de connexion, visiteurs)</h4>
+==PRESENCE MODEL==
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+/**
+ 
+
+... 626 chars truncated ...
+
+     return $this->belongsTo(Eleve::class);
+    }
+}
+==APPEL CONTROLLER HEAD==
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Appel;
+use App\Models\Conversation;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+
+/**
+ * Signalisation des appels audio/vidǸo (WebRTC) sans serveur temps rǸel :
+ * chaque partie dǸpose son offre, sa rǸponse et ses candidats ICE, et lit
+ * l'Ǹtat de l'appel en boucle courte.
+ */
+class AppelController extends Controller
+{
+    public function store(Request $request): JsonResponse
+    {
+        $data = $request->validate([
+            'conversation_id' => ['required', 'integer', 'exists:conversations,id'],
+            'type' => ['required', 'in:audio,video'],
+            'offre' => ['required', 'string'],
+        ]);
+
+        $conversation = Conversation::findOrFail($data['conversation_id']);
+#< CLIXML
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Pr�paration des modules � la premi�re utilisation.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><
+```
+
+### Tool call — read_file
+```
+{"path":"C:\\Users\\danie\\.wmark\\tool-outputs\\9f19a8c29c30-sub-1\\20261013-023209-bash-call_01a132e36db671ad83cd5c67.txt"}
+```
+
+### Tool call — read_file
+```
+{"path":"C:\\Users\\danie\\.wmark\\tool-outputs\\9f19a8c29c30-sub-1\\20261013-023209-bash-call_01a132e3701c72d188a91b34.txt"}
+```
+
+### Tool result
+```
+1      [powershell — Windows side]
+2      resources\views\prefecture\bulletins.blade.php:30: <p class="card-category">Bulletins</p><h4 class="card-title">{{ $bulletins->count() }}</h4>
+3      resources\views\prefecture\bulletins.blade.php:40: <p class="card-category">Approuv�s</p><h4 class="card-title">{{ $approuves }}</h4>
+4      resources\views\prefecture\bulletins.blade.php:50: <p class="card-category">Avec document PDF</p><h4 class="card-title">{{ $avecPdf }}</h4>
+5      resources\views\prefecture\bulletins.blade.php:63: <div class="card-category">{{ $schoolYear?->libelle }}</div>
+6      resources\views\prefecture\classes.blade.php:29: <p class="card-category">Classes actives</p>
+7      resources\views\prefecture\classes.blade.php:46: <p class="card-category">�l�ves plac�s</p>
+8      resources\views\prefecture\classes.blade.php:63: <p class="card-category">Effectif moyen</p>
+9      resources\views\prefecture\classes.blade.php:82: <p class="card-category">Classes sans �l�ve</p>
+10     resources\views\prefecture\classes.blade.php:116: <div class="card-category">{{ $schoolYear?->libelle }}</div>
+11     resources\views\prefecture\dashboard.blade.php:36: <p class="card-category">�l�ves inscrits</p>
+12     resources\views\prefecture\dashboard.blade.php:55: <p class="card-category">Classes actives</p>
+13     resources\views\prefecture\dashboard.blade.php:74: <p class="card-category">Professeurs actifs</p>
+14     resources\views\prefecture\dashboard.blade.php:93: <p class="card-category">Sections / Options</p>
+15     resources\views\prefecture\dashboard.blade.php:110: <div class="card-category">{{ $schoolYear?->libelle }}</div>
+16     resources\views\prefecture\dashboard.blade.php:168: <div class="card-category">{{ $classes->count() }} classe(s)</div>
+17     resources\views\prefecture\decisions.blade.php:6: <title>D�cisions ex�cutives &amp; injonctions</title>
+18     resources\views\prefecture\decisions.blade.php:16: <h1><i class="fa fa-gavel"></i> D�cisions ex�cutives 
+```
+
+### Tool result
+```
+1      [powershell — Windows side]
+2      ==VISITE==
+3      app\Http\Controllers\PublicSiteController.php:70: // Pi��ge anti-robot : un champ masquǸ aux visiteurs. S'il est rempli,
+4      app\Models\MessageContact.php:76: /** Identifiant lisible affich� au visiteur apr�s l'envoi (ex. � CMS-000042 �). */
+5      resources\views\admin\profile\online.blade.php:97: <h4 class="tile-title">Sessions invit�es (page de connexion, visiteurs)</h4>
+6      ==PRESENCE MODEL==
+7      <?php
+8      
+9      namespace App\Models;
+10     
+11     use Illuminate\Database\Eloquent\Model;
+12     
+13     /**
+14      * PrǸsence d'un Ǹl��ve �� une sǸance (un cours affectǸ, �� une date donnǸe).
+15      */
+16     class Presence extends Model
+17     {
+18         public const STATUTS = [
+19             'present' => 'PrǸsent',
+20             'absent' => 'Absent',
+21             'retard' => 'En retard',
+22             'excuse' => 'ExcusǸ',
+23         ];
+24     
+25         protected $table = 'presences';
+26     
+27         protected $fillable = ['affectation_id', 'eleve_id', 'date_seance', 'statut_presence', 'motif', 'enregistre_par'];
+28     
+29         // date_seance reste une chaǩne �� AAAA-MM-JJ �� : la recherche/saisie d'un
+30         // appel doit comparer exactement la mǦme valeur qu'�� l'enregistrement.
+31     
+32         public function eleve()
+33         {
+34             return $this->belongsTo(Eleve::class);
+35         }
+36     }
+37     ==APPEL CONTROLLER HEAD==
+38     <?php
+39     
+40     namespace App\Http\Controllers;
+41     
+42     use App\Models\Appel;
+43     use App\Models\Conversation;
+44     use Illuminate\Http\JsonResponse;
+45     use Illuminate\Http\Request;
+46     
+47     /**
+48      * Signalisation des appels audio/vidǸo (WebRTC) sans serveur temps rǸel :
+49      * chaque partie dǸpose son offre, sa rǸponse et ses candidats ICE, et lit
+50      * l'Ǹtat de l'appel en boucle courte.
+51      */
+52     class AppelController extends Controller
+53     {
+54         public function sto
+```
+
+## Assistant
+# Cartographie « Espace Préfet des Études »
+
+## 1. Routes `prefecture.*` — `routes/web.php`
+
+| Nom | HTTP | URI | Contrôleur@méthode | Middleware | Ligne |
+|---|---|---|---|---|---|
+| prefecture.dashboard | GET | /prefecture/tableau-de-bord | PrefectureDashboardController@index | role:prefetture | 295 |
+| prefecture.effectifs | GET | /prefecture/effectifs | idem@effectifs | role:prefetture | 296 |
+| prefecture.classes | GET | /prefecture/classes | @classes | role:prefetture | 297 |
+| prefecture.personnel | GET | /prefecture/personnel | @personnel | role:prefetture | 298 |
+| prefecture.profil | GET | /prefecture/profil | @profil | role:prefetture | 299 |
+| prefecture.presences | GET | /prefecture/presences | @presences | role:prefetture | 301 |
+| prefecture.horaires | GET | /prefecture/horaires | @horaires | role:prefetture | 302 |
+| prefecture.evaluations | GET | /prefecture/evaluations | @evaluations | role:prefetture | 303 |
+| prefecture.eleves | GET | /prefecture/eleves | @eleves | role:prefetture | 304 |
+| prefecture.eleves.fiche | GET | /prefecture/eleves/{eleve} | @eleveFiche | role:prefetture | 305 |
+| prefecture.tuteurs | GET | /prefecture/tuteurs | @tuteurs | role:prefetture | 306 |
+| prefecture.eleves.statut | PATCH | /prefecture/eleves/{eleve}/statut | @modifierStatutEleve | role:prefetture | 308 |
+| prefecture.evaluations.valider | POST | /prefecture/evaluations/{evaluation}/valider | @validerEvaluation | role:prefetture | 309 |
+| prefecture.periodes | GET | /prefecture/periodes | @periodes | role:prefetture | 310 |
+| prefecture.periodes.toggle | PATCH | /prefecture/periodes/{periode}/statut | @togglePeriode | role:prefetture | 311 |
+| prefecture.bulletins | GET | /prefecture/bulletins | @bulletins | role:prefetture, **permission:bulletins_validation** | 312 |
+| prefecture.bulletins.approuver | POST | /prefecture/bulletins/{bulletin}/approuver | @approuverBulletin | role:prefetture, **permission:bulletins_validation** | 313 |
+| prefecture.bulletins.document | GET | /prefecture/bulletins/{inscription}/document | BulletinController@document | role:prefetture, **permission:bulletins_validation** | 314 |
+| prefecture.decisions.index | GET | /prefecture/decisions | JournalDecisionController@index | role:prefetture, **permission:decisions** | 316 |
+| prefecture.decisions.store | POST | /prefecture/decisions | JournalDecisionController@store | role:prefetture, **permission:decisions** | 317 |
+| prefecture.flux.index | GET | /prefecture/flux-academique | FluxAcademiqueController@index | role:prefetture, **permission:flux_academique** | 318 |
+| prefecture.flux.update | PUT | /prefecture/flux-academique | FluxAcademiqueController@update | role:prefetture, **permission:flux_academique** | 319 |
+| prefecture.paiements.recu | GET | /prefecture/paiements/{paiement}/recu | RecuController@show | role:prefetture | 357 |
+
+23 routes. ⚠️ `permission:discipline` et `permission:emplois_du_temps` ne sont utilisés **par aucune route préfet**.
+
+## 2. Contrôleurs préfet
+
+**`PrefectureVieScolaireController.php` : N'EXISTE PAS** (aucun fichier). Toute la logique est dans `PrefectureDashboardController.php`.
+
+Méthodes publiques (`app/Http/Controllers/PrefectureDashboardController.php`) :
+
+| Ligne | Méthode | Rôle (1 ligne) |
+|---|---|---|
+| 33 | index | Charge années/effectifs/classes/personnel → vue `prefecture.dashboard`. |
+| 68 | effectifs | Répartition par cycle/classe/sexe → `prefecture.effectifs`. |
+| 106 | classes | Classes actives (cycle, salle, section, effectif) → `prefecture.classes`. |
+| 125 | personnel | Comptes par rôle + professeurs + documents → `prefecture.personnel`. |
+| 151 | profil | Profil préfet + notifications + périmètre → `prefecture.profil`. |
+| 172 | presences | Présences du jour + enseignants attendus (EDT) → `prefecture.presences`. |
+| 211 | horaires | EDT actif filtrable jour/classe/prof → `prefecture.horaires`. |
+| 243 | evaluations | Évaluations par période/classe + nb notes → `prefecture.evaluations`. |
+| 274 | eleves | Recherche/pagination dossiers élèves → `prefecture.eleves`. |
+| 309 | eleveFiche | Dossier complet (santé, assiduité, parcours, finances) → `prefecture.eleve-fiche`. |
+| 347 | tuteurs | Tuteurs/parents/élèves sans tuteur → `prefecture.tuteurs`. |
+| 377 | periodes | Liste des périodes de l'année → `prefecture.periodes`. |
+| 391 | togglePeriode | Ouvre/ferme une période (actif↔inactif). |
+| 403 | bulletins | Bulletins filtrés période/classe + compteurs approuvés → `prefecture.bulletins`. |
+| 429 | approuverBulletin | Écrit `approuve_at`/`approuve_par`. |
+| 440 | validerEvaluation | Écrit `validee_at`/`validee_par`. |
+| 451 | modifierStatutEleve | Change statut élève (actif/inactif/suspendu/exclu). |
+
+(privée : `jourDeLaDate` L463).
+
+## 3. Vues `resources/views/prefecture/` (16)
+
+`dashboard`, `effectifs`, `classes`, `personnel`, `profil`, `presences`, `horaires`, `evaluations`, `eleves`, `eleve-fiche`, `tuteurs`, `periodes`, `bulletins`, `decisions`, `flux`, `layout`. Sections principales (extraits) :
+- **dashboard** : cartes Élèves inscrits / Classes actives / Professeurs actifs / Sections-Options + tableau classes (L36-168).
+- **eleve-fiche** : Assiduité, Absences, Retards, État civil, Dossier médical, **Discipline & statut** (L210), Tuteur, Comptes parents, Parcours, Situation financière, Paiements, Assiduité-derniers appels, Pièces du dossier (L128-549).
+- **presences** : Présents / Absents / Retard / Taux d'assiduité / cas à suivre (L35-78).
+- **bulletins** : Bulletins / Approuvés / Avec document PDF + bouton « Approuver » (L30-117).
+- **decisions** : « Décisions exécutives & injonctions » (L16) ; **flux** : « Flux académique » (L20).
+- **effectifs** : Total/Garçons/Filles/Classes + par cycle (L27-134).
+
+## 4. Rôle `prefetture`
+
+`config/permissions.php` — features accordant un niveau à `prefetture` :
+
+| Feature | Niveau prefetture | Ligne |
+|---|---|---|
+| decisions | oui | 36 |
+| bulletins_validation | **avis** | 40 |
+| emplois_du_temps | oui | 44 |
+| saisie_notes | **suivi** | 48 |
+| flux_academique | oui | 66 |
+| discipline | **suivi** | 70 |
+
+Absent de : `modules`, `inscriptions`, `frais_recus`, `audit`. Rôle déclaré L15.
+Middleware `role:prefetture` : utilisé sur les 23 routes préfet (web.php 295-357), nulle part ailleurs.
+
+## 5. Modules réutilisables existants
+
+| Domaine | Existant | Fichier:ligne / route |
+|---|---|---|
+| Validation bulletins | ✅ | `approuve_at` migration `2026_10_22_000000_add_prefet_supervision_columns.php:30-33,46` ; Bulletin model `app/Models/Bulletin.php:22` ; `approuverBulletin` controller L429 ; routes web.php:312-314 (`prefecture.bulletins.approuver`) ; feature L38 |
+| Présences/appels | ✅ (consultation) | Modèle `app/Models/Presence.php:16` (statuts present/absent/retard/excuse) ; saisie par prof `ProfesseurPresenceController` routes 350-351 ; lecture préfet `prefecture.presences` web.php:301 (controller L172). ⚠️ **`AppelController` = appels WebRTC audio/vidéo**, aucun rapport avec l'assiduité |
+| Discipline | ❌ | Aucun modèle/contrôleur/table `discipline`/`sanction`/`consigne`. Seuls : feature `config/permissions.php:68` (sans route) et texte marketing `resources/views/page publique…/apropos.blade.php:12` |
+| Emplois du temps | ✅ | `EmploiDuTempsController` routes 123-125 ; feature L42 ; consulter préfet `prefecture.horaires` web.php:302 |
+| Saisie de notes | ✅ | `NotesController` routes 135-136 (admin) ; `ProfesseurEvaluationController` routes 348-349 ; feature L46 ; flux `FluxAcademiqueController` `app/Http/Controllers/FluxAcademiqueController.php:12` routes 318-319 |
+| Flux académique | ✅ | `FluxAcademiqueController` (index/update) routes 318-319 ; feature L64 |
+| Décisions/injonctions | ✅ | `JournalDecisionController` routes 316-317 (préfet) ; feature L33 |
+| Périodes | ✅ | `prefecture.periodes(.toggle)` web.php:310-311 |
+
+## 6. Concepts recherchés (app/ + resources/views/)
+
+| Concept | Présent ? | Preuve |
+|---|---|---|
+| Visite de classe | **NON** | Aucune occurrence (seul « visiteur/vitrine » : `PublicSiteController.php:70`, `profile/online.blade.php:97`) |
+| Sanction | **NON** (module) | Uniquement texte marketing `apropos.blade.php:12` ; aucun modèle/route/table |
+| Conseil de discipline | **NON** | Aucune occurrence |
+| Procès-verbal de délibération | **NON** | Module `DeliberationController`/`app/Models/Deliberation.php` existent (routes 224-227, admin) mais **aucun PV/document généré** |
+| Palmarès | **NON** | Aucune occurrence (recherche `palmar`) |
+
+**Synthèse finale** : l'espace préfet couvre consultation (effectifs, classes, personnel, élèves, tuteurs, horaires, présences), supervision (périodes, validation évaluations, statut élève), validation bulletins (`approuve_at`), décisions/injonctions et flux académique. Manquent totalement : **visites de classe, sanctions/conseil de discipline, PV de délibération, palmarès**, et le module `discipline` (feature déclarée mais sans écran ni route). La fiche élève affiche « Discipline & statut » mais ne repose que sur le champ `statut` de l'élève — pas de registre de sanctions.

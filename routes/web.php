@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\EleveController;
 use App\Http\Controllers\EleveInscriptionController;
+use App\Http\Controllers\InscriptionAttenteController;
 use App\Http\Controllers\SalleController;
 use App\Http\Controllers\ClasseController;
 use App\Http\Controllers\UserProfileController;
@@ -51,8 +52,11 @@ use App\Http\Controllers\ParametreSystemeController;
 use App\Http\Controllers\AnneeScolaireController;
 use App\Http\Controllers\ComptableDashboardController;
 use App\Http\Controllers\TitulaireDashboardController;
+use App\Http\Controllers\TitulaireBulletinController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PrefectureDashboardController;
+use App\Http\Controllers\PrefectureDisciplineController;
+use App\Http\Controllers\PrefectureInscriptionController;
 use App\Http\Controllers\PortailParentController;
 use App\Http\Controllers\AppelController;
 use App\Http\Controllers\DeliberationController;
@@ -108,19 +112,23 @@ Route::middleware('auth')->group(function () {
     Route::post('/admin/professeurs/{professeur}/documents', [ProfesseurController::class, 'storeDocument'])->middleware('role:admin')->name('admin.professeurs.documents.store');
     Route::delete('/admin/professeurs/documents/{document}', [ProfesseurController::class, 'destroyDocument'])->middleware('role:admin')->name('admin.professeurs.documents.destroy');
     Route::patch('/admin/professeurs/{professeur}/statut', [ProfesseurController::class, 'toggleStatus'])->middleware('role:admin')->name('admin.professeurs.toggle-status');
-    Route::get('/admin/cours-affectations', [AffectationCoursController::class, 'index'])->middleware('role:admin')->name('admin.affectations.index');
-    Route::post('/admin/affectations', [AffectationCoursController::class, 'store'])->middleware('role:admin')->name('admin.affectations.store');
-    Route::patch('/admin/affectations/{affectation}/muter', [AffectationCoursController::class, 'muter'])->middleware('role:admin')->name('admin.affectations.muter');
-    Route::post('/admin/affectations/permuter', [AffectationCoursController::class, 'permuter'])->middleware('role:admin')->name('admin.affectations.permuter');
-    Route::delete('/admin/affectations/{affectation}', [AffectationCoursController::class, 'destroy'])->middleware('role:admin')->name('admin.affectations.destroy');
+    // Module « Mutation » : affectations des professeurs (créer, muter, permuter, supprimer).
+    // Piloté par la matrice (feature « affectations ») — le Préfet (niveau « oui ») contrôle tout.
+    Route::get('/admin/cours-affectations', [AffectationCoursController::class, 'index'])->middleware('permission:affectations')->name('admin.affectations.index');
+    Route::post('/admin/affectations', [AffectationCoursController::class, 'store'])->middleware('permission:affectations')->name('admin.affectations.store');
+    Route::patch('/admin/affectations/{affectation}/muter', [AffectationCoursController::class, 'muter'])->middleware('permission:affectations')->name('admin.affectations.muter');
+    Route::post('/admin/affectations/permuter', [AffectationCoursController::class, 'permuter'])->middleware('permission:affectations')->name('admin.affectations.permuter');
+    Route::delete('/admin/affectations/{affectation}', [AffectationCoursController::class, 'destroy'])->middleware('permission:affectations')->name('admin.affectations.destroy');
     Route::get('/admin/cours', [CoursController::class, 'index'])->middleware('role:admin')->name('admin.cours.index');
     Route::post('/admin/cours', [CoursController::class, 'store'])->middleware('role:admin')->name('admin.cours.store');
     Route::put('/admin/cours/{cours}', [CoursController::class, 'update'])->middleware('role:admin')->name('admin.cours.update');
     Route::patch('/admin/cours/{cours}/statut', [CoursController::class, 'toggleStatus'])->middleware('role:admin')->name('admin.cours.toggle-status');
     Route::delete('/admin/cours/{cours}', [CoursController::class, 'destroy'])->middleware('role:admin')->name('admin.cours.destroy');
-    Route::get('/admin/emplois-du-temps', [EmploiDuTempsController::class, 'index'])->middleware('role:admin', 'permission:emplois_du_temps')->name('admin.emplois-du-temps.index');
-    Route::post('/admin/emplois-du-temps', [EmploiDuTempsController::class, 'store'])->middleware('role:admin', 'permission:emplois_du_temps')->name('admin.emplois-du-temps.store');
-    Route::delete('/admin/emplois-du-temps/{emploiDuTemps}', [EmploiDuTempsController::class, 'destroy'])->middleware('role:admin')->name('admin.emplois-du-temps.destroy');
+    // Emplois du temps : pilotés par la matrice (feature « emplois_du_temps ») —
+    // le Préfet (niveau « oui ») peut les consulter, les créer et les supprimer.
+    Route::get('/admin/emplois-du-temps', [EmploiDuTempsController::class, 'index'])->middleware('permission:emplois_du_temps')->name('admin.emplois-du-temps.index');
+    Route::post('/admin/emplois-du-temps', [EmploiDuTempsController::class, 'store'])->middleware('permission:emplois_du_temps')->name('admin.emplois-du-temps.store');
+    Route::delete('/admin/emplois-du-temps/{emploiDuTemps}', [EmploiDuTempsController::class, 'destroy'])->middleware('permission:emplois_du_temps')->name('admin.emplois-du-temps.destroy');
     Route::get('/admin/periodes', [PeriodeController::class, 'index'])->middleware('role:admin')->name('admin.periodes.index');
     Route::post('/admin/periodes', [PeriodeController::class, 'store'])->middleware('role:admin')->name('admin.periodes.store');
     Route::patch('/admin/periodes/{periode}/statut', [PeriodeController::class, 'toggleStatus'])->middleware('role:admin')->name('admin.periodes.toggle-status');
@@ -170,7 +178,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/admin/archives/{archiveAnnee}', [ArchiveAnneeController::class, 'destroy'])->middleware('role:admin')->name('admin.archives.destroy');
     Route::get('/admin/cycles', [CycleController::class, 'index'])->middleware('role:admin')->name('admin.cycles.index');
     Route::post('/admin/cycles', [CycleController::class, 'store'])->middleware('role:admin')->name('admin.cycles.store');
-    Route::patch('/admin/cycles/{cycle}/statut', [CycleController::class, 'toggleStatus'])->middleware('role:admin')->name('admin.cycles.toggle-status');
+    Route::patch('/admin/cycles/{cycle}', [CycleController::class, 'update'])->middleware('role:admin')->name('admin.cycles.update');
+    // Activation d'un cycle : pilotée par la matrice des permissions (feature « structures »).
+    Route::patch('/admin/cycles/{cycle}/statut', [CycleController::class, 'toggleStatus'])->middleware('permission:structures')->name('admin.cycles.toggle-status');
     Route::delete('/admin/cycles/{cycle}', [CycleController::class, 'destroy'])->middleware('role:admin')->name('admin.cycles.destroy');
     Route::get('/admin/modules', [ModuleSwitchController::class, 'index'])->middleware('role:admin', 'permission:modules')->name('admin.modules.index');
     Route::put('/admin/modules', [ModuleSwitchController::class, 'update'])->middleware('role:admin', 'permission:modules')->name('admin.modules.update');
@@ -181,10 +191,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/admin/profil', [UserProfileController::class, 'show'])->middleware('role:admin')->name('admin.profile.show');
     Route::get('/admin/profil/parametres', [ParametreSystemeController::class, 'edit'])->middleware('role:admin')->name('admin.profile.settings');
     Route::put('/admin/profil/parametres', [ParametreSystemeController::class, 'update'])->middleware('role:admin')->name('admin.profile.settings.update');
-    Route::get('/admin/demandes/inscriptions', [AdminRegistrationRequestController::class, 'studentRequests'])->middleware('role:admin')->name('admin.registration.students');
-    Route::get('/admin/demandes/inscriptions/historique', [AdminRegistrationRequestController::class, 'studentHistory'])->middleware('role:admin')->name('admin.registration.students.history');
-    Route::post('/admin/demandes/inscriptions/{demandeInscription}/accepterta', [AdminRegistrationRequestController::class, 'approveStudent'])->middleware('role:admin')->name('admin.registration.students.approve');
-    Route::post('/admin/demandes/inscriptions/{demandeInscription}/refuser', [AdminRegistrationRequestController::class, 'rejectStudent'])->middleware('role:admin')->name('admin.registration.students.reject');
+    // Validation des demandes d'inscription : pilotée par la matrice (feature « inscriptions »).
+    Route::get('/admin/demandes/inscriptions', [AdminRegistrationRequestController::class, 'studentRequests'])->middleware('permission:inscriptions')->name('admin.registration.students');
+    Route::get('/admin/demandes/inscriptions/historique', [AdminRegistrationRequestController::class, 'studentHistory'])->middleware('permission:inscriptions')->name('admin.registration.students.history');
+    Route::post('/admin/demandes/inscriptions/{demandeInscription}/accepterta', [AdminRegistrationRequestController::class, 'approveStudent'])->middleware('permission:inscriptions')->name('admin.registration.students.approve');
+    Route::post('/admin/demandes/inscriptions/{demandeInscription}/refuser', [AdminRegistrationRequestController::class, 'rejectStudent'])->middleware('permission:inscriptions')->name('admin.registration.students.reject');
     Route::get('/admin/demandes/comptes', [AdminRegistrationRequestController::class, 'accountRequests'])->middleware('role:admin')->name('admin.registration.accounts');
     Route::post('/admin/demandes/comptes/{demandeCompte}/accepter', [AdminRegistrationRequestController::class, 'approveAccount'])->middleware('role:admin')->name('admin.registration.accounts.approve');
     Route::post('/admin/demandes/comptes/{demandeCompte}/refuser', [AdminRegistrationRequestController::class, 'rejectAccount'])->middleware('role:admin')->name('admin.registration.accounts.reject');
@@ -247,14 +258,23 @@ Route::middleware('auth')->group(function () {
     Route::delete('/admin/comptes/{user}', [UserProfileController::class, 'destroyAccount'])->middleware('role:admin')->name('admin.profile.accounts.destroy');
     Route::post('/fin-impersonation', [UserProfileController::class, 'stopImpersonation'])->name('admin.impersonation.stop');
     Route::get('/admin/eleves', [EleveController::class, 'index'])->middleware('role:admin')->name('admin.eleves.index');
-    Route::get('/admin/eleves/{eleve}/modifier', [EleveController::class, 'edit'])->middleware('role:admin')->name('admin.eleves.edit');
-    Route::put('/admin/eleves/{eleve}', [EleveController::class, 'update'])->middleware('role:admin')->name('admin.eleves.update');
+    // Pages dédiées AVANT la route « {eleve} » (un seul segment) pour ne pas être avalées.
+    Route::get('/admin/eleves/desactives', [EleveController::class, 'desactives'])->middleware('role:admin')->name('admin.eleves.desactives');
+    Route::get('/admin/eleves/archives', [EleveController::class, 'archives'])->middleware('role:admin')->name('admin.eleves.archives');
+    // Modification du dossier élève : pilotée par la matrice (feature « inscriptions ») —
+    // le Préfet (niveau « oui ») peut corriger un dossier.
+    Route::get('/admin/eleves/{eleve}/modifier', [EleveController::class, 'edit'])->middleware('permission:inscriptions')->name('admin.eleves.edit');
+    Route::put('/admin/eleves/{eleve}', [EleveController::class, 'update'])->middleware('permission:inscriptions')->name('admin.eleves.update');
     Route::patch('/admin/eleves/{eleve}/statut', [EleveController::class, 'toggleStatut'])->middleware('role:admin')->name('admin.eleves.toggle');
-    Route::post('/admin/eleves/{eleve}/documents', [EleveController::class, 'storeDocument'])->middleware('role:admin')->name('admin.eleves.documents.store');
+    Route::post('/admin/eleves/{eleve}/documents', [EleveController::class, 'storeDocument'])->middleware('permission:inscriptions')->name('admin.eleves.documents.store');
     Route::get('/admin/eleves/{eleve}', [EleveController::class, 'show'])->middleware('role:admin')->name('admin.eleves.show');
     Route::get('/admin/eleves/{eleve}/carte', [EleveController::class, 'carte'])->middleware('role:admin')->name('admin.eleves.carte');
     Route::get('/admin/eleves/inscription/nouvelle', [EleveInscriptionController::class, 'create'])->middleware('role:admin')->name('admin.eleves.create');
     Route::post('/admin/eleves/inscription', [EleveInscriptionController::class, 'store'])->middleware('role:admin')->name('admin.eleves.store');
+    // Inscriptions restées « en attente » (jamais validées par la caisse) : nettoyage.
+    Route::get('/admin/inscriptions/attente', [InscriptionAttenteController::class, 'index'])->middleware('role:admin')->name('admin.inscriptions.attente');
+    Route::delete('/admin/inscriptions/attente/{inscription}', [InscriptionAttenteController::class, 'destroy'])->middleware('role:admin')->name('admin.inscriptions.attente.destroy');
+    Route::delete('/admin/inscriptions/attente', [InscriptionAttenteController::class, 'purge'])->middleware('role:admin')->name('admin.inscriptions.attente.purge');
     Route::get('/admin/salles', [SalleController::class, 'index'])->middleware('role:admin')->name('admin.salles.index');
     Route::get('/admin/annees', [AnneeScolaireController::class, 'index'])->middleware('role:admin')->name('admin.annees.index');
     Route::post('/admin/annees', [AnneeScolaireController::class, 'store'])->middleware('role:admin')->name('admin.annees.store');
@@ -276,7 +296,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/admin/classes/{classe}/eleves', [ClasseController::class, 'students'])->middleware('role:admin')->name('admin.classes.students');
     Route::get('/admin/classes/{classe}/modifier', [ClasseController::class, 'edit'])->middleware('role:admin')->name('admin.classes.edit');
     Route::put('/admin/classes/{classe}', [ClasseController::class, 'update'])->middleware('role:admin')->name('admin.classes.update');
-    Route::patch('/admin/classes/{classe}/statut', [ClasseController::class, 'toggleStatus'])->middleware('role:admin')->name('admin.classes.toggle-status');
+    // Activation d'une classe : pilotée par la matrice des permissions (feature « structures »).
+    Route::patch('/admin/classes/{classe}/statut', [ClasseController::class, 'toggleStatus'])->middleware('permission:structures')->name('admin.classes.toggle-status');
     Route::delete('/admin/classes/{classe}', [ClasseController::class, 'destroy'])->middleware('role:admin')->name('admin.classes.destroy');
     Route::get('/admin/salles/{salle}/modifier', [SalleController::class, 'edit'])->middleware('role:admin')->name('admin.salles.edit');
     Route::put('/admin/salles/{salle}', [SalleController::class, 'update'])->middleware('role:admin')->name('admin.salles.update');
@@ -294,6 +315,16 @@ Route::middleware('auth')->group(function () {
     Route::get('/prefecture/eleves', [PrefectureDashboardController::class, 'eleves'])->middleware('role:prefetture')->name('prefecture.eleves');
     Route::get('/prefecture/eleves/{eleve}', [PrefectureDashboardController::class, 'eleveFiche'])->middleware('role:prefetture')->name('prefecture.eleves.fiche');
     Route::get('/prefecture/tuteurs', [PrefectureDashboardController::class, 'tuteurs'])->middleware('role:prefetture')->name('prefecture.tuteurs');
+    // Discipline : registre des sanctions (préfet et poste « disciplinaire »).
+    Route::get('/prefecture/discipline', [PrefectureDisciplineController::class, 'index'])->middleware('role:prefetture,disciplinaire', 'permission:discipline')->name('prefecture.discipline.index');
+    Route::post('/prefecture/discipline', [PrefectureDisciplineController::class, 'store'])->middleware('role:prefetture,disciplinaire', 'permission:discipline')->name('prefecture.discipline.store');
+    Route::patch('/prefecture/discipline/{sanction}/lever', [PrefectureDisciplineController::class, 'lever'])->middleware('role:prefetture,disciplinaire', 'permission:discipline')->name('prefecture.discipline.lever');
+    Route::delete('/prefecture/discipline/{sanction}', [PrefectureDisciplineController::class, 'destroy'])->middleware('role:prefetture,disciplinaire', 'permission:discipline')->name('prefecture.discipline.destroy');
+    // Validation des demandes d'inscription par le Préfet — ouverte seulement si
+    // l'administration l'y a autorisé (réglage « prefet_valide_inscriptions »).
+    Route::get('/prefecture/demandes-inscription', [PrefectureInscriptionController::class, 'index'])->middleware('role:prefetture', 'permission:inscriptions')->name('prefecture.demandes.inscriptions');
+    Route::post('/prefecture/demandes-inscription/{demandeInscription}/accepter', [PrefectureInscriptionController::class, 'approve'])->middleware('role:prefetture', 'permission:inscriptions')->name('prefecture.demandes.inscriptions.approve');
+    Route::post('/prefecture/demandes-inscription/{demandeInscription}/refuser', [PrefectureInscriptionController::class, 'reject'])->middleware('role:prefetture', 'permission:inscriptions')->name('prefecture.demandes.inscriptions.reject');
     // Privilèges de supervision : statut disciplinaire, validation, approbation, périodes.
     Route::patch('/prefecture/eleves/{eleve}/statut', [PrefectureDashboardController::class, 'modifierStatutEleve'])->middleware('role:prefetture')->name('prefecture.eleves.statut');
     Route::post('/prefecture/evaluations/{evaluation}/valider', [PrefectureDashboardController::class, 'validerEvaluation'])->middleware('role:prefetture')->name('prefecture.evaluations.valider');
@@ -308,6 +339,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/prefecture/flux-academique', [FluxAcademiqueController::class, 'index'])->middleware('role:prefetture', 'permission:flux_academique')->name('prefecture.flux.index');
     Route::put('/prefecture/flux-academique', [FluxAcademiqueController::class, 'update'])->middleware('role:prefetture', 'permission:flux_academique')->name('prefecture.flux.update');
     Route::get('/titulaire/tableau-de-bord', [TitulaireDashboardController::class, 'index'])->middleware('role:titulaire')->name('titulaire.dashboard');
+    Route::get('/titulaire/bulletins', [TitulaireBulletinController::class, 'index'])->middleware('role:titulaire')->name('titulaire.bulletins.index');
+    Route::post('/titulaire/bulletins/generer', [TitulaireBulletinController::class, 'generate'])->middleware('role:titulaire')->name('titulaire.bulletins.generate');
+    Route::post('/titulaire/bulletins/appreciations', [TitulaireBulletinController::class, 'appreciations'])->middleware('role:titulaire')->name('titulaire.bulletins.appreciations');
+    Route::get('/titulaire/bulletins/{inscription}/document', [TitulaireBulletinController::class, 'document'])->middleware('role:titulaire')->name('titulaire.bulletins.document');
     Route::get('/professeur/tableau-de-bord', [ProfesseurDashboardController::class, 'index'])->middleware('role:professeur')->name('professeur.dashboard');
     Route::get('/comptable/tableau-de-bord', [ComptableDashboardController::class, 'index'])->middleware('role:comptable')->name('comptable.dashboard');
     Route::get('/comptable/profil', [ComptableProfilController::class, 'index'])->middleware('role:comptable')->name('comptable.profil');

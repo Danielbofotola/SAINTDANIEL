@@ -9,8 +9,10 @@
  * modification). Le rôle `admin` reste le super-administrateur (accès total).
  */
 return [
-    // Postes de la matrice, dans l'ordre d'affichage.
-    'roles' => ['systeme', 'prefetture', 'directeur_etudes', 'secretaire', 'comptable', 'professeur', 'disciplinaire'],
+    // Postes de la matrice, dans l'ordre d'affichage. « titulaire » y figure pour
+    // être visible, mais sa matrice reste vide : son espace (tableau de bord,
+    // bulletins de sa classe) est piloté par son rôle, pas par ces droits.
+    'roles' => ['systeme', 'prefetture', 'directeur_etudes', 'secretaire', 'comptable', 'professeur', 'titulaire', 'disciplinaire'],
 
     'labels' => [
         'total' => 'Total',
@@ -47,7 +49,17 @@ return [
         ],
         'inscriptions' => [
             'libelle' => 'Inscriptions & Création des Dossiers Élèves',
-            'niveaux' => ['systeme' => 'validation', 'directeur_etudes' => 'oui'],
+            // Le Préfet peut valider les demandes d'inscription, mais UNIQUEMENT si
+            // l'administration l'autorise (réglage « prefet_valide_inscriptions »).
+            'niveaux' => ['systeme' => 'validation', 'directeur_etudes' => 'oui', 'prefetture' => 'oui'],
+        ],
+        'structures' => [
+            'libelle' => 'Activation des classes et cycles (statut actif / inactif)',
+            'niveaux' => ['systeme' => 'oui', 'directeur_etudes' => 'oui'],
+        ],
+        'affectations' => [
+            'libelle' => 'Affectations & mutations des professeurs (cours et classes)',
+            'niveaux' => ['systeme' => 'oui', 'prefetture' => 'oui', 'directeur_etudes' => 'oui'],
         ],
         'frais_recus' => [
             'libelle' => 'Perception des Frais Scolaires & Émission Reçus',

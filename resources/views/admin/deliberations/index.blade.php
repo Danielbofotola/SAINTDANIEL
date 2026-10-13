@@ -31,6 +31,7 @@
         .pill--admis { background:#14532d; color:#dcfce7; }
         .pill--ajourne { background:#78350f; color:#fef3c7; }
         .pill--redouble { background:#7f1d1d; color:#fee2e2; }
+        .pill--diplome { background:#0c4a6e; color:#e0f2fe; }
         .alerte { padding:10px 14px; border-radius:8px; margin-bottom:12px; font-size:.85rem; }
         .alerte--ok { background:#14532d; color:#dcfce7; }
         .alerte--ko { background:#7f1d1d; color:#fee2e2; }
@@ -42,6 +43,7 @@
         .stat--admis { border-left-color:#22c55e; }
         .stat--ajourne { border-left-color:#f59e0b; }
         .stat--redouble { border-left-color:#ef4444; }
+        .stat--diplome { border-left-color:#0ea5e9; }
         .stat__v { font-size:1.7rem; font-weight:800; color:#fff; line-height:1; }
         .stat__k { font-size:.78rem; color:var(--mut); }
         .stat__s { font-size:.78rem; color:#fff; font-weight:600; }
@@ -117,7 +119,8 @@
                     <span class="stat__k">Élèves délibérés</span>
                     <span class="stat__s">{{ $synthese['garcons'] }} G · {{ $synthese['filles'] }} F</span>
                 </div>
-                @foreach (['admis' => 'Admis (passent)', 'ajourne' => 'Ajournés (repêchage)', 'redouble' => 'Redoublants'] as $cle => $libelle)
+                @foreach (['admis' => 'Admis (passent)', 'diplome' => 'Diplômés (fin de cycle)', 'ajourne' => 'Ajournés (repêchage)', 'redouble' => 'Redoublants'] as $cle => $libelle)
+                    @continue($cle === 'diplome' && ! $donneDiplome)
                     <div class="stat stat--{{ $cle }}">
                         <span class="stat__v">{{ $synthese['decisions'][$cle]['total'] }}</span>
                         <span class="stat__k">{{ $libelle }}</span>
@@ -140,7 +143,16 @@
                 @endforeach
             </select>
             <span style="color:var(--mut);font-size:.8rem">
-                @if ($classeSuivante)
+                @if ($donneDiplome)
+                    Classe de fin de parcours : les admis seront <strong style="color:#fff">diplômés</strong>@if ($cycleFin?->fin_libelle) ({{ $cycleFin->fin_libelle }})@endif.
+                @elseif ($clotCycle && $cycleFin?->delivreCertificat())
+                    Fin de cycle : les admis reçoivent
+                    <strong style="color:#fff">{{ $cycleFin->fin_libelle ?: 'le certificat de fin de cycle' }}</strong>
+                    puis passent au cycle suivant.
+                @elseif ($passageAmbigu)
+                    Passage à choix : <strong style="color:#fff">{{ $candidats->count() }} classes d'accueil</strong>
+                    — choisissez la section et l'option de chaque élève admis.
+                @elseif ($classeSuivante)
                     Passage vers : <strong style="color:#fff">{{ $classeSuivante->nom }}</strong>
                 @else
                     <em>Aucune classe de niveau supérieur définie pour cette classe.</em>
@@ -154,12 +166,14 @@
             @csrf
             <input type="hidden" name="annee_scolaire_id" value="{{ $annee->id }}">
             <section class="carte">
+                @php($candidatsParSection = $passageAmbigu ? $candidats->groupBy(fn ($c) => $c->section?->nom ?? 'À définir') : collect())
                 <h2><i class="fa-solid fa-list-check"></i> Décisions — {{ $classe->nom }} ({{ $lignes->count() }} élève(s))</h2>
                 <table>
                     <thead>
                         <tr>
                             <th>Élève</th><th>Moyenne générale</th><th>Cours en échec</th>
                             <th>Proposition du jury</th><th>Décision</th>
+                            @if ($passageAmbigu)<th>Section · Option (destination)</th>@endif
                         </tr>
                     </thead>
                     <tbody>
@@ -180,6 +194,22 @@
                                         @endforeach
                                     </select>
                                 </td>
+                                @if ($passageAmbigu)
+                                    <td>
+                                        <select name="destinations[{{ $ligne['inscription']->id }}]">
+                                            <option value="">— choisir —</option>
+                                            @foreach ($candidatsParSection as $nomSection => $liste)
+                                                <optgroup label="{{ $nomSection }}">
+                                                    @foreach ($liste as $candidat)
+                                                        <option value="{{ $candidat->id }}" @selected($ligne['enregistree']?->classe_suivante_id === $candidat->id)>
+                                                            {{ $candidat->option?->nom ?? 'Sans option' }} — {{ $candidat->nom }}
+                                                        </option>
+                                                    @endforeach
+                                                </optgroup>
+                                            @endforeach
+                                        </select>
+                                    </td>
+                                @endif
                             </tr>
                         @endforeach
                     </tbody>
@@ -204,6 +234,8 @@
                     Les <strong>admis</strong> sont inscrits dans la classe de niveau supérieur,
                     les <strong>ajournés</strong> et <strong>redoublants</strong> restent dans la même classe.
                     Les inscriptions sont créées « en attente » (à valider à l'encaissement).
+                    Quand une classe mène vers plusieurs humanités, chaque admis doit avoir choisi
+                    sa section/option, sinon il est laissé de côté jusqu'au choix.
                 </p>
                 <div class="rangee">
                     <div style="min-width:260px">

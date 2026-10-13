@@ -18,7 +18,11 @@ class ClasseController extends Controller
     {
         return view('admin.classes.index', [
             'classes' => Classe::with(['cycle', 'section', 'option', 'salle'])
-                ->withCount(['inscriptions as eleves_count' => fn ($query) => $query->anneeEnCours()->where('statut', 'actif')])
+                ->withCount(['inscriptions as eleves_count' => fn ($query) => $query
+                    ->anneeEnCours()
+                    ->where('statut', 'actif')
+                    // Les élèves désactivés ne comptent plus dans l'effectif.
+                    ->whereHas('eleve', fn ($eleve) => $eleve->visibles())])
                 ->orderBy('nom')
                 ->get(),
         ]);
@@ -32,6 +36,8 @@ class ClasseController extends Controller
             ->anneeEnCours()
             ->with('eleve')
             ->where('statut', 'actif')
+            // Pas d'élève désactivé dans la liste d'une classe.
+            ->whereHas('eleve', fn ($eleve) => $eleve->visibles())
             ->latest('date_inscription')
             ->get();
 
@@ -50,7 +56,12 @@ class ClasseController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
-        Classe::create($this->validatedData($request));
+        $donnees = $this->validatedData($request);
+        $destinations = $donnees['destinations'] ?? [];
+        unset($donnees['destinations']);
+
+        $classe = Classe::create($donnees);
+        $classe->destinations()->sync($destinations);
 
         return redirect()
             ->route('admin.classes.index')
@@ -59,7 +70,12 @@ class ClasseController extends Controller
 
     public function update(Request $request, Classe $classe): RedirectResponse
     {
-        $classe->update($this->validatedData($request, $classe));
+        $donnees = $this->validatedData($request, $classe);
+        $destinations = $donnees['destinations'] ?? [];
+        unset($donnees['destinations']);
+
+        $classe->update($donnees);
+        $classe->destinations()->sync($destinations);
 
         return redirect()
             ->route('admin.classes.index')
@@ -104,6 +120,14 @@ class ClasseController extends Controller
                 ->when($classe, fn ($query) => $query->where('id', '!=', $classe->id))
                 ->orderBy('nom')
                 ->get(),
+            // Destinations multiples possibles en fin d'année (ex. les 1res
+            // humanités d'une classe terminale de l'éducation de base).
+            'destinations' => Classe::with(['cycle', 'section', 'option'])
+                ->where('statut', 'actif')
+                ->when($classe, fn ($query) => $query->where('id', '!=', $classe->id))
+                ->orderBy('nom')
+                ->get(),
+            'destinationsSelectionnees' => $classe ? $classe->destinations()->pluck('classes.id')->all() : [],
         ];
     }
 
@@ -135,6 +159,14 @@ class ClasseController extends Controller
                     }
                 }),
             ],
+            // Classes d'accueil possibles en fin d'année (une ou plusieurs).
+            'destinations' => ['nullable', 'array'],
+            'destinations.*' => array_filter([
+                'integer',
+                'distinct',
+                'exists:classes,id',
+                $classe ? Rule::notIn([$classe->id]) : null,
+            ]),
             'statut' => ['required', 'in:actif,inactif'],
         ]);
     }

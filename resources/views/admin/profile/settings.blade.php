@@ -132,6 +132,14 @@
                     </label>
                 </div>
                 <div class="switch-row">
+                    <input type="hidden" name="prefet_valide_inscriptions" value="0">
+                    <input type="checkbox" id="prefet_valide_inscriptions" name="prefet_valide_inscriptions" value="1" @checked(old('prefet_valide_inscriptions', $settings->prefet_valide_inscriptions ?? false))>
+                    <label for="prefet_valide_inscriptions">
+                        <span class="switch-titre">Autoriser le Préfet à valider les demandes d’inscription</span>
+                        <p class="switch-texte">Le Préfet des Études peut alors accepter ou refuser les demandes d’inscription. Décoché, seul l’administrateur valide.</p>
+                    </label>
+                </div>
+                <div class="switch-row">
                     <input type="hidden" name="module_recus_actif" value="0">
                     <input type="checkbox" id="module_recus_actif" name="module_recus_actif" value="1" @checked(old('module_recus_actif', $settings->module_recus_actif ?? true))>
                     <label for="module_recus_actif">
